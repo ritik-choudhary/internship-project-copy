@@ -1,0 +1,334 @@
+.tiles {
+  height: 100%;
+  width: 100%;
+  gap: 26px;
+  padding: 20px 30px;
+  display: flex;
+  flex-direction: column;
+}
+.tile-hover {
+  transition: 0.5s;
+}
+
+.tile-hover:hover {
+  transform: translateY(-10px);
+  box-shadow: 3px 4px 5px grey;
+}
+
+.bottom-tiles {
+  display: flex;
+  gap: 40px;
+  width: 100%;
+}
+
+.left-tile,
+.right-tile {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  width: 50%;
+}
+
+.left-top,
+.right-bottom {
+  display: flex;
+  gap: 40px;
+}
+
+.add-workspace-tile {
+  height: 251px;
+  padding: 35px 55px;
+  background: linear-gradient(92.17deg, #0e4ba5 0%, #468aef 99.33%);
+  border-radius: 20px;
+  color: white;
+  display: flex;
+  /* align-items: flex-end; */
+  justify-content: space-between;
+}
+
+.add-workspace-tile .tile-text {
+  width: 30%;
+}
+
+.add-workspace-tile p {
+  font-size: 25px;
+  font-weight: 700;
+  line-height: 45px;
+}
+
+.button-container {
+  display: flex;
+  height: 100%;
+  align-items: flex-end;
+}
+
+.add-workspace-btn {
+  background: #ffca10;
+  border-radius: 5px;
+  padding: 10px;
+  font-weight: 500;
+  font-size: 12px;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.add-workspace-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, #fff, transparent);
+  transition: 0.5s;
+}
+
+.add-workspace-btn:hover::before {
+  left: 100%;
+}
+
+/* Todo list tile */
+
+.todo-list-tile {
+  height: 300px;
+  width: 50%;
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.background-image {
+  height: 100%;
+  width: 100%;
+  background: black;
+}
+
+.background-image img {
+  width: 100%;
+  height: 100%;
+  opacity: 0.5;
+}
+
+.tile-content {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  transform: translate(20px, 20px);
+  display: flex;
+  flex-direction: column;
+  color: white;
+  width: 100%;
+}
+
+.tile-content h2 {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.animation-tiles {
+  padding: 10px 0;
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  width: 100%;
+  font-weight: 400;
+}
+
+.tile-1,
+.tile-2 {
+  display: flex;
+  position: absolute;
+  flex-direction: column;
+  width: 100%;
+}
+
+.single-option {
+  display: grid;
+  grid-template-columns: 1fr 6fr;
+  gap: 3px;
+  align-items: center;
+}
+
+/* performance  tile*/
+
+.performance-tile {
+  height: 300px;
+  width: 50%;
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.performance-tile h4 {
+  font-size: 40px;
+  font-weight: 400;
+}
+
+/* jobs tile */
+
+.jobs-tile {
+  height: 245px;
+  width: 100%;
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.tile-1,
+.tile-2 {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.jobs-tile .single-option {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.jobs-tile .single-option p {
+  font-size: 12px;
+  font-weight: 200;
+}
+.jobs-tile .single-option h3 {
+  font-size: 15px;
+  font-weight: 400;
+}
+
+.jobs-tile .tile-content {
+  width: 85%;
+}
+
+.job h3 {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.job p {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.line {
+  width: 100%;
+  height: 1px;
+  background: white;
+}
+
+.see-all {
+  position: absolute;
+  bottom: 20px;
+  left: 40px;
+  /* transform: translate(0px, 0px); */
+}
+
+a {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+/* career guidance tile */
+
+.career-tile {
+  height: 245px;
+  width: 100%;
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+/* task manager tile */
+.task-manager-tile {
+  height: 300px;
+  width: 50%;
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.wallet-tile {
+  height: 300px;
+  width: 50%;
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.wallet-tile h1 {
+  font-size: 40px;
+  font-weight: 400;
+}
+
+.tile-content .title {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+a {
+  text-decoration: none;
+  color: #468aef;
+}
+
+/* animations */
+.tile-2 {
+  transform: translateY(200%);
+}
+
+.tile-1 {
+  animation: tile-1 10s linear infinite alternate-reverse;
+}
+
+.tile-2 {
+  animation: tile-2 10s linear infinite alternate-reverse;
+}
+
+@keyframes tile-1 {
+  0% {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+  49% {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+  55% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+}
+@keyframes tile-2 {
+  0% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  49% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  55% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* responsiveness */
+
+/* @media (max-width: 900px){
+    .todo-list-tile, .performance-tile, .jobs-tile{
+        grid-column: unset;
+    }
+} */

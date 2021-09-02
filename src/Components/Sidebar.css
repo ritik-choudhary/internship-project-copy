@@ -1,0 +1,140 @@
+.sidebar {
+  width: 83px;
+  background: #0e1f3e;
+  color: white;
+  height: 100vh;
+  padding: 90px 20px;
+  position: sticky;
+  height: 100vh;
+  top: 0;
+  z-index: 1;
+}
+
+.wide-sidebar {
+  width: 256px;
+  background: #0e1f3e;
+  color: white;
+  height: 100vh;
+  padding: 90px 20px;
+  font-size: 12px;
+  position: sticky;
+  height: 100vh;
+  top: 0;
+}
+
+.wide-sidebar .sidebar-option {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 5fr;
+  gap: 10px;
+  font-size: 12px;
+  text-align: left;
+}
+
+.wide-sidebar .icon-title {
+  display: flex;
+}
+
+.wide-sidebar.user {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.wide-sidebar .username {
+  display: flex;
+}
+
+.image-container {
+  width: 38px;
+  height: 38px;
+  border-radius: 100%;
+  background: #c4c4c4;
+  margin: 0 auto;
+}
+
+.user {
+  margin: 0 auto;
+  margin-bottom: 100px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: center;
+}
+
+.username {
+  display: none;
+}
+
+.sidebar-icons {
+  margin: 0 auto;
+  font-size: 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  transition: all 0.5s linear;
+}
+
+.sidebar-option {
+  display: flex;
+}
+
+.sidebar-icon {
+  position: relative;
+  cursor: pointer;
+  width: 40px;
+  height: 13.6px;
+  flex-shrink: 0;
+  z-index: 100;
+}
+
+.sidebar-option:hover {
+  cursor: pointer;
+}
+
+.sidebar-option div {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.sidebar-option div::before {
+  content: '';
+  position: absolute;
+  display: flex;
+  justify-content: space-between;
+  background: #0e1f3e;
+  border-radius: 5px;
+  width: 100%;
+  /* transform: translateX(-100%); */
+  height: 100%;
+  opacity: 0;
+  /* display: none; */
+  transition: opacity 0.2s linear;
+  /* transition: opacity 0.4s linear; */
+}
+
+.sidebar-option:hover div::before {
+  opacity: 1;
+}
+
+.icon-title {
+  display: flex;
+  z-index: 100;
+  white-space: nowrap;
+  position: relative;
+  font-size: 12px;
+  padding: 11px 10px;
+  padding-left: 0;
+  opacity: 0;
+  transition: opacity 0.2s linear;
+}
+
+.wide-sidebar .icon-title {
+  opacity: 1;
+}
+
+.sidebar-option:hover .icon-title {
+  opacity: 1;
+}
