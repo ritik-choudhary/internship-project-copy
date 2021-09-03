@@ -1,20 +1,21 @@
-*{
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-body{
+body {
   font-family: 'IBM Plex Sans', sans-serif;
 }
 
-.dashboard{
+.dashboard {
   min-height: 100vh;
   display: flex;
 }
 
-.dashboard-content{
+.dashboard-content {
   width: 100%;
   display: flex;
   flex-direction: column;
+  gap: 30px;
 }

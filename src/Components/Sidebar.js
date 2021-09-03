@@ -5,99 +5,129 @@ import { FaBars, FaBriefcase } from 'react-icons/fa'
 import { BsBook, BsFillBarChartFill } from 'react-icons/bs'
 import { HiNewspaper } from 'react-icons/hi'
 import { RiDeleteBin5Fill } from 'react-icons/ri'
+import { RiArrowGoBackFill } from 'react-icons/ri'
+import { CSSTransition } from 'react-transition-group'
 import './Sidebar.css'
 
 export default function Sidebar() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   return (
-    <div className={`${isSidebarOpen ? 'wide-sidebar' : 'sidebar'}`}>
+    <div
+      className={`sidebar-animation ${
+        isSidebarOpen ? 'wide-sidebar ' : 'sidebar'
+      }`}
+    >
       <div className='user'>
         <div className='image-container'></div>
         <h3 className='username'>John Doe</h3>
       </div>
       <div className='sidebar-icons'>
-        <div className='sidebar-option'>
-          <div>
-            <AiOutlinePlus
-              className='sidebar-icon'
-              onClick={() => setIsSidebarOpen(true)}
-            />
-            <p className='title icon-title'>Add Workspace</p>
-          </div>
-        </div>
-        <div className='sidebar-option'>
-          <div>
-            <BiTimeFive
-              className='sidebar-icon'
-              onClick={() => setIsSidebarOpen(true)}
-            />
-            <p className='title icon-title'>Recents</p>
-          </div>
-        </div>
-        <div className='sidebar-option'>
-          <div>
-            <FaBars
-              className='sidebar-icon'
-              onClick={() => setIsSidebarOpen(true)}
-            />
-            <p className='title icon-title'>Notes</p>
-          </div>
-        </div>
+        <Option
+          Icon={AiOutlinePlus}
+          title={'Add Workspace'}
+          setIsSidebarOpen={setIsSidebarOpen}
+          isSidebarOpen={isSidebarOpen}
+        />
+        <Option
+          Icon={BiTimeFive}
+          title={'Recents'}
+          setIsSidebarOpen={setIsSidebarOpen}
+          isSidebarOpen={isSidebarOpen}
+        />
+        <Option
+          Icon={FaBars}
+          title={'Notes'}
+          setIsSidebarOpen={setIsSidebarOpen}
+          isSidebarOpen={isSidebarOpen}
+        />
+        <Option
+          Icon={BsBook}
+          title={'Journal'}
+          setIsSidebarOpen={setIsSidebarOpen}
+          isSidebarOpen={isSidebarOpen}
+        />
+        <Option
+          Icon={FaBriefcase}
+          title={'Internships'}
+          setIsSidebarOpen={setIsSidebarOpen}
+          isSidebarOpen={isSidebarOpen}
+        />
+        <Option
+          Icon={BsFillBarChartFill}
+          title={'Insights'}
+          setIsSidebarOpen={setIsSidebarOpen}
+          isSidebarOpen={isSidebarOpen}
+        />
+        <Option
+          Icon={BiTask}
+          title={'Task Manager'}
+          setIsSidebarOpen={setIsSidebarOpen}
+          isSidebarOpen={isSidebarOpen}
+        />
+        <Option
+          Icon={HiNewspaper}
+          title={'Cover Letter Templates'}
+          setIsSidebarOpen={setIsSidebarOpen}
+          isSidebarOpen={isSidebarOpen}
+        />
+        <Option
+          Icon={RiDeleteBin5Fill}
+          title={'Trash'}
+          setIsSidebarOpen={setIsSidebarOpen}
+          isSidebarOpen={isSidebarOpen}
+        />
+      </div>
+      <div className='back-to-profile-icon'>
+        <Option
+          Icon={RiArrowGoBackFill}
+          title={'Back to Profile'}
+          setIsSidebarOpen={setIsSidebarOpen}
+          isSidebarOpen={isSidebarOpen}
+        />
+      </div>
+    </div>
+  )
+}
 
-        <div className='sidebar-option'>
-          <div>
-            <BsBook
-              className='sidebar-icon'
-              onClick={() => setIsSidebarOpen(true)}
-            />
-            <p className='title icon-title'>Journal</p>
-          </div>
-        </div>
-        <div className='sidebar-option'>
-          <div>
-            <FaBriefcase
-              className='sidebar-icon'
-              onClick={() => setIsSidebarOpen(true)}
-            />
-            <p className='title icon-title'>Internships</p>
-          </div>
-        </div>
-        <div className='sidebar-option'>
-          <div>
-            <BsFillBarChartFill
-              className='sidebar-icon'
-              onClick={() => setIsSidebarOpen(true)}
-            />
-            <p className='title icon-title'>Insights</p>
-          </div>
-        </div>
-        <div className='sidebar-option'>
-          <div>
-            <BiTask
-              className='sidebar-icon'
-              onClick={() => setIsSidebarOpen(true)}
-            />
-            <p className='title icon-title'>Task Manager</p>
-          </div>
-        </div>
-        <div className='sidebar-option'>
-          <div>
-            <HiNewspaper
-              className='sidebar-icon'
-              onClick={() => setIsSidebarOpen(true)}
-            />
-            <p className='title icon-title'>Cover Letter Templates</p>
-          </div>
-        </div>
-        <div className='sidebar-option'>
-          <div>
-            <RiDeleteBin5Fill
-              className='sidebar-icon'
-              onClick={() => setIsSidebarOpen(true)}
-            />
-            <p className='title icon-title'>Trash</p>
-          </div>
-        </div>
+const Option = (props) => {
+  const [isHovering, setIsHovering] = useState(false)
+  const onMouseOver = () => {
+    if (!isHovering) setIsHovering(true)
+    // console.log('on')
+  }
+
+  const onMouseLeave = () => {
+    setIsHovering(false)
+    // console.log('off')
+  }
+
+  return (
+    <div
+      onMouseOver={onMouseOver}
+      onMouseLeave={onMouseLeave}
+      className='sidebar-option'
+    >
+      <div>
+        <props.Icon
+          className='sidebar-icon'
+          onClick={() => props.setIsSidebarOpen(true)}
+        />
+        <CSSTransition
+          in={isHovering || props.isSidebarOpen}
+          classNames='title'
+          unmountOnExit
+          timeout={100}
+        >
+          <p className='title icon-title'>{props.title}</p>
+        </CSSTransition>
+        <CSSTransition
+          in={isHovering || props.isSidebarOpen}
+          classNames='title'
+          unmountOnExit
+          timeout={100}
+        >
+          <span className='icon-before'></span>
+        </CSSTransition>
       </div>
     </div>
   )

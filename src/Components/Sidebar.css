@@ -7,11 +7,17 @@
   position: sticky;
   height: 100vh;
   top: 0;
+  flex-shrink: 0;
   z-index: 1;
+}
+
+.sidebar-animation {
+  transition: width 0.2s linear;
 }
 
 .wide-sidebar {
   width: 256px;
+  /* transform: translateX(0); */
   background: #0e1f3e;
   color: white;
   height: 100vh;
@@ -33,6 +39,7 @@
 
 .wide-sidebar .icon-title {
   display: flex;
+  /* transition: width 0.2s linear; */
 }
 
 .wide-sidebar.user {
@@ -43,6 +50,7 @@
 
 .wide-sidebar .username {
   display: flex;
+  font-size: 16px;
 }
 
 .image-container {
@@ -51,6 +59,11 @@
   border-radius: 100%;
   background: #c4c4c4;
   margin: 0 auto;
+}
+
+.wide-sidebar .image-container {
+  width: 60px;
+  height: 60px;
 }
 
 .user {
@@ -84,7 +97,8 @@
   position: relative;
   cursor: pointer;
   width: 40px;
-  height: 13.6px;
+  height: 16px;
+  padding: 2px 0px;
   flex-shrink: 0;
   z-index: 100;
 }
@@ -96,10 +110,11 @@
 .sidebar-option div {
   position: relative;
   display: flex;
+  padding: 10px 0px;
   align-items: center;
 }
 
-.sidebar-option div::before {
+.icon-before {
   content: '';
   position: absolute;
   display: flex;
@@ -111,13 +126,13 @@
   height: 100%;
   opacity: 0;
   /* display: none; */
-  transition: opacity 0.2s linear;
+  transition: opacity 0.1s linear;
   /* transition: opacity 0.4s linear; */
 }
 
-.sidebar-option:hover div::before {
+/* .sidebar-option:hover div::before {
   opacity: 1;
-}
+} */
 
 .icon-title {
   display: flex;
@@ -125,16 +140,56 @@
   white-space: nowrap;
   position: relative;
   font-size: 12px;
-  padding: 11px 10px;
+  padding: 0px 10px;
   padding-left: 0;
-  opacity: 0;
-  transition: opacity 0.2s linear;
+  opacity: 1;
+  transition: opacity 0.1s linear;
 }
 
 .wide-sidebar .icon-title {
   opacity: 1;
 }
 
-.sidebar-option:hover .icon-title {
+/* .wide-sidebar .icon-title {
+  transition: opacity 0.2s linear;
+} */
+
+/* .sidebar-option:hover .icon-title {
   opacity: 1;
+} */
+
+.back-to-profile-icon {
+  margin-top: 50px;
+}
+
+.icon-before {
+  transition: opacity 0.1s ease-out;
+}
+
+.title {
+  transition: opacity 0.1s linear;
+}
+
+.title-enter {
+  opacity: 0;
+}
+
+.title-enter-active {
+  opacity: 1;
+}
+
+.title-enter-done {
+  opacity: 1;
+}
+
+.title-exit {
+  opacity: 1;
+}
+
+.title-exit-active {
+  opacity: 0;
+}
+
+.title-exit-done {
+  opacity: 0;
 }

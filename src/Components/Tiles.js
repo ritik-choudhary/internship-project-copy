@@ -5,7 +5,7 @@ import todo from '../assets/todo.jpg'
 import performance from '../assets/performance.jpg'
 import wallet from '../assets/wallet.jpg'
 import taskManager from '../assets/task-manager.jpg'
-import jobs from '../assets/jobs.jpg'
+import jobs from '../assets/jobs2.jpg'
 import guidance from '../assets/guidance.jpg'
 
 export default function Tiles() {
@@ -14,8 +14,11 @@ export default function Tiles() {
       <div className='add-workspace-tile'>
         <div className='tile-text'>
           <p>
-            Studying in college or doing internships? Don’t worry, we got you.
-            Add workspaces to manage multiple tasks from one place.
+            Studying in college or doing internships?
+            <br /> Don’t worry, we got you.
+            <br />
+            Add workspaces to manage multiple tasks
+            <br /> from one place.
           </p>
         </div>
         <div className='button-container'>
@@ -100,9 +103,9 @@ export default function Tiles() {
                     <p>Views this month</p>
                   </div>
                   <div className='tile-2'>
-                    <h1>100</h1>
+                    <h4>100</h4>
                     <p>New Recruitments</p>
-                    <h1>300</h1>
+                    <h4>300</h4>
                     <p>Reviews</p>
                   </div>
                 </div>
