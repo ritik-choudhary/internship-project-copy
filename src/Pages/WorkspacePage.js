@@ -8,14 +8,12 @@ import { AiOutlinePlus } from 'react-icons/ai'
 import { WorkspaceConsumer } from '../Context'
 import { FiEdit } from 'react-icons/fi'
 import { RiDeleteBin6Line } from 'react-icons/ri'
-import jobs2 from '../assets/jobs2.jpg'
 import WorkspaceModal from '../Components/WorkspaceModal'
 
 import { Link, Route, Switch } from 'react-router-dom'
 
 export default function WorkspacePage() {
   const [gridStyle, setGridStyle] = useState(false)
-  const [newWorkspaceModal, setNewWorkspaceModal] = useState(false)
 
   return (
     <>

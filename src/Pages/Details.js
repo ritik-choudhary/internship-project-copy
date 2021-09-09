@@ -1,7 +1,5 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { WorkspaceConsumer } from '../Context'
-import { BsFillGridFill } from 'react-icons/bs'
-import { FaList } from 'react-icons/fa'
 import { AiOutlinePlus } from 'react-icons/ai'
 import Sidebar from '../Components/Sidebar'
 import Header from '../Components/Header'
@@ -12,8 +10,6 @@ import SpaceUploadModal from '../Components/SpaceUploadModal'
 
 export default function Details() {
   const param = useParams()
-  const [gridStyle, setGridStyle] = useState(true)
-  const [newSpace, setNewSpace] = useState()
 
   return (
     <>
