@@ -7,6 +7,7 @@ import wallet from '../assets/wallet.jpg'
 import taskManager from '../assets/task-manager.jpg'
 import jobs from '../assets/jobs2.jpg'
 import guidance from '../assets/guidance.jpg'
+import { Link } from 'react-router-dom'
 
 export default function Tiles() {
   return (
@@ -22,9 +23,11 @@ export default function Tiles() {
           </p>
         </div>
         <div className='button-container'>
-          <button className='add-workspace-btn'>
-            <AiOutlinePlus /> Add Workspace
-          </button>
+          <Link to='/workspace' className='workspace-link'>
+            <button className='add-workspace-btn'>
+              <AiOutlinePlus /> Add Workspace
+            </button>
+          </Link>
         </div>
       </div>
       <div className='bottom-tiles'>
@@ -46,7 +49,7 @@ export default function Tiles() {
                         id='complete-wireframing'
                       />
                       <label htmlFor='complete-wireframing'>
-                        Complete Wireframing
+                        Complete Wirefr...
                       </label>
                     </div>
                     <div className='single-option'>

@@ -6,7 +6,10 @@ import { BsBook, BsFillBarChartFill } from 'react-icons/bs'
 import { HiNewspaper } from 'react-icons/hi'
 import { RiDeleteBin5Fill } from 'react-icons/ri'
 import { RiArrowGoBackFill } from 'react-icons/ri'
+import { AiOutlineClose } from 'react-icons/ai'
 import { CSSTransition } from 'react-transition-group'
+import { Link } from 'react-router-dom'
+import Profile from '../assets/profile.jpeg'
 import './Sidebar.css'
 
 export default function Sidebar() {
@@ -17,8 +20,19 @@ export default function Sidebar() {
         isSidebarOpen ? 'wide-sidebar ' : 'sidebar'
       }`}
     >
+      <div
+        className={` ${
+          isSidebarOpen
+            ? 'close-sidebar-btn'
+            : 'close-sidebar-btn hide-close-sidebar-btn'
+        }`}
+      >
+        <AiOutlineClose onClick={() => setIsSidebarOpen(false)} />
+      </div>
       <div className='user'>
-        <div className='image-container'></div>
+        <div className='image-container'>
+          <img src={Profile} alt='profile' />
+        </div>
         <h3 className='username'>John Doe</h3>
       </div>
       <div className='sidebar-icons'>
@@ -70,12 +84,14 @@ export default function Sidebar() {
           setIsSidebarOpen={setIsSidebarOpen}
           isSidebarOpen={isSidebarOpen}
         />
-        <Option
-          Icon={RiDeleteBin5Fill}
-          title={'Trash'}
-          setIsSidebarOpen={setIsSidebarOpen}
-          isSidebarOpen={isSidebarOpen}
-        />
+        <Link to='/trash' className='sidebar-icon-link'>
+          <Option
+            Icon={RiDeleteBin5Fill}
+            title={'Trash'}
+            setIsSidebarOpen={setIsSidebarOpen}
+            isSidebarOpen={isSidebarOpen}
+          />
+        </Link>
       </div>
       <div className='back-to-profile-icon'>
         <Option

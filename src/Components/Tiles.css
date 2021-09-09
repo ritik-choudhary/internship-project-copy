@@ -78,6 +78,10 @@
   flex-shrink: 0;
 }
 
+.workspace-link {
+  display: flex;
+}
+
 .add-workspace-btn::before {
   content: '';
   position: absolute;

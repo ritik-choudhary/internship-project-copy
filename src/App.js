@@ -1,19 +1,27 @@
-import './App.css';
-import Sidebar from './Components/Sidebar'
-import Header from './Components/Header'
-import Tiles from './Components/Tiles'
+import './App.css'
+import Dashboard from './Pages/Dashboard'
+import Trash from './Pages/TrashPage'
+import Workspace from './Pages/WorkspacePage'
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import React from 'react'
+import Modal from 'react-modal'
+import Details from './Pages/Details'
+
+Modal.setAppElement('#root')
 
 function App() {
   return (
-    <div className="dashboard">
-      <Sidebar/>
-      <div className="dashboard-content">
-
-      <Header/>
-      <Tiles/>
-      </div>
-    </div>
-  );
+    <React.Fragment>
+      <Router>
+        <Switch>
+          <Route exact path='/' component={Dashboard}></Route>
+          <Route path='/workspace/:id/details' component={Details}></Route>
+          <Route path='/workspace' component={Workspace}></Route>
+          <Route exact path='/trash' component={Trash}></Route>
+        </Switch>
+      </Router>
+    </React.Fragment>
+  )
 }
 
-export default App;
+export default App

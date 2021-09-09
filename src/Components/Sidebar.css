@@ -17,7 +17,6 @@
 
 .wide-sidebar {
   width: 256px;
-  /* transform: translateX(0); */
   background: #0e1f3e;
   color: white;
   height: 100vh;
@@ -59,11 +58,36 @@
   border-radius: 100%;
   background: #c4c4c4;
   margin: 0 auto;
+  overflow: hidden;
+}
+
+.image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .wide-sidebar .image-container {
-  width: 60px;
-  height: 60px;
+  width: 80px;
+  height: 80px;
+}
+
+.close-sidebar-btn {
+  opacity: 1;
+  font-size: 15px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+  margin-top: -70px;
+  margin-bottom: 50px;
+}
+
+.close-sidebar-btn svg {
+  cursor: pointer;
+}
+
+.hide-close-sidebar-btn {
+  opacity: 0;
 }
 
 .user {
@@ -73,6 +97,10 @@
   flex-direction: column;
   gap: 15px;
   align-items: center;
+}
+
+.wide-sidebar .user {
+  margin-bottom: 50px;
 }
 
 .username {
@@ -148,6 +176,10 @@
 
 .wide-sidebar .icon-title {
   opacity: 1;
+}
+
+.sidebar-icon-link {
+  color: white;
 }
 
 /* .wide-sidebar .icon-title {
