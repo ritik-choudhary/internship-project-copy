@@ -6,7 +6,6 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import React from 'react'
 import Modal from 'react-modal'
 import Details from './Pages/Details'
-import SpaceContent from './Pages/SpaceContent'
 
 Modal.setAppElement('#root')
 
