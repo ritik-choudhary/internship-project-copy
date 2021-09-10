@@ -7,13 +7,13 @@ class WorkspaceProvider extends Component {
   state = {
     workspaceList: [
       {
-        id: 1,
+        id: '1',
         title: 'College',
         image:
           'https://images.unsplash.com/photo-1562774053-701939374585?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=764&q=80',
       },
       {
-        id: 2,
+        id: '2',
         title: 'Work',
         image:
           'https://images.unsplash.com/photo-1554415707-6e8cfc93fe23?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80',
@@ -21,21 +21,22 @@ class WorkspaceProvider extends Component {
     ],
     trash: [],
     detailWorkspace: {
-      id: 2,
+      id: '2',
       title: 'Work',
       image:
         'https://images.unsplash.com/photo-1554415707-6e8cfc93fe23?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80',
     },
-    workspaceElements: [
-      {
-        title: 'Library',
-        id: 1,
-        version: 1,
-        image:
-          'https://images.unsplash.com/photo-1549675584-91f19337af3d?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=752&q=80',
-      },
-    ],
-    elementsCount: [{ title: 'Library', count: 1 }],
+    detailSpace: {
+      workspaceID: '1',
+      title: 'Library',
+      id: '1',
+      version: 1,
+      image:
+        'https://images.unsplash.com/photo-1549675584-91f19337af3d?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=752&q=80',
+      favouriteBooks: [],
+      BookShelf: [],
+    },
+    workspaceElements: [],
   }
 
   addNewWorkspace = (newItem) => {
@@ -73,34 +74,24 @@ class WorkspaceProvider extends Component {
     this.setState(() => {
       return { detailWorkspace: detailItem }
     })
-    console.log(this.state.detailWorkspace)
+  }
+
+  handleDetailSpace = (id) => {
+    const detailElement = this.state.workspaceElements.find(
+      (item) => item.id === id
+    )
+    this.setState(() => {
+      return { detailSpace: detailElement }
+    })
+    console.log(this.state.detailSpace)
   }
 
   addNewSpace = (item) => {
-    const oldList = this.state.workspaceElements
+    const oldList = [...this.state.workspaceElements]
     this.setState({ workspaceElements: [...oldList, item] })
-    console.log(this.state.workspaceElements)
   }
 
-  uploadSpaceImage = (img) => {
-    const oldList = this.state.workspaceElements
-    const selectedElement = oldList[oldList.length - 1]
-    selectedElement.image = img
-    this.setState({ workspaceElements: oldList })
-  }
-
-  updateCount = (item) => {
-    const oldList = this.state.elementsCount
-    const existingElement = oldList.find((i) => i.title === item.title)
-    if (existingElement) {
-      existingElement.count++
-      this.setState({ elementsCount: oldList })
-    } else {
-      this.setState(() => {
-        return { elementsCount: [...oldList, { ...item, count: 1 }] }
-      })
-    }
-  }
+  addBooks = (book) => {}
 
   render() {
     return (
@@ -112,8 +103,7 @@ class WorkspaceProvider extends Component {
           deleteWorkspace: this.deleteWorkspace,
           handleDetail: this.handleDetail,
           addNewSpace: this.addNewSpace,
-          uploadSpaceImage: this.uploadSpaceImage,
-          updateCount: this.updateCount,
+          handleDetailSpace: this.handleDetailSpace,
         }}
       >
         {this.props.children}

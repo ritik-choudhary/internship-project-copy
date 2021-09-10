@@ -1,29 +1,13 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import Modal from 'react-modal'
 import { AiOutlineClose } from 'react-icons/ai'
-import { Link, useParams, useHistory, useLocation } from 'react-router-dom'
+import { useParams, Link } from 'react-router-dom'
 import { WorkspaceConsumer } from '../Context'
 
-export default function SpaceUploadModal() {
+export default function LibraryModal() {
   const param = useParams()
-  const location = useLocation()
-  console.log(location)
-  const history = useHistory()
-  const [thumbnail, setThumbnail] = useState()
-  const [preview, setPreview] = useState()
-
-  useEffect(() => {
-    if (thumbnail) {
-      const reader = new FileReader()
-      reader.onloadend = () => {
-        setPreview(reader.result)
-      }
-      reader.readAsDataURL(thumbnail)
-    } else {
-      setPreview(null)
-    }
-  }, [thumbnail])
-
+  const [bookLink, setBookLink] = useState()
+  const [pdf, setPdf] = useState()
   return (
     <Modal
       isOpen={true}
@@ -63,7 +47,7 @@ export default function SpaceUploadModal() {
         >
           Add new space
         </h3>
-        <Link to={`/workspace/${param.id}/details/createspace`}>
+        <Link to={`/workspace/${param.id}/details/${param.spaceKey}`}>
           <AiOutlineClose
             style={{
               fontSize: '20px',
@@ -78,89 +62,100 @@ export default function SpaceUploadModal() {
           return (
             <form
               style={{
+                padding: '20px 32px',
                 width: '100%',
                 display: 'flex',
                 flexDirection: 'column',
-                gap: '30px',
-                padding: '22px 32px',
+                gap: '32px',
               }}
               onSubmit={(e) => {
                 e.preventDefault()
-                console.log({ ...location.state, image: preview })
-                value.addNewSpace({ ...location.state.space, image: preview })
-                history.push(`/workspace/${param.id}/details`)
               }}
             >
               <div
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '5px',
-                }}
+                style={{ display: 'flex', flexDirection: 'column', gap: '7px' }}
               >
-                <p
+                <label
+                  htmlFor='book-link'
                   style={{
                     color: '#959595',
                     fontSize: '12px',
                     fontWeight: '500',
                   }}
                 >
-                  Name of the new space
-                </p>
-                <h4 style={{ fontSize: '16px', fontWeight: '500' }}>
-                  {location.state.space.title}
-                </h4>
+                  Embed ebook link
+                </label>
+                <input
+                  type='url'
+                  name='book-link'
+                  id='book-link'
+                  value={bookLink}
+                  style={{
+                    height: '32px',
+                    border: '1px solid #C4C4C4',
+                    borderRadius: '5px',
+                    fontSize: '20px',
+                    padding: '5px 10px',
+                    outline: 'none',
+                  }}
+                  onChange={(e) => {
+                    setBookLink(e.target.value)
+                  }}
+                />
+              </div>
+              <div>
+                <label
+                  htmlFor='upload-pdf'
+                  style={{
+                    color: '#959595',
+                    fontSize: '12px',
+                    fontWeight: '500',
+                  }}
+                >
+                  Upload pdf
+                </label>
+                <input
+                  type='file'
+                  name='upload-pdf'
+                  id='upload-pdf'
+                  accept='.pdf'
+                  value={pdf}
+                  hidden
+                  onChange={(e) => setPdf(e.target.files[0])}
+                />
+                <label htmlFor='upload-pdf'>
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      borderRadius: '5px',
+                      border: '1px dashed #468AEF',
+                      height: '32px',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    <p
+                      style={{
+                        color: '#468AEF',
+                        fontSize: '12px',
+                        fontWeight: '500',
+                      }}
+                    >
+                      Upload pdf
+                    </p>
+                  </div>
+                </label>
               </div>
               <div
                 style={{
                   display: 'flex',
-                  flexDirection: 'column',
-                  gap: '5px',
+                  gap: '20px',
+                  alignItems: 'center',
+                  justifyContent: 'flex-end',
                 }}
               >
-                <label
-                  htmlFor='thumbnail'
-                  style={{
-                    color: '#959595',
-                    fontSize: '12px',
-                    marginBottom: '5px',
-                  }}
-                >
-                  Thumbnail image
-                </label>
-
-                <input
-                  type='file'
-                  name='workspace'
-                  id='thumbnail'
-                  accept='image/*'
-                  hidden
-                  onChange={(e) => setThumbnail(e.target.files[0])}
-                />
-                <label for='thumbnail'>
-                  <span
-                    className='custom-thumbnail-btn'
-                    style={{
-                      background: 'none',
-                      borderRadius: '5px',
-                      border: '1px dashed #468AEF',
-
-                      color: '#468AEF',
-                      fontSize: '16px',
-                      fontWeight: '500',
-                      cursor: 'pointer',
-                      outline: 'none',
-                      display: 'block',
-                      textAlign: 'center',
-                      padding: '5px',
-                    }}
-                  >
-                    Upload image
-                  </span>
-                </label>
-              </div>
-              <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                <Link to={`/workspace/${param.id}/details/createspace`}>
+                <Link to={`/workspace/${param.id}/details/${param.spaceKey}`}>
                   <button
                     style={{
                       color: '#FF0000',

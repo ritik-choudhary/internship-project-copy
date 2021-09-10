@@ -9,6 +9,8 @@ export default function SpaceModal() {
   const history = useHistory()
   const [newSpace, setNewSpace] = useState()
 
+  let space
+
   const handleChange = (e) => {
     const { value } = e.target
     setNewSpace({ name: value })
@@ -64,6 +66,9 @@ export default function SpaceModal() {
       </header>
       <WorkspaceConsumer>
         {(value) => {
+          const workspaceId = value.workspaceList.find(
+            (item) => item.id === param.id
+          ).id
           return (
             <form
               style={{
@@ -77,32 +82,40 @@ export default function SpaceModal() {
                 e.preventDefault()
                 if (newSpace) {
                   const isExisting = value.workspaceElements.find(
-                    (item) => item.title === newSpace.name
+                    (item) =>
+                      item.title === newSpace.name &&
+                      item.workspaceID === param.id
                   )
                     ? true
                     : false
 
                   if (isExisting) {
-                    const existingElement = value.elementsCount.find(
-                      (item) => item.title === newSpace.name
+                    let count = 0
+                    value.workspaceElements.forEach((item) =>
+                      item.title === newSpace.name &&
+                      item.workspaceID === param.id
+                        ? count++
+                        : null
                     )
-                    value.addNewSpace({
+                    space = {
+                      workspaceID: workspaceId,
                       id: new Date().getTime().toString(),
                       title: newSpace.name,
-                      version: existingElement.count + 1,
-                    })
+                      version: count + 1,
+                    }
                   } else {
-                    value.addNewSpace({
+                    space = {
+                      workspaceID: workspaceId,
                       id: new Date().getTime().toString(),
                       title: newSpace.name,
                       version: 1,
-                    })
+                    }
                   }
-                  value.updateCount({ title: newSpace.name })
 
-                  history.push(
-                    `/workspace/${param.id}/details/createspace/imageupload`
-                  )
+                  history.push({
+                    pathname: `/workspace/${param.id}/details/createspace/imageupload`,
+                    state: { space: space },
+                  })
                 }
               }}
             >
@@ -133,7 +146,7 @@ export default function SpaceModal() {
                     type='radio'
                     name='new-space'
                     id='new-semester'
-                    Value='New Semester'
+                    value='New Semester'
                     onChange={handleChange}
                   />
                 </div>
