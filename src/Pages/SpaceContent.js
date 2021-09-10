@@ -4,11 +4,11 @@ import { WorkspaceConsumer } from '../Context'
 import Sidebar from '../Components/Sidebar'
 import Header from '../Components/Header'
 import styled from 'styled-components'
-import { useParams } from 'react-router-dom'
+// import { useParams } from 'react-router-dom'
 import LibraryPage from '../Components/LibraryPage'
 
 export default function SpaceContent() {
-  const param = useParams()
+  // const param = useParams()
   return (
     <>
       <SpaceContentWrapper>
