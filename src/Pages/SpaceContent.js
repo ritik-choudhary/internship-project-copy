@@ -40,7 +40,6 @@ export default function SpaceContent() {
             <WorkspaceConsumer>
               {(value) => {
                 const page = value.detailSpace.title
-                console.log(page)
                 if (page === 'Library') {
                   return <LibraryPage />
                 }
@@ -58,6 +57,9 @@ const SpaceContentWrapper = styled.section`
     font-family: 'IBM Plex Sans', sans-serif;
     min-height: 100vh;
     display: flex;
+  }
+  .space-content-page .sidebar {
+    z-index: 0;
   }
   .page-container {
     width: 100%;

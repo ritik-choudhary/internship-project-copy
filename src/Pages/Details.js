@@ -86,14 +86,9 @@ const DetailPageComponent = () => {
           </Link>
           <WorkspaceConsumer>
             {(value) => {
-              //   const workspace = value.workspaceList.find(
-              //     (item) => item.id === param.id
-              //   ).id
-              //   console.log(workspace)
               const displayItemList = value.workspaceElements.filter(
                 (item) => item.workspaceID === param.id
               )
-              console.log(displayItemList)
               return displayItemList.map((item) => {
                 let num = 0
                 if (item.version > 1) {
@@ -106,6 +101,7 @@ const DetailPageComponent = () => {
                       <div
                         className='grid-card'
                         onClick={(e) => value.handleDetailSpace(item.id)}
+                        key={item.id}
                       >
                         <div className='card-image-container'>
                           <img src={item.image} alt='' />

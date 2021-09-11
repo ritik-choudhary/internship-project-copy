@@ -1,13 +1,29 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Modal from 'react-modal'
 import { AiOutlineClose } from 'react-icons/ai'
-import { useParams, Link } from 'react-router-dom'
+import { useParams, Link, useHistory } from 'react-router-dom'
 import { WorkspaceConsumer } from '../Context'
 
-export default function LibraryModal() {
+export default function LibraryModal(props) {
+  const { favourite } = props
   const param = useParams()
+  const history = useHistory()
   const [bookLink, setBookLink] = useState()
   const [pdf, setPdf] = useState()
+  const [pdfPreview, setPdfPreview] = useState()
+
+  useEffect(() => {
+    if (pdf) {
+      const reader = new FileReader()
+      reader.onloadend = () => {
+        setPdfPreview(reader.result)
+      }
+      reader.readAsDataURL(pdf)
+    } else {
+      setPdfPreview(null)
+    }
+  }, [pdf])
+
   return (
     <Modal
       isOpen={true}
@@ -70,6 +86,61 @@ export default function LibraryModal() {
               }}
               onSubmit={(e) => {
                 e.preventDefault()
+                if (favourite) {
+                  if (bookLink) {
+                    value.addBook(
+                      {
+                        favourite: true,
+                        link: bookLink,
+                        id: new Date().getTime().toString(),
+                      },
+                      param.id,
+                      param.spaceKey
+                    )
+                  }
+                  if (pdf) {
+                    value.addBook(
+                      {
+                        favourite: true,
+                        pdf: pdf,
+                        preview: pdfPreview,
+                        id: new Date().getTime().toString(),
+                      },
+                      param.id,
+                      param.spaceKey
+                    )
+                  }
+                  history.push(
+                    `/workspace/${param.id}/details/${param.spaceKey}`
+                  )
+                } else {
+                  if (bookLink) {
+                    value.addBook(
+                      {
+                        favourite: false,
+                        link: bookLink,
+                        id: new Date().getDate().toString(),
+                      },
+                      param.id,
+                      param.spaceKey
+                    )
+                  }
+                  if (pdf) {
+                    value.addBook(
+                      {
+                        favourite: false,
+                        pdf: pdf,
+                        preview: pdfPreview,
+                        id: new Date().getDate().toString(),
+                      },
+                      param.id,
+                      param.spaceKey
+                    )
+                  }
+                  history.push(
+                    `/workspace/${param.id}/details/${param.spaceKey}`
+                  )
+                }
               }}
             >
               <div
@@ -119,7 +190,6 @@ export default function LibraryModal() {
                   name='upload-pdf'
                   id='upload-pdf'
                   accept='.pdf'
-                  value={pdf}
                   hidden
                   onChange={(e) => setPdf(e.target.files[0])}
                 />

@@ -90,19 +90,14 @@ export default function WorkspaceModal(props) {
                 if (workspaceName) {
                   if (!isEditing) {
                     value.addNewWorkspace({
-                      id: new Date().getDate().toString(),
+                      id: new Date().getTime().toString(),
                       title: workspaceName,
                       image: imageAddress,
                     })
                     setWorkspaceName('')
-                    // setNewWorkspaceModal(false)
                   }
                   if (isEditing) {
-                    value.editWorkspace(
-                      Number(param.id),
-                      workspaceName,
-                      imageAddress
-                    )
+                    value.editWorkspace(param.id, workspaceName, imageAddress)
                   }
                   history.push('/workspace/')
                 }
@@ -195,7 +190,6 @@ export default function WorkspaceModal(props) {
                       outline: 'none',
                       cursor: 'pointer',
                     }}
-                    //   onClick={() => setNewWorkspaceModal(false)}
                   >
                     Cancel
                   </button>

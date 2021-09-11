@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-// import job from './assets/jobs2.jpg'
 
 const WorkspaceContext = React.createContext()
 
@@ -34,7 +33,7 @@ class WorkspaceProvider extends Component {
       image:
         'https://images.unsplash.com/photo-1549675584-91f19337af3d?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=752&q=80',
       favouriteBooks: [],
-      BookShelf: [],
+      bookShelf: [],
     },
     workspaceElements: [],
   }
@@ -83,7 +82,6 @@ class WorkspaceProvider extends Component {
     this.setState(() => {
       return { detailSpace: detailElement }
     })
-    console.log(this.state.detailSpace)
   }
 
   addNewSpace = (item) => {
@@ -91,7 +89,42 @@ class WorkspaceProvider extends Component {
     this.setState({ workspaceElements: [...oldList, item] })
   }
 
-  addBooks = (book) => {}
+  addBook = (book, id, key) => {
+    const oldList = [...this.state.workspaceElements]
+    let element = oldList.find(
+      (item) => item.id === key && item.workspaceID === id
+    )
+    const { favourite } = book
+    if (favourite) {
+      element.favouriteBooks = element.favouriteBooks || []
+      element.favouriteBooks = [...element.favouriteBooks, book]
+    } else {
+      element.bookShelf = element.bookShelf || []
+      element.bookShelf = [...element.bookShelf, book]
+    }
+    this.setState(() => {
+      return { workspaceElements: oldList }
+    })
+  }
+
+  deleteBook = (favourite, bookID, id, key) => {
+    const oldList = [...this.state.workspaceElements]
+    let element = oldList.find(
+      (item) => item.id === key && item.workspaceID === id
+    )
+    if (favourite) {
+      const newBookList = element.favouriteBooks.filter(
+        (book) => book.id !== bookID
+      )
+      element.favouriteBooks = newBookList
+    } else {
+      const newBookList = element.bookShelf.filter((book) => book.id !== bookID)
+      element.bookShelf = newBookList
+    }
+    this.setState(() => {
+      return { workspaceElements: oldList }
+    })
+  }
 
   render() {
     return (
@@ -104,6 +137,8 @@ class WorkspaceProvider extends Component {
           handleDetail: this.handleDetail,
           addNewSpace: this.addNewSpace,
           handleDetailSpace: this.handleDetailSpace,
+          addBook: this.addBook,
+          deleteBook: this.deleteBook,
         }}
       >
         {this.props.children}

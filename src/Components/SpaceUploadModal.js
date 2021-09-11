@@ -7,7 +7,6 @@ import { WorkspaceConsumer } from '../Context'
 export default function SpaceUploadModal() {
   const param = useParams()
   const location = useLocation()
-  console.log(location)
   const history = useHistory()
   const [thumbnail, setThumbnail] = useState()
   const [preview, setPreview] = useState()
@@ -86,7 +85,6 @@ export default function SpaceUploadModal() {
               }}
               onSubmit={(e) => {
                 e.preventDefault()
-                console.log({ ...location.state, image: preview })
                 value.addNewSpace({ ...location.state.space, image: preview })
                 history.push(`/workspace/${param.id}/details`)
               }}
@@ -137,7 +135,7 @@ export default function SpaceUploadModal() {
                   hidden
                   onChange={(e) => setThumbnail(e.target.files[0])}
                 />
-                <label for='thumbnail'>
+                <label htmlFor='thumbnail'>
                   <span
                     className='custom-thumbnail-btn'
                     style={{
