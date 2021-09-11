@@ -86,6 +86,7 @@ export default function LibraryPage() {
                       }
                     })
                   }
+                  return
                 })
               }}
             </WorkspaceConsumer>
@@ -154,6 +155,7 @@ export default function LibraryPage() {
                       }
                     })
                   }
+                  return
                 })
               }}
             </WorkspaceConsumer>
