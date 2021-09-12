@@ -88,9 +88,10 @@ export default function WorkspacePage() {
                         </Link>
                         <div className='workspace-options'>
                           <Link to={`/workspace/${id}/edit`}>
-                            <FiEdit />
+                            <FiEdit className='edit-btn' />
                           </Link>
                           <RiDeleteBin6Line
+                            className='delete-btn'
                             onClick={(e) => {
                               value.deleteWorkspace(id)
                             }}
@@ -119,17 +120,16 @@ const WorkspaceWrapper = styled.section`
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 30px;
+    gap: 20px;
   }
   .workspace-title-container {
     display: flex;
     flex-direction: column;
-
-    padding: 20px 100px;
+    padding: 10px 100px;
     padding-top: 0;
   }
   .workspace-title-container .title {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     display: flex;
     justify-content: space-between;
     width: 100%;
@@ -170,13 +170,13 @@ const WorkspaceWrapper = styled.section`
     justify-content: flex-end;
     align-items: flex-start;
     padding: 0px 100px;
-    margin-top: -20px;
+    margin-top: -15px;
   }
   .grid-workspace-container,
   .list-workspace-container {
     width: 100%;
     padding: 0px 100px;
-    gap: 35px;
+    gap: 12px;
   }
   .grid-workspace-container {
     display: grid;
@@ -187,13 +187,13 @@ const WorkspaceWrapper = styled.section`
     flex-direction: column;
   }
   .list-card {
-    height: 96px;
+    height: 75px;
     width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
     background: #f2f4f8;
-    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);
     padding: 20px 40px 20px 15px;
     border-radius: 10px;
   }
@@ -203,7 +203,7 @@ const WorkspaceWrapper = styled.section`
     gap: 10px;
   }
   .thumbnail {
-    height: 65px;
+    height: 55px;
     width: 100px;
     background: #c4c4c4;
     border-radius: 6px;
@@ -215,7 +215,7 @@ const WorkspaceWrapper = styled.section`
     object-fit: cover;
   }
   .workspace-title {
-    font-size: 25px;
+    font-size: 20px;
     font-weight: 500;
     font-family: 'IBM Plex Sans', sans-serif;
     color: black;
@@ -225,6 +225,14 @@ const WorkspaceWrapper = styled.section`
     gap: 25px;
     font-size: 18px;
     color: #c4c4c4;
+  }
+  .workspace-options .edit-btn:hover {
+    color: #65e665;
+    font-size: 20px;
+  }
+  .workspace-options .delete-btn:hover {
+    color: #f54848;
+    font-size: 20px;
   }
   .workspace-options a {
     color: #c4c4c4;
