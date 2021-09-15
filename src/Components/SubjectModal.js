@@ -5,17 +5,22 @@ import { AiOutlineClose, AiOutlinePlus } from 'react-icons/ai'
 import { WorkspaceConsumer } from '../Context'
 import { FaCheckCircle, FaUpload } from 'react-icons/fa'
 
-export default (props) => {
+export default function SubjectModal(props) {
   return (
     <WorkspaceConsumer>
       {(value) => {
-        return <SubjectModal value={value} {...props}></SubjectModal>
+        return (
+          <SubjectModalComponent
+            value={value}
+            {...props}
+          ></SubjectModalComponent>
+        )
       }}
     </WorkspaceConsumer>
   )
 }
 
-function SubjectModal(props) {
+function SubjectModalComponent(props) {
   const { isEditing, value } = props
 
   const [selectedSubject, setSelectedSubject] = useState()
@@ -87,7 +92,7 @@ function SubjectModal(props) {
       setPdfList(editSelectedSubject.pdflist)
       setTimetableList(editSelectedSubject.timetable)
     }
-  }, [])
+  })
 
   useEffect(() => {
     if (pdfList) {

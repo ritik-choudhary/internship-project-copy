@@ -131,6 +131,7 @@ export default function NewSemesterPage() {
                       )
                     })
                   }
+                  return <></>
                 })
               }}
             </WorkspaceConsumer>
