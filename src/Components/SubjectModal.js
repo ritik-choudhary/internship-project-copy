@@ -92,7 +92,13 @@ function SubjectModalComponent(props) {
       setPdfList(editSelectedSubject.pdflist)
       setTimetableList(editSelectedSubject.timetable)
     }
-  })
+  }, [
+    isEditing,
+    value.workspaceElements,
+    param.spaceKey,
+    param.id,
+    param.subjectID,
+  ])
 
   useEffect(() => {
     if (pdfList) {
@@ -106,7 +112,7 @@ function SubjectModalComponent(props) {
     } else {
       setPdfPreview(null)
     }
-  }, [pdfList])
+  }, [pdfList, pdfPreview])
 
   return (
     <Modal
