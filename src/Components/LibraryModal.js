@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Modal from 'react-modal'
 import { AiOutlineClose } from 'react-icons/ai'
+import { FaCheckCircle } from 'react-icons/fa'
 import { useParams, Link, useHistory } from 'react-router-dom'
 import { WorkspaceConsumer } from '../Context'
 
@@ -216,6 +217,18 @@ export default function LibraryModal(props) {
                     </p>
                   </div>
                 </label>
+                <div
+                  style={{
+                    color: 'green',
+                    display: 'flex',
+                    alignItems: 'center',
+                    fontSize: '16px',
+                    gap: '10px',
+                  }}
+                >
+                  {pdf ? 'File selected' : ''}
+                  {pdf ? <FaCheckCircle /> : null}
+                </div>
               </div>
               <div
                 style={{

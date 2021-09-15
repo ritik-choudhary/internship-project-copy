@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import Sidebar from '../Components/Sidebar'
-import Header from '../Components/Header'
 import styled from 'styled-components'
 import { BsFillGridFill } from 'react-icons/bs'
 import { FaList } from 'react-icons/fa'
@@ -9,6 +8,7 @@ import { WorkspaceConsumer } from '../Context'
 import { FiEdit } from 'react-icons/fi'
 import { RiDeleteBin6Line } from 'react-icons/ri'
 import WorkspaceModal from '../Components/WorkspaceModal'
+import { RiArrowGoBackFill } from 'react-icons/ri'
 
 import { Link, Route, Switch } from 'react-router-dom'
 
@@ -29,7 +29,13 @@ export default function WorkspacePage() {
         <div className='workspace'>
           <Sidebar />
           <div className='page-content'>
-            <Header />
+            <div className='workspace-header'>
+              <Link to='/'>
+                <div className='workspace-back-btn'>
+                  <RiArrowGoBackFill /> Back
+                </div>
+              </Link>
+            </div>
             <header className='workspace-title-container'>
               <div className='title'>
                 <h3 style={{ fontSize: '25px' }}>My Workspaces</h3>
@@ -112,7 +118,7 @@ export default function WorkspacePage() {
 
 const WorkspaceWrapper = styled.section`
   .workspace {
-    font-family: 'IBM Plex Sans', sans-serif;
+    font-family: 'Open Sans', sans-serif;
     min-height: 100vh;
     display: flex;
   }
@@ -122,10 +128,37 @@ const WorkspaceWrapper = styled.section`
     flex-direction: column;
     gap: 20px;
   }
+  .workspace-header {
+    padding: 10px 150px;
+    padding-bottom: 0;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+  .workspace-back-btn {
+    padding: 10px 20px;
+    background: #0e1f3e;
+    color: white;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    font-weight: 400;
+    position: relative;
+    overflow: hidden;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .workspace-back-btn:hover {
+    transform: scale(1.05);
+  }
   .workspace-title-container {
     display: flex;
     flex-direction: column;
-    padding: 10px 100px;
+    padding: 10px 150px;
     padding-top: 0;
   }
   .workspace-title-container .title {
@@ -169,18 +202,18 @@ const WorkspaceWrapper = styled.section`
     display: flex;
     justify-content: flex-end;
     align-items: flex-start;
-    padding: 0px 100px;
+    padding: 0px 150px;
     margin-top: -15px;
   }
   .grid-workspace-container,
   .list-workspace-container {
     width: 100%;
-    padding: 0px 100px;
+    padding: 0px 150px;
     gap: 12px;
   }
   .grid-workspace-container {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(5, 1fr);
   }
   .list-workspace-container {
     display: flex;
@@ -216,8 +249,8 @@ const WorkspaceWrapper = styled.section`
   }
   .workspace-title {
     font-size: 20px;
-    font-weight: 500;
-    font-family: 'IBM Plex Sans', sans-serif;
+    font-weight: 600;
+    font-family: 'Open Sans', sans-serif;
     color: black;
   }
   .workspace-options {
@@ -226,8 +259,14 @@ const WorkspaceWrapper = styled.section`
     font-size: 18px;
     color: #c4c4c4;
   }
+  .grid-card .workspace-options {
+    display: none;
+  }
+  .grid-card:hover .workspace-options {
+    display: flex;
+  }
   .workspace-options .edit-btn:hover {
-    color: #65e665;
+    color: #3e77f1;
     font-size: 20px;
   }
   .workspace-options .delete-btn:hover {
@@ -244,11 +283,10 @@ const WorkspaceWrapper = styled.section`
     flex-direction: column;
   }
   .grid-card {
-    gap: 40px;
+    gap: 5px;
     height: 212px;
     padding: 20px;
     background: #f2f4f8;
-    // border: 1px solid #468aef;
     box-sizing: border-box;
     border-radius: 10px;
     display: flex;
@@ -256,8 +294,8 @@ const WorkspaceWrapper = styled.section`
     align-items: center;
   }
   .grid-card .thumbnail {
-    height: 70px;
-    width: 240px;
+    height: 120px;
+    width: 100%;
   }
   .grid-card:hover,
   .list-card:hover {

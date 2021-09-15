@@ -3,6 +3,7 @@ import Modal from 'react-modal'
 import { AiOutlineClose } from 'react-icons/ai'
 import { Link, useParams, useHistory, useLocation } from 'react-router-dom'
 import { WorkspaceConsumer } from '../Context'
+import { FaCheckCircle } from 'react-icons/fa'
 
 export default function SpaceUploadModal() {
   const param = useParams()
@@ -156,6 +157,18 @@ export default function SpaceUploadModal() {
                     Upload image
                   </span>
                 </label>
+                <div
+                  style={{
+                    color: 'green',
+                    display: 'flex',
+                    alignItems: 'center',
+                    fontSize: '16px',
+                    gap: '10px',
+                  }}
+                >
+                  {thumbnail ? 'File selected' : ''}
+                  {thumbnail ? <FaCheckCircle /> : null}
+                </div>
               </div>
               <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
                 <Link to={`/workspace/${param.id}/details/createspace`}>

@@ -2,7 +2,7 @@ import React from 'react'
 import { WorkspaceConsumer } from '../Context'
 import { AiOutlinePlus } from 'react-icons/ai'
 import Sidebar from '../Components/Sidebar'
-import Header from '../Components/Header'
+import { RiArrowGoBackFill } from 'react-icons/ri'
 import styled from 'styled-components'
 import { useParams, Route, Link, Switch } from 'react-router-dom'
 import SpaceModal from '../Components/SpaceModal'
@@ -41,14 +41,20 @@ const DetailPageComponent = () => {
     <div className='details-page'>
       <Sidebar />
       <div className='page-container'>
-        <Header />
+        <div className='details-header'>
+          <Link to='/workspace'>
+            <div className='details-back-btn'>
+              <RiArrowGoBackFill /> Back
+            </div>
+          </Link>
+        </div>
         <header className='workspace-title-container'>
           <div className='title'>
             <WorkspaceConsumer>
               {(value) => {
                 const subtitle = value.detailWorkspace.title
                 return (
-                  <div style={{ fontSize: '25px', fontWeight: '500' }}>
+                  <div style={{ fontSize: '20px', fontWeight: '600' }}>
                     <h3 style={{ color: '#c4c4c4' }}>{'My Workspaces > '}</h3>
                     <h3> {subtitle}</h3>
                   </div>
@@ -77,7 +83,7 @@ const DetailPageComponent = () => {
                 style={{
                   color: '#468AEF',
                   fontSize: '16px',
-                  fontWeight: '500',
+                  fontWeight: '400',
                 }}
               >
                 Add New
@@ -125,7 +131,7 @@ const DetailPageComponent = () => {
 
 const WorkspaceContentWrapper = styled.section`
   .details-page {
-    font-family: 'IBM Plex Sans', sans-serif;
+    font-family: 'Open Sans', sans-serif;
     min-height: 100vh;
     display: flex;
   }
@@ -133,21 +139,46 @@ const WorkspaceContentWrapper = styled.section`
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 30px;
+    gap: 10px;
+  }
+  .details-header {
+    padding: 10px 150px;
+    padding-bottom: 0;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+  .details-back-btn {
+    padding: 10px 20px;
+    background: #0e1f3e;
+    color: white;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    font-weight: 400;
+    position: relative;
+    overflow: hidden;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .details-back-btn:hover {
+    transform: scale(1.05);
   }
   .workspace-title-container {
     display: flex;
     flex-direction: column;
-
-    padding: 20px 100px;
+    padding: 20px 150px;
     padding-top: 0;
   }
   .workspace-title-container .title {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     display: flex;
     justify-content: space-between;
     width: 100%;
-    font-size: 20px;
     font-weight: 400;
   }
   .workspace-title-container .title div {
@@ -162,16 +193,16 @@ const WorkspaceContentWrapper = styled.section`
 
   .grid-workspace-container {
     width: 100%;
-    padding: 0px 100px;
+    padding: 0px 150px;
     gap: 35px;
   }
   .grid-workspace-container {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(6, 1fr);
   }
 
   .grid-card {
-    height: 212px;
+    height: 160px;
     background: #f2f4f8;
     border-radius: 10px;
     display: flex;
@@ -190,18 +221,22 @@ const WorkspaceContentWrapper = styled.section`
   .card-image-container {
     width: 100%;
     height: 100%;
+    background: linear-gradient(to bottom, white, black);
   }
   .card-image-container img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    opacity: 0.5;
   }
   .space-title {
     position: absolute;
     bottom: 20px;
     left: 20px;
     font-size: 16px;
-    font-weight: 500;
+    font-weight: 600;
+    color: white;
+    padding-right: 10px;
   }
 
   .grid-card:hover {

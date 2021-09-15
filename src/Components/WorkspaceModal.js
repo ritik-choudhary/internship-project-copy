@@ -3,6 +3,7 @@ import Modal from 'react-modal'
 import { AiOutlineClose } from 'react-icons/ai'
 import { WorkspaceConsumer } from '../Context'
 import { useParams, Link, useHistory } from 'react-router-dom'
+import { FaCheckCircle } from 'react-icons/fa'
 
 export default function WorkspaceModal(props) {
   const { isEditing } = props
@@ -62,7 +63,7 @@ export default function WorkspaceModal(props) {
             fontWeight: '700',
           }}
         >
-          Add new workspace
+          {isEditing ? 'Edit workspace' : 'Add new workspace'}
         </h3>
         <Link to='/workspace'>
           <AiOutlineClose
@@ -112,9 +113,10 @@ export default function WorkspaceModal(props) {
                     marginBottom: '5px',
                   }}
                 >
-                  Name of the workspace
+                  {isEditing ? 'Set new Name' : 'Name of the workspace'}
                 </label>
                 <input
+                  autoFocus
                   type='text'
                   name='workspace'
                   id='name'
@@ -139,7 +141,7 @@ export default function WorkspaceModal(props) {
                     marginBottom: '5px',
                   }}
                 >
-                  Thumbnail image
+                  {isEditing ? 'Set new thumbnail image' : 'Thumbnail image'}
                 </label>
 
                 <input
@@ -171,6 +173,18 @@ export default function WorkspaceModal(props) {
                     Upload image
                   </span>
                 </label>
+                <div
+                  style={{
+                    color: 'green',
+                    display: 'flex',
+                    alignItems: 'center',
+                    fontSize: '16px',
+                    gap: '10px',
+                  }}
+                >
+                  {workspaceThumbnail ? 'File selected' : ''}
+                  {workspaceThumbnail ? <FaCheckCircle /> : null}
+                </div>
               </div>
               <div
                 style={{

@@ -4,37 +4,10 @@ const WorkspaceContext = React.createContext()
 
 class WorkspaceProvider extends Component {
   state = {
-    workspaceList: [
-      {
-        id: '1',
-        title: 'College',
-        image:
-          'https://images.unsplash.com/photo-1562774053-701939374585?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=764&q=80',
-      },
-      {
-        id: '2',
-        title: 'Work',
-        image:
-          'https://images.unsplash.com/photo-1554415707-6e8cfc93fe23?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80',
-      },
-    ],
+    workspaceList: [],
     trash: [],
-    detailWorkspace: {
-      id: '2',
-      title: 'Work',
-      image:
-        'https://images.unsplash.com/photo-1554415707-6e8cfc93fe23?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80',
-    },
-    detailSpace: {
-      workspaceID: '1',
-      title: 'Library',
-      id: '1',
-      version: 1,
-      image:
-        'https://images.unsplash.com/photo-1549675584-91f19337af3d?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=752&q=80',
-      favouriteBooks: [],
-      bookShelf: [],
-    },
+    detailWorkspace: {},
+    detailSpace: {},
     workspaceElements: [],
   }
 
@@ -126,6 +99,36 @@ class WorkspaceProvider extends Component {
     })
   }
 
+  addNewSubject = (id, key, subject) => {
+    const oldList = [...this.state.workspaceElements]
+    let element = oldList.find(
+      (item) => item.id === key && item.workspaceID === id
+    )
+    element.subjects = element.subjects || []
+    element.subjects = [...element.subjects, subject]
+    this.setState(() => {
+      return { workspaceElements: oldList }
+    })
+  }
+
+  editSubject = (id, key, subject) => {
+    console.log('subject', subject)
+    const oldList = [...this.state.workspaceElements]
+    let element = oldList.find(
+      (item) => item.id === key && item.workspaceID === id
+    )
+    const subjectToEdit = element.subjects.find(
+      (item) => item.subjectID === subject.subjectID
+    )
+    const index = element.subjects.indexOf(subjectToEdit)
+    element.subjects[index] = { ...subject }
+
+    console.log('elemenet subjects', element.subjects)
+    this.setState(() => {
+      return { workspaceElements: oldList }
+    })
+  }
+
   render() {
     return (
       <WorkspaceContext.Provider
@@ -139,6 +142,8 @@ class WorkspaceProvider extends Component {
           handleDetailSpace: this.handleDetailSpace,
           addBook: this.addBook,
           deleteBook: this.deleteBook,
+          addNewSubject: this.addNewSubject,
+          editSubject: this.editSubject,
         }}
       >
         {this.props.children}

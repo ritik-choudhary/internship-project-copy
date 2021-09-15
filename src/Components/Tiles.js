@@ -73,7 +73,7 @@ export default function Tiles() {
                         id='complete-wireframing'
                       />
                       <label htmlFor='complete-wireframing'>
-                        Complete Wireframing
+                        Complete Wirefr...
                       </label>
                     </div>
                     <div className='single-option'>

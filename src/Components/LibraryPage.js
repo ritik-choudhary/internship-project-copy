@@ -56,9 +56,12 @@ export default function LibraryPage() {
                                   state: { favourite: true },
                                 }}
                               >
-                                <h4 style={{ color: 'white' }}>{name}</h4>
+                                <h4 style={{ color: 'white' }}>
+                                  {name.slice(0, 20)}
+                                </h4>
                               </Link>
                               <RiDeleteBin6Line
+                                className='book-delete-btn'
                                 onClick={(e) => {
                                   const favourite = true
                                   value.deleteBook(
@@ -74,14 +77,29 @@ export default function LibraryPage() {
                         )
                       } else {
                         return (
-                          <a href={singleBook.link}>
-                            <div className='book-card'>
-                              <div className='book-card-btns'>
-                                <h4>{name}</h4>
-                                <RiDeleteBin6Line />
-                              </div>
+                          <div className='book-card'>
+                            <div className='book-card-btns'>
+                              <a
+                                href={singleBook.link}
+                                target='_blank'
+                                rel='noreferrer noopener'
+                              >
+                                <h4>{singleBook.link.slice(8, 25)}</h4>
+                              </a>
+                              <RiDeleteBin6Line
+                                className='book-delete-btn'
+                                onClick={(e) => {
+                                  const favourite = true
+                                  value.deleteBook(
+                                    favourite,
+                                    singleBook.id,
+                                    param.id,
+                                    param.spaceKey
+                                  )
+                                }}
+                              />
                             </div>
-                          </a>
+                          </div>
                         )
                       }
                     })
@@ -125,9 +143,12 @@ export default function LibraryPage() {
                                   state: { favourite: false },
                                 }}
                               >
-                                <h4 style={{ color: 'white' }}>{name}</h4>
+                                <h4 style={{ color: 'white' }}>
+                                  {name.slice(0, 20)}
+                                </h4>
                               </Link>
                               <RiDeleteBin6Line
+                                className='book-delete-btn'
                                 onClick={(e) => {
                                   const favourite = false
                                   value.deleteBook(
@@ -145,10 +166,25 @@ export default function LibraryPage() {
                         return (
                           <div className='book-card'>
                             <div className='book-card-btns'>
-                              <a href={singleBook.link}>
-                                <h4>{name}</h4>
+                              <a
+                                href={singleBook.link}
+                                target='_blank'
+                                rel='noreferrer noopener'
+                              >
+                                <h4>{singleBook.link.slice(8, 25)}</h4>
                               </a>
-                              <RiDeleteBin6Line />
+                              <RiDeleteBin6Line
+                                className='book-delete-btn'
+                                onClick={(e) => {
+                                  const favourite = false
+                                  value.deleteBook(
+                                    favourite,
+                                    singleBook.id,
+                                    param.id,
+                                    param.spaceKey
+                                  )
+                                }}
+                              />
                             </div>
                           </div>
                         )
@@ -170,21 +206,20 @@ const LibraryPageWrapper = styled.section`
   .library-page {
     display: flex;
     flex-direction: column;
-    padding: 20px 100px;
+    padding: 10px 150px;
     padding-top: 0;
-    gap: 130px;
+    gap: 70px;
     width: 100%;
-    z-index: '9999999999999';
   }
   .top {
     display: flex;
     flex-direction: column;
-    gap: 32px;
+    gap: 10px;
   }
   .my-favourites,
   .book-shelf {
-    font-size: 30px;
-    font-weight: 700;
+    font-size: 25px;
+    font-weight: 600;
     color: #105eee;
   }
   .add-new {
@@ -206,8 +241,8 @@ const LibraryPageWrapper = styled.section`
   }
   .storage {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 30px;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 25px;
   }
   .book-card {
     display: flex;
@@ -231,5 +266,13 @@ const LibraryPageWrapper = styled.section`
     display: flex;
     justify-content: space-between;
     align-items: center;
+  }
+  .book-card a {
+    font-size: 15px;
+    color: white;
+  }
+  .book-delete-btn:hover {
+    color: #f54848;
+    font-size: 20px;
   }
 `

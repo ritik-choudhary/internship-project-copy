@@ -1,21 +1,27 @@
 import React from 'react'
 import { WorkspaceConsumer } from '../Context'
-
+import { RiArrowGoBackFill } from 'react-icons/ri'
 import Sidebar from '../Components/Sidebar'
-import Header from '../Components/Header'
 import styled from 'styled-components'
-// import { useParams } from 'react-router-dom'
+import { useParams, Link } from 'react-router-dom'
 import LibraryPage from '../Components/LibraryPage'
+import NewSemester from '../Components/NewSemesterPage'
 
 export default function SpaceContent() {
-  // const param = useParams()
+  const param = useParams()
   return (
     <>
       <SpaceContentWrapper>
         <div className='space-content-page'>
           <Sidebar />
           <div className='page-container'>
-            <Header />
+            <div className='space-content-header'>
+              <Link to={`/workspace/${param.id}/details`}>
+                <div className='space-content-back-btn'>
+                  <RiArrowGoBackFill /> Back
+                </div>
+              </Link>
+            </div>
             <header className='space-title-container'>
               <div className='title'>
                 <WorkspaceConsumer>
@@ -25,7 +31,7 @@ export default function SpaceContent() {
                       (item) => item.id === value.detailSpace.workspaceID
                     ).title
                     return (
-                      <div style={{ fontSize: '25px', fontWeight: '500' }}>
+                      <div style={{ fontSize: '20px', fontWeight: '400' }}>
                         <h3
                           style={{ color: '#c4c4c4' }}
                         >{`My Workspace > ${heading} > `}</h3>
@@ -43,6 +49,9 @@ export default function SpaceContent() {
                 if (page === 'Library') {
                   return <LibraryPage />
                 }
+                if (page === 'New Semester') {
+                  return <NewSemester />
+                }
               }}
             </WorkspaceConsumer>
           </div>
@@ -54,7 +63,7 @@ export default function SpaceContent() {
 
 const SpaceContentWrapper = styled.section`
   .space-content-page {
-    font-family: 'IBM Plex Sans', sans-serif;
+    font-family: 'Open Sans', sans-serif;
     min-height: 100vh;
     display: flex;
   }
@@ -65,16 +74,42 @@ const SpaceContentWrapper = styled.section`
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 30px;
+    gap: 10px;
+  }
+  .space-content-header {
+    padding: 10px 150px;
+    padding-bottom: 0;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+  .space-content-back-btn {
+    padding: 10px 20px;
+    background: #0e1f3e;
+    color: white;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    font-weight: 400;
+    position: relative;
+    overflow: hidden;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .space-content-back-btn:hover {
+    transform: scale(1.05);
   }
   .space-title-container {
     display: flex;
     flex-direction: column;
-    padding: 20px 100px;
-    padding-top: 0;
+    padding: 0px 150px;
   }
   .space-title-container .title {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     display: flex;
     justify-content: space-between;
     width: 100%;
