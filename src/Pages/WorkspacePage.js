@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import Sidebar from '../Components/Sidebar'
 import styled from 'styled-components'
 import { BsFillGridFill } from 'react-icons/bs'
-import { FaList } from 'react-icons/fa'
+import { FaList, FaBell } from 'react-icons/fa'
 import { AiOutlinePlus } from 'react-icons/ai'
 import { WorkspaceConsumer } from '../Context'
 import { FiEdit } from 'react-icons/fi'
@@ -30,11 +30,15 @@ export default function WorkspacePage() {
           <Sidebar />
           <div className='page-content'>
             <div className='workspace-header'>
-              <Link to='/'>
-                <div className='workspace-back-btn'>
-                  <RiArrowGoBackFill /> Back
-                </div>
-              </Link>
+              <h3>thesocialcomment</h3>
+              <div className='right-header'>
+                <FaBell className='bell-icon' />
+                <Link to='/'>
+                  <div className='workspace-back-btn'>
+                    <RiArrowGoBackFill /> Back
+                  </div>
+                </Link>
+              </div>
             </div>
             <header className='workspace-title-container'>
               <div className='title'>
@@ -89,7 +93,11 @@ export default function WorkspacePage() {
                             <div className='thumbnail'>
                               <img src={item.image} alt='thumbnail' />
                             </div>
-                            <h2 className='workspace-title'>{item.title}</h2>
+                            <h2 className='workspace-title'>
+                              {item.title.length > 14
+                                ? `${item.title.slice(0, 13)}...`
+                                : item.title}
+                            </h2>
                           </div>
                         </Link>
                         <div className='workspace-options'>
@@ -130,11 +138,23 @@ const WorkspaceWrapper = styled.section`
   }
   .workspace-header {
     padding: 10px 150px;
-    padding-bottom: 0;
     width: 100%;
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     align-items: center;
+    background: black;
+  }
+  .workspace-header h3 {
+    color: white;
+    margin-left: -130px;
+  }
+  .right-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .bell-icon {
+    color: #ffca10;
   }
   .workspace-back-btn {
     padding: 10px 20px;
@@ -213,7 +233,7 @@ const WorkspaceWrapper = styled.section`
   }
   .grid-workspace-container {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(4, 1fr);
   }
   .list-workspace-container {
     display: flex;
@@ -295,7 +315,7 @@ const WorkspaceWrapper = styled.section`
   }
   .grid-card .thumbnail {
     height: 120px;
-    width: 100%;
+    width: 214.03px;
   }
   .grid-card:hover,
   .list-card:hover {

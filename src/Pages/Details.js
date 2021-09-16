@@ -8,6 +8,7 @@ import { useParams, Route, Link, Switch } from 'react-router-dom'
 import SpaceModal from '../Components/SpaceModal'
 import SpaceUploadModal from '../Components/SpaceUploadModal'
 import SpaceContent from './SpaceContent'
+import { FaBell } from 'react-icons/fa'
 
 export default function Details() {
   return (
@@ -42,11 +43,15 @@ const DetailPageComponent = () => {
       <Sidebar />
       <div className='page-container'>
         <div className='details-header'>
-          <Link to='/workspace'>
-            <div className='details-back-btn'>
-              <RiArrowGoBackFill /> Back
-            </div>
-          </Link>
+          <h3>thesocialcomment</h3>
+          <div className='right-header'>
+            <FaBell className='bell-icon' />
+            <Link to='/workspace'>
+              <div className='details-back-btn'>
+                <RiArrowGoBackFill /> Back
+              </div>
+            </Link>
+          </div>
         </div>
         <header className='workspace-title-container'>
           <div className='title'>
@@ -102,12 +107,11 @@ const DetailPageComponent = () => {
                 }
                 const printable = num ? true : false
                 return (
-                  <>
+                  <div key={item.id}>
                     <Link to={`/workspace/${param.id}/details/${item.id}`}>
                       <div
                         className='grid-card'
                         onClick={(e) => value.handleDetailSpace(item.id)}
-                        key={item.id}
                       >
                         <div className='card-image-container'>
                           <img src={item.image} alt='' />
@@ -118,7 +122,7 @@ const DetailPageComponent = () => {
                         </p>
                       </div>
                     </Link>
-                  </>
+                  </div>
                 )
               })
             }}
@@ -143,11 +147,23 @@ const WorkspaceContentWrapper = styled.section`
   }
   .details-header {
     padding: 10px 150px;
-    padding-bottom: 0;
     width: 100%;
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     align-items: center;
+    background: black;
+  }
+  .details-header h3 {
+    color: white;
+    margin-left: -130px;
+  }
+  .right-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .bell-icon {
+    color: #ffca10;
   }
   .details-back-btn {
     padding: 10px 20px;
@@ -198,11 +214,11 @@ const WorkspaceContentWrapper = styled.section`
   }
   .grid-workspace-container {
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(4, 1fr);
   }
 
   .grid-card {
-    height: 160px;
+    height: 190px;
     background: #f2f4f8;
     border-radius: 10px;
     display: flex;

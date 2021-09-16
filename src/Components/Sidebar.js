@@ -30,7 +30,7 @@ export default function Sidebar() {
         <AiOutlineClose onClick={() => setIsSidebarOpen(false)} />
       </div>
       <div className='user'>
-        <div className='image-container'>
+        <div className='image-container' onClick={() => setIsSidebarOpen(true)}>
           <img src={Profile} alt='profile' />
         </div>
         <h3 className='username'>John Doe</h3>

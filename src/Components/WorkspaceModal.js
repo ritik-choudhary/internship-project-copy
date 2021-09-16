@@ -117,6 +117,7 @@ export default function WorkspaceModal(props) {
                 </label>
                 <input
                   autoFocus
+                  required
                   type='text'
                   name='workspace'
                   id='name'
@@ -125,7 +126,7 @@ export default function WorkspaceModal(props) {
                     height: '32px',
                     outline: 'none',
                     border: '1px solid #C4C4C4',
-                    fontSize: '20px',
+                    fontSize: '16px',
                     padding: '3px 8px',
                   }}
                   value={workspaceName}
@@ -152,7 +153,7 @@ export default function WorkspaceModal(props) {
                   hidden
                   onChange={(e) => setWorkspaceThumbnail(e.target.files[0])}
                 />
-                <label for='thumbnail'>
+                <label htmlFor='thumbnail'>
                   <span
                     className='custom-thumbnail-btn'
                     style={{

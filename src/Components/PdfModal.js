@@ -1,7 +1,7 @@
 import React from 'react'
 import Modal from 'react-modal'
 import { Link, useParams, useLocation, Switch, Route } from 'react-router-dom'
-import { AiFillCloseCircle } from 'react-icons/ai'
+import { AiFillCloseCircle, AiOutlineFullscreen } from 'react-icons/ai'
 import { WorkspaceConsumer } from '../Context'
 import { Viewer } from '@react-pdf-viewer/core'
 import { Worker } from '@react-pdf-viewer/core'
@@ -35,7 +35,7 @@ const PdfModalComponent = () => {
         content: {
           minHeight: '80vh',
           width: '493px',
-          top: '20%',
+          top: '23%',
           left: '50%',
           right: 'auto',
           marginRight: '-50%',
@@ -63,7 +63,7 @@ const PdfModalComponent = () => {
           gap: '20px',
           position: 'fixed',
           top: '-40px',
-          right: '0px',
+          right: '-33px',
           zIndex: '1',
         }}
       >
@@ -73,17 +73,15 @@ const PdfModalComponent = () => {
             state: { data: data },
           }}
         >
-          <h3
+          <AiOutlineFullscreen
             style={{
-              fontSize: '20px',
+              fontSize: '25px',
               fontWeight: '500',
-              textDecoration: 'underline',
               color: 'black',
               cursor: 'pointer',
+              color: '#105eee',
             }}
-          >
-            Open in full page
-          </h3>
+          />
         </Link>
         <Link to={`/workspace/${param.id}/details/${param.spaceKey}`}>
           <AiFillCloseCircle

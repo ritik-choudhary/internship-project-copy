@@ -5,12 +5,16 @@ import { Switch, Route, Link, useParams } from 'react-router-dom'
 import SubjectModal from './SubjectModal'
 import { WorkspaceConsumer } from '../Context'
 import { CgArrowsExpandUpRight } from 'react-icons/cg'
+import SubjectPdfModal from './SubjectPdfModal'
 
 export default function NewSemesterPage() {
   const param = useParams()
   return (
     <NewSemesterPageWrapper>
       <Switch>
+        <Route path='/workspace/:id/details/:spaceKey/editsubject/:subjectID/readsubjectpdf'>
+          <SubjectPdfModal />
+        </Route>
         <Route path='/workspace/:id/details/:spaceKey/editsubject/:subjectID'>
           <SubjectModal isEditing />
         </Route>
@@ -40,9 +44,12 @@ export default function NewSemesterPage() {
                 return displayItems.map((item) => {
                   if (item.subjects) {
                     return item.subjects.map((singleSubject) => {
-                      //   console.log('singelsubject', singleSubject)
+                      let count = 0
                       return (
-                        <div className='subject-card'>
+                        <div
+                          className='subject-card'
+                          key={singleSubject.subjectID}
+                        >
                           <div className='card-header'>
                             <div className='header-left'>
                               <p className='subject-code'>
@@ -65,6 +72,7 @@ export default function NewSemesterPage() {
                           <div className='card-content'>
                             {singleSubject.timetable.map((day) => {
                               if (day.Monday) {
+                                count++
                                 return (
                                   <div className='single-day'>
                                     <p className='day'>Monday</p>
@@ -73,8 +81,8 @@ export default function NewSemesterPage() {
                                     </p>
                                   </div>
                                 )
-                              }
-                              if (day.Tuesday) {
+                              } else if (day.Tuesday) {
+                                count++
                                 return (
                                   <div className='single-day'>
                                     <p className='day'>Tuesday</p>
@@ -83,8 +91,8 @@ export default function NewSemesterPage() {
                                     </p>
                                   </div>
                                 )
-                              }
-                              if (day.Wednesday) {
+                              } else if (day.Wednesday) {
+                                count++
                                 return (
                                   <div className='single-day'>
                                     <p className='day'>Wednesday</p>
@@ -93,8 +101,8 @@ export default function NewSemesterPage() {
                                     </p>
                                   </div>
                                 )
-                              }
-                              if (day.Thursday) {
+                              } else if (day.Thursday && count < 4) {
+                                count++
                                 return (
                                   <div className='single-day'>
                                     <p className='day'>Thursday</p>
@@ -103,8 +111,8 @@ export default function NewSemesterPage() {
                                     </p>
                                   </div>
                                 )
-                              }
-                              if (day.Friday) {
+                              } else if (day.Friday && count < 4) {
+                                count++
                                 return (
                                   <div className='single-day'>
                                     <p className='day'>Friday</p>
@@ -113,8 +121,8 @@ export default function NewSemesterPage() {
                                     </p>
                                   </div>
                                 )
-                              }
-                              if (day.Saturday) {
+                              } else if (day.Saturday && count < 4) {
+                                count++
                                 return (
                                   <div className='single-day'>
                                     <p className='day'>Saturday</p>
@@ -124,14 +132,35 @@ export default function NewSemesterPage() {
                                   </div>
                                 )
                               }
-                              return <></>
+
+                              return (
+                                <React.Fragment
+                                  key={Math.floor(Math.random() * 100000)}
+                                ></React.Fragment>
+                              )
                             })}
+                            <div className='see-more-option'>
+                              {count >= 4 ? (
+                                <Link
+                                  to={`/workspace/${param.id}/details/${param.spaceKey}/editsubject/${singleSubject.subjectID}`}
+                                >
+                                  <p
+                                    style={{
+                                      color: '#468aef',
+                                      fontSize: '12px',
+                                    }}
+                                  >
+                                    see more
+                                  </p>
+                                </Link>
+                              ) : null}
+                            </div>
                           </div>
                         </div>
                       )
                     })
                   }
-                  return <></>
+                  return <div key={Math.floor(Math.random() * 100000)}></div>
                 })
               }}
             </WorkspaceConsumer>
@@ -184,14 +213,14 @@ const NewSemesterPageWrapper = styled.section`
   }
   .storage {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 25px;
   }
   .subject-card {
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 30px;
+    gap: 10px;
     padding: 10px 25px;
     height: 190px;
     background: #f2f4f8;
@@ -228,19 +257,24 @@ const NewSemesterPageWrapper = styled.section`
   .single-day {
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 30px;
   }
   .day {
     height: 22px;
     width: 120px;
     font-size: 14px;
-    font-weight: 600;
+    font-weight: 400;
     background: #fff;
     text-align: center;
     border-radius: 3px;
+    color: #9cc4e8;
   }
   .timing {
     font-size: 12px;
     white-space: nowrap;
+  }
+  .see-more-option {
+    display: flex;
+    justify-content: center;
   }
 `

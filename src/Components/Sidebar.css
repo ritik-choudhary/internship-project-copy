@@ -58,6 +58,7 @@
   background: #c4c4c4;
   margin: 0 auto;
   overflow: hidden;
+  cursor: pointer;
 }
 
 .image-container img {

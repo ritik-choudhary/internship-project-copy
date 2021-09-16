@@ -166,7 +166,7 @@ export default function LibraryModal(props) {
                     height: '32px',
                     border: '1px solid #C4C4C4',
                     borderRadius: '5px',
-                    fontSize: '20px',
+                    fontSize: '16px',
                     padding: '5px 10px',
                     outline: 'none',
                   }}

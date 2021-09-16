@@ -6,6 +6,7 @@ import styled from 'styled-components'
 import { useParams, Link } from 'react-router-dom'
 import LibraryPage from '../Components/LibraryPage'
 import NewSemester from '../Components/NewSemesterPage'
+import { FaBell } from 'react-icons/fa'
 
 export default function SpaceContent() {
   const param = useParams()
@@ -16,11 +17,15 @@ export default function SpaceContent() {
           <Sidebar />
           <div className='page-container'>
             <div className='space-content-header'>
-              <Link to={`/workspace/${param.id}/details`}>
-                <div className='space-content-back-btn'>
-                  <RiArrowGoBackFill /> Back
-                </div>
-              </Link>
+              <h3>thesocialcomment</h3>
+              <div className='right-header'>
+                <FaBell className='bell-icon' />
+                <Link to={`/workspace/${param.id}/details`}>
+                  <div className='space-content-back-btn'>
+                    <RiArrowGoBackFill /> Back
+                  </div>
+                </Link>
+              </div>
             </div>
             <header className='space-title-container'>
               <div className='title'>
@@ -78,11 +83,23 @@ const SpaceContentWrapper = styled.section`
   }
   .space-content-header {
     padding: 10px 150px;
-    padding-bottom: 0;
     width: 100%;
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     align-items: center;
+    background: black;
+  }
+  .space-content-header h3 {
+    color: white;
+    margin-left: -130px;
+  }
+  .right-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .bell-icon {
+    color: #ffca10;
   }
   .space-content-back-btn {
     padding: 10px 20px;

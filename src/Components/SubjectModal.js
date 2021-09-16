@@ -27,9 +27,9 @@ function SubjectModalComponent(props) {
 
   const param = useParams()
   const history = useHistory()
-  const [courseName, setCourseName] = useState()
-  const [courseCode, setCourseCode] = useState()
-  const [teacher, setTeacher] = useState()
+  const [courseName, setCourseName] = useState('')
+  const [courseCode, setCourseCode] = useState('')
+  const [teacher, setTeacher] = useState('')
   const [pdfList, setPdfList] = useState([])
   const [linkList, setLinkList] = useState([])
 
@@ -38,12 +38,12 @@ function SubjectModalComponent(props) {
   const [pdfPreview, setPdfPreview] = useState([])
 
   const [timetableList, setTimetableList] = useState([
-    { Monday: false, startTime: null, endTime: null },
-    { Tuesday: false, startTime: null, endTime: null },
-    { Wednesday: false, startTime: null, endTime: null },
-    { Thursday: false, startTime: null, endTime: null },
-    { Friday: false, startTime: null, endTime: null },
-    { Saturday: false, startTime: null, endTime: null },
+    { Monday: false, startTime: undefined, endTime: undefined },
+    { Tuesday: false, startTime: undefined, endTime: undefined },
+    { Wednesday: false, startTime: undefined, endTime: undefined },
+    { Thursday: false, startTime: undefined, endTime: undefined },
+    { Friday: false, startTime: undefined, endTime: undefined },
+    { Saturday: false, startTime: undefined, endTime: undefined },
   ])
 
   const changeTimeTableDay = (day, index) => {
@@ -85,12 +85,13 @@ function SubjectModalComponent(props) {
       )
 
       setSelectedSubject(editSelectedSubject)
-      setCourseName(editSelectedSubject.name)
-      setCourseCode(editSelectedSubject.code)
-      setTeacher(editSelectedSubject.teacher)
-      setLinkList(editSelectedSubject.linklist)
-      setPdfList(editSelectedSubject.pdflist)
-      setTimetableList(editSelectedSubject.timetable)
+      setCourseName(editSelectedSubject?.name)
+      setCourseCode(editSelectedSubject?.code)
+      setTeacher(editSelectedSubject?.teacher)
+      setLinkList(editSelectedSubject?.linklist)
+      setPdfList(editSelectedSubject?.pdflist)
+      setTimetableList(editSelectedSubject?.timetable)
+      // setPdfPreview(editSelectedSubject?.pdfPreviews)
     }
   }, [
     isEditing,
@@ -102,17 +103,21 @@ function SubjectModalComponent(props) {
 
   useEffect(() => {
     if (pdfList) {
+      setPdfPreview([])
       pdfList.forEach((pdf) => {
         const reader = new FileReader()
         reader.onloadend = () => {
-          setPdfPreview([...pdfPreview, reader.result])
+          setPdfPreview((pdfPreview) => [
+            ...pdfPreview,
+            { previewId: pdf.pdfId, source: reader.result },
+          ])
         }
-        reader.readAsDataURL(pdf)
+        reader.readAsDataURL(pdf.pdfFile)
       })
     } else {
-      setPdfPreview(null)
+      setPdfPreview([])
     }
-  }, [pdfList, pdfPreview])
+  }, [pdfList])
 
   return (
     <Modal
@@ -228,6 +233,7 @@ function SubjectModalComponent(props) {
             </label>
             <input
               autoFocus
+              required
               type='text'
               name='course-name'
               id='course-name'
@@ -239,7 +245,7 @@ function SubjectModalComponent(props) {
                 height: '32px',
                 border: '1px solid #C4C4C4',
                 borderRadius: '5px',
-                fontSize: '20px',
+                fontSize: '16px',
                 padding: '5px 10px',
                 outline: 'none',
               }}
@@ -263,6 +269,7 @@ function SubjectModalComponent(props) {
               Course code
             </label>
             <input
+              required
               type='text'
               name='course-code'
               id='course-code'
@@ -274,7 +281,7 @@ function SubjectModalComponent(props) {
                 height: '32px',
                 border: '1px solid #C4C4C4',
                 borderRadius: '5px',
-                fontSize: '20px',
+                fontSize: '16px',
                 padding: '5px 10px',
                 outline: 'none',
               }}
@@ -309,7 +316,7 @@ function SubjectModalComponent(props) {
                 height: '32px',
                 border: '1px solid #C4C4C4',
                 borderRadius: '5px',
-                fontSize: '20px',
+                fontSize: '16px',
                 padding: '5px 10px',
                 outline: 'none',
               }}
@@ -355,7 +362,13 @@ function SubjectModalComponent(props) {
               hidden
               accept='.pdf'
               onChange={(e) => {
-                setPdfList([...pdfList, e.target.files[0]])
+                setPdfList([
+                  ...pdfList,
+                  {
+                    pdfId: new Date().getTime().toString(),
+                    pdfFile: e.target.files[0],
+                  },
+                ])
               }}
             />
             <label htmlFor='pdf-upload'>
@@ -409,7 +422,23 @@ function SubjectModalComponent(props) {
               }}
             >
               {pdfList.map((pdf) => {
-                return <div className='pdf-file'>{pdf.name}</div>
+                const linkToPdf = pdfPreview.find(
+                  (item) => item.previewId === pdf.pdfId
+                )
+                return (
+                  <Link
+                    to={{
+                      pathname: `/workspace/${param.id}/details/${param.spaceKey}/editsubject/${param.subjectID}/readsubjectpdf`,
+                      state: { src: linkToPdf?.source },
+                    }}
+                  >
+                    <div className='pdf-file'>
+                      {pdf.pdfFile.name.length > 15
+                        ? `${pdf.pdfFile.name.slice(0, 15)}...`
+                        : pdf.pdfFile.name}
+                    </div>
+                  </Link>
+                )
               })}
             </div>
           </div>
@@ -457,7 +486,7 @@ function SubjectModalComponent(props) {
                 height: '32px',
                 border: '1px solid #C4C4C4',
                 borderRadius: '5px',
-                fontSize: '20px',
+                fontSize: '16px',
                 padding: '5px 10px',
                 outline: 'none',
               }}

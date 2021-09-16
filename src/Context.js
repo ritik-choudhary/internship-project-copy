@@ -112,7 +112,6 @@ class WorkspaceProvider extends Component {
   }
 
   editSubject = (id, key, subject) => {
-    console.log('subject', subject)
     const oldList = [...this.state.workspaceElements]
     let element = oldList.find(
       (item) => item.id === key && item.workspaceID === id
@@ -123,7 +122,6 @@ class WorkspaceProvider extends Component {
     const index = element.subjects.indexOf(subjectToEdit)
     element.subjects[index] = { ...subject }
 
-    console.log('elemenet subjects', element.subjects)
     this.setState(() => {
       return { workspaceElements: oldList }
     })
