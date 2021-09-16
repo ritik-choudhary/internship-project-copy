@@ -75,7 +75,7 @@ const SubjectPdfModalComponent = () => {
             style={{
               fontSize: '25px',
               fontWeight: '500',
-              color: 'black',
+              color: '#105eee',
               cursor: 'pointer',
             }}
           />

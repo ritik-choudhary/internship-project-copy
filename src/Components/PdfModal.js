@@ -77,7 +77,6 @@ const PdfModalComponent = () => {
             style={{
               fontSize: '25px',
               fontWeight: '500',
-              color: 'black',
               cursor: 'pointer',
               color: '#105eee',
             }}
