@@ -6,6 +6,7 @@ import styled from 'styled-components'
 import { useParams, Link } from 'react-router-dom'
 import LibraryPage from '../Components/LibraryPage'
 import NewSemester from '../Components/NewSemesterPage'
+import CollegeClubs from '../Components/CollegeClubs'
 import { FaBell } from 'react-icons/fa'
 
 export default function SpaceContent() {
@@ -37,9 +38,11 @@ export default function SpaceContent() {
                     ).title
                     return (
                       <div style={{ fontSize: '20px', fontWeight: '400' }}>
-                        <h3
-                          style={{ color: '#c4c4c4' }}
-                        >{`My Workspace > ${heading} > `}</h3>
+                        <h3 style={{ color: '#c4c4c4' }}>{`My Workspace > ${
+                          heading.length > 15
+                            ? `${heading.slice(0, 15)}...`
+                            : heading
+                        } > `}</h3>
                         <h3> {subheading}</h3>
                       </div>
                     )
@@ -56,6 +59,9 @@ export default function SpaceContent() {
                 }
                 if (page === 'New Semester') {
                   return <NewSemester />
+                }
+                if (page === 'College Clubs') {
+                  return <CollegeClubs />
                 }
               }}
             </WorkspaceConsumer>
@@ -124,6 +130,7 @@ const SpaceContentWrapper = styled.section`
     display: flex;
     flex-direction: column;
     padding: 0px 150px;
+    padding-bottom: 20px;
   }
   .space-title-container .title {
     margin-bottom: 10px;

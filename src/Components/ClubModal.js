@@ -5,26 +5,25 @@ import { WorkspaceConsumer } from '../Context'
 import { useParams, Link, useHistory } from 'react-router-dom'
 import { FaCheckCircle } from 'react-icons/fa'
 
-export default function WorkspaceModal(props) {
-  const { isEditing } = props
-  const [workspaceName, setWorkspaceName] = useState('')
-  const [workspaceThumbnail, setWorkspaceThumbnail] = useState()
-  const [imageAddress, setImageAddress] = useState()
+export default function ClubModal() {
+  const [clubName, setClubName] = useState('')
+  const [thumbnail, setThumbnail] = useState()
+  const [preview, setPreview] = useState()
 
   const param = useParams()
   const history = useHistory()
 
   useEffect(() => {
-    if (workspaceThumbnail) {
+    if (thumbnail) {
       const reader = new FileReader()
       reader.onloadend = () => {
-        setImageAddress(reader.result)
+        setPreview(reader.result)
       }
-      reader.readAsDataURL(workspaceThumbnail)
+      reader.readAsDataURL(thumbnail)
     } else {
-      setImageAddress(null)
+      setPreview(null)
     }
-  }, [workspaceThumbnail])
+  }, [thumbnail])
 
   return (
     <Modal
@@ -63,9 +62,9 @@ export default function WorkspaceModal(props) {
             fontWeight: '700',
           }}
         >
-          {isEditing ? 'Edit workspace' : 'Add new workspace'}
+          Add new club
         </h3>
-        <Link to='/workspace'>
+        <Link to={`/workspace/${param.id}/details/${param.spaceKey}`}>
           <AiOutlineClose
             style={{
               fontSize: '20px',
@@ -88,24 +87,22 @@ export default function WorkspaceModal(props) {
               }}
               onSubmit={(e) => {
                 e.preventDefault()
-                if (workspaceName) {
-                  if (!isEditing) {
-                    const date = new Date()
-                    const day = date.getDate()
-                    const month = date.getMonth() + 1
-                    const year = date.getFullYear()
-                    value.addNewWorkspace({
-                      id: new Date().getTime().toString(),
-                      createdOn: `${day}/${month}/${year}`,
-                      title: workspaceName,
-                      image: imageAddress,
-                    })
-                    setWorkspaceName('')
-                  }
-                  if (isEditing) {
-                    value.editWorkspace(param.id, workspaceName, imageAddress)
-                  }
-                  history.push('/workspace/')
+                if (clubName) {
+                  const date = new Date()
+                  const day = date.getDate()
+                  const month = date.getMonth() + 1
+                  const year = date.getFullYear()
+                  value.addNewClub(param.id, param.spaceKey, {
+                    id: new Date().getTime().toString(),
+                    createdOn: `${day}/${month}/${year}`,
+                    title: clubName,
+                    image: preview,
+                  })
+                  setClubName('')
+
+                  history.push(
+                    `/workspace/${param.id}/details/${param.spaceKey}`
+                  )
                 }
               }}
             >
@@ -118,13 +115,13 @@ export default function WorkspaceModal(props) {
                     marginBottom: '5px',
                   }}
                 >
-                  {isEditing ? 'Set new Name' : 'Name of the workspace'}
+                  Name of the club
                 </label>
                 <input
                   autoFocus
                   required
                   type='text'
-                  name='workspace'
+                  name='club'
                   id='name'
                   style={{
                     borderRadius: '5px',
@@ -134,8 +131,8 @@ export default function WorkspaceModal(props) {
                     fontSize: '16px',
                     padding: '3px 8px',
                   }}
-                  value={workspaceName}
-                  onChange={(e) => setWorkspaceName(e.target.value)}
+                  value={clubName}
+                  onChange={(e) => setClubName(e.target.value)}
                 />
               </div>
               <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -147,16 +144,16 @@ export default function WorkspaceModal(props) {
                     marginBottom: '5px',
                   }}
                 >
-                  {isEditing ? 'Set new thumbnail image' : 'Thumbnail image'}
+                  Thumbnail image
                 </label>
 
                 <input
                   type='file'
-                  name='workspace'
+                  name='club'
                   id='thumbnail'
                   accept='image/*'
                   hidden
-                  onChange={(e) => setWorkspaceThumbnail(e.target.files[0])}
+                  onChange={(e) => setThumbnail(e.target.files[0])}
                 />
                 <label htmlFor='thumbnail'>
                   <span
@@ -165,7 +162,6 @@ export default function WorkspaceModal(props) {
                       background: 'none',
                       borderRadius: '5px',
                       border: '1px dashed #468AEF',
-
                       color: '#468AEF',
                       fontSize: '16px',
                       fontWeight: '500',
@@ -188,8 +184,8 @@ export default function WorkspaceModal(props) {
                     gap: '10px',
                   }}
                 >
-                  {workspaceThumbnail ? 'File selected' : ''}
-                  {workspaceThumbnail ? <FaCheckCircle /> : null}
+                  {thumbnail ? 'File selected' : ''}
+                  {thumbnail ? <FaCheckCircle /> : null}
                 </div>
               </div>
               <div
@@ -200,7 +196,7 @@ export default function WorkspaceModal(props) {
                   justifyContent: 'flex-end',
                 }}
               >
-                <Link to='/workspace'>
+                <Link to={`/workspace/${param.id}/details/${param.spaceKey}`}>
                   <button
                     style={{
                       color: '#FF0000',

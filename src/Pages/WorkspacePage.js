@@ -101,15 +101,20 @@ export default function WorkspacePage() {
                           </div>
                         </Link>
                         <div className='workspace-options'>
-                          <Link to={`/workspace/${id}/edit`}>
-                            <FiEdit className='edit-btn' />
-                          </Link>
-                          <RiDeleteBin6Line
-                            className='delete-btn'
-                            onClick={(e) => {
-                              value.deleteWorkspace(id)
-                            }}
-                          />
+                          <div className='created-on'>
+                            Created on: {item.createdOn}
+                          </div>
+                          <div className='options'>
+                            <Link to={`/workspace/${id}/edit`}>
+                              <FiEdit className='edit-btn' />
+                            </Link>
+                            <RiDeleteBin6Line
+                              className='delete-btn'
+                              onClick={(e) => {
+                                value.deleteWorkspace(id)
+                              }}
+                            />
+                          </div>
                         </div>
                       </div>
                     )
@@ -275,9 +280,19 @@ const WorkspaceWrapper = styled.section`
   }
   .workspace-options {
     display: flex;
-    gap: 25px;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
     font-size: 18px;
     color: #c4c4c4;
+  }
+  .options {
+    display: flex;
+    gap: 25px;
+  }
+  .created-on {
+    font-size: 12px;
+    color: #468aef;
   }
   .grid-card .workspace-options {
     display: none;
@@ -287,11 +302,9 @@ const WorkspaceWrapper = styled.section`
   }
   .workspace-options .edit-btn:hover {
     color: #3e77f1;
-    font-size: 20px;
   }
   .workspace-options .delete-btn:hover {
     color: #f54848;
-    font-size: 20px;
   }
   .workspace-options a {
     color: #c4c4c4;

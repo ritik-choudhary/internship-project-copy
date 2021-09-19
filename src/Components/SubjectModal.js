@@ -91,7 +91,6 @@ function SubjectModalComponent(props) {
       setLinkList(editSelectedSubject?.linklist)
       setPdfList(editSelectedSubject?.pdflist)
       setTimetableList(editSelectedSubject?.timetable)
-      // setPdfPreview(editSelectedSubject?.pdfPreviews)
     }
   }, [
     isEditing,

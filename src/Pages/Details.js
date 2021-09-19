@@ -61,7 +61,12 @@ const DetailPageComponent = () => {
                 return (
                   <div style={{ fontSize: '20px', fontWeight: '600' }}>
                     <h3 style={{ color: '#c4c4c4' }}>{'My Workspaces > '}</h3>
-                    <h3> {subtitle}</h3>
+                    <h3>
+                      {' '}
+                      {subtitle.length > 15
+                        ? `${subtitle.slice(0, 15)}...`
+                        : subtitle}
+                    </h3>
                   </div>
                 )
               }}

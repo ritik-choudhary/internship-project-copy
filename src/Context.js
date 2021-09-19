@@ -127,6 +127,133 @@ class WorkspaceProvider extends Component {
     })
   }
 
+  addNewClub = (id, key, club) => {
+    const oldList = [...this.state.workspaceElements]
+    let element = oldList.find(
+      (item) => item.id === key && item.workspaceID === id
+    )
+    element.clubs = element.clubs || []
+    element.clubs = [...element.clubs, club]
+    this.setState(() => {
+      return { workspaceElements: oldList }
+    })
+  }
+
+  deleteClub = (id, key, clubId) => {
+    const oldList = [...this.state.workspaceElements]
+    let element = oldList.find(
+      (item) => item.id === key && item.workspaceID === id
+    )
+    const newClubList = element.clubs.filter((item) => item.id !== clubId)
+    element.clubs = newClubList
+    this.setState(() => {
+      return { workspaceElements: oldList }
+    })
+  }
+
+  handleClubInfo = (id, key, clubId, info) => {
+    const oldList = [...this.state.workspaceElements]
+    let element = oldList.find(
+      (item) => item.id === key && item.workspaceID === id
+    )
+    let clubElement = element.clubs.find((item) => item.id === clubId)
+    console.log('club element', clubElement)
+    clubElement.basicInfo = clubElement.basicInfo || {}
+    clubElement.basicInfo = {
+      createdBy: info.createdBy,
+      members: info.members,
+      mission: info.mission,
+    }
+    this.setState(() => {
+      return { workspaceElements: oldList }
+    })
+  }
+
+  addNewResource = (id, key, clubId, resource) => {
+    const oldList = [...this.state.workspaceElements]
+    let element = oldList.find(
+      (item) => item.id === key && item.workspaceID === id
+    )
+    let clubElement = element.clubs.find((item) => item.id === clubId)
+    clubElement.resources = clubElement.resources || []
+    clubElement.resources = [...clubElement.resources, resource]
+    this.setState(() => {
+      return { workspaceElements: oldList }
+    })
+  }
+
+  addTask = (id, key, clubId, resourceId, task) => {
+    const oldList = [...this.state.workspaceElements]
+    let element = oldList.find(
+      (item) => item.id === key && item.workspaceID === id
+    )
+    let clubElement = element.clubs.find((item) => item.id === clubId)
+    let resourceElement = clubElement.resources.find(
+      (item) => item.id === resourceId
+    )
+    resourceElement.tasks = resourceElement.tasks || []
+    resourceElement.tasks = [...resourceElement.tasks, task]
+    this.setState(() => {
+      return { workspaceElements: oldList }
+    })
+  }
+
+  taskManipulation = (id, key, clubId, resourceId, taskId) => {
+    const oldList = [...this.state.workspaceElements]
+    let element = oldList.find(
+      (item) => item.id === key && item.workspaceID === id
+    )
+    let clubElement = element.clubs.find((item) => item.id === clubId)
+    let resourceElement = clubElement.resources.find(
+      (item) => item.id === resourceId
+    )
+    let taskElement = resourceElement.tasks.find((item) => item.id === taskId)
+    taskElement.completed = !taskElement.completed
+    this.setState(() => {
+      return { workspaceElements: oldList }
+    })
+  }
+
+  deleteTask = (id, key, clubId, resourceId, taskId) => {
+    const oldList = [...this.state.workspaceElements]
+    let element = oldList.find(
+      (item) => item.id === key && item.workspaceID === id
+    )
+    let clubElement = element.clubs.find((item) => item.id === clubId)
+    let resourceElement = clubElement.resources.find(
+      (item) => item.id === resourceId
+    )
+    const newTaskList = resourceElement.tasks.filter(
+      (item) => item.id !== taskId
+    )
+    resourceElement.tasks = newTaskList
+    this.setState(() => {
+      return { workspaceElements: oldList }
+    })
+  }
+
+  editTask = (id, key, clubId, resourceId, taskId, task) => {
+    const oldList = [...this.state.workspaceElements]
+    let element = oldList.find(
+      (item) => item.id === key && item.workspaceID === id
+    )
+    let clubElement = element.clubs.find((item) => item.id === clubId)
+    let resourceElement = clubElement.resources.find(
+      (item) => item.id === resourceId
+    )
+    let taskElement = resourceElement.tasks.find((item) => item.id === taskId)
+    const index = resourceElement.tasks.indexOf(taskElement)
+    const item = resourceElement.tasks[index]
+    item.title = task.title
+    item.createdOn = task.createdOn
+    item.dueDate = task.dueDate
+    item.description = task.description
+
+    this.setState(() => {
+      return { workspaceElements: oldList }
+    })
+  }
+
   render() {
     return (
       <WorkspaceContext.Provider
@@ -142,6 +269,14 @@ class WorkspaceProvider extends Component {
           deleteBook: this.deleteBook,
           addNewSubject: this.addNewSubject,
           editSubject: this.editSubject,
+          addNewClub: this.addNewClub,
+          deleteClub: this.deleteClub,
+          addNewResource: this.addNewResource,
+          handleClubInfo: this.handleClubInfo,
+          addTask: this.addTask,
+          taskManipulation: this.taskManipulation,
+          deleteTask: this.deleteTask,
+          editTask: this.editTask,
         }}
       >
         {this.props.children}
