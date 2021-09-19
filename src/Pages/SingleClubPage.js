@@ -55,7 +55,7 @@ function SingleClubPageComponent(props) {
       setMembers(club?.basicInfo?.members)
       setMission(club?.basicInfo?.mission)
     }
-  }, [])
+  }, [club])
 
   return (
     <div className='single-club-page'>
@@ -211,7 +211,7 @@ function SingleClubPageComponent(props) {
                         <CgNotes />
                       ) : item.title === 'Finance and Sponsorships' ? (
                         <FaMoneyCheck />
-                      ) : item.title == 'External contacts' ? (
+                      ) : item.title === 'External contacts' ? (
                         <FaPhone />
                       ) : null}
                       <p>{item.title}</p>

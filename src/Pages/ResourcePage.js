@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link, useParams, Switch, Route } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { WorkspaceConsumer } from '../Context'
 import { FaBell } from 'react-icons/fa'
 import { RiArrowGoBackFill } from 'react-icons/ri'
@@ -81,11 +81,11 @@ function ResourcePageComponent(props) {
           <Tasks />
         ) : resource.title === 'Ideas' ? (
           <Ideas />
-        ) : resource.title == 'Meeting Notes' ? (
+        ) : resource.title === 'Meeting Notes' ? (
           <MeetingNotes />
-        ) : resource.title == 'Finance and Sponsorships' ? (
+        ) : resource.title === 'Finance and Sponsorships' ? (
           <Finance />
-        ) : resource.title == 'External contacts' ? (
+        ) : resource.title === 'External contacts' ? (
           <Contacts />
         ) : null}
       </div>

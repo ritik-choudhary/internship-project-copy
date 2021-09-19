@@ -47,7 +47,15 @@ function TaskModalComponent(props) {
       setDuedate(selectedTask.dueDate)
       setDescription(selectedTask.description)
     }
-  }, [])
+  }, [
+    isEditing,
+    param.clubID,
+    param.id,
+    param.resourceID,
+    param.spaceKey,
+    param.taskID,
+    value.workspaceElements,
+  ])
 
   return (
     <Modal

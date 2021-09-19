@@ -242,12 +242,11 @@ class WorkspaceProvider extends Component {
       (item) => item.id === resourceId
     )
     let taskElement = resourceElement.tasks.find((item) => item.id === taskId)
-    const index = resourceElement.tasks.indexOf(taskElement)
-    const item = resourceElement.tasks[index]
-    item.title = task.title
-    item.createdOn = task.createdOn
-    item.dueDate = task.dueDate
-    item.description = task.description
+
+    taskElement.title = task.title
+    taskElement.createdOn = task.createdOn
+    taskElement.dueDate = task.dueDate
+    taskElement.description = task.description
 
     this.setState(() => {
       return { workspaceElements: oldList }

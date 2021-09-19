@@ -184,6 +184,10 @@ const TasksPageWrapper = styled.section`
     gap: 10px;
     color: #c4c4c4;
   }
+  .single-task .top .right a {
+    font-size: 16px;
+    color: #c4c4c4;
+  }
   .single-task .top .right .edit-btn:hover {
     cursor: pointer;
     color: #3e77f1;
