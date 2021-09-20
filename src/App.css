@@ -43,3 +43,65 @@ body {
   width: 16px;
   height: 16px;
 }
+
+.meeting-basic-info,
+.idea-basic-info {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px 15px 15px;
+  border: 1px solid #c4c4c4;
+  border-radius: 10px;
+
+  margin-bottom: 20px;
+}
+.finance-basic-info,
+.contact-basic-info {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 15px 15px;
+  border: none;
+}
+
+.meeting-basic-info .single-option,
+.idea-basic-info .single-option,
+.finance-basic-info .single-option,
+.contact-basic-info .single-option {
+  display: flex;
+  gap: 30px;
+}
+
+.meeting-basic-info .single-option label,
+.idea-basic-info .single-option label,
+.finance-basic-info .single-option label,
+.contact-basic-info .single-option label {
+  width: 100px;
+  color: #c4c4c4;
+  font-size: 16px;
+}
+
+.finance-basic-info .single-option label,
+.contact-basic-info .single-option label {
+  width: 150px;
+}
+
+.meeting-basic-info .single-option input,
+.idea-basic-info .single-option input,
+.finance-basic-info .single-option input,
+.contact-basic-info .single-option input {
+  border: none;
+  outline: none;
+  width: 200px;
+  height: 20px;
+  font-size: 16px;
+}
+
+.meeting-basic-info .single-option .skeleton,
+.idea-basic-info .single-option .skeleton,
+.finance-basic-info .single-option .skeleton,
+.contact-basic-info .single-option .skeleton {
+  background: #e4e4e4;
+  border-radius: 2px;
+}

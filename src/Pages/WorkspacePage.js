@@ -14,6 +14,8 @@ import { Link, Route, Switch } from 'react-router-dom'
 
 export default function WorkspacePage() {
   const [gridStyle, setGridStyle] = useState(false)
+  const defaultImage =
+    'https://1080motion.com/wp-content/uploads/2018/06/NoImageFound.jpg.png'
 
   return (
     <>
@@ -42,7 +44,9 @@ export default function WorkspacePage() {
             </div>
             <header className='workspace-title-container'>
               <div className='title'>
-                <h3 style={{ fontSize: '25px' }}>My Workspaces</h3>
+                <h3 style={{ fontSize: '20px', fontWeight: '600' }}>
+                  My Workspaces
+                </h3>
                 <div className='view-container'>
                   <div
                     className={` ${
@@ -91,7 +95,10 @@ export default function WorkspacePage() {
                         <Link to={`/workspace/${id}/details`}>
                           <div className='workspace-info'>
                             <div className='thumbnail'>
-                              <img src={item.image} alt='thumbnail' />
+                              <img
+                                src={item.image || defaultImage}
+                                alt='thumbnail'
+                              />
                             </div>
                             <h2 className='workspace-title'>
                               {item.title.length > 14
@@ -101,9 +108,6 @@ export default function WorkspacePage() {
                           </div>
                         </Link>
                         <div className='workspace-options'>
-                          <div className='created-on'>
-                            Created on: {item.createdOn}
-                          </div>
                           <div className='options'>
                             <Link to={`/workspace/${id}/edit`}>
                               <FiEdit className='edit-btn' />
@@ -114,6 +118,9 @@ export default function WorkspacePage() {
                                 value.deleteWorkspace(id)
                               }}
                             />
+                          </div>
+                          <div className='created-on'>
+                            Created on: {item.createdOn}
                           </div>
                         </div>
                       </div>
@@ -234,11 +241,12 @@ const WorkspaceWrapper = styled.section`
   .list-workspace-container {
     width: 100%;
     padding: 0px 150px;
+    padding-bottom: 56px;
     gap: 12px;
   }
   .grid-workspace-container {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(6, 1fr);
   }
   .list-workspace-container {
     display: flex;
@@ -255,17 +263,25 @@ const WorkspaceWrapper = styled.section`
     padding: 20px 40px 20px 15px;
     border-radius: 10px;
   }
-  .workspace-info {
-    display: flex;
-    align-items: center;
+  .list-card .workspace-info {
     gap: 10px;
   }
+  .workspace-info {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    gap: 3px;
+  }
+
   .thumbnail {
     height: 55px;
-    width: 100px;
+    width: 100%;
     background: #c4c4c4;
     border-radius: 6px;
     overflow: hidden;
+  }
+  .list-card .thumbnail {
+    width: 100px;
   }
   .thumbnail img {
     height: 100%;
@@ -273,16 +289,15 @@ const WorkspaceWrapper = styled.section`
     object-fit: cover;
   }
   .workspace-title {
-    font-size: 20px;
+    font-size: 16px;
     font-weight: 600;
     font-family: 'Open Sans', sans-serif;
-    color: black;
+    color: #8d8a8a;
   }
   .workspace-options {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 5px;
     font-size: 18px;
     color: #c4c4c4;
   }
@@ -290,9 +305,12 @@ const WorkspaceWrapper = styled.section`
     display: flex;
     gap: 25px;
   }
-  .created-on {
+  .workspace-options .created-on {
     font-size: 12px;
     color: #468aef;
+  }
+  .grid-card .workspace-options .created-on {
+    display: none;
   }
   .grid-card .workspace-options {
     display: none;
@@ -317,18 +335,17 @@ const WorkspaceWrapper = styled.section`
   }
   .grid-card {
     gap: 5px;
-    height: 212px;
-    padding: 20px;
+    height: 140px;
+    padding: 10px;
     background: #f2f4f8;
     box-sizing: border-box;
     border-radius: 10px;
     display: flex;
     flex-direction: column;
-    align-items: center;
   }
   .grid-card .thumbnail {
-    height: 120px;
-    width: 214.03px;
+    height: 70px;
+    width: 100%;
   }
   .grid-card:hover,
   .list-card:hover {

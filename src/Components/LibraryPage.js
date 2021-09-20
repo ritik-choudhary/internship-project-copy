@@ -278,15 +278,17 @@ const LibraryPageWrapper = styled.section`
   .library-page {
     display: flex;
     flex-direction: column;
-    padding: 10px 150px;
+    padding: 0px 150px;
+    padding-bottom: 56px;
     padding-top: 0;
-    gap: 24vh;
     width: 100%;
   }
   .top {
     display: flex;
     flex-direction: column;
     gap: 10px;
+    min-height: 35vh;
+    margin-bottom: 10px;
   }
   .my-favourites,
   .book-shelf {
@@ -323,7 +325,7 @@ const LibraryPageWrapper = styled.section`
     background: pink;
     border-radius: 10px;
     overflow: hidden;
-    background: linear-gradient(to bottom, white, black);
+    background: linear-gradient(to bottom, grey, black);
   }
   .book-card-image-container {
     width: 100%;

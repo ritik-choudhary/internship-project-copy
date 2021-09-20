@@ -252,7 +252,7 @@ function TaskModalComponent(props) {
           >
             Description (optional)
           </label>
-          <input
+          <textarea
             type='text'
             name='description'
             id='description'
@@ -263,8 +263,8 @@ function TaskModalComponent(props) {
               height: '100px',
               outline: 'none',
               border: '1px solid #C4C4C4',
-              fontSize: '16px',
-              padding: '3px 8px',
+              fontSize: '12px',
+              padding: '5px 5px',
             }}
           />
         </div>

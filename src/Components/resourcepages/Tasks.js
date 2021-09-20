@@ -125,14 +125,14 @@ const TasksPageWrapper = styled.section`
   .tasks-page {
     display: flex;
     flex-direction: column;
-    padding: 10px 150px;
-    padding-top: 0;
-    gap: 20px;
+    padding: 0px 150px;
+    padding-bottom: 56px;
+    gap: 10px;
     width: 100%;
   }
   .tasks-header {
-    font-size: 30px;
-    font-weight: 800;
+    font-size: 20px;
+    font-weight: 600;
     color: #468aef;
   }
   .tasks-container {

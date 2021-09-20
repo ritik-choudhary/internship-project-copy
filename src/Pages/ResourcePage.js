@@ -58,21 +58,41 @@ function ResourcePageComponent(props) {
             </Link>
           </div>
         </div>
-        <header className='space-title-container'>
+        <header className='resource-page-title-container'>
           <div className='title'>
-            <div style={{ fontSize: '20px', fontWeight: '400' }}>
-              <h3 style={{ color: '#c4c4c4' }}>{`My Workspace > ${
+            <div>
+              <h3
+                style={{
+                  color: '#c4c4c4',
+                  fontSize: '20px',
+                  fontWeight: '600',
+                }}
+              >{`My Workspace > ${
                 workspaceName.length > 15
                   ? `${workspaceName.slice(0, 15)}...`
                   : workspaceName
               } > `}</h3>
-              <h3 style={{ color: '#c4c4c4' }}>{`${space.title} > `}</h3>
-              <h3 style={{ color: '#c4c4c4' }}>
+              <h3
+                style={{
+                  color: '#c4c4c4',
+                  fontSize: '20px',
+                  fontWeight: '600',
+                }}
+              >{`${space.title} > `}</h3>
+              <h3
+                style={{
+                  color: '#c4c4c4',
+                  fontSize: '20px',
+                  fontWeight: '600',
+                }}
+              >
                 {club.title.length > 15
                   ? `${club.title.slice(0, 12)}...>`
                   : `${club.title} >`}
               </h3>
-              <h3>{resource.title}</h3>
+              <h3 style={{ fontSize: '20px', fontWeight: '600' }}>
+                {resource.title}
+              </h3>
             </div>
           </div>
           <div className='line'></div>
@@ -147,13 +167,12 @@ const ResourcePageWrapper = styled.section`
   .resource-content-back-btn:hover {
     transform: scale(1.05);
   }
-  .space-title-container {
+  .resource-page-title-container {
     display: flex;
     flex-direction: column;
     padding: 0px 150px;
-    padding-bottom: 20px;
   }
-  .space-title-container .title {
+  .resource-page-title-container .title {
     margin-bottom: 10px;
     display: flex;
     justify-content: space-between;
@@ -161,7 +180,7 @@ const ResourcePageWrapper = styled.section`
     font-size: 20px;
     font-weight: 400;
   }
-  .space-title-container .title div {
+  .resource-page-title-container .title div {
     display: flex;
   }
   .line {

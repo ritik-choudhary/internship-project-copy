@@ -37,13 +37,22 @@ export default function SpaceContent() {
                       (item) => item.id === value.detailSpace.workspaceID
                     ).title
                     return (
-                      <div style={{ fontSize: '20px', fontWeight: '400' }}>
-                        <h3 style={{ color: '#c4c4c4' }}>{`My Workspace > ${
+                      <div>
+                        <h3
+                          style={{
+                            fontSize: '20px',
+                            fontWeight: '600',
+                            color: '#c4c4c4',
+                          }}
+                        >{`My Workspace > ${
                           heading.length > 15
                             ? `${heading.slice(0, 15)}...`
                             : heading
                         } > `}</h3>
-                        <h3> {subheading}</h3>
+                        <h3 style={{ fontSize: '20px', fontWeight: '600' }}>
+                          {' '}
+                          {subheading}
+                        </h3>
                       </div>
                     )
                   }}
@@ -130,7 +139,7 @@ const SpaceContentWrapper = styled.section`
     display: flex;
     flex-direction: column;
     padding: 0px 150px;
-    padding-bottom: 20px;
+    padding-bottom: 10px;
   }
   .space-title-container .title {
     margin-bottom: 10px;

@@ -37,6 +37,8 @@ export default function Details() {
 }
 
 const DetailPageComponent = () => {
+  const defaultImage =
+    'https://1080motion.com/wp-content/uploads/2018/06/NoImageFound.jpg.png'
   const param = useParams()
   return (
     <div className='details-page'>
@@ -59,9 +61,17 @@ const DetailPageComponent = () => {
               {(value) => {
                 const subtitle = value.detailWorkspace.title
                 return (
-                  <div style={{ fontSize: '20px', fontWeight: '600' }}>
-                    <h3 style={{ color: '#c4c4c4' }}>{'My Workspaces > '}</h3>
-                    <h3>
+                  <div>
+                    <h3
+                      style={{
+                        fontSize: '20px',
+                        fontWeight: '600',
+                        color: '#c4c4c4',
+                      }}
+                    >
+                      {'My Workspaces > '}
+                    </h3>
+                    <h3 style={{ fontSize: '20px', fontWeight: '600' }}>
                       {' '}
                       {subtitle.length > 15
                         ? `${subtitle.slice(0, 15)}...`
@@ -119,7 +129,7 @@ const DetailPageComponent = () => {
                         onClick={(e) => value.handleDetailSpace(item.id)}
                       >
                         <div className='card-image-container'>
-                          <img src={item.image} alt='' />
+                          <img src={item.image || defaultImage} alt='' />
                         </div>
                         <p className='space-title'>
                           {item.title}
@@ -192,8 +202,8 @@ const WorkspaceContentWrapper = styled.section`
   .workspace-title-container {
     display: flex;
     flex-direction: column;
-    padding: 20px 150px;
-    padding-top: 0;
+    padding: 0px 150px;
+    padding-bottom: 10px;
   }
   .workspace-title-container .title {
     margin-bottom: 10px;
@@ -215,22 +225,23 @@ const WorkspaceContentWrapper = styled.section`
   .grid-workspace-container {
     width: 100%;
     padding: 0px 150px;
+    padding-bottom: 56px;
     gap: 35px;
   }
   .grid-workspace-container {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(6, 1fr);
   }
 
   .grid-card {
-    height: 190px;
+    height: 140px;
     background: #f2f4f8;
     border-radius: 10px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     position: relative;
     color: black;
@@ -242,7 +253,7 @@ const WorkspaceContentWrapper = styled.section`
   .card-image-container {
     width: 100%;
     height: 100%;
-    background: linear-gradient(to bottom, white, black);
+    background: linear-gradient(to bottom, grey, black);
   }
   .card-image-container img {
     width: 100%;

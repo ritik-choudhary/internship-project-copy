@@ -74,18 +74,30 @@ function SingleClubPageComponent(props) {
         </div>
         <header className='club-title-container'>
           <div className='title'>
-            <div style={{ fontSize: '20px', fontWeight: '400' }}>
-              <h3 style={{ color: '#c4c4c4' }}>
+            <div>
+              <h3
+                style={{
+                  fontSize: '20px',
+                  color: '#c4c4c4',
+                  fontWeight: '600',
+                }}
+              >
                 {`My Workspace > ${
                   workspaceName.length > 15
                     ? ` ${workspaceName.slice(0, 15)}...`
                     : workspaceName
                 } > `}
               </h3>
-              <h3 style={{ color: '#c4c4c4' }}>{`${space.title} > `}</h3>
-              <h3>
+              <h3
+                style={{
+                  color: '#c4c4c4',
+                  fontSize: '20px',
+                  fontWeight: '600',
+                }}
+              >{`${space.title} > `}</h3>
+              <h3 style={{ fontSize: '20px', fontWeight: '600' }}>
                 {club.title.length > 15
-                  ? `${club.title.slice(0, 12)}...`
+                  ? `${club.title.slice(0, 50)}...`
                   : club.title}
               </h3>
             </div>
@@ -98,7 +110,7 @@ function SingleClubPageComponent(props) {
             <div className='heading'>
               <h1>
                 {club.title.length > 15
-                  ? `${club.title.slice(0, 12)}...`
+                  ? `${club.title.slice(0, 30)}...`
                   : club.title}
               </h1>
             </div>
@@ -313,9 +325,10 @@ const SingleClubPageWrapper = styled.section`
     flex-direction: column;
     gap: 10px;
   }
-  .info .heading {
+  .info h1 {
     font-size: 20px;
     color: #468aef;
+    font-weight: 600;
   }
   .basic-info {
     border: 1px solid #c4c4c4;

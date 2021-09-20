@@ -101,7 +101,7 @@ export default function NewSemesterPage() {
                                     </p>
                                   </div>
                                 )
-                              } else if (day.Thursday && count < 4) {
+                              } else if (day.Thursday && count < 3) {
                                 count++
                                 return (
                                   <div className='single-day'>
@@ -111,7 +111,7 @@ export default function NewSemesterPage() {
                                     </p>
                                   </div>
                                 )
-                              } else if (day.Friday && count < 4) {
+                              } else if (day.Friday && count < 3) {
                                 count++
                                 return (
                                   <div className='single-day'>
@@ -121,7 +121,7 @@ export default function NewSemesterPage() {
                                     </p>
                                   </div>
                                 )
-                              } else if (day.Saturday && count < 4) {
+                              } else if (day.Saturday && count < 3) {
                                 count++
                                 return (
                                   <div className='single-day'>
@@ -140,7 +140,7 @@ export default function NewSemesterPage() {
                               )
                             })}
                             <div className='see-more-option'>
-                              {count >= 4 ? (
+                              {count >= 3 ? (
                                 <Link
                                   to={`/workspace/${param.id}/details/${param.spaceKey}/editsubject/${singleSubject.subjectID}`}
                                 >
@@ -175,8 +175,8 @@ const NewSemesterPageWrapper = styled.section`
   .semester-page {
     display: flex;
     flex-direction: column;
-    padding: 10px 150px;
-    padding-top: 0;
+    padding: 0px 150px;
+    padding-bottom: 56px;
     gap: 70px;
     width: 100%;
   }
@@ -197,7 +197,7 @@ const NewSemesterPageWrapper = styled.section`
     gap: 15px;
     padding: 20px 25px;
     color: #468aef;
-    height: 190px;
+    height: 143px;
     background: #f2f4f8;
     border: 1px solid #468aef;
     box-sizing: border-box;
@@ -213,16 +213,16 @@ const NewSemesterPageWrapper = styled.section`
   }
   .storage {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 25px;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 10px;
   }
   .subject-card {
     width: 100%;
     display: flex;
     flex-direction: column;
     gap: 10px;
-    padding: 10px 25px;
-    height: 190px;
+    padding: 10px 10px;
+    height: 143px;
     background: #f2f4f8;
     border-radius: 10px;
   }
@@ -233,15 +233,14 @@ const NewSemesterPageWrapper = styled.section`
   .header-left {
     display: flex;
     flex-direction: column;
-    gap: 5px;
   }
   .subject-code {
-    font-size: 12px;
+    font-size: 10px;
     color: #468aef;
     font-weight: 400;
   }
   .subject-name {
-    font-size: 16px;
+    font-size: 12px;
     font-weight: 600;
     text-transform: capitalize;
   }
@@ -257,12 +256,12 @@ const NewSemesterPageWrapper = styled.section`
   .single-day {
     display: flex;
     align-items: center;
-    gap: 30px;
+    justify-content: space-between;
   }
   .day {
     height: 22px;
-    width: 120px;
-    font-size: 14px;
+    width: 70px;
+    font-size: 12px;
     font-weight: 400;
     background: #fff;
     text-align: center;
