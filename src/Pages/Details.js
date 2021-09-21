@@ -74,7 +74,7 @@ const DetailPageComponent = () => {
                     <h3 style={{ fontSize: '20px', fontWeight: '600' }}>
                       {' '}
                       {subtitle.length > 15
-                        ? `${subtitle.slice(0, 15)}...`
+                        ? `${subtitle.slice(0, 70)}...`
                         : subtitle}
                     </h3>
                   </div>

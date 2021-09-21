@@ -365,8 +365,8 @@ const SingleClubPageWrapper = styled.section`
     gap: 10px;
   }
   .resources .heading {
-    font-size: 22px;
-    font-weight: 700;
+    font-size: 20px;
+    font-weight: 600;
   }
   .resources-container {
     display: grid;

@@ -179,6 +179,7 @@ const NewSemesterPageWrapper = styled.section`
     padding-bottom: 56px;
     gap: 70px;
     width: 100%;
+    margin-top: -10px;
   }
   .top {
     display: flex;

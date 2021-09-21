@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import Modal from 'react-modal'
 import { useParams, Link, useHistory } from 'react-router-dom'
 import { FaCheckSquare } from 'react-icons/fa'
-import { AiFillCloseCircle, AiOutlinePlus } from 'react-icons/ai'
+import { AiOutlineClose, AiOutlinePlus } from 'react-icons/ai'
 import { WorkspaceConsumer } from '../../Context'
 
 export default function ContactModal(props) {
@@ -104,10 +104,10 @@ function ContactModalComponent(props) {
         <Link
           to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}`}
         >
-          <AiFillCloseCircle
+          <AiOutlineClose
             style={{
-              fontSize: '30px',
-              color: '#FFC8C8',
+              fontSize: '20px',
+              color: '#c4c4c4',
               cursor: 'pointer',
             }}
           />
