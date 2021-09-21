@@ -62,6 +62,12 @@ class WorkspaceProvider extends Component {
     this.setState({ workspaceElements: [...oldList, item] })
   }
 
+  deleteSpace = (key) => {
+    const oldList = [...this.state.workspaceElements]
+    const newList = oldList.filter((item) => item.id !== key)
+    this.setState({ workspaceElements: newList })
+  }
+
   addBook = (book, id, key) => {
     const oldList = [...this.state.workspaceElements]
     let element = oldList.find(
@@ -295,6 +301,24 @@ class WorkspaceProvider extends Component {
     })
   }
 
+  deleteMeeting = (id, key, clubId, resourceId, meetingId) => {
+    const oldList = [...this.state.workspaceElements]
+    let element = oldList.find(
+      (item) => item.id === key && item.workspaceID === id
+    )
+    let clubElement = element.clubs.find((item) => item.id === clubId)
+    let resourceElement = clubElement.resources.find(
+      (item) => item.id === resourceId
+    )
+    const newMeetingsList = resourceElement.meetings.filter(
+      (item) => item.id !== meetingId
+    )
+    resourceElement.meetings = newMeetingsList
+    this.setState(() => {
+      return { workspaceElements: oldList }
+    })
+  }
+
   addNewIdea = (id, key, clubId, resourceId, idea) => {
     const oldList = [...this.state.workspaceElements]
     let element = oldList.find(
@@ -332,6 +356,25 @@ class WorkspaceProvider extends Component {
       return { workspaceElements: oldList }
     })
   }
+
+  deleteIdea = (id, key, clubId, resourceId, ideaId) => {
+    const oldList = [...this.state.workspaceElements]
+    let element = oldList.find(
+      (item) => item.id === key && item.workspaceID === id
+    )
+    let clubElement = element.clubs.find((item) => item.id === clubId)
+    let resourceElement = clubElement.resources.find(
+      (item) => item.id === resourceId
+    )
+    const newIdeasList = resourceElement.ideas.filter(
+      (item) => item.id !== ideaId
+    )
+    resourceElement.ideas = newIdeasList
+    this.setState(() => {
+      return { workspaceElements: oldList }
+    })
+  }
+
   addNewFinance = (id, key, clubId, resourceId, finance) => {
     const oldList = [...this.state.workspaceElements]
     let element = oldList.find(
@@ -368,6 +411,24 @@ class WorkspaceProvider extends Component {
     financeElement.personalDetails = newFinance.personalDetails
     financeElement.links = newFinance.links
 
+    this.setState(() => {
+      return { workspaceElements: oldList }
+    })
+  }
+
+  deleteFinance = (id, key, clubId, resourceId, financeId) => {
+    const oldList = [...this.state.workspaceElements]
+    let element = oldList.find(
+      (item) => item.id === key && item.workspaceID === id
+    )
+    let clubElement = element.clubs.find((item) => item.id === clubId)
+    let resourceElement = clubElement.resources.find(
+      (item) => item.id === resourceId
+    )
+    const newFinancesList = resourceElement.finances.filter(
+      (item) => item.id !== financeId
+    )
+    resourceElement.finances = newFinancesList
     this.setState(() => {
       return { workspaceElements: oldList }
     })
@@ -414,6 +475,24 @@ class WorkspaceProvider extends Component {
     })
   }
 
+  deleteContact = (id, key, clubId, resourceId, contactId) => {
+    const oldList = [...this.state.workspaceElements]
+    let element = oldList.find(
+      (item) => item.id === key && item.workspaceID === id
+    )
+    let clubElement = element.clubs.find((item) => item.id === clubId)
+    let resourceElement = clubElement.resources.find(
+      (item) => item.id === resourceId
+    )
+    const newContactsList = resourceElement.contacts.filter(
+      (item) => item.id !== contactId
+    )
+    resourceElement.contacts = newContactsList
+    this.setState(() => {
+      return { workspaceElements: oldList }
+    })
+  }
+
   render() {
     return (
       <WorkspaceContext.Provider
@@ -424,6 +503,7 @@ class WorkspaceProvider extends Component {
           deleteWorkspace: this.deleteWorkspace,
           handleDetail: this.handleDetail,
           addNewSpace: this.addNewSpace,
+          deleteSpace: this.deleteSpace,
           handleDetailSpace: this.handleDetailSpace,
           addBook: this.addBook,
           deleteBook: this.deleteBook,
@@ -439,12 +519,16 @@ class WorkspaceProvider extends Component {
           editTask: this.editTask,
           addNewMeeting: this.addNewMeeting,
           editMeeting: this.editMeeting,
+          deleteMeeting: this.deleteMeeting,
           addNewIdea: this.addNewIdea,
           editIdea: this.editIdea,
+          deleteIdea: this.deleteIdea,
           addNewFinance: this.addNewFinance,
           editFinance: this.editFinance,
+          deleteFinance: this.deleteFinance,
           addNewContact: this.addNewContact,
           editContact: this.editContact,
+          deleteContact: this.deleteContact,
         }}
       >
         {this.props.children}

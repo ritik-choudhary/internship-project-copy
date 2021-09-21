@@ -20,7 +20,7 @@ import {
 } from 'react-icons/ai'
 
 import { BiHeading } from 'react-icons/bi'
-import { FaQuoteRight } from 'react-icons/fa'
+import { FaQuoteRight, FaCode } from 'react-icons/fa'
 import { MdFormatListNumbered, MdFormatListBulleted } from 'react-icons/md'
 
 const HOTKEYS = {
@@ -48,7 +48,7 @@ const RichTextExample = (props) => {
         <MarkButton format='bold' icon={<AiOutlineBold />} />
         <MarkButton format='italic' icon={<AiOutlineItalic />} />
         <MarkButton format='underline' icon={<AiOutlineUnderline />} />
-        <MarkButton format='code' icon='code' />
+        <MarkButton format='code' icon={<FaCode />} />
         <BlockButton format='heading-one' icon={<BiHeading />} />
         <BlockButton format='heading-two' icon='looks_two' />
         <BlockButton format='block-quote' icon={<FaQuoteRight />} />
@@ -69,6 +69,12 @@ const RichTextExample = (props) => {
               toggleMark(editor, mark)
             }
           }
+        }}
+        style={{
+          height: '150px',
+          overflow: 'scroll',
+          overflowX: 'hidden',
+          marginBottom: '10px',
         }}
       />
     </Slate>

@@ -65,7 +65,17 @@ function FinanceComponent(props) {
                 </div>
               </Link>
               <div className='delete-btn'>
-                <RiDeleteBin6Line />
+                <RiDeleteBin6Line
+                  onClick={() =>
+                    value.deleteFinance(
+                      param.id,
+                      param.spaceKey,
+                      param.clubID,
+                      param.resourceID,
+                      item.id
+                    )
+                  }
+                />
               </div>
             </div>
           )

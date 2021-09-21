@@ -64,7 +64,17 @@ function MeetingNotesComponent(props) {
                 </div>
               </Link>
               <div className='delete-btn'>
-                <RiDeleteBin6Line />
+                <RiDeleteBin6Line
+                  onClick={() =>
+                    value.deleteMeeting(
+                      param.id,
+                      param.spaceKey,
+                      param.clubID,
+                      param.resourceID,
+                      item.id
+                    )
+                  }
+                />
               </div>
             </div>
           )

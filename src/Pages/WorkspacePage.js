@@ -335,7 +335,7 @@ const WorkspaceWrapper = styled.section`
   }
   .grid-card {
     gap: 5px;
-    height: 140px;
+    height: 150px;
     padding: 10px;
     background: #f2f4f8;
     box-sizing: border-box;
@@ -344,7 +344,7 @@ const WorkspaceWrapper = styled.section`
     flex-direction: column;
   }
   .grid-card .thumbnail {
-    height: 70px;
+    height: 80px;
     width: 100%;
   }
   .grid-card:hover,

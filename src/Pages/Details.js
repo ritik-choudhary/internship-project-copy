@@ -9,6 +9,7 @@ import SpaceModal from '../Components/SpaceModal'
 import SpaceUploadModal from '../Components/SpaceUploadModal'
 import SpaceContent from './SpaceContent'
 import { FaBell } from 'react-icons/fa'
+import { RiDeleteBin6Line } from 'react-icons/ri'
 
 export default function Details() {
   return (
@@ -123,20 +124,25 @@ const DetailPageComponent = () => {
                 const printable = num ? true : false
                 return (
                   <div key={item.id}>
-                    <Link to={`/workspace/${param.id}/details/${item.id}`}>
-                      <div
-                        className='grid-card'
-                        onClick={(e) => value.handleDetailSpace(item.id)}
-                      >
-                        <div className='card-image-container'>
-                          <img src={item.image || defaultImage} alt='' />
-                        </div>
+                    <div
+                      className='grid-card'
+                      onClick={(e) => value.handleDetailSpace(item.id)}
+                    >
+                      <div className='card-image-container'>
+                        <img src={item.image || defaultImage} alt='' />
+                      </div>
+                      <Link to={`/workspace/${param.id}/details/${item.id}`}>
                         <p className='space-title'>
                           {item.title}
                           {printable ? ` (${num})` : ''}
                         </p>
+                      </Link>
+                      <div className='space-delete-btn'>
+                        <RiDeleteBin6Line
+                          onClick={() => value.deleteSpace(item.id)}
+                        />
                       </div>
-                    </Link>
+                    </div>
                   </div>
                 )
               })
@@ -262,6 +268,7 @@ const WorkspaceContentWrapper = styled.section`
     opacity: 0.5;
   }
   .space-title {
+    width: 80%;
     position: absolute;
     bottom: 20px;
     left: 20px;
@@ -270,7 +277,16 @@ const WorkspaceContentWrapper = styled.section`
     color: white;
     padding-right: 10px;
   }
-
+  .space-delete-btn {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    color: white;
+  }
+  .space-delete-btn:hover {
+    color: #f54848;
+    cursor: pointer;
+  }
   .grid-card:hover {
     cursor: pointer;
     transform: scale(1.07);
