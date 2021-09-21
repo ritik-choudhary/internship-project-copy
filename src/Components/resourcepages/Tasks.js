@@ -57,6 +57,7 @@ function TasksComponent(props) {
               className={
                 item.completed ? 'task-completed-bg single-task' : 'single-task'
               }
+              key={item.id}
             >
               <div className='top'>
                 <div className='left'>

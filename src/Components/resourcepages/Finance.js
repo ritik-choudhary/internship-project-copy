@@ -51,7 +51,7 @@ function FinanceComponent(props) {
         </Link>
         {resource?.finances?.map((item) => {
           return (
-            <div className='finance-card'>
+            <div className='finance-card' key={item.id}>
               <Link
                 to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/editfinance/${item.id}`}
               >

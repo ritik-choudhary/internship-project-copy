@@ -51,7 +51,7 @@ function IdeasComponent(props) {
         </Link>
         {resource?.ideas?.map((item) => {
           return (
-            <div className='ideas-card'>
+            <div className='ideas-card' key={item.id}>
               <Link
                 to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/editidea/${item.id}`}
               >

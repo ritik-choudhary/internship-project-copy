@@ -430,6 +430,7 @@ function SubjectModalComponent(props) {
                       pathname: `/workspace/${param.id}/details/${param.spaceKey}/editsubject/${param.subjectID}/readsubjectpdf`,
                       state: { src: linkToPdf?.source },
                     }}
+                    key={pdf.pdfId}
                   >
                     <div className='pdf-file'>
                       {pdf.pdfFile.name.length > 15
@@ -505,9 +506,14 @@ function SubjectModalComponent(props) {
                 overflowX: 'hidden',
               }}
             >
-              {linkList.map((link) => {
+              {linkList.map((link, index) => {
                 return (
-                  <a href={link} target='_blank' rel='noreferrer noopener'>
+                  <a
+                    href={link}
+                    target='_blank'
+                    rel='noreferrer noopener'
+                    key={index}
+                  >
                     {link?.slice(8, 50)}
                   </a>
                 )

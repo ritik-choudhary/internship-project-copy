@@ -50,7 +50,7 @@ function MeetingNotesComponent(props) {
         </Link>
         {resource?.meetings?.map((item) => {
           return (
-            <div className='meeting-card'>
+            <div className='meeting-card' key={item.id}>
               <Link
                 to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/editmeeting/${item.id}`}
               >
