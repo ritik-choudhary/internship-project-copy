@@ -66,14 +66,19 @@ const DetailPageComponent = () => {
                     <h3
                       style={{
                         fontSize: '20px',
-                        fontWeight: '600',
+                        fontWeight: '400',
                         color: '#c4c4c4',
                       }}
                     >
                       {'My Workspaces > '}
+
+                      <span>&nbsp;</span>
                     </h3>
-                    <h3 style={{ fontSize: '20px', fontWeight: '600' }}>
-                      {' '}
+
+                    <h3
+                      className='animation-title'
+                      style={{ fontSize: '20px', fontWeight: '400' }}
+                    >
                       {subtitle.length > 15
                         ? `${subtitle.slice(0, 70)}...`
                         : subtitle}
@@ -268,20 +273,24 @@ const WorkspaceContentWrapper = styled.section`
     opacity: 0.5;
   }
   .space-title {
-    width: 80%;
+    width: 100px;
     position: absolute;
     bottom: 20px;
     left: 20px;
-    font-size: 16px;
-    font-weight: 600;
+    font-size: 14px;
+    font-weight: 400;
     color: white;
     padding-right: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   .space-delete-btn {
     position: absolute;
     bottom: 20px;
     right: 20px;
     color: white;
+    font-size: 14px;
   }
   .space-delete-btn:hover {
     color: #f54848;
@@ -291,5 +300,18 @@ const WorkspaceContentWrapper = styled.section`
     cursor: pointer;
     transform: scale(1.07);
     border: 1px solid #0063ff;
+  }
+  .animation-title {
+    animation: slide-in 0.5s ease-in-out;
+  }
+  @keyframes slide-in {
+    0% {
+      transform: translateX(-100%);
+      z-index: -1;
+    }
+    100% {
+      transform: translateX(0%);
+      z-index: 1;
+    }
   }
 `

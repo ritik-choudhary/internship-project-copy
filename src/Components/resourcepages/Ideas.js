@@ -5,11 +5,15 @@ import styled from 'styled-components'
 import { WorkspaceConsumer } from '../../Context'
 import { RiDeleteBin6Line } from 'react-icons/ri'
 import IdeaModal from '../ResourceModals/IdeaModal'
+import IdeaPdfModal from '../ResourceModals/IdeaPdfModal'
 
 export default function Ideas() {
   return (
     <IdeasWrapper>
       <Switch>
+        <Route path='/workspace/:id/details/:spaceKey/insideclub/:clubID/resourcedata/:resourceID/addidea/readpdf'>
+          <IdeaPdfModal />
+        </Route>
         <Route path='/workspace/:id/details/:spaceKey/insideclub/:clubID/resourcedata/:resourceID/editidea/:ideaID'>
           <IdeaModal isEditing />
         </Route>

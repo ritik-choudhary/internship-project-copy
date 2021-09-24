@@ -124,7 +124,7 @@ export default function SpaceModal() {
                   height: '100%',
                   width: '100%',
                   display: 'grid',
-                  gridTemplateRows: 'repeat(7,1fr)',
+                  gridTemplateRows: 'repeat(6,1fr)',
                   gridTemplateColumns: 'repeat(2,1fr)',
                   gap: '10px',
                   gridColumnGap: '60px',
@@ -170,7 +170,7 @@ export default function SpaceModal() {
                     onChange={handleChange}
                   />
                 </div>
-                <div className='single-input'>
+                {/* <div className='single-input'>
                   <label htmlFor='digital-brainboard'>Digital Brainboard</label>
                   <input
                     type='radio'
@@ -179,7 +179,7 @@ export default function SpaceModal() {
                     value='Digital Brainboard'
                     onChange={handleChange}
                   />
-                </div>
+                </div> */}
                 <div className='single-input'>
                   <label htmlFor='docs'>Docs</label>
                   <input

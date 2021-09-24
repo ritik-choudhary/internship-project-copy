@@ -2,8 +2,8 @@ import React from 'react'
 import { AiOutlinePlus } from 'react-icons/ai'
 import styled from 'styled-components'
 import { Switch, Route, Link, useParams } from 'react-router-dom'
-import { WorkspaceConsumer } from '../Context'
-import ClubModal from './ClubModal'
+import { WorkspaceConsumer } from '../../Context'
+import ClubModal from '../ClubModal'
 import { RiDeleteBin6Line } from 'react-icons/ri'
 
 export default function CollegeClubs() {
@@ -50,7 +50,9 @@ export default function CollegeClubs() {
                                 ? `${club.title.slice(0, 10)}...`
                                 : club.title}
                             </h4>
-                            <p>{club.createdOn}</p>
+                            <p style={{ fontSize: '10px', color: '#468AEF' }}>
+                              {club.createdOn}
+                            </p>
                           </div>
                           <div className='right'>
                             <div className='delete-btn'>
@@ -96,7 +98,7 @@ const CollegeClubsWrapper = styled.section`
   .storage {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
-    gap: 25px;
+    gap: 35px;
   }
   .add-new {
     display: flex;

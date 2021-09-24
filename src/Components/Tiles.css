@@ -65,6 +65,9 @@
 }
 
 .add-workspace-btn {
+  display: flex;
+  align-items: center;
+  gap: 3px;
   background: #ffca10;
   border-radius: 5px;
   padding: 10px;

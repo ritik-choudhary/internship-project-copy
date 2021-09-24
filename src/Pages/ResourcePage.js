@@ -65,32 +65,43 @@ function ResourcePageComponent(props) {
                 style={{
                   color: '#c4c4c4',
                   fontSize: '20px',
-                  fontWeight: '600',
-                }}
-              >{`My Workspace > ${
-                workspaceName.length > 15
-                  ? `${workspaceName.slice(0, 15)}...`
-                  : workspaceName
-              } > `}</h3>
-              <h3
-                style={{
-                  color: '#c4c4c4',
-                  fontSize: '20px',
-                  fontWeight: '600',
-                }}
-              >{`${space.title} > `}</h3>
-              <h3
-                style={{
-                  color: '#c4c4c4',
-                  fontSize: '20px',
-                  fontWeight: '600',
+                  fontWeight: '400',
                 }}
               >
+                {`My Workspace > ${
+                  workspaceName.length > 15
+                    ? `${workspaceName.slice(0, 15)}...`
+                    : workspaceName
+                } > `}
+                <span>&nbsp;</span>
+              </h3>
+              <h3
+                style={{
+                  color: '#c4c4c4',
+                  fontSize: '20px',
+                  fontWeight: '400',
+                }}
+              >
+                {`${space.title} > `}
+                <span>&nbsp;</span>
+              </h3>
+              <h3
+                style={{
+                  color: '#c4c4c4',
+                  fontSize: '20px',
+                  fontWeight: '400',
+                }}
+              >
+                <span>&nbsp;</span>
                 {club.title.length > 15
                   ? `${club.title.slice(0, 12)}...>`
-                  : `${club.title} >`}
+                  : `${club.title} > `}
+                <span>&nbsp;</span>
               </h3>
-              <h3 style={{ fontSize: '20px', fontWeight: '600' }}>
+              <h3
+                className='animation-title'
+                style={{ fontSize: '20px', fontWeight: '400' }}
+              >
                 {resource.title}
               </h3>
             </div>
@@ -187,5 +198,18 @@ const ResourcePageWrapper = styled.section`
     width: 100%;
     height: 1.5px;
     background: #e5e5e5;
+  }
+  .animation-title {
+    animation: slide-in 0.5s ease-in-out;
+  }
+  @keyframes slide-in {
+    0% {
+      transform: translateX(-100%);
+      z-index: -1;
+    }
+    100% {
+      transform: translateX(0%);
+      z-index: 1;
+    }
   }
 `

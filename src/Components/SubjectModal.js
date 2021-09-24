@@ -412,7 +412,7 @@ function SubjectModalComponent(props) {
             <div
               className='pdf-container'
               style={{
-                display: 'flex',
+                display: `${pdfList.length > 0 ? 'flex' : 'none'}`,
                 flexDirection: 'column',
                 maxHeight: '100px',
                 fontSize: '14px',
@@ -456,28 +456,29 @@ function SubjectModalComponent(props) {
                 fontSize: '12px',
                 fontWeight: '500',
               }}
-            ></label>
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-              }}
             >
-              <p>Add link to other resources</p>
-              <AiOutlinePlus
+              <div
                 style={{
-                  color: '#468AEF',
-                  cursor: 'pointer',
-                  fontSize: '18px',
-                  fontWeight: '700',
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
                 }}
-                onClick={() => {
-                  setLinkList([...linkList, linkToAdd])
-                  setLinkToAdd('')
-                }}
-              />
-            </div>
+              >
+                <p>Add link to other resources</p>
+                <AiOutlinePlus
+                  style={{
+                    color: '#468AEF',
+                    cursor: 'pointer',
+                    fontSize: '18px',
+                    fontWeight: '700',
+                  }}
+                  onClick={() => {
+                    setLinkList([...linkList, linkToAdd])
+                    setLinkToAdd('')
+                  }}
+                />
+              </div>
+            </label>
             <input
               type='url'
               name='link'
@@ -498,7 +499,7 @@ function SubjectModalComponent(props) {
             <div
               className='links-container'
               style={{
-                display: 'flex',
+                display: `${linkList.length > 0 ? 'flex' : 'none'}`,
                 flexDirection: 'column',
                 maxHeight: '100px',
                 fontSize: '14px',

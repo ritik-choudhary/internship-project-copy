@@ -5,11 +5,15 @@ import styled from 'styled-components'
 import { WorkspaceConsumer } from '../../Context'
 import { RiDeleteBin6Line } from 'react-icons/ri'
 import MeetingModal from '../ResourceModals/MeetingModal'
+import MeetingPdfModal from '../ResourceModals/MeetingPdfModal'
 
 export default function MeetingNotes() {
   return (
     <MeetingNotesWrapper>
       <Switch>
+        <Route path='/workspace/:id/details/:spaceKey/insideclub/:clubID/resourcedata/:resourceID/addmeeting/readpdf'>
+          <MeetingPdfModal />
+        </Route>
         <Route path='/workspace/:id/details/:spaceKey/insideclub/:clubID/resourcedata/:resourceID/editmeeting/:meetingID'>
           <MeetingModal isEditing />
         </Route>

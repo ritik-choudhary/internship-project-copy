@@ -3,6 +3,8 @@ import Modal from 'react-modal'
 import { useParams, Link, useHistory } from 'react-router-dom'
 import { AiOutlineClose } from 'react-icons/ai'
 import { WorkspaceConsumer } from '../../Context'
+import { AiOutlinePlus } from 'react-icons/ai'
+import { FaUpload } from 'react-icons/fa'
 
 export default function TasksModal(props) {
   return (
@@ -17,14 +19,22 @@ export default function TasksModal(props) {
 }
 
 function TaskModalComponent(props) {
+  const date = `${new Date().getDate()}/${
+    new Date().getMonth() + 1
+  }/${new Date().getFullYear()}`
+
   const { isEditing, value } = props
   const param = useParams()
   const history = useHistory()
 
   const [selectedTask, setSelectedTask] = useState()
   const [taskTitle, setTaskTitle] = useState()
-  const [createdOn, setCreatedOn] = useState()
+  const [createdOn, setCreatedOn] = useState(date)
   const [duedate, setDuedate] = useState()
+  const [linkToAdd, setLinkToAdd] = useState()
+  const [links, setLinks] = useState([])
+  const [pdfList, setPdfList] = useState([])
+  const [pdfPreview, setPdfPreview] = useState([])
   const [description, setDescription] = useState('')
 
   useEffect(() => {
@@ -45,6 +55,8 @@ function TaskModalComponent(props) {
       setTaskTitle(selectedTask.title)
       setCreatedOn(selectedTask.createdOn)
       setDuedate(selectedTask.dueDate)
+      setLinks(selectedTask.links)
+      setPdfList(selectedTask.pdfList)
       setDescription(selectedTask.description)
     }
   }, [
@@ -57,12 +69,31 @@ function TaskModalComponent(props) {
     value.workspaceElements,
   ])
 
+  useEffect(() => {
+    if (pdfList) {
+      setPdfPreview([])
+      pdfList.forEach((pdf) => {
+        const reader = new FileReader()
+        reader.onloadend = () => {
+          setPdfPreview((pdfPreview) => [
+            ...pdfPreview,
+            { previewId: pdf.pdfId, source: reader.result },
+          ])
+        }
+        reader.readAsDataURL(pdf.pdfFile)
+      })
+    } else {
+      setPdfPreview([])
+    }
+  }, [pdfList])
+
   return (
     <Modal
       isOpen={true}
       style={{
         content: {
           width: '520px',
+          minHeight: '90vh',
           top: '50%',
           left: '50%',
           right: 'auto',
@@ -114,7 +145,7 @@ function TaskModalComponent(props) {
           width: '100%',
           display: 'flex',
           flexDirection: 'column',
-          gap: '30px',
+          gap: '20px',
           padding: '22px 32px',
         }}
         onSubmit={(e) => {
@@ -131,6 +162,8 @@ function TaskModalComponent(props) {
                 title: taskTitle,
                 createdOn: createdOn,
                 dueDate: duedate,
+                links: links,
+                pdfList: pdfList,
                 description: description,
                 completed: false,
               }
@@ -141,6 +174,8 @@ function TaskModalComponent(props) {
               title: taskTitle,
               createdOn: createdOn,
               dueDate: duedate,
+              links: links,
+              pdfList: pdfList,
               description: description,
               completed: false,
             }
@@ -197,22 +232,7 @@ function TaskModalComponent(props) {
           >
             Created on
           </label>
-          <input
-            required
-            type='date'
-            name='created-on'
-            id='created-on'
-            value={createdOn}
-            onChange={(e) => setCreatedOn(e.target.value)}
-            style={{
-              borderRadius: '5px',
-              height: '32px',
-              outline: 'none',
-              border: '1px solid #C4C4C4',
-              fontSize: '16px',
-              padding: '3px 8px',
-            }}
-          />
+          <p style={{ fontSize: '14px', color: '#468AEF' }}>{date}</p>
         </div>
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           <label
@@ -243,6 +263,184 @@ function TaskModalComponent(props) {
         </div>
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           <label
+            htmlFor='links'
+            style={{
+              color: '#959595',
+              fontSize: '12px',
+              marginBottom: '5px',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
+            <p>Add Links</p>
+            <AiOutlinePlus
+              style={{
+                fontSize: '16px',
+                color: '#0063FF',
+                cursor: 'pointer',
+              }}
+              onClick={() => {
+                setLinks([...links, linkToAdd])
+                setLinkToAdd('')
+              }}
+            />
+          </label>
+          <div
+            style={{
+              display: 'flex',
+              width: '100%',
+              gap: '5px',
+              alignItems: 'center',
+            }}
+          >
+            <input
+              type='url'
+              name='links'
+              id='links'
+              style={{
+                width: '100%',
+                borderRadius: '5px',
+                height: '32px',
+                outline: 'none',
+                border: '1px solid #C4C4C4',
+                fontSize: '16px',
+                padding: '3px 8px',
+              }}
+              value={linkToAdd}
+              onChange={(e) => setLinkToAdd(e.target.value)}
+            />
+            <div className='link-add-btn'></div>
+          </div>
+          <div
+            className='links-container'
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              maxHeight: '50px',
+              overflow: 'scroll',
+              overflowX: 'hidden',
+            }}
+          >
+            {links?.map((item) => {
+              return (
+                <a style={{ fontSize: '12px' }} href={item}>
+                  {item.length > 40 ? `${item.slice(0, 60)}...` : item}
+                </a>
+              )
+            })}
+          </div>
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+          <label
+            htmlFor='pdf'
+            style={{
+              color: '#959595',
+              fontSize: '12px',
+              marginBottom: '5px',
+            }}
+          >
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+              }}
+            >
+              <p>Upload pdf</p>
+              <AiOutlinePlus
+                style={{
+                  color: '#468AEF',
+                  cursor: 'pointer',
+                  fontSize: '16px',
+                }}
+              />
+            </div>
+          </label>
+          <input
+            type='file'
+            name='pdf'
+            id='pdf'
+            hidden
+            accept='.pdf'
+            onChange={(e) => {
+              setPdfList([
+                ...pdfList,
+                {
+                  pdfId: new Date().getTime().toString(),
+                  pdfFile: e.target.files[0],
+                },
+              ])
+            }}
+          />
+          <label htmlFor='pdf'>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                borderRadius: '5px',
+                border: '1px dashed #468AEF',
+                height: '32px',
+                cursor: 'pointer',
+              }}
+            >
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '10px',
+                  color: '#468AEF',
+                  fontSize: '12px',
+                  fontWeight: '500',
+                }}
+              >
+                <FaUpload />
+                Upload pdf
+              </div>
+            </div>
+          </label>
+
+          <div
+            className='pdf-container'
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              maxHeight: '50px',
+              fontSize: '14px',
+              overflow: 'scroll',
+              overflowX: 'hidden',
+            }}
+          >
+            {pdfList.map((pdf) => {
+              const linkToPdf = pdfPreview.find(
+                (item) => item.previewId === pdf.pdfId
+              )
+              return (
+                <Link
+                  to={{
+                    pathname: `/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/addtask/readpdf`,
+                    state: { src: linkToPdf?.source },
+                  }}
+                  key={pdf.pdfId}
+                  onClick={(e) => {
+                    if (!isEditing) {
+                      e.preventDefault()
+                    }
+                  }}
+                >
+                  <div className='pdf-file' style={{ fontSize: '12px' }}>
+                    {pdf.pdfFile.name.length > 15
+                      ? `${pdf.pdfFile.name.slice(0, 15)}...`
+                      : pdf.pdfFile.name}
+                  </div>
+                </Link>
+              )
+            })}
+          </div>
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+          <label
             htmlFor='description'
             style={{
               color: '#959595',
@@ -256,6 +454,7 @@ function TaskModalComponent(props) {
             type='text'
             name='description'
             id='description'
+            fontFamily='Open Sans, sans-serif'
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             style={{

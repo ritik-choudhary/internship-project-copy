@@ -81,13 +81,6 @@ const RichTextExample = (props) => {
   )
 }
 
-// const initialValue = [
-//   {
-//     type: 'paragraph',
-//     children: [{ text: '' }],
-//   },
-// ]
-
 const toggleBlock = (editor, format) => {
   const isActive = isBlockActive(editor, format)
   const isList = LIST_TYPES.includes(format)

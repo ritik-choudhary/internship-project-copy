@@ -44,7 +44,7 @@ export default function WorkspacePage() {
             </div>
             <header className='workspace-title-container'>
               <div className='title'>
-                <h3 style={{ fontSize: '20px', fontWeight: '600' }}>
+                <h3 style={{ fontSize: '20px', fontWeight: '400' }}>
                   My Workspaces
                 </h3>
                 <div className='view-container'>
@@ -71,7 +71,7 @@ export default function WorkspacePage() {
             <div className='button-container'>
               <Link to='/workspace/create'>
                 <button className='add-workspace-btn'>
-                  <AiOutlinePlus /> Add Workspace
+                  <AiOutlinePlus /> <p>Add Workspace</p>
                 </button>
               </Link>
             </div>
@@ -247,6 +247,7 @@ const WorkspaceWrapper = styled.section`
   .grid-workspace-container {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
+    gap: 35px;
   }
   .list-workspace-container {
     display: flex;
@@ -290,16 +291,19 @@ const WorkspaceWrapper = styled.section`
   }
   .workspace-title {
     font-size: 16px;
-    font-weight: 600;
+    font-weight: 400;
     font-family: 'Open Sans', sans-serif;
     color: #8d8a8a;
   }
   .workspace-options {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-end;
     font-size: 18px;
     color: #c4c4c4;
+  }
+  .grid-card .workspace-options {
+    align-items: center;
   }
   .options {
     display: flex;
@@ -332,10 +336,10 @@ const WorkspaceWrapper = styled.section`
   }
   .grid-card .workspace-info {
     flex-direction: column;
+    // gap: 5px;
   }
   .grid-card {
-    gap: 5px;
-    height: 150px;
+    height: 140px;
     padding: 10px;
     background: #f2f4f8;
     box-sizing: border-box;

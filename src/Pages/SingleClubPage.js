@@ -79,7 +79,7 @@ function SingleClubPageComponent(props) {
                 style={{
                   fontSize: '20px',
                   color: '#c4c4c4',
-                  fontWeight: '600',
+                  fontWeight: '400',
                 }}
               >
                 {`My Workspace > ${
@@ -87,15 +87,22 @@ function SingleClubPageComponent(props) {
                     ? ` ${workspaceName.slice(0, 15)}...`
                     : workspaceName
                 } > `}
+                <span>&nbsp;</span>
               </h3>
               <h3
                 style={{
                   color: '#c4c4c4',
                   fontSize: '20px',
-                  fontWeight: '600',
+                  fontWeight: '400',
                 }}
-              >{`${space.title} > `}</h3>
-              <h3 style={{ fontSize: '20px', fontWeight: '600' }}>
+              >
+                {`${space.title} > `}
+                <span>&nbsp;</span>
+              </h3>
+              <h3
+                className='animation-title'
+                style={{ fontSize: '20px', fontWeight: '400' }}
+              >
                 {club.title.length > 15
                   ? `${club.title.slice(0, 50)}...`
                   : club.title}
@@ -328,7 +335,7 @@ const SingleClubPageWrapper = styled.section`
   .info h1 {
     font-size: 20px;
     color: #468aef;
-    font-weight: 600;
+    font-weight: 400;
   }
   .basic-info {
     border: 1px solid #c4c4c4;
@@ -347,13 +354,13 @@ const SingleClubPageWrapper = styled.section`
   .basic-info form div label {
     color: #c4c4c4;
     font-size: 16px;
-    font-weight: 600;
+    font-weight: 400;
     width: 100px;
   }
   .basic-info form div input {
     border: none;
     font-size: 14px;
-    font-weight: 600;
+    font-weight: 400;
     outline: none;
   }
   .basic-info form div input:hover {
@@ -366,7 +373,7 @@ const SingleClubPageWrapper = styled.section`
   }
   .resources .heading {
     font-size: 20px;
-    font-weight: 600;
+    font-weight: 400;
   }
   .resources-container {
     display: grid;
@@ -378,7 +385,7 @@ const SingleClubPageWrapper = styled.section`
     align-items: center;
     gap: 20px;
     font-size: 16px;
-    font-weight: 600;
+    font-weight: 400;
     color: #468aef;
     padding: 20px 20px;
     background: #f2f4f8;
@@ -399,5 +406,18 @@ const SingleClubPageWrapper = styled.section`
   .add-new-resource {
     border: 1px solid #468aef;
     box-shadow: none;
+  }
+  .animation-title {
+    animation: slide-in 0.5s ease-in-out;
+  }
+  @keyframes slide-in {
+    0% {
+      transform: translateX(-100%);
+      z-index: -1;
+    }
+    100% {
+      transform: translateX(0%);
+      z-index: 1;
+    }
   }
 `

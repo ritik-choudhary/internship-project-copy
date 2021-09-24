@@ -4,9 +4,10 @@ import { RiArrowGoBackFill } from 'react-icons/ri'
 import Sidebar from '../Components/Sidebar'
 import styled from 'styled-components'
 import { useParams, Link } from 'react-router-dom'
-import LibraryPage from '../Components/LibraryPage'
-import NewSemester from '../Components/NewSemesterPage'
-import CollegeClubs from '../Components/CollegeClubs'
+import LibraryPage from '../Components/SpacePages/LibraryPage'
+import NewSemester from '../Components/SpacePages/NewSemesterPage'
+import CollegeClubs from '../Components/SpacePages/CollegeClubs'
+import Moodboards from '../Components/SpacePages/Moodboards'
 import { FaBell } from 'react-icons/fa'
 
 export default function SpaceContent() {
@@ -41,16 +42,21 @@ export default function SpaceContent() {
                         <h3
                           style={{
                             fontSize: '20px',
-                            fontWeight: '600',
+                            fontWeight: '400',
                             color: '#c4c4c4',
                           }}
-                        >{`My Workspace > ${
-                          heading.length > 15
-                            ? `${heading.slice(0, 15)}...`
-                            : heading
-                        } > `}</h3>
-                        <h3 style={{ fontSize: '20px', fontWeight: '600' }}>
-                          {' '}
+                        >
+                          {`My Workspace > ${
+                            heading.length > 15
+                              ? `${heading.slice(0, 15)}...`
+                              : heading
+                          } > `}
+                          <span>&nbsp;</span>
+                        </h3>
+                        <h3
+                          className='animation-title'
+                          style={{ fontSize: '20px', fontWeight: '400' }}
+                        >
                           {subheading}
                         </h3>
                       </div>
@@ -71,6 +77,9 @@ export default function SpaceContent() {
                 }
                 if (page === 'College Clubs') {
                   return <CollegeClubs />
+                }
+                if (page === 'Moodboards') {
+                  return <Moodboards />
                 }
               }}
             </WorkspaceConsumer>
@@ -151,5 +160,18 @@ const SpaceContentWrapper = styled.section`
   }
   .space-title-container .title div {
     display: flex;
+  }
+  .animation-title {
+    animation: slide-in 0.5s ease-in-out;
+  }
+  @keyframes slide-in {
+    0% {
+      transform: translateX(-100%);
+      z-index: -1;
+    }
+    100% {
+      transform: translateX(0%);
+      z-index: 1;
+    }
   }
 `

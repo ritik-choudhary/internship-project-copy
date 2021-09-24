@@ -157,22 +157,22 @@ class WorkspaceProvider extends Component {
     })
   }
 
-  handleClubInfo = (id, key, clubId, info) => {
-    const oldList = [...this.state.workspaceElements]
-    let element = oldList.find(
-      (item) => item.id === key && item.workspaceID === id
-    )
-    let clubElement = element.clubs.find((item) => item.id === clubId)
-    clubElement.basicInfo = clubElement.basicInfo || {}
-    clubElement.basicInfo = {
-      createdBy: info.createdBy,
-      members: info.members,
-      mission: info.mission,
-    }
-    this.setState(() => {
-      return { workspaceElements: oldList }
-    })
-  }
+  // handleClubInfo = (id, key, clubId, info) => {
+  //   const oldList = [...this.state.workspaceElements]
+  //   let element = oldList.find(
+  //     (item) => item.id === key && item.workspaceID === id
+  //   )
+  //   let clubElement = element.clubs.find((item) => item.id === clubId)
+  //   clubElement.basicInfo = clubElement.basicInfo || {}
+  //   clubElement.basicInfo = {
+  //     createdBy: info.createdBy,
+  //     members: info.members,
+  //     mission: info.mission,
+  //   }
+  //   this.setState(() => {
+  //     return { workspaceElements: oldList }
+  //   })
+  // }
 
   addNewResource = (id, key, clubId, resource) => {
     const oldList = [...this.state.workspaceElements]
@@ -251,6 +251,8 @@ class WorkspaceProvider extends Component {
     taskElement.title = task.title
     taskElement.createdOn = task.createdOn
     taskElement.dueDate = task.dueDate
+    taskElement.links = task.links
+    taskElement.pdfList = task.pdfList
     taskElement.description = task.description
 
     this.setState(() => {
@@ -294,6 +296,7 @@ class WorkspaceProvider extends Component {
     meetingElement.type = newMeeting.type
     meetingElement.participants = newMeeting.participants
     meetingElement.links = newMeeting.links
+    meetingElement.pdfList = newMeeting.pdfList
     meetingElement.note = newMeeting.note
 
     this.setState(() => {
@@ -350,6 +353,7 @@ class WorkspaceProvider extends Component {
     ideaElement.createdBy = newIdea.createdBy
     ideaElement.type = newIdea.type
     ideaElement.links = newIdea.links
+    ideaElement.pdfList = newIdea.pdfList
     ideaElement.note = newIdea.note
 
     this.setState(() => {
@@ -493,6 +497,113 @@ class WorkspaceProvider extends Component {
     })
   }
 
+  addNewMoodboard = (id, key, moodboard) => {
+    const oldList = [...this.state.workspaceElements]
+    let element = oldList.find(
+      (item) => item.id === key && item.workspaceID === id
+    )
+    element.moodboards = element.moodboards || []
+    element.moodboards = [...element.moodboards, moodboard]
+    this.setState(() => {
+      return { workspaceElements: oldList }
+    })
+  }
+
+  addNewDigitalBrainboard = (id, key, digitalBrainboard) => {
+    const oldList = [...this.state.workspaceElements]
+    let element = oldList.find(
+      (item) => item.id === key && item.workspaceID === id
+    )
+    element.digitalBrainboards = element.digitalBrainboards || []
+    element.digitalBrainboards = [
+      ...element.digitalBrainboards,
+      digitalBrainboard,
+    ]
+    this.setState(() => {
+      return { workspaceElements: oldList }
+    })
+  }
+
+  deleteMoodboard = (id, key, moodboardId) => {
+    const oldList = [...this.state.workspaceElements]
+    let element = oldList.find(
+      (item) => item.id === key && item.workspaceID === id
+    )
+    const newMoodboardList = element.moodboards.filter(
+      (item) => item.id !== moodboardId
+    )
+    element.moodboards = newMoodboardList
+    this.setState(() => {
+      return { workspaceElements: oldList }
+    })
+  }
+
+  deleteDigitalBrainboard = (id, key, digitalBrainboardId) => {
+    const oldList = [...this.state.workspaceElements]
+    let element = oldList.find(
+      (item) => item.id === key && item.workspaceID === id
+    )
+    const newBrainboardList = element.digitalBrainboards.filter(
+      (item) => item.id !== digitalBrainboardId
+    )
+    element.digitalBrainboards = newBrainboardList
+    this.setState(() => {
+      return { workspaceElements: oldList }
+    })
+  }
+
+  editDigitalBrainboard = (id, key, digitalBrainboardId, brainboard) => {
+    const oldList = [...this.state.workspaceElements]
+    let element = oldList.find(
+      (item) => item.id === key && item.workspaceID === id
+    )
+    let brainboardElement = element.digitalBrainboards.find(
+      (item) => item.id === digitalBrainboardId
+    )
+    brainboardElement.createdBy = brainboard.createdBy
+    brainboardElement.tags = brainboard.tags
+    brainboardElement.subject = brainboard.subject
+    brainboardElement.links = brainboard.links
+    this.setState(() => {
+      return { workspaceElements: oldList }
+    })
+  }
+
+  addMoodboardField = (id, key, moodboardId, moodboardField) => {
+    const oldList = [...this.state.workspaceElements]
+    let element = oldList.find(
+      (item) => item.id === key && item.workspaceID === id
+    )
+    let moodboardElement = element.moodboards.find(
+      (item) => item.id === moodboardId
+    )
+    moodboardElement.moodboardFields = moodboardElement.moodboardFields || []
+    moodboardElement.moodboardFields = [
+      ...moodboardElement.moodboardFields,
+      moodboardField,
+    ]
+    this.setState(() => {
+      return { workspaceElements: oldList }
+    })
+  }
+
+  deleteMoodboardField = (id, key, moodboardId, fieldId) => {
+    const oldList = [...this.state.workspaceElements]
+    let element = oldList.find(
+      (item) => item.id === key && item.workspaceID === id
+    )
+    let moodboardElement = element.moodboards.find(
+      (item) => item.id === moodboardId
+    )
+    let newFieldsList = moodboardElement.moodboardFields.filter(
+      (item) => item.id !== fieldId
+    )
+    moodboardElement.moodboardFields = newFieldsList
+    this.setState(() => {
+      return { workspaceElements: oldList }
+    })
+  }
+
   render() {
     return (
       <WorkspaceContext.Provider
@@ -512,7 +623,6 @@ class WorkspaceProvider extends Component {
           addNewClub: this.addNewClub,
           deleteClub: this.deleteClub,
           addNewResource: this.addNewResource,
-          handleClubInfo: this.handleClubInfo,
           addTask: this.addTask,
           taskManipulation: this.taskManipulation,
           deleteTask: this.deleteTask,
@@ -529,6 +639,13 @@ class WorkspaceProvider extends Component {
           addNewContact: this.addNewContact,
           editContact: this.editContact,
           deleteContact: this.deleteContact,
+          addNewMoodboard: this.addNewMoodboard,
+          addNewDigitalBrainboard: this.addNewDigitalBrainboard,
+          deleteMoodboard: this.deleteMoodboard,
+          deleteDigitalBrainboard: this.deleteDigitalBrainboard,
+          editDigitalBrainboard: this.editDigitalBrainboard,
+          addMoodboardField: this.addMoodboardField,
+          deleteMoodboardField: this.deleteMoodboardField,
         }}
       >
         {this.props.children}

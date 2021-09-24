@@ -2,10 +2,10 @@ import React from 'react'
 import styled from 'styled-components'
 import { AiOutlinePlus } from 'react-icons/ai'
 import { Switch, Route, Link, useParams } from 'react-router-dom'
-import LibraryModal from '../Components/LibraryModal'
-import { WorkspaceConsumer } from '../Context'
+import LibraryModal from '../LibraryModal'
+import { WorkspaceConsumer } from '../../Context'
 import { RiDeleteBin6Line } from 'react-icons/ri'
-import PdfModal from './PdfModal'
+import PdfModal from '../PdfModal'
 
 export default function LibraryPage() {
   const param = useParams()
@@ -293,7 +293,7 @@ const LibraryPageWrapper = styled.section`
   .my-favourites,
   .book-shelf {
     font-size: 20px;
-    font-weight: 600;
+    font-weight: 400;
     color: #105eee;
   }
   .add-new {

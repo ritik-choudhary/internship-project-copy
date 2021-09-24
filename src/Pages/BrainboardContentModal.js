@@ -1,28 +1,29 @@
 import React, { useState, useEffect } from 'react'
 import Modal from 'react-modal'
 import { useParams, Link, useHistory } from 'react-router-dom'
-import { FaUpload } from 'react-icons/fa'
 import {
   AiFillCloseCircle,
   AiOutlinePlus,
   AiOutlineClose,
 } from 'react-icons/ai'
-import { WorkspaceConsumer } from '../../Context'
-import TextEditor from '../TextEditor'
+import { WorkspaceConsumer } from '../Context'
 
-export default function IdeaModal(props) {
+export default function BrainboardContentModal(props) {
   return (
     <WorkspaceConsumer>
       {(value) => {
         return (
-          <IdeaModalComponent value={value} {...props}></IdeaModalComponent>
+          <BrainboardModalComponent
+            value={value}
+            {...props}
+          ></BrainboardModalComponent>
         )
       }}
     </WorkspaceConsumer>
   )
 }
 
-function IdeaModalComponent(props) {
+function BrainboardModalComponent(props) {
   const { value, isEditing } = props
 
   const date = `${new Date().getDate()}/${
@@ -36,45 +37,37 @@ function IdeaModalComponent(props) {
   const history = useHistory()
 
   const [title, setTitle] = useState()
-  const [createdOn, setCreatedOn] = useState(date)
+
   const [createdBy, setCreatedBy] = useState()
-  const [type, setType] = useState()
+  const [createdOn, setCreatedOn] = useState(date)
+  const [tags, setTags] = useState()
+  const [subject, setSubject] = useState()
   const [linkToAdd, setLinkToAdd] = useState()
   const [links, setLinks] = useState([])
-  const [pdfList, setPdfList] = useState([])
-  const [pdfPreview, setPdfPreview] = useState([])
+  //   const [pdfList, setPdfList] = useState([])
+  //   const [pdfPreview, setPdfPreview] = useState([])
 
-  const [ideaToEdit, setIdeaToEdit] = useState()
-
-  const [textNote, setTextNote] = useState([
-    {
-      type: 'paragraph',
-      children: [{ text: '' }],
-    },
-  ])
+  const [brainboardToEdit, setBrainboardToEdit] = useState()
 
   useEffect(() => {
     if (isEditing) {
       const selectedSpace = value.workspaceElements.find(
         (item) => item.id === param.spaceKey && item.workspaceID === param.id
       )
-      const selectedClub = selectedSpace.clubs.find(
-        (item) => item.id === param.clubID
+      const selectedBrainboard = selectedSpace.digitalBrainboards.find(
+        (item) => item.id === param.brainboardID
       )
-      const selectedResource = selectedClub.resources.find(
-        (item) => item.id === param.resourceID
-      )
-      const selectedIdea = selectedResource.ideas.find(
-        (item) => item.id === param.ideaID
-      )
-      setIdeaToEdit(selectedIdea)
-      setTitle(selectedIdea.title)
-      setCreatedOn(selectedIdea.createdOn)
-      setCreatedBy(selectedIdea.createdBy)
-      setType(selectedIdea.type)
-      setLinks(selectedIdea.links)
-      setPdfList(selectedIdea.pdfList)
-      setTextNote(selectedIdea.note)
+
+      console.log(selectedBrainboard)
+
+      setBrainboardToEdit(selectedBrainboard)
+      setTitle(selectedBrainboard.title)
+      setCreatedOn(selectedBrainboard.createdOn)
+      setCreatedBy(selectedBrainboard.createdBy)
+      setTags(selectedBrainboard.tags)
+      setSubject(selectedBrainboard.subject)
+      setLinks(selectedBrainboard.links)
+      //   setPdfList(selectedBrainboard.pdfList)
     }
   }, [
     isEditing,
@@ -86,23 +79,23 @@ function IdeaModalComponent(props) {
     value.workspaceElements,
   ])
 
-  useEffect(() => {
-    if (pdfList) {
-      setPdfPreview([])
-      pdfList.forEach((pdf) => {
-        const reader = new FileReader()
-        reader.onloadend = () => {
-          setPdfPreview((pdfPreview) => [
-            ...pdfPreview,
-            { previewId: pdf.pdfId, source: reader.result },
-          ])
-        }
-        reader.readAsDataURL(pdf.pdfFile)
-      })
-    } else {
-      setPdfPreview([])
-    }
-  }, [pdfList])
+  //   useEffect(() => {
+  //     if (pdfList) {
+  //       setPdfPreview([])
+  //       pdfList.forEach((pdf) => {
+  //         const reader = new FileReader()
+  //         reader.onloadend = () => {
+  //           setPdfPreview((pdfPreview) => [
+  //             ...pdfPreview,
+  //             { previewId: pdf.pdfId, source: reader.result },
+  //           ])
+  //         }
+  //         reader.readAsDataURL(pdf.pdfFile)
+  //       })
+  //     } else {
+  //       setPdfPreview([])
+  //     }
+  //   }, [pdfList])
 
   return (
     <Modal
@@ -133,9 +126,7 @@ function IdeaModalComponent(props) {
           padding: '12px 30px',
         }}
       >
-        <Link
-          to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}`}
-        >
+        <Link to={`/workspace/${param.id}/details/${param.spaceKey}/inside`}>
           <AiFillCloseCircle
             style={{
               fontSize: '30px',
@@ -154,49 +145,25 @@ function IdeaModalComponent(props) {
         onSubmit={(e) => {
           e.preventDefault()
           if (isEditing) {
-            const idea = {
+            const brainBoardContent = {
               title: title,
               createdOn: createdOn,
               createdBy: createdBy,
-              type: type,
+              tags: tags,
+              subject: subject,
               links: links,
-              pdfList: pdfList,
-              note: textNote,
             }
-            value.editIdea(
+            value.editDigitalBrainboard(
               param.id,
               param.spaceKey,
-              param.clubID,
-              param.resourceID,
-              ideaToEdit.id,
-
-              idea
-            )
-          } else {
-            const idea = {
-              id: new Date().getTime().toString(),
-              title: title,
-              createdOn: createdOn,
-              createdBy: createdBy,
-              type: type,
-              links: links,
-              pdfList: pdfList,
-              note: textNote,
-            }
-            value.addNewIdea(
-              param.id,
-              param.spaceKey,
-              param.clubID,
-              param.resourceID,
-              idea
+              brainboardToEdit.id,
+              brainBoardContent
             )
           }
-          history.push(
-            `/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}`
-          )
+          history.push(`/workspace/${param.id}/details/${param.spaceKey}`)
         }}
       >
-        <div className='idea-note-name' style={{ paddingBottom: '20px' }}>
+        <div className='brainboard-note-name' style={{ paddingBottom: '20px' }}>
           <input
             autoFocus
             required
@@ -233,14 +200,25 @@ function IdeaModalComponent(props) {
             />
           </div>
           <div className='single-option'>
-            <label htmlFor='type'>Type</label>
+            <label htmlFor='tags'>Tags</label>
             <input
               type='text'
-              name='type'
-              id='type'
-              value={type}
-              className={type ? '' : 'skeleton'}
-              onChange={(e) => setType(e.target.value)}
+              name='tags'
+              id='tags'
+              value={tags}
+              className={tags ? '' : 'skeleton'}
+              onChange={(e) => setTags(e.target.value)}
+            />
+          </div>
+          <div className='single-option'>
+            <label htmlFor='subject'>Subject</label>
+            <input
+              type='text'
+              name='subject'
+              id='subject'
+              value={subject}
+              className={subject ? '' : 'skeleton'}
+              onChange={(e) => setSubject(e.target.value)}
             />
           </div>
 
@@ -281,7 +259,7 @@ function IdeaModalComponent(props) {
           <div
             className='links-container'
             style={{
-              display: `${links.length > 0 ? 'grid' : 'none'}`,
+              display: `${links?.length > 0 ? 'grid' : 'none'}`,
               gap: '5px',
               gridTemplateColumns: 'repeat(15,1fr)',
               marginLeft: '132px',
@@ -290,7 +268,7 @@ function IdeaModalComponent(props) {
               overflowX: 'hidden',
             }}
           >
-            {links.map((item) => {
+            {links?.map((item) => {
               count++
               return (
                 <div
@@ -325,7 +303,7 @@ function IdeaModalComponent(props) {
               )
             })}
           </div>
-          <div className='single-option'>
+          {/* <div className='single-option'>
             <label htmlFor='pdf'>Pdf</label>
             <input
               type='file'
@@ -374,7 +352,7 @@ function IdeaModalComponent(props) {
           <div
             className='pdf-container'
             style={{
-              display: `${pdfList.length > 0 ? 'grid' : 'none'}`,
+              display: `${pdfList?.length > 0 ? 'grid' : 'none'}`,
               gridTemplateColumns: 'repeat(15,1fr)',
               maxHeight: '50px',
               fontSize: '14px',
@@ -383,7 +361,7 @@ function IdeaModalComponent(props) {
               marginLeft: '132px',
             }}
           >
-            {pdfList.map((pdf) => {
+            {pdfList?.map((pdf) => {
               const linkToPdf = pdfPreview.find(
                 (item) => item.previewId === pdf.pdfId
               )
@@ -429,9 +407,9 @@ function IdeaModalComponent(props) {
                 </Link>
               )
             })}
-          </div>
+          </div> */}
         </div>
-        <TextEditor textNote={textNote} setTextNote={setTextNote} />
+
         <div
           className='save-btn'
           style={{ display: 'flex', justifyContent: 'flex-end' }}

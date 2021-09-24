@@ -1,36 +1,36 @@
 import React, { useState, useEffect } from 'react'
 import Modal from 'react-modal'
 import { AiOutlineClose } from 'react-icons/ai'
-import { FaCheckCircle } from 'react-icons/fa'
-import { useParams, Link, useHistory } from 'react-router-dom'
 import { WorkspaceConsumer } from '../Context'
+import { useParams, Link, useHistory } from 'react-router-dom'
+import { FaCheckCircle } from 'react-icons/fa'
 
-export default function LibraryModal(props) {
-  const { favourite } = props
+export default function MoodboardModal() {
+  const [moodboardName, setMoodboardName] = useState('')
+  const [thumbnail, setThumbnail] = useState()
+  const [preview, setPreview] = useState()
+
   const param = useParams()
   const history = useHistory()
-  const [bookLink, setBookLink] = useState()
-  const [pdf, setPdf] = useState()
-  const [pdfPreview, setPdfPreview] = useState()
 
   useEffect(() => {
-    if (pdf) {
+    if (thumbnail) {
       const reader = new FileReader()
       reader.onloadend = () => {
-        setPdfPreview(reader.result)
+        setPreview(reader.result)
       }
-      reader.readAsDataURL(pdf)
+      reader.readAsDataURL(thumbnail)
     } else {
-      setPdfPreview(null)
+      setPreview(null)
     }
-  }, [pdf])
+  }, [thumbnail])
 
   return (
     <Modal
       isOpen={true}
       style={{
         content: {
-          width: '519px',
+          width: '520px',
           top: '50%',
           left: '50%',
           right: 'auto',
@@ -62,7 +62,7 @@ export default function LibraryModal(props) {
             fontWeight: '700',
           }}
         >
-          Add new space
+          Add new Moodboard
         </h3>
         <Link to={`/workspace/${param.id}/details/${param.spaceKey}`}>
           <AiOutlineClose
@@ -79,156 +79,101 @@ export default function LibraryModal(props) {
           return (
             <form
               style={{
-                padding: '20px 32px',
                 width: '100%',
                 display: 'flex',
                 flexDirection: 'column',
-                gap: '32px',
+                gap: '30px',
+                padding: '22px 32px',
               }}
               onSubmit={(e) => {
                 e.preventDefault()
-                if (favourite) {
-                  if (bookLink) {
-                    value.addBook(
-                      {
-                        favourite: true,
-                        link: bookLink,
-                        id: new Date().getTime().toString(),
-                      },
-                      param.id,
-                      param.spaceKey
-                    )
-                  }
-                  if (pdf) {
-                    value.addBook(
-                      {
-                        favourite: true,
-                        pdf: pdf,
-                        preview: pdfPreview,
-                        id: new Date().getTime().toString(),
-                      },
-                      param.id,
-                      param.spaceKey
-                    )
-                  }
-                  history.push(
-                    `/workspace/${param.id}/details/${param.spaceKey}`
-                  )
-                } else {
-                  if (bookLink) {
-                    value.addBook(
-                      {
-                        favourite: false,
-                        link: bookLink,
-                        id: new Date().getDate().toString(),
-                      },
-                      param.id,
-                      param.spaceKey
-                    )
-                  }
-                  if (pdf) {
-                    value.addBook(
-                      {
-                        favourite: false,
-                        pdf: pdf,
-                        preview: pdfPreview,
-                        id: new Date().getDate().toString(),
-                      },
-                      param.id,
-                      param.spaceKey
-                    )
-                  }
+                if (moodboardName) {
+                  const date = new Date()
+                  const day = date.getDate()
+                  const month = date.getMonth() + 1
+                  const year = date.getFullYear()
+                  value.addNewMoodboard(param.id, param.spaceKey, {
+                    id: new Date().getTime().toString(),
+                    createdOn: `${day}/${month}/${year}`,
+                    title: moodboardName,
+                    image: preview,
+                  })
+                  setMoodboardName('')
+
                   history.push(
                     `/workspace/${param.id}/details/${param.spaceKey}`
                   )
                 }
               }}
             >
-              <div
-                style={{ display: 'flex', flexDirection: 'column', gap: '7px' }}
-              >
+              <div style={{ display: 'flex', flexDirection: 'column' }}>
                 <label
-                  htmlFor='book-link'
+                  htmlFor='name'
                   style={{
                     color: '#959595',
                     fontSize: '12px',
-                    fontWeight: '500',
+                    marginBottom: '5px',
                   }}
                 >
-                  Embed ebook link
+                  Name of the Moodboard
                 </label>
                 <input
-                  type='url'
-                  name='book-link'
-                  id='book-link'
-                  value={bookLink}
+                  autoFocus
+                  required
+                  type='text'
+                  name='club'
+                  id='name'
                   style={{
-                    height: '32px',
-                    border: '1px solid #C4C4C4',
                     borderRadius: '5px',
-                    fontSize: '16px',
-                    padding: '5px 10px',
+                    height: '32px',
                     outline: 'none',
+                    border: '1px solid #C4C4C4',
+                    fontSize: '16px',
+                    padding: '3px 8px',
                   }}
-                  onChange={(e) => {
-                    setBookLink(e.target.value)
-                  }}
-                  disabled={pdf ? true : false}
+                  value={moodboardName}
+                  onChange={(e) => setMoodboardName(e.target.value)}
                 />
               </div>
-              <p
-                style={{
-                  textAlign: 'center',
-                  margin: '-10px 0px',
-                  color: '#FF0000',
-                }}
-              >
-                OR
-              </p>
-              <div
-                style={{ display: 'flex', flexDirection: 'column', gap: '7px' }}
-              >
+              <div style={{ display: 'flex', flexDirection: 'column' }}>
                 <label
-                  htmlFor='upload-pdf'
+                  htmlFor='thumbnail'
                   style={{
                     color: '#959595',
                     fontSize: '12px',
-                    fontWeight: '500',
+                    marginBottom: '5px',
                   }}
                 >
-                  Upload pdf
+                  Thumbnail image
                 </label>
+
                 <input
                   type='file'
-                  name='upload-pdf'
-                  id='upload-pdf'
-                  accept='.pdf'
+                  name='club'
+                  id='thumbnail'
+                  accept='image/*'
                   hidden
-                  onChange={(e) => setPdf(e.target.files[0])}
-                  disabled={bookLink ? true : false}
+                  onChange={(e) => setThumbnail(e.target.files[0])}
                 />
-                <label htmlFor='upload-pdf'>
-                  <div
+                <label htmlFor='thumbnail'>
+                  <span
+                    className='custom-thumbnail-btn'
                     style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
+                      background: 'none',
                       borderRadius: '5px',
                       border: '1px dashed #468AEF',
-                      height: '32px',
+                      color: '#468AEF',
+                      fontSize: '16px',
+                      fontWeight: '500',
                       cursor: 'pointer',
+                      outline: 'none',
+                      display: 'block',
+                      textAlign: 'center',
+                      padding: '5px',
                     }}
                   >
-                    <p
-                      style={{
-                        color: '#468AEF',
-                        fontSize: '12px',
-                        fontWeight: '500',
-                      }}
-                    >
-                      Upload pdf
-                    </p>
-                  </div>
+                    Upload image
+                  </span>
                 </label>
                 <div
                   style={{
@@ -239,8 +184,8 @@ export default function LibraryModal(props) {
                     gap: '10px',
                   }}
                 >
-                  {pdf ? 'File selected' : ''}
-                  {pdf ? <FaCheckCircle /> : null}
+                  {thumbnail ? 'File selected' : ''}
+                  {thumbnail ? <FaCheckCircle /> : null}
                 </div>
               </div>
               <div

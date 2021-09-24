@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import Modal from 'react-modal'
 import { useParams, Link, useHistory } from 'react-router-dom'
-import { FaCheckSquare } from 'react-icons/fa'
-import { AiFillCloseCircle, AiOutlinePlus } from 'react-icons/ai'
+import { FaUpload } from 'react-icons/fa'
+import {
+  AiFillCloseCircle,
+  AiOutlinePlus,
+  AiOutlineClose,
+} from 'react-icons/ai'
 import { WorkspaceConsumer } from '../../Context'
 import TextEditor from '../TextEditor'
 
@@ -23,19 +27,25 @@ export default function MeetingModal(props) {
 
 function MeetingModalComponent(props) {
   const { value, isEditing } = props
+  const date = `${new Date().getDate()}/${
+    new Date().getMonth() + 1
+  }/${new Date().getFullYear()}`
 
   let count = 0
+  let pdfCount = 0
 
   const param = useParams()
   const history = useHistory()
 
   const [title, setTitle] = useState()
-  const [createdOn, setCreatedOn] = useState()
+  const [createdOn, setCreatedOn] = useState(date)
   const [createdBy, setCreatedBy] = useState()
   const [type, setType] = useState()
   const [participants, setParticipants] = useState()
   const [linkToAdd, setLinkToAdd] = useState()
   const [links, setLinks] = useState([])
+  const [pdfList, setPdfList] = useState([])
+  const [pdfPreview, setPdfPreview] = useState([])
   const [textNote, setTextNote] = useState([
     {
       type: 'paragraph',
@@ -66,6 +76,7 @@ function MeetingModalComponent(props) {
       setType(selectedMeeting.type)
       setParticipants(selectedMeeting.participants)
       setLinks(selectedMeeting.links)
+      setPdfList(selectedMeeting.pdfList)
       setTextNote(selectedMeeting.note)
     }
   }, [
@@ -77,6 +88,24 @@ function MeetingModalComponent(props) {
     param.meetingID,
     value.workspaceElements,
   ])
+
+  useEffect(() => {
+    if (pdfList) {
+      setPdfPreview([])
+      pdfList.forEach((pdf) => {
+        const reader = new FileReader()
+        reader.onloadend = () => {
+          setPdfPreview((pdfPreview) => [
+            ...pdfPreview,
+            { previewId: pdf.pdfId, source: reader.result },
+          ])
+        }
+        reader.readAsDataURL(pdf.pdfFile)
+      })
+    } else {
+      setPdfPreview([])
+    }
+  }, [pdfList])
 
   return (
     <Modal
@@ -135,6 +164,8 @@ function MeetingModalComponent(props) {
               type: type,
               participants: participants,
               links: links,
+              pdfList: pdfList,
+
               note: textNote,
             }
             value.editMeeting(
@@ -154,6 +185,7 @@ function MeetingModalComponent(props) {
               type: type,
               participants: participants,
               links: links,
+              pdfList: pdfList,
               note: textNote,
             }
             value.addNewMeeting(
@@ -192,13 +224,7 @@ function MeetingModalComponent(props) {
         <div className='meeting-basic-info'>
           <div className='single-option'>
             <label htmlFor='created-on'>Created on</label>
-            <input
-              type='date'
-              name='created-on'
-              id='created-on'
-              value={createdOn}
-              onChange={(e) => setCreatedOn(e.target.value)}
-            />
+            <p style={{ fontSize: '14px', color: '#468AEF' }}>{createdOn}</p>
           </div>
           <div className='single-option'>
             <label htmlFor='created-by'>Created by</label>
@@ -268,9 +294,13 @@ function MeetingModalComponent(props) {
           <div
             className='links-container'
             style={{
-              display: 'grid',
+              display: `${links.length > 0 ? 'grid' : 'none'}`,
               gap: '5px',
-              gridTemplateColumns: 'repeat(5,1fr)',
+              gridTemplateColumns: 'repeat(15,1fr)',
+              marginLeft: '132px',
+              maxHeight: '60px',
+              overflow: 'scroll',
+              overflowX: 'hidden',
             }}
           >
             {links.map((item) => {
@@ -285,6 +315,9 @@ function MeetingModalComponent(props) {
                     width: '60px',
                     height: '20px',
                     background: '#C8E1FF',
+                    borderRadius: '5px',
+                    fontSize: '12px',
+                    gap: '5px',
                   }}
                   key={count}
                 >
@@ -292,11 +325,121 @@ function MeetingModalComponent(props) {
                     href={item}
                     target='_blank'
                     rel='noreferrer noopener'
-                    style={{ color: 'black' }}
+                    style={{
+                      color: 'black',
+                      fontSize: '12px',
+                      fontWeight: '400',
+                    }}
                   >
                     Link {count}
                   </a>
+                  <AiOutlineClose style={{ color: '#f54848' }} />
                 </div>
+              )
+            })}
+          </div>
+          <div className='single-option'>
+            <label htmlFor='pdf'>Pdf</label>
+            <input
+              type='file'
+              name='pdf'
+              id='pdf'
+              hidden
+              accept='.pdf'
+              onChange={(e) => {
+                setPdfList([
+                  ...pdfList,
+                  {
+                    pdfId: new Date().getTime().toString(),
+                    pdfFile: e.target.files[0],
+                  },
+                ])
+              }}
+            />
+            <label htmlFor='pdf'>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  borderRadius: '5px',
+                  border: '1px dashed #468AEF',
+                  height: '32px',
+                  cursor: 'pointer',
+                }}
+              >
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '10px',
+                    color: '#468AEF',
+                    fontSize: '12px',
+                    fontWeight: '500',
+                  }}
+                >
+                  <FaUpload />
+                  Upload pdf
+                </div>
+              </div>
+            </label>
+          </div>
+          <div
+            className='pdf-container'
+            style={{
+              display: `${pdfList.length > 0 ? 'grid' : 'none'}`,
+              gridTemplateColumns: 'repeat(15,1fr)',
+              maxHeight: '50px',
+              fontSize: '14px',
+              overflow: 'scroll',
+              overflowX: 'hidden',
+              marginLeft: '132px',
+            }}
+          >
+            {pdfList.map((pdf) => {
+              const linkToPdf = pdfPreview.find(
+                (item) => item.previewId === pdf.pdfId
+              )
+              pdfCount++
+              return (
+                <Link
+                  to={{
+                    pathname: `/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/addmeeting/readpdf`,
+                    state: { src: linkToPdf?.source },
+                  }}
+                  key={pdf.pdfId}
+                  onClick={(e) => {
+                    if (!isEditing) {
+                      e.preventDefault()
+                    }
+                  }}
+                >
+                  <div
+                    className='pdf-file'
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      width: '60px',
+                      height: '20px',
+                      background: '#C8E1FF',
+                      borderRadius: '5px',
+                      fontSize: '12px',
+                      gap: '5px',
+                    }}
+                  >
+                    <p
+                      style={{
+                        color: 'black',
+                        fontSize: '12px',
+                        fontWeight: '400',
+                      }}
+                    >
+                      Pdf {pdfCount}
+                    </p>
+                    <AiOutlineClose style={{ color: '#f54848' }} />
+                  </div>
+                </Link>
               )
             })}
           </div>
@@ -310,7 +453,7 @@ function MeetingModalComponent(props) {
             type='submit'
             style={{
               color: 'white',
-              background: '#1CA806',
+              background: '#0063FF',
               border: 'none',
               outline: 'none',
               padding: '10px 20px',
@@ -319,8 +462,7 @@ function MeetingModalComponent(props) {
             }}
           >
             <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-              <FaCheckSquare />
-              <p>Save and go</p>
+              <p>Save</p>
             </div>
           </button>
         </div>

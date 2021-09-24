@@ -6,11 +6,15 @@ import { WorkspaceConsumer } from '../../Context'
 import { RiDeleteBin6Line } from 'react-icons/ri'
 import { FiEdit } from 'react-icons/fi'
 import TasksModal from '../ResourceModals/TasksModal'
+import TaskPdfModal from '../ResourceModals/TaskPdfModal'
 
 export default function Tasks() {
   return (
     <TasksPageWrapper>
       <Switch>
+        <Route path='/workspace/:id/details/:spaceKey/insideclub/:clubID/resourcedata/:resourceID/addtask/readpdf'>
+          <TaskPdfModal />
+        </Route>
         <Route path='/workspace/:id/details/:spaceKey/insideclub/:clubID/resourcedata/:resourceID/edittask/:taskID'>
           <TasksModal isEditing />
         </Route>

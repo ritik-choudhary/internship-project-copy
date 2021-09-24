@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Modal from 'react-modal'
 import { useParams, Link, useHistory } from 'react-router-dom'
-import { FaCheckSquare } from 'react-icons/fa'
+
 import { AiOutlineClose, AiOutlinePlus } from 'react-icons/ai'
 import { WorkspaceConsumer } from '../../Context'
 
@@ -23,15 +23,20 @@ export default function ContactModal(props) {
 function ContactModalComponent(props) {
   const { value, isEditing } = props
 
+  const date = `${new Date().getDate()}/${
+    new Date().getMonth() + 1
+  }/${new Date().getFullYear()}`
+
   let count = 0
 
   const param = useParams()
   const history = useHistory()
 
   const [title, setTitle] = useState()
-  const [createdOn, setCreatedOn] = useState()
+  const [createdOn, setCreatedOn] = useState(date)
   const [createdBy, setCreatedBy] = useState()
   const [personName, setPersonName] = useState()
+  const [personNamesList, setPersonNamesList] = useState([])
   const [company, setCompany] = useState()
   const [personalDetails, setPersonalDetails] = useState()
   const [linkToAdd, setLinkToAdd] = useState()
@@ -126,7 +131,7 @@ function ContactModalComponent(props) {
               title: title,
               createdOn: createdOn,
               createdBy: createdBy,
-              personName: personName,
+              personNamesList: personNamesList,
               company: company,
               personalDetails: personalDetails,
               links: links,
@@ -145,7 +150,7 @@ function ContactModalComponent(props) {
               title: title,
               createdOn: createdOn,
               createdBy: createdBy,
-              personName: personName,
+              personNamesList: personNamesList,
               company: company,
               personalDetails: personalDetails,
               links: links,
@@ -186,13 +191,7 @@ function ContactModalComponent(props) {
         <div className='contact-basic-info'>
           <div className='single-option'>
             <label htmlFor='created-on'>Created on</label>
-            <input
-              type='date'
-              name='created-on'
-              id='created-on'
-              value={createdOn}
-              onChange={(e) => setCreatedOn(e.target.value)}
-            />
+            <p style={{ fontSize: '14px', color: '#468AEF' }}>{createdOn}</p>
           </div>
           <div className='single-option'>
             <label htmlFor='created-by'>Created by</label>
@@ -206,15 +205,74 @@ function ContactModalComponent(props) {
             />
           </div>
           <div className='single-option'>
-            <label htmlFor='personName'>Person Name</label>
-            <input
-              type='text'
-              name='personName'
-              id='personName'
-              value={personName}
-              className={personName ? '' : 'skeleton'}
-              onChange={(e) => setPersonName(e.target.value)}
-            />
+            <label htmlFor='person-name'>Person Name</label>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '5px',
+                justifyContent: 'flex-end',
+              }}
+            >
+              <input
+                type='text'
+                name='person-name'
+                id='person-name'
+                value={personName}
+                className={personName ? '' : 'skeleton'}
+                onChange={(e) => setPersonName(e.target.value)}
+              />
+
+              <div className='add-sponsor-btn'>
+                <AiOutlinePlus
+                  style={{
+                    width: '20px',
+                    height: '20px',
+                    border: '1px solid #468aef',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    borderRadius: '1px',
+                    color: '#468aef',
+                    marginLeft: '5px',
+                    cursor: 'pointer',
+                  }}
+                  onClick={(e) => {
+                    if (personName) {
+                      setPersonNamesList([...personNamesList, personName])
+                      setPersonName('')
+                    }
+                  }}
+                />
+              </div>
+            </div>
+          </div>
+          <div
+            className='person-names-list'
+            style={{
+              display: `${personNamesList.length > 0 ? 'flex' : 'none'}`,
+              flexDirection: 'column',
+              gap: '3px',
+              background: '#e4e4e4',
+              borderRadius: '3px',
+              maxHeight: '60px',
+
+              overflow: 'scroll',
+              overflowX: 'hidden',
+              padding: '3px 10px',
+              marginLeft: '179px',
+              marginRight: '10px',
+            }}
+          >
+            {personNamesList.map((item) => {
+              return (
+                <div className='single-sponsor'>
+                  <p style={{ fontSize: '12px' }}>
+                    {item.length > 20 ? `${item.slice(0, 20)}...` : item}
+                  </p>
+                </div>
+              )
+            })}
           </div>
           <div className='single-option'>
             <label htmlFor='company'>Company</label>
@@ -273,9 +331,13 @@ function ContactModalComponent(props) {
           <div
             className='links-container'
             style={{
-              display: 'grid',
+              display: `${links.length > 0 ? 'grid' : 'none'}`,
               gap: '5px',
-              gridTemplateColumns: 'repeat(5,1fr)',
+              gridTemplateColumns: 'repeat(3,1fr)',
+              marginLeft: '179px',
+              maxHeight: '40px',
+              overflow: 'scroll',
+              overflowX: 'hidden',
             }}
           >
             {links.map((item) => {
@@ -290,6 +352,9 @@ function ContactModalComponent(props) {
                     width: '60px',
                     height: '20px',
                     background: '#C8E1FF',
+                    borderRadius: '5px',
+                    fontSize: '12px',
+                    gap: '5px',
                   }}
                   key={count}
                 >
@@ -297,10 +362,15 @@ function ContactModalComponent(props) {
                     href={item}
                     target='_blank'
                     rel='noreferrer noopener'
-                    style={{ color: 'black' }}
+                    style={{
+                      color: 'black',
+                      fontSize: '12px',
+                      fontWeight: '400',
+                    }}
                   >
                     Link {count}
                   </a>
+                  <AiOutlineClose style={{ color: '#f54848' }} />
                 </div>
               )
             })}
@@ -315,7 +385,7 @@ function ContactModalComponent(props) {
             type='submit'
             style={{
               color: 'white',
-              background: '#1CA806',
+              background: '#0063FF',
               border: 'none',
               outline: 'none',
               padding: '10px 20px',
@@ -324,8 +394,7 @@ function ContactModalComponent(props) {
             }}
           >
             <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-              <FaCheckSquare />
-              <p>Save and go</p>
+              <p>Save</p>
             </div>
           </button>
         </div>

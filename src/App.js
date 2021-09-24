@@ -8,6 +8,8 @@ import Modal from 'react-modal'
 import Details from './Pages/Details'
 import SingleClubPage from './Pages/SingleClubPage'
 import ResourcePage from './Pages/ResourcePage'
+import SingleMoodboard from './Pages/SingleMoodboard'
+import BrainboardContentModal from './Pages/BrainboardContentModal'
 
 Modal.setAppElement('#root')
 
@@ -17,8 +19,15 @@ function App() {
       <Router>
         <Switch>
           <Route exact path='/' component={Dashboard}></Route>
+
           <Route path='/workspace/:id/details/:spaceKey/insideclub/:clubID/resourcedata/:resourceID'>
             <ResourcePage />
+          </Route>
+          <Route path='/workspace/:id/details/:spaceKey/insidemoodboard/:moodboardID'>
+            <SingleMoodboard />
+          </Route>
+          <Route path='/workspace/:id/details/:spaceKey/insidedigitalBrainboard/:brainboardID'>
+            <BrainboardContentModal isEditing />
           </Route>
           <Route path='/workspace/:id/details/:spaceKey/insideclub/:clubID'>
             <SingleClubPage />
