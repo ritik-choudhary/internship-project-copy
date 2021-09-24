@@ -16,7 +16,6 @@ export default function MoodboardElementModal() {
   const [linksList, setLinksList] = useState([])
   const [linkToAdd, setLinkToAdd] = useState()
   const [video, setVideo] = useState()
-  const [videoPreview, setVideoPreview] = useState()
 
   useEffect(() => {
     if (image) {

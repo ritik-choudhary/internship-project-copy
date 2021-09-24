@@ -31,7 +31,6 @@ function BrainboardModalComponent(props) {
   }/${new Date().getFullYear()}`
 
   let count = 0
-  let pdfCount = 0
 
   const param = useParams()
   const history = useHistory()
@@ -73,10 +72,8 @@ function BrainboardModalComponent(props) {
     isEditing,
     param.id,
     param.spaceKey,
-    param.clubID,
-    param.resourceID,
-    param.ideaID,
     value.workspaceElements,
+    param.brainboardID,
   ])
 
   //   useEffect(() => {
