@@ -116,8 +116,7 @@ const IdeasWrapper = styled.section`
     height: 56px;
     background: #f2f4f8;
     border: 1px solid #468aef;
-    box-sizing: border-box;
-    border-radius: 10px;
+    border-radius: 6px;
   }
   .ideas-card {
     display: flex;
@@ -127,8 +126,7 @@ const IdeasWrapper = styled.section`
     padding: 20px 25px;
     height: 56px;
     background: #f2f4f8;
-    box-sizing: border-box;
-    border-radius: 10px;
+    border-radius: 6px;
   }
   .card-info {
     display: flex;

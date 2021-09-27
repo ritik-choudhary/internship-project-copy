@@ -87,6 +87,7 @@ export default function MoodboardModal() {
               }}
               onSubmit={(e) => {
                 e.preventDefault()
+                console.log('SUBMIT')
                 if (moodboardName) {
                   const date = new Date()
                   const day = date.getDate()
@@ -197,7 +198,7 @@ export default function MoodboardModal() {
                 }}
               >
                 <Link to={`/workspace/${param.id}/details/${param.spaceKey}`}>
-                  <button
+                  <div
                     style={{
                       color: '#FF0000',
                       border: 'none',
@@ -208,7 +209,7 @@ export default function MoodboardModal() {
                     }}
                   >
                     Cancel
-                  </button>
+                  </div>
                 </Link>
                 <button
                   type='submit'

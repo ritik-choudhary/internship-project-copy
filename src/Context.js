@@ -604,6 +604,30 @@ class WorkspaceProvider extends Component {
     })
   }
 
+  addNewHabit = (id, key, habit) => {
+    const oldList = [...this.state.workspaceElements]
+    let element = oldList.find(
+      (item) => item.id === key && item.workspaceID === id
+    )
+    element.habits = element.habits || []
+    element.habits = [...element.habits, habit]
+    this.setState(() => {
+      return { workspaceElements: oldList }
+    })
+  }
+
+  deleteHabit = (id, key, habitId) => {
+    const oldList = [...this.state.workspaceElements]
+    let element = oldList.find(
+      (item) => item.id === key && item.workspaceID === id
+    )
+    const newHabitList = element.habits.filter((item) => item.id !== habitId)
+    element.habits = newHabitList
+    this.setState(() => {
+      return { workspaceElements: oldList }
+    })
+  }
+
   render() {
     return (
       <WorkspaceContext.Provider
@@ -646,6 +670,8 @@ class WorkspaceProvider extends Component {
           editDigitalBrainboard: this.editDigitalBrainboard,
           addMoodboardField: this.addMoodboardField,
           deleteMoodboardField: this.deleteMoodboardField,
+          addNewHabit: this.addNewHabit,
+          deleteHabit: this.deleteHabit,
         }}
       >
         {this.props.children}

@@ -306,7 +306,7 @@ const LibraryPageWrapper = styled.section`
     background: #f2f4f8;
     border: 1px solid #468aef;
     box-sizing: border-box;
-    border-radius: 10px;
+    border-radius: 5px;
   }
   .add-new:hover {
     cursor: pointer;
@@ -323,7 +323,7 @@ const LibraryPageWrapper = styled.section`
     color: #fff;
     height: 56px;
     background: pink;
-    border-radius: 10px;
+    border-radius: 5px;
     overflow: hidden;
     background: linear-gradient(to bottom, grey, black);
   }

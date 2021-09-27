@@ -10,6 +10,7 @@ import SingleClubPage from './Pages/SingleClubPage'
 import ResourcePage from './Pages/ResourcePage'
 import SingleMoodboard from './Pages/SingleMoodboard'
 import BrainboardContentModal from './Pages/BrainboardContentModal'
+import HabitRecords from './Pages/HabitRecords'
 
 Modal.setAppElement('#root')
 
@@ -28,6 +29,9 @@ function App() {
           </Route>
           <Route path='/workspace/:id/details/:spaceKey/insidedigitalBrainboard/:brainboardID'>
             <BrainboardContentModal isEditing />
+          </Route>
+          <Route path='/workspace/:id/details/:spaceKey/insidehabit/:habitID'>
+            <HabitRecords />
           </Route>
           <Route path='/workspace/:id/details/:spaceKey/insideclub/:clubID'>
             <SingleClubPage />

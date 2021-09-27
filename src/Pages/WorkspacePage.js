@@ -246,7 +246,7 @@ const WorkspaceWrapper = styled.section`
   }
   .grid-workspace-container {
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     gap: 35px;
   }
   .list-workspace-container {
@@ -265,7 +265,7 @@ const WorkspaceWrapper = styled.section`
     border-radius: 10px;
   }
   .list-card .workspace-info {
-    gap: 10px;
+    gap: 20px;
   }
   .workspace-info {
     display: flex;
@@ -289,8 +289,14 @@ const WorkspaceWrapper = styled.section`
     width: 100%;
     object-fit: cover;
   }
-  .workspace-title {
-    font-size: 16px;
+  .list-card .workspace-title {
+    font-size: 20px;
+    font-weight: 400;
+    font-family: 'Open Sans', sans-serif;
+    color: #8d8a8a;
+  }
+  .grid-card .workspace-title {
+    font-size: 14px;
     font-weight: 400;
     font-family: 'Open Sans', sans-serif;
     color: #8d8a8a;
@@ -307,7 +313,7 @@ const WorkspaceWrapper = styled.section`
   }
   .options {
     display: flex;
-    gap: 25px;
+    gap: 15px;
   }
   .workspace-options .created-on {
     font-size: 12px;
@@ -334,21 +340,25 @@ const WorkspaceWrapper = styled.section`
   .workspace-options svg {
     cursor: pointer;
   }
+  .grid-card .workspace-options svg {
+    font-size: 16px;
+  }
   .grid-card .workspace-info {
     flex-direction: column;
-    // gap: 5px;
+    gap: 5px;
   }
   .grid-card {
-    height: 140px;
+    height: 175px;
     padding: 10px;
     background: #f2f4f8;
     box-sizing: border-box;
-    border-radius: 10px;
+    border-radius: 6px;
     display: flex;
     flex-direction: column;
+    gap: 5px;
   }
   .grid-card .thumbnail {
-    height: 80px;
+    height: 110px;
     width: 100%;
   }
   .grid-card:hover,

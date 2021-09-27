@@ -112,8 +112,8 @@ const FinancePageWrapper = styled.section`
     height: 56px;
     background: #f2f4f8;
     border: 1px solid #468aef;
-    box-sizing: border-box;
-    border-radius: 10px;
+
+    border-radius: 6px;
   }
   .finance-card {
     display: flex;
@@ -124,7 +124,7 @@ const FinancePageWrapper = styled.section`
     height: 56px;
     background: #f2f4f8;
     box-sizing: border-box;
-    border-radius: 10px;
+    border-radius: 6px;
   }
   .card-info {
     display: flex;

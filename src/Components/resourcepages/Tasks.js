@@ -155,7 +155,7 @@ const TasksPageWrapper = styled.section`
     background: #f2f4f8;
     border: 1px solid #468aef;
     box-sizing: border-box;
-    border-radius: 10px;
+    border-radius: 6px;
   }
   .single-task {
     padding: 10px 0px;

@@ -54,11 +54,15 @@ export default function Moodboards() {
                         </Link>
                         <div className='card-footer'>
                           <div className='left'>
-                            <h4 className='moodboard-name'>
-                              {moodboard.title.length > 10
-                                ? `${moodboard.title.slice(0, 10)}...`
-                                : moodboard.title}
-                            </h4>
+                            <Link
+                              to={`/workspace/${param.id}/details/${param.spaceKey}/insidemoodboard/${moodboard.id}`}
+                            >
+                              <h4 className='moodboard-name'>
+                                {moodboard.title.length > 10
+                                  ? `${moodboard.title.slice(0, 10)}...`
+                                  : moodboard.title}
+                              </h4>
+                            </Link>
                             <p style={{ fontSize: '10px', color: '#468AEF' }}>
                               {moodboard.createdOn}
                             </p>
@@ -125,11 +129,15 @@ export default function Moodboards() {
                         </Link>
                         <div className='card-footer'>
                           <div className='left'>
-                            <h4 className='digitalBrainboard-name'>
-                              {digitalBrainboard.title.length > 10
-                                ? `${digitalBrainboard.title.slice(0, 10)}...`
-                                : digitalBrainboard.title}
-                            </h4>
+                            <Link
+                              to={`/workspace/${param.id}/details/${param.spaceKey}/insidedigitalBrainboard/${digitalBrainboard.id}`}
+                            >
+                              <h4 className='digitalBrainboard-name'>
+                                {digitalBrainboard.title.length > 10
+                                  ? `${digitalBrainboard.title.slice(0, 10)}...`
+                                  : digitalBrainboard.title}
+                              </h4>
+                            </Link>
                             <p style={{ fontSize: '10px', color: '#468AEF' }}>
                               {digitalBrainboard.createdOn}
                             </p>
@@ -194,7 +202,7 @@ const MoodboardsWrapper = styled.section`
     background: #f2f4f8;
     border: 1px solid #468aef;
     box-sizing: border-box;
-    border-radius: 10px;
+    border-radius: 6px;
   }
   .add-new p {
     text-align: center;
@@ -219,7 +227,7 @@ const MoodboardsWrapper = styled.section`
     padding: 10px 10px;
     height: 140px;
     background: #f2f4f8;
-    border-radius: 10px;
+    border-radius: 6px;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
     cursor: pointer;
   }
@@ -230,7 +238,7 @@ const MoodboardsWrapper = styled.section`
   }
   .moodboard-card .image-container,
   .digitalBrainboard-card .image-container {
-    height: 70px;
+    height: 80px;
     width: 100%;
     border-radius: 5px;
   }
@@ -250,7 +258,7 @@ const MoodboardsWrapper = styled.section`
   }
   .moodboard-name,
   .digitalBrainboard-name {
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 400;
     color: #8d8a8a;
     text-transform: capitalize;

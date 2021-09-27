@@ -37,6 +37,18 @@ function TaskModalComponent(props) {
   const [pdfPreview, setPdfPreview] = useState([])
   const [description, setDescription] = useState('')
 
+  function isValidHttpUrl(string) {
+    let url
+
+    try {
+      url = new URL(string)
+    } catch (_) {
+      return false
+    }
+
+    return url.protocol === 'http:' || url.protocol === 'https:'
+  }
+
   useEffect(() => {
     if (isEditing) {
       const selectedSpace = value.workspaceElements.find(
@@ -281,8 +293,10 @@ function TaskModalComponent(props) {
                 cursor: 'pointer',
               }}
               onClick={() => {
-                setLinks([...links, linkToAdd])
-                setLinkToAdd('')
+                if (linkToAdd && isValidHttpUrl(linkToAdd)) {
+                  setLinks([...links, linkToAdd])
+                  setLinkToAdd('')
+                }
               }}
             />
           </label>
@@ -318,13 +332,19 @@ function TaskModalComponent(props) {
               display: 'flex',
               flexDirection: 'column',
               maxHeight: '50px',
-              overflow: 'scroll',
+              overflow: 'auto',
               overflowX: 'hidden',
             }}
           >
             {links?.map((item) => {
+              console.log('item', item)
               return (
-                <a style={{ fontSize: '12px' }} href={item}>
+                <a
+                  style={{ fontSize: '12px' }}
+                  href={item}
+                  target='_blank'
+                  rel='noreferrer noopener'
+                >
                   {item.length > 40 ? `${item.slice(0, 60)}...` : item}
                 </a>
               )
@@ -408,7 +428,7 @@ function TaskModalComponent(props) {
               flexDirection: 'column',
               maxHeight: '50px',
               fontSize: '14px',
-              overflow: 'scroll',
+              overflow: 'auto',
               overflowX: 'hidden',
             }}
           >

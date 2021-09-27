@@ -72,7 +72,7 @@ const RichTextExample = (props) => {
         }}
         style={{
           height: '150px',
-          overflow: 'scroll',
+          overflow: 'auto',
           overflowX: 'hidden',
           marginBottom: '10px',
         }}

@@ -48,6 +48,18 @@ function BrainboardModalComponent(props) {
 
   const [brainboardToEdit, setBrainboardToEdit] = useState()
 
+  function isValidHttpUrl(string) {
+    let url
+
+    try {
+      url = new URL(string)
+    } catch (_) {
+      return false
+    }
+
+    return url.protocol === 'http:' || url.protocol === 'https:'
+  }
+
   useEffect(() => {
     if (isEditing) {
       const selectedSpace = value.workspaceElements.find(
@@ -245,7 +257,7 @@ function BrainboardModalComponent(props) {
                   cursor: 'pointer',
                 }}
                 onClick={(e) => {
-                  if (linkToAdd) {
+                  if (linkToAdd && isValidHttpUrl(linkToAdd)) {
                     setLinks([...links, linkToAdd])
                     setLinkToAdd('')
                   }
@@ -261,7 +273,7 @@ function BrainboardModalComponent(props) {
               gridTemplateColumns: 'repeat(15,1fr)',
               marginLeft: '132px',
               maxHeight: '60px',
-              overflow: 'scroll',
+              overflow: 'auto',
               overflowX: 'hidden',
             }}
           >
@@ -280,6 +292,7 @@ function BrainboardModalComponent(props) {
                     borderRadius: '5px',
                     fontSize: '12px',
                     gap: '5px',
+                    padding: '0 5px',
                   }}
                   key={count}
                 >
@@ -291,6 +304,7 @@ function BrainboardModalComponent(props) {
                       color: 'black',
                       fontSize: '12px',
                       fontWeight: '400',
+                      width: '80%',
                     }}
                   >
                     Link {count}
@@ -353,7 +367,7 @@ function BrainboardModalComponent(props) {
               gridTemplateColumns: 'repeat(15,1fr)',
               maxHeight: '50px',
               fontSize: '14px',
-              overflow: 'scroll',
+              overflow: 'auto',
               overflowX: 'hidden',
               marginLeft: '132px',
             }}

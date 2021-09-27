@@ -389,7 +389,7 @@ const SingleClubPageWrapper = styled.section`
     color: #468aef;
     padding: 20px 20px;
     background: #f2f4f8;
-    border-radius: 10px;
+    border-radius: 6px;
     cursor: pointer;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
   }

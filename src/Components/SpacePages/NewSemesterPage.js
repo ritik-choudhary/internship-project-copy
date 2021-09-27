@@ -201,8 +201,8 @@ const NewSemesterPageWrapper = styled.section`
     height: 143px;
     background: #f2f4f8;
     border: 1px solid #468aef;
-    box-sizing: border-box;
-    border-radius: 10px;
+
+    border-radius: 6px;
   }
   .add-new svg {
     font-size: 36px;
@@ -225,7 +225,7 @@ const NewSemesterPageWrapper = styled.section`
     padding: 10px 10px;
     height: 143px;
     background: #f2f4f8;
-    border-radius: 10px;
+    border-radius: 6px;
   }
   .card-header {
     display: flex;

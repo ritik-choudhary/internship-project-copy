@@ -11,11 +11,37 @@ export default function MoodboardElementModal() {
 
   const [image, setImage] = useState()
   const [imagePreview, setImagePreview] = useState()
-  const [pdfList, setPdfList] = useState([])
-  const [pdfPreview, setPdfPreview] = useState([])
-  const [linksList, setLinksList] = useState([])
+
+  const [pdf, setPdf] = useState()
+  const [pdfPreview, setPdfPreview] = useState()
+  const [link, setLink] = useState()
   const [linkToAdd, setLinkToAdd] = useState()
   const [video, setVideo] = useState()
+  const [videoPreview, setVideoPreview] = useState()
+
+  function isValidHttpUrl(string) {
+    let url
+
+    try {
+      url = new URL(string)
+    } catch (_) {
+      return false
+    }
+
+    return url.protocol === 'http:' || url.protocol === 'https:'
+  }
+
+  useEffect(() => {
+    if (pdf) {
+      const reader = new FileReader()
+      reader.onloadend = () => {
+        setPdfPreview(reader.result)
+      }
+      reader.readAsDataURL(pdf)
+    } else {
+      setPdfPreview(null)
+    }
+  }, [pdf])
 
   useEffect(() => {
     if (image) {
@@ -30,22 +56,16 @@ export default function MoodboardElementModal() {
   }, [image])
 
   useEffect(() => {
-    if (pdfList) {
-      setPdfPreview([])
-      pdfList.forEach((pdf) => {
-        const reader = new FileReader()
-        reader.onloadend = () => {
-          setPdfPreview((pdfPreview) => [
-            ...pdfPreview,
-            { previewId: pdf.pdfId, source: reader.result },
-          ])
-        }
-        reader.readAsDataURL(pdf.pdfFile)
-      })
+    if (video) {
+      const reader = new FileReader()
+      reader.onloadend = () => {
+        setVideoPreview(reader.result)
+      }
+      reader.readAsDataURL(video)
     } else {
-      setPdfPreview([])
+      setVideoPreview(null)
     }
-  }, [pdfList])
+  }, [video])
 
   return (
     <Modal
@@ -114,10 +134,10 @@ export default function MoodboardElementModal() {
                 const moodboardField = {
                   id: new Date().getTime().toString(),
                   image: imagePreview,
-                  pdfList: pdfList,
+                  pdf: pdf,
                   pdfPreview: pdfPreview,
-                  links: linksList,
-                  video: video,
+                  link: link,
+                  video: videoPreview,
                 }
                 value.addMoodboardField(
                   param.id,
@@ -147,7 +167,10 @@ export default function MoodboardElementModal() {
                   id='image'
                   accept='image/*'
                   hidden
-                  onChange={(e) => setImage(e.target.files[0])}
+                  onChange={(e) => {
+                    setImage(e.target.files[0])
+                  }}
+                  disabled={pdf ? true : link ? true : video ? true : false}
                 />
                 <label htmlFor='image'>
                   <span
@@ -156,10 +179,26 @@ export default function MoodboardElementModal() {
                       background: 'none',
                       borderRadius: '5px',
                       border: '1px dashed #468AEF',
-                      color: '#468AEF',
+                      color: `${
+                        pdf
+                          ? '#c4c4c4'
+                          : link
+                          ? '#c4c4c4'
+                          : video
+                          ? '#c4c4c4'
+                          : '#468AEF'
+                      }`,
                       fontSize: '12px',
                       fontWeight: '500',
-                      cursor: 'pointer',
+                      cursor: `${
+                        pdf
+                          ? 'default'
+                          : link
+                          ? 'default'
+                          : video
+                          ? 'default'
+                          : 'pointer'
+                      }`,
                       outline: 'none',
                       display: 'flex',
                       justifyContent: 'center',
@@ -203,14 +242,9 @@ export default function MoodboardElementModal() {
                   id='pdf'
                   hidden
                   accept='.pdf'
+                  disabled={image ? true : link ? true : video ? true : false}
                   onChange={(e) => {
-                    setPdfList([
-                      ...pdfList,
-                      {
-                        pdfId: new Date().getTime().toString(),
-                        pdfFile: e.target.files[0],
-                      },
-                    ])
+                    setPdf(e.target.files[0])
                   }}
                 />
                 <label htmlFor='pdf'>
@@ -222,7 +256,15 @@ export default function MoodboardElementModal() {
                       borderRadius: '5px',
                       border: '1px dashed #468AEF',
                       height: '32px',
-                      cursor: 'pointer',
+                      cursor: `${
+                        image
+                          ? 'default'
+                          : link
+                          ? 'default'
+                          : video
+                          ? 'default'
+                          : 'pointer'
+                      }`,
                     }}
                   >
                     <div
@@ -230,7 +272,15 @@ export default function MoodboardElementModal() {
                         display: 'flex',
                         alignItems: 'center',
                         gap: '10px',
-                        color: '#468AEF',
+                        color: `${
+                          image
+                            ? '#c4c4c4'
+                            : link
+                            ? '#c4c4c4'
+                            : video
+                            ? '#c4c4c4'
+                            : '#468AEF'
+                        }`,
                         fontSize: '12px',
                         fontWeight: '500',
                       }}
@@ -249,12 +299,8 @@ export default function MoodboardElementModal() {
                     gap: '10px',
                   }}
                 >
-                  {pdfList.length > 1
-                    ? 'File added'
-                    : pdfList.length > 0
-                    ? 'File selected'
-                    : null}
-                  {pdfList.length > 0 ? <FaCheckCircle /> : null}
+                  {pdf ? 'File selected' : null}
+                  {pdf ? <FaCheckCircle /> : null}
                 </div>
               </div>
               <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -276,14 +322,23 @@ export default function MoodboardElementModal() {
                     <p>Add link to other resources</p>
                     <AiOutlinePlus
                       style={{
-                        color: '#468AEF',
+                        color: `${
+                          image
+                            ? '#c4c4c4'
+                            : pdf
+                            ? '#c4c4c4'
+                            : video
+                            ? '#c4c4c4'
+                            : '#468AEF'
+                        }`,
                         cursor: 'pointer',
                         fontSize: '18px',
                         fontWeight: '700',
                       }}
                       onClick={() => {
-                        setLinksList([...linksList, linkToAdd])
-                        setLinkToAdd('')
+                        if (linkToAdd && isValidHttpUrl(linkToAdd)) {
+                          setLink(linkToAdd)
+                        }
                       }}
                     />
                   </div>
@@ -301,33 +356,22 @@ export default function MoodboardElementModal() {
                     outline: 'none',
                   }}
                   value={linkToAdd}
+                  disabled={pdf ? true : image ? true : video ? true : false}
                   onChange={(e) => {
                     setLinkToAdd(e.target.value)
                   }}
                 />
                 <div
-                  className='links-container'
                   style={{
-                    display: `${linksList.length > 0 ? 'flex' : 'none'}`,
-                    flexDirection: 'column',
-                    maxHeight: '100px',
-                    fontSize: '14px',
-                    overflow: 'scroll',
-                    overflowX: 'hidden',
+                    color: 'green',
+                    display: 'flex',
+                    alignItems: 'center',
+                    fontSize: '12px',
+                    gap: '10px',
                   }}
                 >
-                  {linksList.map((link, index) => {
-                    return (
-                      <a
-                        href={link}
-                        target='_blank'
-                        rel='noreferrer noopener'
-                        key={index}
-                      >
-                        {link?.slice(8, 25)}
-                      </a>
-                    )
-                  })}
+                  {link ? 'File selected' : null}
+                  {link ? <FaCheckCircle /> : null}
                 </div>
               </div>
               <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -347,7 +391,10 @@ export default function MoodboardElementModal() {
                   id='video'
                   hidden
                   accept='video/*'
-                  onChange={(e) => setVideo(e.target.files[0])}
+                  onChange={(e) => {
+                    setVideo(e.target.files[0])
+                  }}
+                  disabled={pdf ? true : link ? true : image ? true : false}
                 />
                 <label htmlFor='video'>
                   <span
@@ -356,10 +403,26 @@ export default function MoodboardElementModal() {
                       background: 'none',
                       borderRadius: '5px',
                       border: '1px dashed #468AEF',
-                      color: '#468AEF',
+                      color: `${
+                        pdf
+                          ? '#c4c4c4'
+                          : link
+                          ? '#c4c4c4'
+                          : image
+                          ? '#c4c4c4'
+                          : '#468AEF'
+                      }`,
                       fontSize: '12px',
                       fontWeight: '500',
-                      cursor: 'pointer',
+                      cursor: `${
+                        image
+                          ? 'default'
+                          : link
+                          ? 'default'
+                          : pdf
+                          ? 'default'
+                          : 'pointer'
+                      }`,
                       outline: 'none',
                       display: 'flex',
                       justifyContent: 'center',
@@ -398,7 +461,7 @@ export default function MoodboardElementModal() {
                 <Link
                   to={`/workspace/${param.id}/details/${param.spaceKey}/insidemoodboard/${param.moodboardID}`}
                 >
-                  <button
+                  <div
                     style={{
                       color: '#FF0000',
                       border: 'none',
@@ -409,7 +472,7 @@ export default function MoodboardElementModal() {
                     }}
                   >
                     Cancel
-                  </button>
+                  </div>
                 </Link>
                 <button
                   type='submit'

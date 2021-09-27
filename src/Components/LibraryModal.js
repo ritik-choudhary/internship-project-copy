@@ -180,7 +180,7 @@ export default function LibraryModal(props) {
                 style={{
                   textAlign: 'center',
                   margin: '-10px 0px',
-                  color: '#FF0000',
+                  color: '#468AEF',
                 }}
               >
                 OR

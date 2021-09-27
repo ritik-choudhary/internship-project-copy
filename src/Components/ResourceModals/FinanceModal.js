@@ -44,6 +44,18 @@ function FinanceModalComponent(props) {
 
   const [financeToEdit, setFinanceToEdit] = useState()
 
+  function isValidHttpUrl(string) {
+    let url
+
+    try {
+      url = new URL(string)
+    } catch (_) {
+      return false
+    }
+
+    return url.protocol === 'http:' || url.protocol === 'https:'
+  }
+
   useEffect(() => {
     if (isEditing) {
       const selectedSpace = value.workspaceElements.find(
@@ -259,7 +271,7 @@ function FinanceModalComponent(props) {
               background: '#e4e4e4',
               borderRadius: '3px',
               maxHeight: '60px',
-              overflow: 'scroll',
+              overflow: 'auto',
               overflowX: 'hidden',
               padding: '3px 10px',
               marginLeft: '179px',
@@ -329,7 +341,7 @@ function FinanceModalComponent(props) {
               borderRadius: '3px',
               maxHeight: '60px',
 
-              overflow: 'scroll',
+              overflow: 'auto',
               overflowX: 'hidden',
               padding: '3px 10px',
               marginLeft: '179px',
@@ -394,7 +406,7 @@ function FinanceModalComponent(props) {
                   cursor: 'pointer',
                 }}
                 onClick={(e) => {
-                  if (linkToAdd) {
+                  if (linkToAdd && isValidHttpUrl(linkToAdd)) {
                     setLinks([...links, linkToAdd])
                     setLinkToAdd('')
                   }
@@ -410,7 +422,7 @@ function FinanceModalComponent(props) {
               gridTemplateColumns: 'repeat(3,1fr)',
               marginLeft: '179px',
               maxHeight: '40px',
-              overflow: 'scroll',
+              overflow: 'auto',
               overflowX: 'hidden',
             }}
           >
@@ -429,6 +441,7 @@ function FinanceModalComponent(props) {
                     borderRadius: '5px',
                     fontSize: '12px',
                     gap: '5px',
+                    padding: '0 5px',
                   }}
                   key={count}
                 >
@@ -440,6 +453,7 @@ function FinanceModalComponent(props) {
                       color: 'black',
                       fontSize: '12px',
                       fontWeight: '400',
+                      width: '80%',
                     }}
                   >
                     Link {count}

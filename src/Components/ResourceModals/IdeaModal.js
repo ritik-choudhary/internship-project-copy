@@ -53,6 +53,18 @@ function IdeaModalComponent(props) {
     },
   ])
 
+  function isValidHttpUrl(string) {
+    let url
+
+    try {
+      url = new URL(string)
+    } catch (_) {
+      return false
+    }
+
+    return url.protocol === 'http:' || url.protocol === 'https:'
+  }
+
   useEffect(() => {
     if (isEditing) {
       const selectedSpace = value.workspaceElements.find(
@@ -270,7 +282,7 @@ function IdeaModalComponent(props) {
                   cursor: 'pointer',
                 }}
                 onClick={(e) => {
-                  if (linkToAdd) {
+                  if (linkToAdd && isValidHttpUrl(linkToAdd)) {
                     setLinks([...links, linkToAdd])
                     setLinkToAdd('')
                   }
@@ -286,7 +298,7 @@ function IdeaModalComponent(props) {
               gridTemplateColumns: 'repeat(15,1fr)',
               marginLeft: '132px',
               maxHeight: '60px',
-              overflow: 'scroll',
+              overflow: 'auto',
               overflowX: 'hidden',
             }}
           >
@@ -305,6 +317,7 @@ function IdeaModalComponent(props) {
                     borderRadius: '5px',
                     fontSize: '12px',
                     gap: '5px',
+                    padding: '0 5px',
                   }}
                   key={count}
                 >
@@ -316,6 +329,7 @@ function IdeaModalComponent(props) {
                       color: 'black',
                       fontSize: '12px',
                       fontWeight: '400',
+                      width: '80%',
                     }}
                   >
                     Link {count}
@@ -378,7 +392,7 @@ function IdeaModalComponent(props) {
               gridTemplateColumns: 'repeat(15,1fr)',
               maxHeight: '50px',
               fontSize: '14px',
-              overflow: 'scroll',
+              overflow: 'auto',
               overflowX: 'hidden',
               marginLeft: '132px',
             }}
@@ -413,12 +427,13 @@ function IdeaModalComponent(props) {
                       background: '#C8E1FF',
                       borderRadius: '5px',
                       fontSize: '12px',
+                      padding: '0 5px',
                     }}
                   >
                     <p
                       style={{
                         color: 'black',
-
+                        width: '80%',
                         fontWeight: '400',
                       }}
                     >

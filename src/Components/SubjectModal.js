@@ -416,7 +416,7 @@ function SubjectModalComponent(props) {
                 flexDirection: 'column',
                 maxHeight: '100px',
                 fontSize: '14px',
-                overflow: 'scroll',
+                overflow: 'auto',
                 overflowX: 'hidden',
               }}
             >
@@ -503,7 +503,7 @@ function SubjectModalComponent(props) {
                 flexDirection: 'column',
                 maxHeight: '100px',
                 fontSize: '14px',
-                overflow: 'scroll',
+                overflow: 'auto',
                 overflowX: 'hidden',
               }}
             >

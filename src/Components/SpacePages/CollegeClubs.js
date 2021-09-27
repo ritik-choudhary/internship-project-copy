@@ -45,11 +45,15 @@ export default function CollegeClubs() {
                         </Link>
                         <div className='card-footer'>
                           <div className='left'>
-                            <h4 className='club-name'>
-                              {club.title.length > 10
-                                ? `${club.title.slice(0, 10)}...`
-                                : club.title}
-                            </h4>
+                            <Link
+                              to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${club.id}`}
+                            >
+                              <h4 className='club-name'>
+                                {club.title.length > 10
+                                  ? `${club.title.slice(0, 10)}...`
+                                  : club.title}
+                              </h4>
+                            </Link>
                             <p style={{ fontSize: '10px', color: '#468AEF' }}>
                               {club.createdOn}
                             </p>
@@ -111,8 +115,8 @@ const CollegeClubsWrapper = styled.section`
     height: 140px;
     background: #f2f4f8;
     border: 1px solid #468aef;
-    box-sizing: border-box;
-    border-radius: 10px;
+
+    border-radius: 6px;
   }
   .add-new svg {
     font-size: 36px;
@@ -130,7 +134,7 @@ const CollegeClubsWrapper = styled.section`
     padding: 10px 10px;
     height: 140px;
     background: #f2f4f8;
-    border-radius: 10px;
+    border-radius: 6px;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
     cursor: pointer;
   }

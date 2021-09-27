@@ -247,7 +247,7 @@ const WorkspaceContentWrapper = styled.section`
   .grid-card {
     height: 140px;
     background: #f2f4f8;
-    border-radius: 10px;
+    border-radius: 6px;
     display: flex;
     flex-direction: column;
     align-items: center;

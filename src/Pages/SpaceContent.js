@@ -9,6 +9,7 @@ import NewSemester from '../Components/SpacePages/NewSemesterPage'
 import CollegeClubs from '../Components/SpacePages/CollegeClubs'
 import Moodboards from '../Components/SpacePages/Moodboards'
 import { FaBell } from 'react-icons/fa'
+import HabitTracker from '../Components/SpacePages/HabitTracker'
 
 export default function SpaceContent() {
   const param = useParams()
@@ -80,6 +81,9 @@ export default function SpaceContent() {
                 }
                 if (page === 'Moodboards') {
                   return <Moodboards />
+                }
+                if (page === 'Habit Tracker') {
+                  return <HabitTracker />
                 }
               }}
             </WorkspaceConsumer>

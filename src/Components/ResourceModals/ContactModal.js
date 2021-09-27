@@ -44,6 +44,18 @@ function ContactModalComponent(props) {
 
   const [contactToEdit, setContactToEdit] = useState()
 
+  function isValidHttpUrl(string) {
+    let url
+
+    try {
+      url = new URL(string)
+    } catch (_) {
+      return false
+    }
+
+    return url.protocol === 'http:' || url.protocol === 'https:'
+  }
+
   useEffect(() => {
     if (isEditing) {
       const selectedSpace = value.workspaceElements.find(
@@ -257,7 +269,7 @@ function ContactModalComponent(props) {
               borderRadius: '3px',
               maxHeight: '60px',
 
-              overflow: 'scroll',
+              overflow: 'auto',
               overflowX: 'hidden',
               padding: '3px 10px',
               marginLeft: '179px',
@@ -322,8 +334,10 @@ function ContactModalComponent(props) {
                   cursor: 'pointer',
                 }}
                 onClick={(e) => {
-                  setLinks([...links, linkToAdd])
-                  setLinkToAdd('')
+                  if (linkToAdd && isValidHttpUrl(linkToAdd)) {
+                    setLinks([...links, linkToAdd])
+                    setLinkToAdd('')
+                  }
                 }}
               />
             </div>
@@ -336,7 +350,7 @@ function ContactModalComponent(props) {
               gridTemplateColumns: 'repeat(3,1fr)',
               marginLeft: '179px',
               maxHeight: '40px',
-              overflow: 'scroll',
+              overflow: 'auto',
               overflowX: 'hidden',
             }}
           >

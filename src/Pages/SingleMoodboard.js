@@ -5,15 +5,27 @@ import { FaBell, FaShareSquare, FaDownload } from 'react-icons/fa'
 import { RiArrowGoBackFill } from 'react-icons/ri'
 import Sidebar from '../Components/Sidebar'
 import styled from 'styled-components'
-import { AiOutlinePlus, AiOutlineRight, AiOutlineLeft } from 'react-icons/ai'
+import {
+  AiOutlinePlus,
+  AiOutlineRight,
+  AiOutlineLeft,
+  AiOutlineFullscreen,
+} from 'react-icons/ai'
 import MoodboardElementModal from '../Components/MoodboardElementModal'
 import { RiDeleteBin6Line } from 'react-icons/ri'
 import { BsFillGridFill } from 'react-icons/bs'
+import ReactPlayer from 'react-player'
+import { CgArrowsExpandUpRight } from 'react-icons/cg'
+import ReadPdf from '../Components/ReadPdf'
 
 export default function SingleMoodboard() {
   return (
     <SingleMoodboardWrapper>
       <Switch>
+        <Route path='/workspace/:id/details/:spaceKey/insidemoodboard/:moodboardID/readpdf'>
+          <ReadPdf />
+        </Route>
+
         <Route path='/workspace/:id/details/:spaceKey/insidemoodboard/:moodboardID/addnew'>
           <MoodboardElementModal />
         </Route>
@@ -56,8 +68,6 @@ function SingleMoodboardComponent(props) {
   const prevSlide = () => {
     setCurrent(current === 0 ? length - 1 : current - 1)
   }
-
-  console.log(current)
 
   return (
     <div className='single-moodboard-page'>
@@ -115,7 +125,12 @@ function SingleMoodboardComponent(props) {
                 <BsFillGridFill onClick={() => setIsGrid(true)} />
               </div>
               <div className={isGrid ? 'single-view' : 'single-view-active'}>
-                <p onClick={() => setIsGrid(false)}>Single View</p>
+                <AiOutlineFullscreen
+                  style={{
+                    display: `${moodboard.moodboardFields ? '' : 'none'}`,
+                  }}
+                  onClick={() => setIsGrid(false)}
+                />
               </div>
             </div>
           </div>
@@ -134,19 +149,52 @@ function SingleMoodboardComponent(props) {
               return (
                 <div className='field-card' key={item.id}>
                   <div className='field-image-container'>
-                    <img src={item.image} alt='' />
+                    {item.image ? (
+                      <img src={item.image} alt='' />
+                    ) : item.pdf ? (
+                      <Link
+                        to={{
+                          pathname: `/workspace/${param.id}/details/${param.spaceKey}/insidemoodboard/${param.moodboardID}/readpdf`,
+                          state: { src: item.pdfPreview },
+                        }}
+                      >
+                        <img src='https://play-lh.googleusercontent.com/nufRXPpDI9XP8mPdAvOoJULuBIH_OK4YbZZVu8i_-eDPulZpgb-Xp-EmI8Z53AlXHpqX' />
+                      </Link>
+                    ) : item.video ? (
+                      <ReactPlayer
+                        playing={true}
+                        url={item.video}
+                        light={true}
+                        controls={true}
+                        height='120px'
+                        width='163px'
+                      />
+                    ) : item.link ? (
+                      <a
+                        href={item.link}
+                        target='_blank'
+                        rel='noreferrer noopener'
+                        className='link-option'
+                      >
+                        <CgArrowsExpandUpRight />
+                        Open Link
+                      </a>
+                    ) : null}
                   </div>
                   <div className='card-options'>
                     <div className='delete-btn'>
                       <RiDeleteBin6Line
-                        onClick={() =>
+                        onClick={() => {
                           value.deleteMoodboardField(
                             param.id,
                             param.spaceKey,
                             param.moodboardID,
                             item.id
                           )
-                        }
+                          setCurrent(
+                            current >= length - 1 ? current - 1 : current
+                          )
+                        }}
                       />
                     </div>
                     <div className='share-btn'>
@@ -163,6 +211,7 @@ function SingleMoodboardComponent(props) {
         ) : (
           <div className='slider'>
             {moodboard?.moodboardFields?.map((item, index) => {
+              console.log('item hehe', item)
               return (
                 <div
                   className={index === current ? 'slide-active' : 'slide'}
@@ -170,9 +219,6 @@ function SingleMoodboardComponent(props) {
                 >
                   {index === current && (
                     <div className='slider-field-card'>
-                      <div className='field-image-container'>
-                        <img src={item.image} alt='' />
-                      </div>
                       <div className='slider-navigations'>
                         <div className='left-btn'>
                           <AiOutlineLeft onClick={prevSlide} />
@@ -181,6 +227,40 @@ function SingleMoodboardComponent(props) {
                           <AiOutlineRight onClick={nextSlide} />
                         </div>
                       </div>
+                      <div className='field-image-container'>
+                        {item.image ? (
+                          <img src={item.image} alt='' />
+                        ) : item.pdf ? (
+                          <Link
+                            to={{
+                              pathname: `/workspace/${param.id}/details/${param.spaceKey}/insidemoodboard/${param.moodboardID}/readpdf`,
+                              state: { src: item.pdfPreview },
+                            }}
+                          >
+                            <img src='https://play-lh.googleusercontent.com/nufRXPpDI9XP8mPdAvOoJULuBIH_OK4YbZZVu8i_-eDPulZpgb-Xp-EmI8Z53AlXHpqX' />
+                          </Link>
+                        ) : item.video ? (
+                          <ReactPlayer
+                            url={item.video}
+                            light={true}
+                            playing={true}
+                            controls={true}
+                            width='768px'
+                            height='450px'
+                          />
+                        ) : item.link ? (
+                          <a
+                            href={item.link}
+                            target='_blank'
+                            rel='noreferrer noopener'
+                            className='link-option'
+                          >
+                            <CgArrowsExpandUpRight />
+                            Open Link
+                          </a>
+                        ) : null}
+                      </div>
+
                       <div className='card-options'>
                         <div className='delete-btn'>
                           <RiDeleteBin6Line
@@ -276,12 +356,13 @@ const SingleMoodboardWrapper = styled.section`
     padding: 0px 150px;
   }
   .moodboard-title-container .title {
-    margin-bottom: 10px;
+    padding-bottom: 10px;
     display: flex;
     justify-content: space-between;
     width: 100%;
     font-size: 20px;
     font-weight: 400;
+    overflow: hidden;
   }
   .moodboard-title-container .title div {
     display: flex;
@@ -303,10 +384,11 @@ const SingleMoodboardWrapper = styled.section`
     align-items: center;
     padding: 10px 150px;
   }
+
   .single-moodboard-page .add-new-card {
     height: 140px;
     background: #f2f4f8;
-    border-radius: 10px;
+    border-radius: 6px;
     border: 1px solid #468aef;
     display: flex;
     justify-content: center;
@@ -315,16 +397,19 @@ const SingleMoodboardWrapper = styled.section`
     color: #468aef;
   }
   .animation-title {
-    animation: slide-in 0.5s ease-in-out;
+    animation: slide-in 0.3s ease-out;
   }
   @keyframes slide-in {
     0% {
-      transform: translateX(-100%);
-      z-index: -1;
+      transform: translateY(100%);
+      opacity: 0;
+    }
+    40% {
+      opacity: 0;
     }
     100% {
-      transform: translateX(0%);
-      z-index: 1;
+      transform: translateY(0%);
+      opacity: 1;
     }
   }
 
@@ -332,7 +417,7 @@ const SingleMoodboardWrapper = styled.section`
     display: flex;
     flex-direction: column;
     height: 140px;
-    border-radius: 10px;
+    border-radius: 6px;
     overflow: hidden;
     position: relative;
   }
@@ -342,7 +427,7 @@ const SingleMoodboardWrapper = styled.section`
     flex-direction: column;
     height: 70vh;
     width: 50vw;
-    border-radius: 10px;
+    border-radius: 6px;
     overflow: hidden;
     position: relative;
   }
@@ -358,15 +443,50 @@ const SingleMoodboardWrapper = styled.section`
     height: 100%;
     opacity: 0.6;
   }
+  .field-image-container .link-option {
+    position: absolute;
+    top: 45%;
+    left: 16%;
+    color: white;
+    display: flex;
+    gap: 5px;
+    align-items: center;
+  }
+  .field-image-container:hover .link-option {
+    color: #0063ff;
+  }
+
+  .slider-field-card .field-image-container .link-option {
+    position: absolute;
+    top: 45%;
+    left: 33%;
+    color: white;
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    font-size: 40px;
+    cursor: pointer;
+  }
+
+  .slider-field-card .field-image-container:hover .link-option {
+    color: #0063ff;
+  }
   .field-card .card-options,
   .slider-field-card .card-options {
     position: absolute;
-    bottom: 10px;
+    bottom: 0px;
     display: grid;
+    transform: translateY(100%);
+    transition: all 0.2s ease-in-out;
     grid-template-columns: repeat(3, 1fr);
     width: 100%;
     color: #fff;
     background: rgba(0, 0, 0, 0.31);
+  }
+  .field-card:hover .card-options,
+  .slider-field-card:hover .card-options {
+    // display: grid;
+    transform: translateY(0);
   }
   .slider-field-card .card-options {
     bottom: 0;
@@ -377,7 +497,7 @@ const SingleMoodboardWrapper = styled.section`
     display: flex;
     justify-content: center;
     align-items: center;
-    padding-top: 10px;
+    padding: 10px 0;
     font-size: 12px;
     font-weight: 400;
     cursor: pointer;
