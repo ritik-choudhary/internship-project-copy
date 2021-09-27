@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link, useParams, Switch, Route } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { WorkspaceConsumer } from '../Context'
 import Sidebar from '../Components/Sidebar'
 import styled from 'styled-components'

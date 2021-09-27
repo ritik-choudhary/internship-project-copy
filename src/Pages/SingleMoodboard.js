@@ -158,7 +158,10 @@ function SingleMoodboardComponent(props) {
                           state: { src: item.pdfPreview },
                         }}
                       >
-                        <img src='https://play-lh.googleusercontent.com/nufRXPpDI9XP8mPdAvOoJULuBIH_OK4YbZZVu8i_-eDPulZpgb-Xp-EmI8Z53AlXHpqX' />
+                        <img
+                          src='https://play-lh.googleusercontent.com/nufRXPpDI9XP8mPdAvOoJULuBIH_OK4YbZZVu8i_-eDPulZpgb-Xp-EmI8Z53AlXHpqX'
+                          alt=''
+                        />
                       </Link>
                     ) : item.video ? (
                       <ReactPlayer
@@ -237,7 +240,10 @@ function SingleMoodboardComponent(props) {
                               state: { src: item.pdfPreview },
                             }}
                           >
-                            <img src='https://play-lh.googleusercontent.com/nufRXPpDI9XP8mPdAvOoJULuBIH_OK4YbZZVu8i_-eDPulZpgb-Xp-EmI8Z53AlXHpqX' />
+                            <img
+                              src='https://play-lh.googleusercontent.com/nufRXPpDI9XP8mPdAvOoJULuBIH_OK4YbZZVu8i_-eDPulZpgb-Xp-EmI8Z53AlXHpqX'
+                              alt=''
+                            />
                           </Link>
                         ) : item.video ? (
                           <ReactPlayer

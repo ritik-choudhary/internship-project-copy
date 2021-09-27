@@ -26,19 +26,19 @@ function HabitTrackerModalComponent(props) {
   const param = useParams()
   const history = useHistory()
 
-  const disablePastDate = () => {
-    const today = new Date()
-    const dd = String(today.getDate() + 1).padStart(2, '0')
-    const mm = String(today.getMonth() + 1).padStart(2, '0') //January is 0!
-    const yyyy = today.getFullYear()
-    return yyyy + '-' + mm + '-' + dd
-  }
+  // const disablePastDate = () => {
+  //   const today = new Date()
+  //   const dd = String(today.getDate() + 1).padStart(2, '0')
+  //   const mm = String(today.getMonth() + 1).padStart(2, '0') //January is 0!
+  //   const yyyy = today.getFullYear()
+  //   return yyyy + '-' + mm + '-' + dd
+  // }
 
   const date = `${new Date().getDate()}/${
     new Date().getMonth() + 1
   }/${new Date().getFullYear()}`
 
-  const [createdOn, setCreatedOn] = useState(date)
+  // const [createdOn, setCreatedOn] = useState(date)
   const [habitImage, setHabitImage] = useState()
   const [preview, setPreview] = useState()
   const [nameOfHabit, setNameOfHabit] = useState()
@@ -122,7 +122,7 @@ function HabitTrackerModalComponent(props) {
           value.addNewHabit(param.id, param.spaceKey, {
             id: new Date().getTime().toString(),
             title: nameOfHabit,
-            createdOn: createdOn,
+            createdOn: date,
             image: preview,
             fieldsList: fieldsList,
             startDate: startDate,
@@ -142,7 +142,7 @@ function HabitTrackerModalComponent(props) {
           >
             Created on
           </label>
-          <p style={{ fontSize: '12px', color: '#468AEF' }}>{createdOn}</p>
+          <p style={{ fontSize: '12px', color: '#468AEF' }}>{date}</p>
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
           <label
