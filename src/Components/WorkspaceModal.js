@@ -137,7 +137,7 @@ export default function WorkspaceModal(props) {
     } else {
       setImageAddress(images[randomIndex])
     }
-  }, [workspaceThumbnail])
+  }, [workspaceThumbnail, images, randomIndex])
 
   return (
     <Modal

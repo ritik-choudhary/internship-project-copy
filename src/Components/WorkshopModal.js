@@ -136,7 +136,7 @@ export default function WorkshopModal() {
     } else {
       setPreview(images[randomIndex])
     }
-  }, [thumbnail])
+  }, [thumbnail, images, randomIndex])
 
   return (
     <Modal

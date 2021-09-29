@@ -5,7 +5,6 @@ import { AiOutlineClose, AiOutlinePlus, AiFillCalendar } from 'react-icons/ai'
 import { WorkspaceConsumer } from '../Context'
 import { FaCheckCircle } from 'react-icons/fa'
 import DatePicker from 'react-date-picker'
-import moment from 'moment'
 
 export default function HabitTrackerModal(props) {
   return (
@@ -173,7 +172,7 @@ function HabitTrackerModalComponent(props) {
     } else {
       setPreview(images[randomIndex])
     }
-  }, [habitImage])
+  }, [habitImage, images, randomIndex])
 
   // useEffect(() => {
   //   if (startDate && endDate) {

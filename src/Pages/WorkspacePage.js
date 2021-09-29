@@ -14,8 +14,6 @@ import { Link, Route, Switch } from 'react-router-dom'
 
 export default function WorkspacePage() {
   const [gridStyle, setGridStyle] = useState(false)
-  const defaultImage =
-    'https://1080motion.com/wp-content/uploads/2018/06/NoImageFound.jpg.png'
 
   return (
     <>

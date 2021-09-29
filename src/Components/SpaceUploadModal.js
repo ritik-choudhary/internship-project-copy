@@ -135,7 +135,7 @@ export default function SpaceUploadModal() {
     } else {
       setPreview(images[randomIndex])
     }
-  }, [thumbnail])
+  }, [thumbnail, images, randomIndex])
 
   return (
     <Modal

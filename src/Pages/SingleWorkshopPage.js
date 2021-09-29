@@ -7,7 +7,7 @@ import Sidebar from '../Components/Sidebar'
 import styled from 'styled-components'
 import { AiOutlinePlus } from 'react-icons/ai'
 import WorkshopResourceModal from '../Components/WorkshopResourceModal'
-import WorkshopResourcePage from './WorkshopResourcePage'
+// import WorkshopResourcePage from './WorkshopResourcePage'
 
 export default function SingleWorkshopPage() {
   return (
