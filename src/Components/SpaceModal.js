@@ -3,6 +3,16 @@ import Modal from 'react-modal'
 import { AiOutlineClose } from 'react-icons/ai'
 import { Link, useParams, useHistory } from 'react-router-dom'
 import { WorkspaceConsumer } from '../Context'
+import lib from '../assets/png/lib.png'
+import docs from '../assets/png/docs.png'
+import sem from '../assets/png/sem.png'
+import club from '../assets/png/club.png'
+import mood from '../assets/png/mood.png'
+import meeting from '../assets/png/meeting.png'
+import workshop from '../assets/png/workshop.png'
+import todo from '../assets/png/todo.png'
+import habit from '../assets/png/habit.png'
+import bucket from '../assets/png/bucket.png'
 
 export default function SpaceModal() {
   const param = useParams()
@@ -29,7 +39,7 @@ export default function SpaceModal() {
           transform: 'translate(-50%, -50%)',
           boxShadow: '0px 4px 25px rgba(0, 0, 0, 0.08)',
           borderRadius: '10px',
-          background: 'white',
+          background: '#f8fafb',
           padding: '-20px',
         },
         overlay: {
@@ -124,14 +134,24 @@ export default function SpaceModal() {
                   height: '100%',
                   width: '100%',
                   display: 'grid',
-                  gridTemplateRows: 'repeat(6,1fr)',
+                  gridTemplateRows: 'repeat(5,1fr)',
                   gridTemplateColumns: 'repeat(2,1fr)',
                   gap: '10px',
                   gridColumnGap: '60px',
                 }}
               >
                 <div className='single-input'>
-                  <label htmlFor='library'>Library</label>
+                  <label
+                    htmlFor='library'
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '10px',
+                    }}
+                  >
+                    <img src={lib} alt='' />
+                    <p>Library</p>
+                  </label>
                   <input
                     type='radio'
                     name='new-space'
@@ -141,7 +161,17 @@ export default function SpaceModal() {
                   />
                 </div>
                 <div className='single-input'>
-                  <label htmlFor='new-semester'>New Semester</label>
+                  <label
+                    htmlFor='new-semester'
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '10px',
+                    }}
+                  >
+                    <img src={sem} alt='' />
+                    <p>New Semester</p>
+                  </label>
                   <input
                     type='radio'
                     name='new-space'
@@ -151,7 +181,17 @@ export default function SpaceModal() {
                   />
                 </div>
                 <div className='single-input'>
-                  <label htmlFor='college-clubs'>College Clubs</label>
+                  <label
+                    htmlFor='college-clubs'
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '10px',
+                    }}
+                  >
+                    <img src={club} alt='' />
+                    <p>College Clubs</p>
+                  </label>
                   <input
                     type='radio'
                     name='new-space'
@@ -161,7 +201,17 @@ export default function SpaceModal() {
                   />
                 </div>
                 <div className='single-input'>
-                  <label htmlFor='moodboards'>Moodboards</label>
+                  <label
+                    htmlFor='moodboards'
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '10px',
+                    }}
+                  >
+                    <img src={mood} alt='' />
+                    <p>Moodboards</p>
+                  </label>
                   <input
                     type='radio'
                     name='new-space'
@@ -170,18 +220,19 @@ export default function SpaceModal() {
                     onChange={handleChange}
                   />
                 </div>
-                {/* <div className='single-input'>
-                  <label htmlFor='digital-brainboard'>Digital Brainboard</label>
-                  <input
-                    type='radio'
-                    name='new-space'
-                    id='digital-brainboard'
-                    value='Digital Brainboard'
-                    onChange={handleChange}
-                  />
-                </div> */}
+
                 <div className='single-input'>
-                  <label htmlFor='docs'>Docs</label>
+                  <label
+                    htmlFor='docs'
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '10px',
+                    }}
+                  >
+                    <img src={docs} alt='' />
+                    <p>Docs</p>
+                  </label>
                   <input
                     type='radio'
                     name='new-space'
@@ -191,7 +242,17 @@ export default function SpaceModal() {
                   />
                 </div>
                 <div className='single-input'>
-                  <label htmlFor='meeting-notes'>Meeting Notes</label>
+                  <label
+                    htmlFor='meeting-notes'
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '10px',
+                    }}
+                  >
+                    <img src={meeting} alt='' />
+                    <p>Meeting Notes</p>
+                  </label>
                   <input
                     type='radio'
                     name='new-space'
@@ -201,7 +262,17 @@ export default function SpaceModal() {
                   />
                 </div>
                 <div className='single-input'>
-                  <label htmlFor='workshop'>Workshop</label>
+                  <label
+                    htmlFor='workshop'
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '10px',
+                    }}
+                  >
+                    <img src={workshop} alt='' />
+                    <p>Workshop</p>
+                  </label>
                   <input
                     type='radio'
                     name='new-space'
@@ -211,7 +282,17 @@ export default function SpaceModal() {
                   />
                 </div>
                 <div className='single-input'>
-                  <label htmlFor='todo-list'>To-do List</label>
+                  <label
+                    htmlFor='todo-list'
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '10px',
+                    }}
+                  >
+                    <img src={todo} alt='' />
+                    <p>To-do List</p>
+                  </label>
                   <input
                     type='radio'
                     name='new-space'
@@ -221,7 +302,17 @@ export default function SpaceModal() {
                   />
                 </div>
                 <div className='single-input'>
-                  <label htmlFor='bucket-list'>Bucket List</label>
+                  <label
+                    htmlFor='bucket-list'
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '10px',
+                    }}
+                  >
+                    <img src={bucket} alt='' />
+                    <p>Bucket List</p>
+                  </label>
                   <input
                     type='radio'
                     name='new-space'
@@ -231,7 +322,17 @@ export default function SpaceModal() {
                   />
                 </div>
                 <div className='single-input'>
-                  <label htmlFor='habit-tracker'>Habit Tracker</label>
+                  <label
+                    htmlFor='habit-tracker'
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '10px',
+                    }}
+                  >
+                    <img src={habit} alt='' />
+                    <p>Habit Tracker</p>
+                  </label>
                   <input
                     type='radio'
                     name='new-space'
@@ -250,7 +351,7 @@ export default function SpaceModal() {
                 }}
               >
                 <Link to={`/workspace/${param.id}/details`}>
-                  <button
+                  <div
                     style={{
                       color: '#FF0000',
                       border: 'none',
@@ -258,10 +359,12 @@ export default function SpaceModal() {
                       padding: '10px 20px',
                       outline: 'none',
                       cursor: 'pointer',
+                      fontSize: '16px',
+                      fontWeight: '400',
                     }}
                   >
                     Cancel
-                  </button>
+                  </div>
                 </Link>
                 <button
                   type='submit'

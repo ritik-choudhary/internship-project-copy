@@ -268,7 +268,6 @@ function SubjectModalComponent(props) {
               Course code
             </label>
             <input
-              required
               type='text'
               name='course-code'
               id='course-code'

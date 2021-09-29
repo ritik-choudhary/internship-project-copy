@@ -6,38 +6,37 @@ import { RiArrowGoBackFill } from 'react-icons/ri'
 import Sidebar from '../Components/Sidebar'
 import styled from 'styled-components'
 import { AiOutlinePlus } from 'react-icons/ai'
-import ResourceModal from '../Components/ResourceModal'
-import { BiTask } from 'react-icons/bi'
-import { HiOutlineLightBulb } from 'react-icons/hi'
-import { CgNotes } from 'react-icons/cg'
-import { FaMoneyCheck, FaPhone } from 'react-icons/fa'
+import WorkshopResourceModal from '../Components/WorkshopResourceModal'
+import WorkshopResourcePage from './WorkshopResourcePage'
 
-export default function SingleClubPage() {
+export default function SingleWorkshopPage() {
   return (
-    <SingleClubPageWrapper>
+    <SingleWorkshopPageWrapper>
       <Switch>
-        <Route path='/workspace/:id/details/:spaceKey/insideclub/:clubID/addresource'>
-          <ResourceModal />
+        <Route path='/workspace/:id/details/:spaceKey/insideworkshop/:workshopID/addresource'>
+          <WorkshopResourceModal />
         </Route>
       </Switch>
       <WorkspaceConsumer>
         {(value) => {
           return (
-            <SingleClubPageComponent value={value}></SingleClubPageComponent>
+            <SingleWorkshopPageComponent
+              value={value}
+            ></SingleWorkshopPageComponent>
           )
         }}
       </WorkspaceConsumer>
-    </SingleClubPageWrapper>
+    </SingleWorkshopPageWrapper>
   )
 }
 
-function SingleClubPageComponent(props) {
+function SingleWorkshopPageComponent(props) {
   const { value } = props
   const param = useParams()
 
-  const [createdBy, setCreatedBy] = useState()
+  const [conductedBy, setConductedBy] = useState()
   const [members, setMembers] = useState()
-  const [mission, setMission] = useState()
+  const [about, setAbout] = useState()
 
   const workspaceName = value.workspaceList.find(
     (item) => item.id === param.id
@@ -47,32 +46,32 @@ function SingleClubPageComponent(props) {
     (item) => item.workspaceID === param.id && item.id === param.spaceKey
   )
 
-  const club = space.clubs.find((item) => item.id === param.clubID)
+  const workshop = space.workshops.find((item) => item.id === param.workshopID)
 
   useEffect(() => {
-    if (club) {
-      setCreatedBy(club?.basicInfo?.createdBy)
-      setMembers(club?.basicInfo?.members)
-      setMission(club?.basicInfo?.mission)
+    if (workshop) {
+      setConductedBy(workshop?.basicInfo?.conductedBy)
+      setMembers(workshop?.basicInfo?.members)
+      setAbout(workshop?.basicInfo?.about)
     }
-  }, [club])
+  }, [workshop])
 
   return (
-    <div className='single-club-page'>
+    <div className='single-workshop-page'>
       <Sidebar />
       <div className='page-container'>
-        <div className='single-club-header'>
+        <div className='single-workshop-header'>
           <h3>thesocialcomment</h3>
           <div className='right-header'>
             <FaBell className='bell-icon' />
             <Link to={`/workspace/${param.id}/details/${param.spaceKey}`}>
-              <div className='single-club-back-btn'>
+              <div className='single-workshop-back-btn'>
                 <RiArrowGoBackFill /> Back
               </div>
             </Link>
           </div>
         </div>
-        <header className='club-title-container'>
+        <header className='workshop-title-container'>
           <div className='title'>
             <div>
               <h3
@@ -103,22 +102,22 @@ function SingleClubPageComponent(props) {
                 className='animation-title'
                 style={{ fontSize: '20px', fontWeight: '400' }}
               >
-                {club.title.length > 15
-                  ? `${club.title.slice(0, 50)}...`
-                  : club.title}
+                {workshop.title.length > 15
+                  ? `${workshop.title.slice(0, 50)}...`
+                  : workshop.title}
               </h3>
             </div>
           </div>
           <div className='line'></div>
         </header>
 
-        <div className='single-club-details'>
+        <div className='single-workshop-details'>
           <div className='info'>
             <div className='heading'>
               <h1>
-                {club.title.length > 15
-                  ? `${club.title.slice(0, 30)}...`
-                  : club.title}
+                {workshop.title.length > 15
+                  ? `${workshop.title.slice(0, 30)}...`
+                  : workshop.title}
               </h1>
             </div>
             <div className='basic-info'>
@@ -129,27 +128,27 @@ function SingleClubPageComponent(props) {
                     type='text'
                     name='created-on'
                     id='created-on'
-                    value={club.createdOn}
+                    value={workshop.createdOn}
                   />
                 </div>
                 <div className='field'>
-                  <label htmlFor='created-by'>Created by</label>
+                  <label htmlFor='conducted-by'>Conducted by</label>
                   <input
                     type='text'
-                    name='created-by'
-                    id='created-by'
-                    value={createdBy}
-                    onChange={(e) => setCreatedBy(e.target.value)}
+                    name='conducted-by'
+                    id='conducted-by'
+                    value={conductedBy}
+                    onChange={(e) => setConductedBy(e.target.value)}
                     onBlur={(e) => {
                       e.preventDefault()
-                      value.handleClubInfo(
+                      value.handleWorkshopInfo(
                         param.id,
                         param.spaceKey,
-                        param.clubID,
+                        param.workshopID,
                         {
-                          createdBy: createdBy,
+                          conductedBy: conductedBy,
                           members: members,
-                          mission: mission,
+                          about: about,
                         }
                       )
                     }}
@@ -165,37 +164,37 @@ function SingleClubPageComponent(props) {
                     onChange={(e) => setMembers(e.target.value)}
                     onBlur={(e) => {
                       e.preventDefault()
-                      value.handleClubInfo(
+                      value.handleWorkshopInfo(
                         param.id,
                         param.spaceKey,
-                        param.clubID,
+                        param.workshopID,
                         {
-                          createdBy: createdBy,
+                          conductedBy: conductedBy,
                           members: members,
-                          mission: mission,
+                          about: about,
                         }
                       )
                     }}
                   />
                 </div>
                 <div className='field'>
-                  <label htmlFor='mission'>Mission</label>
+                  <label htmlFor='about'>About</label>
                   <input
                     type='text'
-                    name='mission'
-                    id='mission'
-                    value={mission}
-                    onChange={(e) => setMission(e.target.value)}
+                    name='about'
+                    id='about'
+                    value={about}
+                    onChange={(e) => setAbout(e.target.value)}
                     onBlur={(e) => {
                       e.preventDefault()
-                      value.handleClubInfo(
+                      value.handleWorkshopInfo(
                         param.id,
                         param.spaceKey,
-                        param.clubID,
+                        param.workshopID,
                         {
-                          createdBy: createdBy,
+                          conductedBy: conductedBy,
                           members: members,
-                          mission: mission,
+                          about: about,
                         }
                       )
                     }}
@@ -209,30 +208,19 @@ function SingleClubPageComponent(props) {
             <h1 className='heading'>Resources</h1>
             <div className='resources-container'>
               <Link
-                to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/addresource`}
+                to={`/workspace/${param.id}/details/${param.spaceKey}/insideworkshop/${param.workshopID}/addresource`}
               >
                 <div className='resource-card add-new-resource'>
                   <AiOutlinePlus />
                   <p>Add new resource</p>
                 </div>
               </Link>
-              {club?.resources?.map((item) => {
+              {workshop?.resources?.map((item) => {
                 return (
                   <Link
-                    to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${item.id}`}
+                    to={`/workspace/${param.id}/details/${param.spaceKey}/insideworkshop/${param.workshopID}/resourcedata/${item.id}`}
                   >
                     <div className='resource-card'>
-                      {item.title === 'Tasks' ? (
-                        <BiTask />
-                      ) : item.title === 'Ideas' ? (
-                        <HiOutlineLightBulb />
-                      ) : item.title === 'Meeting Notes' ? (
-                        <CgNotes />
-                      ) : item.title === 'Finance and Sponsorships' ? (
-                        <FaMoneyCheck />
-                      ) : item.title === 'External contacts' ? (
-                        <FaPhone />
-                      ) : null}
                       <p>{item.title}</p>
                     </div>
                   </Link>
@@ -246,13 +234,13 @@ function SingleClubPageComponent(props) {
   )
 }
 
-const SingleClubPageWrapper = styled.section`
-  .single-club-page {
+const SingleWorkshopPageWrapper = styled.section`
+  .single-workshop-page {
     font-family: 'Open Sans', sans-serif;
     min-height: 100vh;
     display: flex;
   }
-  .single-club-page .sidebar {
+  .single-workshop-page .sidebar {
     z-index: 0;
   }
   .page-container {
@@ -261,7 +249,7 @@ const SingleClubPageWrapper = styled.section`
     flex-direction: column;
     gap: 10px;
   }
-  .single-club-header {
+  .single-workshop-header {
     padding: 10px 150px;
     width: 100%;
     display: flex;
@@ -269,7 +257,7 @@ const SingleClubPageWrapper = styled.section`
     align-items: center;
     background: black;
   }
-  .single-club-header h3 {
+  .single-workshop-header h3 {
     color: white;
     margin-left: -130px;
   }
@@ -281,7 +269,7 @@ const SingleClubPageWrapper = styled.section`
   .bell-icon {
     color: #ffca10;
   }
-  .single-club-back-btn {
+  .single-workshop-back-btn {
     padding: 10px 20px;
     background: #0e1f3e;
     color: white;
@@ -297,15 +285,15 @@ const SingleClubPageWrapper = styled.section`
     align-items: center;
     gap: 5px;
   }
-  .single-club-back-btn:hover {
+  .single-workshop-back-btn:hover {
     transform: scale(1.05);
   }
-  .club-title-container {
+  .workshop-title-container {
     display: flex;
     flex-direction: column;
     padding: 0px 150px;
   }
-  .club-title-container .title {
+  .workshop-title-container .title {
     margin-bottom: 10px;
     display: flex;
     justify-content: space-between;
@@ -313,7 +301,7 @@ const SingleClubPageWrapper = styled.section`
     font-size: 20px;
     font-weight: 400;
   }
-  .club-title-container .title div {
+  .workshop-title-container .title div {
     display: flex;
   }
   .line {
@@ -321,13 +309,13 @@ const SingleClubPageWrapper = styled.section`
     height: 1.5px;
     background: #e5e5e5;
   }
-  .single-club-details {
+  .single-workshop-details {
     padding: 0px 150px;
     display: flex;
     flex-direction: column;
     gap: 30px;
   }
-  .single-club-details .info {
+  .single-workshop-details .info {
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -353,9 +341,9 @@ const SingleClubPageWrapper = styled.section`
   }
   .basic-info form div label {
     color: #c4c4c4;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 400;
-    width: 100px;
+    width: 120px;
   }
   .basic-info form div input {
     border: none;

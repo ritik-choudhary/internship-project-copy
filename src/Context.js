@@ -157,22 +157,22 @@ class WorkspaceProvider extends Component {
     })
   }
 
-  // handleClubInfo = (id, key, clubId, info) => {
-  //   const oldList = [...this.state.workspaceElements]
-  //   let element = oldList.find(
-  //     (item) => item.id === key && item.workspaceID === id
-  //   )
-  //   let clubElement = element.clubs.find((item) => item.id === clubId)
-  //   clubElement.basicInfo = clubElement.basicInfo || {}
-  //   clubElement.basicInfo = {
-  //     createdBy: info.createdBy,
-  //     members: info.members,
-  //     mission: info.mission,
-  //   }
-  //   this.setState(() => {
-  //     return { workspaceElements: oldList }
-  //   })
-  // }
+  handleClubInfo = (id, key, clubId, info) => {
+    const oldList = [...this.state.workspaceElements]
+    let element = oldList.find(
+      (item) => item.id === key && item.workspaceID === id
+    )
+    let clubElement = element.clubs.find((item) => item.id === clubId)
+    clubElement.basicInfo = clubElement.basicInfo || {}
+    clubElement.basicInfo = {
+      createdBy: info.createdBy,
+      members: info.members,
+      mission: info.mission,
+    }
+    this.setState(() => {
+      return { workspaceElements: oldList }
+    })
+  }
 
   addNewResource = (id, key, clubId, resource) => {
     const oldList = [...this.state.workspaceElements]
@@ -628,6 +628,510 @@ class WorkspaceProvider extends Component {
     })
   }
 
+  addNewWorkshop = (id, key, workshop) => {
+    const oldList = [...this.state.workspaceElements]
+    let element = oldList.find(
+      (item) => item.id === key && item.workspaceID === id
+    )
+    element.workshops = element.workshops || []
+    element.workshops = [...element.workshops, workshop]
+    this.setState(() => {
+      return { workspaceElements: oldList }
+    })
+  }
+
+  deleteWorkshop = (id, key, workshopId) => {
+    const oldList = [...this.state.workspaceElements]
+    let element = oldList.find(
+      (item) => item.id === key && item.workspaceID === id
+    )
+    const newWorkshopList = element.workshops.filter(
+      (item) => item.id !== workshopId
+    )
+    element.workshops = newWorkshopList
+    this.setState(() => {
+      return { workspaceElements: oldList }
+    })
+  }
+
+  handleWorkshopInfo = (id, key, workshopId, info) => {
+    const oldList = [...this.state.workspaceElements]
+    let element = oldList.find(
+      (item) => item.id === key && item.workspaceID === id
+    )
+    let workshopElement = element.workshops.find(
+      (item) => item.id === workshopId
+    )
+    workshopElement.basicInfo = workshopElement.basicInfo || {}
+    workshopElement.basicInfo = {
+      conductedBy: info.conductedBy,
+      members: info.members,
+      about: info.about,
+    }
+    this.setState(() => {
+      return { workspaceElements: oldList }
+    })
+  }
+
+  addNewWorkshopResource = (id, key, workshopId, resource) => {
+    const oldList = [...this.state.workspaceElements]
+    let element = oldList.find(
+      (item) => item.id === key && item.workspaceID === id
+    )
+    let workshopElement = element.workshops.find(
+      (item) => item.id === workshopId
+    )
+    workshopElement.resources = workshopElement.resources || []
+    workshopElement.resources = [...workshopElement.resources, resource]
+    this.setState(() => {
+      return { workspaceElements: oldList }
+    })
+  }
+
+  addNewTopicInformation = (
+    id,
+    key,
+    workshopId,
+    resourceId,
+    topicInformation
+  ) => {
+    const oldList = [...this.state.workspaceElements]
+    let element = oldList.find(
+      (item) => item.id === key && item.workspaceID === id
+    )
+    let workshopElement = element.workshops.find(
+      (item) => item.id === workshopId
+    )
+    let resourceElement = workshopElement.resources.find(
+      (item) => item.id === resourceId
+    )
+    resourceElement.topicInformations = resourceElement.topicInformations || []
+    resourceElement.topicInformations = [
+      ...resourceElement.topicInformations,
+      topicInformation,
+    ]
+    this.setState(() => {
+      return { workspaceElements: oldList }
+    })
+  }
+
+  editTopicInformation = (
+    id,
+    key,
+    workshopId,
+    resourceId,
+    topicInformationId,
+    newTopicInformation
+  ) => {
+    const oldList = [...this.state.workspaceElements]
+    let element = oldList.find(
+      (item) => item.id === key && item.workspaceID === id
+    )
+    let workshopElement = element.workshops.find(
+      (item) => item.id === workshopId
+    )
+    let resourceElement = workshopElement.resources.find(
+      (item) => item.id === resourceId
+    )
+    let topicInformationElement = resourceElement.topicInformations.find(
+      (item) => item.id === topicInformationId
+    )
+    topicInformationElement.title = newTopicInformation.title
+    topicInformationElement.createdOn = newTopicInformation.createdOn
+    topicInformationElement.createdBy = newTopicInformation.createdBy
+    topicInformationElement.note = newTopicInformation.note
+
+    this.setState(() => {
+      return { workspaceElements: oldList }
+    })
+  }
+
+  deleteTopicInformation = (
+    id,
+    key,
+    workshopId,
+    resourceId,
+    topicInformationId
+  ) => {
+    const oldList = [...this.state.workspaceElements]
+    let element = oldList.find(
+      (item) => item.id === key && item.workspaceID === id
+    )
+    let workshopElement = element.workshops.find(
+      (item) => item.id === workshopId
+    )
+    let resourceElement = workshopElement.resources.find(
+      (item) => item.id === resourceId
+    )
+    const newTopicInformationsList = resourceElement.topicInformations.filter(
+      (item) => item.id !== topicInformationId
+    )
+    resourceElement.topicInformations = newTopicInformationsList
+    this.setState(() => {
+      return { workspaceElements: oldList }
+    })
+  }
+
+  addNewParticipants = (id, key, workshopId, resourceId, participant) => {
+    const oldList = [...this.state.workspaceElements]
+    let element = oldList.find(
+      (item) => item.id === key && item.workspaceID === id
+    )
+    let workshopElement = element.workshops.find(
+      (item) => item.id === workshopId
+    )
+    let resourceElement = workshopElement.resources.find(
+      (item) => item.id === resourceId
+    )
+    resourceElement.participantsList = resourceElement.participantsList || []
+    resourceElement.participantsList = [
+      ...resourceElement.participantsList,
+      participant,
+    ]
+    this.setState(() => {
+      return { workspaceElements: oldList }
+    })
+  }
+
+  editParticipants = (
+    id,
+    key,
+    workshopId,
+    resourceId,
+    participantsId,
+    newParticipants
+  ) => {
+    const oldList = [...this.state.workspaceElements]
+    let element = oldList.find(
+      (item) => item.id === key && item.workspaceID === id
+    )
+    let workshopElement = element.workshops.find(
+      (item) => item.id === workshopId
+    )
+    let resourceElement = workshopElement.resources.find(
+      (item) => item.id === resourceId
+    )
+    let participantsElement = resourceElement.participantsList.find(
+      (item) => item.id === participantsId
+    )
+    participantsElement.title = newParticipants.title
+    participantsElement.createdOn = newParticipants.createdOn
+    participantsElement.createdBy = newParticipants.createdBy
+    participantsElement.note = newParticipants.note
+
+    this.setState(() => {
+      return { workspaceElements: oldList }
+    })
+  }
+
+  deleteParticipants = (id, key, workshopId, resourceId, participantsId) => {
+    const oldList = [...this.state.workspaceElements]
+    let element = oldList.find(
+      (item) => item.id === key && item.workspaceID === id
+    )
+    let workshopElement = element.workshops.find(
+      (item) => item.id === workshopId
+    )
+    let resourceElement = workshopElement.resources.find(
+      (item) => item.id === resourceId
+    )
+    const newParticipantsList = resourceElement.participantsList.filter(
+      (item) => item.id !== participantsId
+    )
+    resourceElement.participantsList = newParticipantsList
+    this.setState(() => {
+      return { workspaceElements: oldList }
+    })
+  }
+
+  addNewActivities = (id, key, workshopId, resourceId, activity) => {
+    const oldList = [...this.state.workspaceElements]
+    let element = oldList.find(
+      (item) => item.id === key && item.workspaceID === id
+    )
+    let workshopElement = element.workshops.find(
+      (item) => item.id === workshopId
+    )
+    let resourceElement = workshopElement.resources.find(
+      (item) => item.id === resourceId
+    )
+    resourceElement.activitiesList = resourceElement.activitiesList || []
+    resourceElement.activitiesList = [
+      ...resourceElement.activitiesList,
+      activity,
+    ]
+    this.setState(() => {
+      return { workspaceElements: oldList }
+    })
+  }
+
+  editActivities = (
+    id,
+    key,
+    workshopId,
+    resourceId,
+    activitiesId,
+    newActivities
+  ) => {
+    const oldList = [...this.state.workspaceElements]
+    let element = oldList.find(
+      (item) => item.id === key && item.workspaceID === id
+    )
+    let workshopElement = element.workshops.find(
+      (item) => item.id === workshopId
+    )
+    let resourceElement = workshopElement.resources.find(
+      (item) => item.id === resourceId
+    )
+    let activitiesElement = resourceElement.activitiesList.find(
+      (item) => item.id === activitiesId
+    )
+    activitiesElement.title = newActivities.title
+    activitiesElement.createdOn = newActivities.createdOn
+    activitiesElement.createdBy = newActivities.createdBy
+    activitiesElement.note = newActivities.note
+
+    this.setState(() => {
+      return { workspaceElements: oldList }
+    })
+  }
+
+  deleteActivities = (id, key, workshopId, resourceId, activitiesId) => {
+    const oldList = [...this.state.workspaceElements]
+    let element = oldList.find(
+      (item) => item.id === key && item.workspaceID === id
+    )
+    let workshopElement = element.workshops.find(
+      (item) => item.id === workshopId
+    )
+    let resourceElement = workshopElement.resources.find(
+      (item) => item.id === resourceId
+    )
+    const newActivitiesList = resourceElement.activitiesList.filter(
+      (item) => item.id !== activitiesId
+    )
+    resourceElement.activitiesList = newActivitiesList
+    this.setState(() => {
+      return { workspaceElements: oldList }
+    })
+  }
+
+  addNewItinerary = (id, key, workshopId, resourceId, itinerary) => {
+    const oldList = [...this.state.workspaceElements]
+    let element = oldList.find(
+      (item) => item.id === key && item.workspaceID === id
+    )
+    let workshopElement = element.workshops.find(
+      (item) => item.id === workshopId
+    )
+    let resourceElement = workshopElement.resources.find(
+      (item) => item.id === resourceId
+    )
+    resourceElement.itineraryList = resourceElement.itineraryList || []
+    resourceElement.itineraryList = [
+      ...resourceElement.itineraryList,
+      itinerary,
+    ]
+    this.setState(() => {
+      return { workspaceElements: oldList }
+    })
+  }
+
+  editItinerary = (
+    id,
+    key,
+    workshopId,
+    resourceId,
+    itineraryId,
+    newItinerary
+  ) => {
+    const oldList = [...this.state.workspaceElements]
+    let element = oldList.find(
+      (item) => item.id === key && item.workspaceID === id
+    )
+    let workshopElement = element.workshops.find(
+      (item) => item.id === workshopId
+    )
+    let resourceElement = workshopElement.resources.find(
+      (item) => item.id === resourceId
+    )
+    let itineraryElement = resourceElement.itineraryList.find(
+      (item) => item.id === itineraryId
+    )
+    itineraryElement.title = newItinerary.title
+    itineraryElement.createdOn = newItinerary.createdOn
+    itineraryElement.createdBy = newItinerary.createdBy
+    itineraryElement.note = newItinerary.note
+
+    this.setState(() => {
+      return { workspaceElements: oldList }
+    })
+  }
+
+  deleteItinerary = (id, key, workshopId, resourceId, itineraryId) => {
+    const oldList = [...this.state.workspaceElements]
+    let element = oldList.find(
+      (item) => item.id === key && item.workspaceID === id
+    )
+    let workshopElement = element.workshops.find(
+      (item) => item.id === workshopId
+    )
+    let resourceElement = workshopElement.resources.find(
+      (item) => item.id === resourceId
+    )
+    const newItineraryList = resourceElement.itineraryList.filter(
+      (item) => item.id !== itineraryId
+    )
+    resourceElement.itineraryList = newItineraryList
+    this.setState(() => {
+      return { workspaceElements: oldList }
+    })
+  }
+
+  addNewCommittee = (id, key, workshopId, resourceId, committee) => {
+    const oldList = [...this.state.workspaceElements]
+    let element = oldList.find(
+      (item) => item.id === key && item.workspaceID === id
+    )
+    let workshopElement = element.workshops.find(
+      (item) => item.id === workshopId
+    )
+    let resourceElement = workshopElement.resources.find(
+      (item) => item.id === resourceId
+    )
+    resourceElement.committeeList = resourceElement.committeeList || []
+    resourceElement.committeeList = [
+      ...resourceElement.committeeList,
+      committee,
+    ]
+    this.setState(() => {
+      return { workspaceElements: oldList }
+    })
+  }
+
+  editCommittee = (
+    id,
+    key,
+    workshopId,
+    resourceId,
+    committeeId,
+    newCommittee
+  ) => {
+    const oldList = [...this.state.workspaceElements]
+    let element = oldList.find(
+      (item) => item.id === key && item.workspaceID === id
+    )
+    let workshopElement = element.workshops.find(
+      (item) => item.id === workshopId
+    )
+    let resourceElement = workshopElement.resources.find(
+      (item) => item.id === resourceId
+    )
+    let committeeElement = resourceElement.committeeList.find(
+      (item) => item.id === committeeId
+    )
+    committeeElement.title = newCommittee.title
+    committeeElement.createdOn = newCommittee.createdOn
+    committeeElement.createdBy = newCommittee.createdBy
+    committeeElement.note = newCommittee.note
+
+    this.setState(() => {
+      return { workspaceElements: oldList }
+    })
+  }
+
+  deleteCommittee = (id, key, workshopId, resourceId, committeeId) => {
+    const oldList = [...this.state.workspaceElements]
+    let element = oldList.find(
+      (item) => item.id === key && item.workspaceID === id
+    )
+    let workshopElement = element.workshops.find(
+      (item) => item.id === workshopId
+    )
+    let resourceElement = workshopElement.resources.find(
+      (item) => item.id === resourceId
+    )
+    const newCommitteeList = resourceElement.committeeList.filter(
+      (item) => item.id !== committeeId
+    )
+    resourceElement.committeeList = newCommitteeList
+    this.setState(() => {
+      return { workspaceElements: oldList }
+    })
+  }
+
+  addNewVenueDetails = (id, key, workshopId, resourceId, venueDetails) => {
+    const oldList = [...this.state.workspaceElements]
+    let element = oldList.find(
+      (item) => item.id === key && item.workspaceID === id
+    )
+    let workshopElement = element.workshops.find(
+      (item) => item.id === workshopId
+    )
+    let resourceElement = workshopElement.resources.find(
+      (item) => item.id === resourceId
+    )
+    resourceElement.venueDetailsList = resourceElement.venueDetailsList || []
+    resourceElement.venueDetailsList = [
+      ...resourceElement.venueDetailsList,
+      venueDetails,
+    ]
+    this.setState(() => {
+      return { workspaceElements: oldList }
+    })
+  }
+
+  editVenueDetails = (
+    id,
+    key,
+    workshopId,
+    resourceId,
+    venueDetailsId,
+    newVenueDetails
+  ) => {
+    const oldList = [...this.state.workspaceElements]
+    let element = oldList.find(
+      (item) => item.id === key && item.workspaceID === id
+    )
+    let workshopElement = element.workshops.find(
+      (item) => item.id === workshopId
+    )
+    let resourceElement = workshopElement.resources.find(
+      (item) => item.id === resourceId
+    )
+    let venueDetailsElement = resourceElement.venueDetailsList.find(
+      (item) => item.id === venueDetailsId
+    )
+    venueDetailsElement.title = newVenueDetails.title
+    venueDetailsElement.createdOn = newVenueDetails.createdOn
+    venueDetailsElement.createdBy = newVenueDetails.createdBy
+    venueDetailsElement.note = newVenueDetails.note
+
+    this.setState(() => {
+      return { workspaceElements: oldList }
+    })
+  }
+
+  deleteVenueDetails = (id, key, workshopId, resourceId, venueDetailsId) => {
+    const oldList = [...this.state.workspaceElements]
+    let element = oldList.find(
+      (item) => item.id === key && item.workspaceID === id
+    )
+    let workshopElement = element.workshops.find(
+      (item) => item.id === workshopId
+    )
+    let resourceElement = workshopElement.resources.find(
+      (item) => item.id === resourceId
+    )
+    const newVenueDetailsList = resourceElement.venueDetailsList.filter(
+      (item) => item.id !== venueDetailsId
+    )
+    resourceElement.venueDetailsList = newVenueDetailsList
+    this.setState(() => {
+      return { workspaceElements: oldList }
+    })
+  }
+
   render() {
     return (
       <WorkspaceContext.Provider
@@ -672,6 +1176,29 @@ class WorkspaceProvider extends Component {
           deleteMoodboardField: this.deleteMoodboardField,
           addNewHabit: this.addNewHabit,
           deleteHabit: this.deleteHabit,
+          addNewWorkshop: this.addNewWorkshop,
+          deleteWorkshop: this.deleteWorkshop,
+          handleWorkshopInfo: this.handleWorkshopInfo,
+          handleClubInfo: this.handleClubInfo,
+          addNewWorkshopResource: this.addNewWorkshopResource,
+          addNewTopicInformation: this.addNewTopicInformation,
+          editTopicInformation: this.editTopicInformation,
+          deleteTopicInformation: this.deleteTopicInformation,
+          addNewParticipants: this.addNewParticipants,
+          editParticipants: this.editParticipants,
+          deleteParticipants: this.deleteParticipants,
+          addNewActivities: this.addNewActivities,
+          editActivities: this.editActivities,
+          deleteActivities: this.deleteActivities,
+          addNewItinerary: this.addNewItinerary,
+          editItinerary: this.editItinerary,
+          deleteItinerary: this.deleteItinerary,
+          addNewCommittee: this.addNewCommittee,
+          editCommittee: this.editCommittee,
+          deleteCommittee: this.deleteCommittee,
+          addNewVenueDetails: this.addNewVenueDetails,
+          editVenueDetails: this.editVenueDetails,
+          deleteVenueDetails: this.deleteVenueDetails,
         }}
       >
         {this.props.children}

@@ -11,6 +11,8 @@ import ResourcePage from './Pages/ResourcePage'
 import SingleMoodboard from './Pages/SingleMoodboard'
 import BrainboardContentModal from './Pages/BrainboardContentModal'
 import HabitRecords from './Pages/HabitRecords'
+import SingleWorkshopPage from './Pages/SingleWorkshopPage'
+import WorkshopResourcePage from './Pages/WorkshopResourcePage'
 
 Modal.setAppElement('#root')
 
@@ -20,7 +22,9 @@ function App() {
       <Router>
         <Switch>
           <Route exact path='/' component={Dashboard}></Route>
-
+          <Route path='/workspace/:id/details/:spaceKey/insideworkshop/:workshopID/resourcedata/:resourceID'>
+            <WorkshopResourcePage />
+          </Route>
           <Route path='/workspace/:id/details/:spaceKey/insideclub/:clubID/resourcedata/:resourceID'>
             <ResourcePage />
           </Route>
@@ -35,6 +39,9 @@ function App() {
           </Route>
           <Route path='/workspace/:id/details/:spaceKey/insideclub/:clubID'>
             <SingleClubPage />
+          </Route>
+          <Route path='/workspace/:id/details/:spaceKey/insideworkshop/:workshopID'>
+            <SingleWorkshopPage />
           </Route>
           <Route path='/workspace/:id/details' component={Details}></Route>
           <Route path='/workspace' component={Workspace}></Route>

@@ -95,10 +95,7 @@ export default function WorkspacePage() {
                         <Link to={`/workspace/${id}/details`}>
                           <div className='workspace-info'>
                             <div className='thumbnail'>
-                              <img
-                                src={item.image || defaultImage}
-                                alt='thumbnail'
-                              />
+                              <img src={item.image} alt='thumbnail' />
                             </div>
                             <h2 className='workspace-title'>
                               {item.title.length > 14

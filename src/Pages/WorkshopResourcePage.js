@@ -5,25 +5,30 @@ import { FaBell } from 'react-icons/fa'
 import { RiArrowGoBackFill } from 'react-icons/ri'
 import Sidebar from '../Components/Sidebar'
 import styled from 'styled-components'
-import Tasks from '../Components/resourcepages/Tasks'
-import Ideas from '../Components/resourcepages/Ideas'
-import Finance from '../Components/resourcepages/Finance'
-import MeetingNotes from '../Components/resourcepages/MeetingNotes'
-import Contacts from '../Components/resourcepages/Contacts'
+import Participants from '../Components/resourcepages/Participants'
+import Activities from '../Components/resourcepages/Activities'
+import Committee from '../Components/resourcepages/Committee'
+import Itinerary from '../Components/resourcepages/Itinerary'
+import VenueDetails from '../Components/resourcepages/VenueDetails'
+import TopicInformation from '../Components/resourcepages/TopicInformation'
 
-export default function ResourcePage() {
+export default function WorkshopResourcePage() {
   return (
     <ResourcePageWrapper>
       <WorkspaceConsumer>
         {(value) => {
-          return <ResourcePageComponent value={value}></ResourcePageComponent>
+          return (
+            <WorkshopResourcePageComponent
+              value={value}
+            ></WorkshopResourcePageComponent>
+          )
         }}
       </WorkspaceConsumer>
     </ResourcePageWrapper>
   )
 }
 
-function ResourcePageComponent(props) {
+function WorkshopResourcePageComponent(props) {
   const { value } = props
   const param = useParams()
 
@@ -35,9 +40,11 @@ function ResourcePageComponent(props) {
     (item) => item.workspaceID === param.id && item.id === param.spaceKey
   )
 
-  const club = space.clubs.find((item) => item.id === param.clubID)
+  const workshop = space.workshops.find((item) => item.id === param.workshopID)
 
-  const resource = club.resources.find((item) => item.id === param.resourceID)
+  const resource = workshop.resources.find(
+    (item) => item.id === param.resourceID
+  )
 
   return (
     <div className='resource-content-page'>
@@ -48,7 +55,7 @@ function ResourcePageComponent(props) {
           <div className='right-header'>
             <FaBell className='bell-icon' />
             <Link
-              to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}`}
+              to={`/workspace/${param.id}/details/${param.spaceKey}/insideworkshop/${param.workshopID}`}
             >
               <div className='resource-content-back-btn'>
                 <RiArrowGoBackFill /> Back
@@ -91,9 +98,9 @@ function ResourcePageComponent(props) {
                 }}
               >
                 <span>&nbsp;</span>
-                {club.title.length > 15
-                  ? `${club.title.slice(0, 12)}...>`
-                  : `${club.title} > `}
+                {workshop.title.length > 15
+                  ? `${workshop.title.slice(0, 12)}...>`
+                  : `${workshop.title} > `}
                 <span>&nbsp;</span>
               </h3>
               <h3
@@ -106,16 +113,18 @@ function ResourcePageComponent(props) {
           </div>
           <div className='line'></div>
         </header>
-        {resource.title === 'Tasks' ? (
-          <Tasks />
-        ) : resource.title === 'Ideas' ? (
-          <Ideas />
-        ) : resource.title === 'Meeting Notes' ? (
-          <MeetingNotes />
-        ) : resource.title === 'Finance and Sponsorships' ? (
-          <Finance />
-        ) : resource.title === 'External contacts' ? (
-          <Contacts />
+        {resource.title === 'Topic Information' ? (
+          <TopicInformation />
+        ) : resource.title === 'Participants List' ? (
+          <Participants />
+        ) : resource.title === 'List of Activities' ? (
+          <Activities />
+        ) : resource.title === 'Itinerary' ? (
+          <Itinerary />
+        ) : resource.title === 'Organising Committee Details' ? (
+          <Committee />
+        ) : resource.title === 'Venue Details' ? (
+          <VenueDetails />
         ) : null}
       </div>
     </div>

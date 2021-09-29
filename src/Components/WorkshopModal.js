@@ -5,7 +5,7 @@ import { WorkspaceConsumer } from '../Context'
 import { useParams, Link, useHistory } from 'react-router-dom'
 import { FaCheckCircle } from 'react-icons/fa'
 
-export default function ClubModal() {
+export default function WorkshopModal() {
   const images = [
     'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=871&q=80',
     'https://images.unsplash.com/photo-1531497865144-0464ef8fb9a9?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=774&q=80',
@@ -119,7 +119,7 @@ export default function ClubModal() {
   ]
   const randomIndex = Math.floor(Math.random() * images.length)
 
-  const [clubName, setClubName] = useState('')
+  const [workshopName, setWorkshopName] = useState('')
   const [thumbnail, setThumbnail] = useState()
   const [preview, setPreview] = useState()
 
@@ -200,18 +200,18 @@ export default function ClubModal() {
               }}
               onSubmit={(e) => {
                 e.preventDefault()
-                if (clubName) {
+                if (workshopName) {
                   const date = new Date()
                   const day = date.getDate()
                   const month = date.getMonth() + 1
                   const year = date.getFullYear()
-                  value.addNewClub(param.id, param.spaceKey, {
+                  value.addNewWorkshop(param.id, param.spaceKey, {
                     id: new Date().getTime().toString(),
                     createdOn: `${day}/${month}/${year}`,
-                    title: clubName,
+                    title: workshopName,
                     image: preview,
                   })
-                  setClubName('')
+                  setWorkshopName('')
 
                   history.push(
                     `/workspace/${param.id}/details/${param.spaceKey}`
@@ -228,7 +228,7 @@ export default function ClubModal() {
                     marginBottom: '5px',
                   }}
                 >
-                  Name of the club
+                  Name of the Workshop
                 </label>
                 <input
                   autoFocus
@@ -244,8 +244,8 @@ export default function ClubModal() {
                     fontSize: '16px',
                     padding: '3px 8px',
                   }}
-                  value={clubName}
-                  onChange={(e) => setClubName(e.target.value)}
+                  value={workshopName}
+                  onChange={(e) => setWorkshopName(e.target.value)}
                 />
               </div>
               <div style={{ display: 'flex', flexDirection: 'column' }}>

@@ -40,7 +40,6 @@ export default function NewSemesterPage() {
                   (item) =>
                     item.id === param.spaceKey && item.workspaceID === param.id
                 )
-                // console.log(displayItems)
                 return displayItems.map((item) => {
                   if (item.subjects) {
                     return item.subjects.map((singleSubject) => {
@@ -188,7 +187,7 @@ const NewSemesterPageWrapper = styled.section`
   }
   .my-subjects {
     font-size: 20px;
-    font-weight: 600;
+    font-weight: 400;
   }
   .add-new {
     display: flex;
@@ -201,8 +200,8 @@ const NewSemesterPageWrapper = styled.section`
     height: 143px;
     background: #f2f4f8;
     border: 1px solid #468aef;
-
     border-radius: 6px;
+    font-weight: 400;
   }
   .add-new svg {
     font-size: 36px;
@@ -215,13 +214,13 @@ const NewSemesterPageWrapper = styled.section`
   .storage {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
-    gap: 10px;
+    gap: 35px;
   }
   .subject-card {
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 5px;
     padding: 10px 10px;
     height: 143px;
     background: #f2f4f8;
@@ -260,12 +259,14 @@ const NewSemesterPageWrapper = styled.section`
     justify-content: space-between;
   }
   .day {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     height: 22px;
     width: 70px;
     font-size: 12px;
     font-weight: 400;
     background: #fff;
-    text-align: center;
     border-radius: 3px;
     color: #9cc4e8;
   }
@@ -276,5 +277,6 @@ const NewSemesterPageWrapper = styled.section`
   .see-more-option {
     display: flex;
     justify-content: center;
+    padding-bottom: 10px;
   }
 `
