@@ -3,7 +3,7 @@ import { AiOutlinePlus } from 'react-icons/ai'
 import { Switch, Route, Link, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import { WorkspaceConsumer } from '../../Context'
-import { RiDeleteBin6Line, RiArrowGoBackFill } from 'react-icons/ri'
+import { RiDeleteBin6Line } from 'react-icons/ri'
 import TopicInformationModal from '../ResourceModals/TopicInformationModal'
 
 export default function TopicInformation(props) {

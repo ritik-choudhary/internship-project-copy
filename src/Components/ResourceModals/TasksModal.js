@@ -97,6 +97,7 @@ function TaskModalComponent(props) {
     param.resourceID,
     param.spaceKey,
     param.taskID,
+    param.todoID,
     value.workspaceElements,
   ])
 

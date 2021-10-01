@@ -1,10 +1,9 @@
 import React, { useState } from 'react'
 import { WorkspaceConsumer } from '../Context'
-import { AiOutlinePlus } from 'react-icons/ai'
 import Sidebar from '../Components/Sidebar'
 import { RiArrowGoBackFill } from 'react-icons/ri'
 import styled from 'styled-components'
-import { useParams, Route, Link, Switch } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { FaBell } from 'react-icons/fa'
 import { RiDeleteBin6Line } from 'react-icons/ri'
 import { VscDebugRestart } from 'react-icons/vsc'
@@ -125,6 +124,7 @@ function TrashPageComponent(props) {
                     </div>
                   )
                 }
+                return <></>
               })
             : null}
         </div>
