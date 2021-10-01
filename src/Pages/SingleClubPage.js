@@ -186,6 +186,7 @@ function SingleClubPageComponent(props) {
                     id='mission'
                     value={mission}
                     onChange={(e) => setMission(e.target.value)}
+                    maxLength='100'
                     onBlur={(e) => {
                       e.preventDefault()
                       value.handleClubInfo(

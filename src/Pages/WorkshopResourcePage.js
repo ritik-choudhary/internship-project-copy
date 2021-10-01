@@ -11,25 +11,25 @@ import Committee from '../Components/resourcepages/Committee'
 import Itinerary from '../Components/resourcepages/Itinerary'
 import VenueDetails from '../Components/resourcepages/VenueDetails'
 import TopicInformation from '../Components/resourcepages/TopicInformation'
+import Modal from 'react-modal'
 
-export default function WorkshopResourcePage() {
+export default function WorkshopResourcePage(props) {
   return (
-    <ResourcePageWrapper>
-      <WorkspaceConsumer>
-        {(value) => {
-          return (
-            <WorkshopResourcePageComponent
-              value={value}
-            ></WorkshopResourcePageComponent>
-          )
-        }}
-      </WorkspaceConsumer>
-    </ResourcePageWrapper>
+    <WorkspaceConsumer>
+      {(value) => {
+        return (
+          <WorkshopResourcePageComponent
+            value={value}
+            {...props}
+          ></WorkshopResourcePageComponent>
+        )
+      }}
+    </WorkspaceConsumer>
   )
 }
 
 function WorkshopResourcePageComponent(props) {
-  const { value } = props
+  const { value, isSharing } = props
   const param = useParams()
 
   const workspaceName = value.workspaceList.find(
@@ -47,94 +47,158 @@ function WorkshopResourcePageComponent(props) {
   )
 
   return (
-    <div className='resource-content-page'>
-      <Sidebar />
-      <div className='page-container'>
-        <div className='resource-content-header'>
-          <h3>thesocialcomment</h3>
-          <div className='right-header'>
-            <FaBell className='bell-icon' />
-            <Link
-              to={`/workspace/${param.id}/details/${param.spaceKey}/insideworkshop/${param.workshopID}`}
-            >
-              <div className='resource-content-back-btn'>
-                <RiArrowGoBackFill /> Back
+    <>
+      {isSharing ? (
+        <Modal
+          isOpen={true}
+          style={{
+            content: {
+              width: '95vw',
+              minHeight: '95vh',
+              top: '20%',
+              left: '50%',
+              right: 'auto',
+              marginRight: '-50%',
+              transform: 'translate(-50%, -20%)',
+              boxShadow: '0px 4px 25px rgba(0, 0, 0, 0.08)',
+              borderRadius: '10px',
+              background: 'white',
+              padding: '-20px',
+            },
+            overlay: {
+              background: 'rgba(0, 0, 0, 0.31)',
+            },
+          }}
+        >
+          <ResourcePageWrapper>
+            <div className='resource-content-page'>
+              <div className='page-container'>
+                <div className='resource-content-header'>
+                  <h3>thesocialcomment</h3>
+                  <div className='right-header'>
+                    <FaBell className='bell-icon' />
+                    <Link
+                      to={`/workspace/${param.id}/details/${param.spaceKey}/insideworkshop/${param.workshopID}/share`}
+                    >
+                      <div className='resource-content-back-btn'>
+                        <RiArrowGoBackFill /> Back
+                      </div>
+                    </Link>
+                  </div>
+                </div>
+                <header className='resource-page-title-container'>
+                  <div className='line'></div>
+                </header>
+                {resource.title === 'Topic Information' ? (
+                  <TopicInformation isSharing />
+                ) : resource.title === 'Participants List' ? (
+                  <Participants isSharing />
+                ) : resource.title === 'List of Activities' ? (
+                  <Activities isSharing />
+                ) : resource.title === 'Itinerary' ? (
+                  <Itinerary isSharing />
+                ) : resource.title === 'Organising Committee Details' ? (
+                  <Committee isSharing />
+                ) : resource.title === 'Venue Details' ? (
+                  <VenueDetails isSharing />
+                ) : null}
               </div>
-            </Link>
-          </div>
-        </div>
-        <header className='resource-page-title-container'>
-          <div className='title'>
-            <div>
-              <h3
-                style={{
-                  color: '#c4c4c4',
-                  fontSize: '20px',
-                  fontWeight: '400',
-                }}
-              >
-                {`My Workspace > ${
-                  workspaceName.length > 15
-                    ? `${workspaceName.slice(0, 15)}...`
-                    : workspaceName
-                } > `}
-                <span>&nbsp;</span>
-              </h3>
-              <h3
-                style={{
-                  color: '#c4c4c4',
-                  fontSize: '20px',
-                  fontWeight: '400',
-                }}
-              >
-                {`${space.title} > `}
-                <span>&nbsp;</span>
-              </h3>
-              <h3
-                style={{
-                  color: '#c4c4c4',
-                  fontSize: '20px',
-                  fontWeight: '400',
-                }}
-              >
-                <span>&nbsp;</span>
-                {workshop.title.length > 15
-                  ? `${workshop.title.slice(0, 12)}...>`
-                  : `${workshop.title} > `}
-                <span>&nbsp;</span>
-              </h3>
-              <h3
-                className='animation-title'
-                style={{ fontSize: '20px', fontWeight: '400' }}
-              >
-                {resource.title}
-              </h3>
+            </div>
+          </ResourcePageWrapper>
+        </Modal>
+      ) : (
+        <ResourcePageWrapper>
+          <div className='resource-content-page'>
+            {isSharing ? null : <Sidebar />}
+            <div className='page-container'>
+              <div className='resource-content-header'>
+                <h3>thesocialcomment</h3>
+                <div className='right-header'>
+                  <FaBell className='bell-icon' />
+                  <Link
+                    to={`/workspace/${param.id}/details/${param.spaceKey}/insideworkshop/${param.workshopID}`}
+                  >
+                    <div className='resource-content-back-btn'>
+                      <RiArrowGoBackFill /> Back
+                    </div>
+                  </Link>
+                </div>
+              </div>
+              <header className='resource-page-title-container'>
+                <div className='title'>
+                  <div>
+                    <h3
+                      style={{
+                        color: '#c4c4c4',
+                        fontSize: '20px',
+                        fontWeight: '400',
+                      }}
+                    >
+                      {`My Workspace > ${
+                        workspaceName.length > 15
+                          ? `${workspaceName.slice(0, 15)}...`
+                          : workspaceName
+                      } > `}
+                      <span>&nbsp;</span>
+                    </h3>
+                    <h3
+                      style={{
+                        color: '#c4c4c4',
+                        fontSize: '20px',
+                        fontWeight: '400',
+                      }}
+                    >
+                      {`${space.title} > `}
+                      <span>&nbsp;</span>
+                    </h3>
+                    <h3
+                      style={{
+                        color: '#c4c4c4',
+                        fontSize: '20px',
+                        fontWeight: '400',
+                      }}
+                    >
+                      <span>&nbsp;</span>
+                      {workshop.title.length > 15
+                        ? `${workshop.title.slice(0, 12)}...>`
+                        : `${workshop.title} > `}
+                      <span>&nbsp;</span>
+                    </h3>
+                    <h3
+                      className='animation-title'
+                      style={{ fontSize: '20px', fontWeight: '400' }}
+                    >
+                      {resource.title}
+                    </h3>
+                  </div>
+                </div>
+                <div className='line'></div>
+              </header>
+              {resource.title === 'Topic Information' ? (
+                <TopicInformation />
+              ) : resource.title === 'Participants List' ? (
+                <Participants />
+              ) : resource.title === 'List of Activities' ? (
+                <Activities />
+              ) : resource.title === 'Itinerary' ? (
+                <Itinerary />
+              ) : resource.title === 'Organising Committee Details' ? (
+                <Committee />
+              ) : resource.title === 'Venue Details' ? (
+                <VenueDetails />
+              ) : null}
             </div>
           </div>
-          <div className='line'></div>
-        </header>
-        {resource.title === 'Topic Information' ? (
-          <TopicInformation />
-        ) : resource.title === 'Participants List' ? (
-          <Participants />
-        ) : resource.title === 'List of Activities' ? (
-          <Activities />
-        ) : resource.title === 'Itinerary' ? (
-          <Itinerary />
-        ) : resource.title === 'Organising Committee Details' ? (
-          <Committee />
-        ) : resource.title === 'Venue Details' ? (
-          <VenueDetails />
-        ) : null}
-      </div>
-    </div>
+        </ResourcePageWrapper>
+      )}
+    </>
   )
 }
 
 const ResourcePageWrapper = styled.section`
   .resource-content-page {
     font-family: 'Open Sans', sans-serif;
-    min-height: 100vh;
+    // min-height: 100vh;
     display: flex;
   }
   .resource-content-page .sidebar {

@@ -9,70 +9,84 @@ import { FiEdit } from 'react-icons/fi'
 import { RiDeleteBin6Line } from 'react-icons/ri'
 import WorkspaceModal from '../Components/WorkspaceModal'
 import { RiArrowGoBackFill } from 'react-icons/ri'
+import Empty from '../assets/png/empty.png'
 
 import { Link, Route, Switch } from 'react-router-dom'
 
 export default function WorkspacePage() {
+  return (
+    <WorkspaceWrapper>
+      <Switch>
+        <Route path='/workspace/:id/edit'>
+          <WorkspaceModal isEditing />
+        </Route>
+        <Route path='/workspace/create'>
+          <WorkspaceModal />
+        </Route>
+      </Switch>
+      <WorkspaceConsumer>
+        {(value) => {
+          return <WorkspacePageComponent value={value}></WorkspacePageComponent>
+        }}
+      </WorkspaceConsumer>
+    </WorkspaceWrapper>
+  )
+}
+
+function WorkspacePageComponent(props) {
+  const { value } = props
   const [gridStyle, setGridStyle] = useState(false)
 
   return (
     <>
-      <WorkspaceWrapper>
-        <Switch>
-          <Route path='/workspace/:id/edit'>
-            <WorkspaceModal isEditing />
-          </Route>
-          <Route path='/workspace/create'>
-            <WorkspaceModal />
-          </Route>
-        </Switch>
-        <div className='workspace'>
-          <Sidebar />
-          <div className='page-content'>
-            <div className='workspace-header'>
-              <h3>thesocialcomment</h3>
-              <div className='right-header'>
-                <FaBell className='bell-icon' />
-                <Link to='/'>
-                  <div className='workspace-back-btn'>
-                    <RiArrowGoBackFill /> Back
-                  </div>
-                </Link>
-              </div>
-            </div>
-            <header className='workspace-title-container'>
-              <div className='title'>
-                <h3 style={{ fontSize: '20px', fontWeight: '400' }}>
-                  My Workspaces
-                </h3>
-                <div className='view-container'>
-                  <div
-                    className={` ${
-                      gridStyle ? 'grid-style grid-style-active' : 'grid-style'
-                    }`}
-                    onClick={() => setGridStyle(true)}
-                  >
-                    <BsFillGridFill />
-                  </div>
-                  <div
-                    className={` ${
-                      gridStyle ? 'list-style' : 'list-style list-style-active'
-                    }`}
-                    onClick={() => setGridStyle(false)}
-                  >
-                    <FaList />
-                  </div>
+      <div className='workspace'>
+        <Sidebar />
+        <div className='page-content'>
+          <div className='workspace-header'>
+            <h3>thesocialcomment</h3>
+            <div className='right-header'>
+              <FaBell className='bell-icon' />
+              <Link to='/'>
+                <div className='workspace-back-btn'>
+                  <RiArrowGoBackFill /> Back
                 </div>
-              </div>
-              <div className='line'></div>
-            </header>
-            <div className='button-container'>
-              <Link to='/workspace/create'>
-                <button className='add-workspace-btn'>
-                  <AiOutlinePlus /> <p>Add Workspace</p>
-                </button>
               </Link>
             </div>
+          </div>
+          <header className='workspace-title-container'>
+            <div className='title'>
+              <h3 style={{ fontSize: '20px', fontWeight: '400' }}>
+                My Workspaces
+              </h3>
+              <div className='view-container'>
+                <div
+                  className={` ${
+                    gridStyle ? 'grid-style grid-style-active' : 'grid-style'
+                  }`}
+                  onClick={() => setGridStyle(true)}
+                >
+                  <BsFillGridFill />
+                </div>
+                <div
+                  className={` ${
+                    gridStyle ? 'list-style' : 'list-style list-style-active'
+                  }`}
+                  onClick={() => setGridStyle(false)}
+                >
+                  <FaList />
+                </div>
+              </div>
+            </div>
+            <div className='line'></div>
+          </header>
+          <div className='button-container'>
+            <Link to='/workspace/create'>
+              <button className='add-workspace-btn'>
+                <AiOutlinePlus /> <p>Add Workspace</p>
+              </button>
+            </Link>
+          </div>
+          {value.workspaceList.length > 0 ? (
             <div
               className={`${
                 gridStyle
@@ -80,53 +94,56 @@ export default function WorkspacePage() {
                   : 'list-workspace-container'
               }`}
             >
-              <WorkspaceConsumer>
-                {(value) => {
-                  return value.workspaceList.map((item) => {
-                    const id = item.id
-                    return (
-                      <div
-                        key={id}
-                        className={`${gridStyle ? 'grid-card' : 'list-card'}`}
-                        onClick={(e) => value.handleDetail(id)}
-                      >
-                        <Link to={`/workspace/${id}/details`}>
-                          <div className='workspace-info'>
-                            <div className='thumbnail'>
-                              <img src={item.image} alt='thumbnail' />
-                            </div>
-                            <h2 className='workspace-title'>
-                              {item.title.length > 14
-                                ? `${item.title.slice(0, 13)}...`
-                                : item.title}
-                            </h2>
-                          </div>
-                        </Link>
-                        <div className='workspace-options'>
-                          <div className='options'>
-                            <Link to={`/workspace/${id}/edit`}>
-                              <FiEdit className='edit-btn' />
-                            </Link>
-                            <RiDeleteBin6Line
-                              className='delete-btn'
-                              onClick={(e) => {
-                                value.deleteWorkspace(id)
-                              }}
-                            />
-                          </div>
-                          <div className='created-on'>
-                            Created on: {item.createdOn}
-                          </div>
+              {value.workspaceList.map((item) => {
+                const id = item.id
+                return (
+                  <div
+                    key={id}
+                    className={`${gridStyle ? 'grid-card' : 'list-card'}`}
+                    onClick={(e) => value.handleDetail(id)}
+                  >
+                    <Link to={`/workspace/${id}/details`}>
+                      <div className='workspace-info'>
+                        <div className='thumbnail'>
+                          <img src={item.image} alt='thumbnail' />
                         </div>
+                        <h2 className='workspace-title'>
+                          {item.title.length > 14
+                            ? `${item.title.slice(0, 13)}...`
+                            : item.title}
+                        </h2>
                       </div>
-                    )
-                  })
-                }}
-              </WorkspaceConsumer>
+                    </Link>
+                    <div className='workspace-options'>
+                      <div className='options'>
+                        <Link to={`/workspace/${id}/edit`}>
+                          <FiEdit className='edit-btn' />
+                        </Link>
+                        <RiDeleteBin6Line
+                          className='delete-btn'
+                          onClick={(e) => {
+                            value.deleteWorkspace(id)
+                          }}
+                        />
+                      </div>
+                      <div className='created-on'>
+                        Created on: {item.createdOn}
+                      </div>
+                    </div>
+                  </div>
+                )
+              })}
             </div>
-          </div>
+          ) : (
+            <div className='empty-workspace'>
+              <div>
+                <img src={Empty} alt='' />
+                <p>No workspaces added yet</p>
+              </div>
+            </div>
+          )}
         </div>
-      </WorkspaceWrapper>
+      </div>
     </>
   )
 }
@@ -142,6 +159,24 @@ const WorkspaceWrapper = styled.section`
     display: flex;
     flex-direction: column;
     gap: 20px;
+  }
+  .empty-workspace {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .empty-workspace div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+  .empty-workspace p {
+    color: #c4c4c4;
+    font-size: 12px;
+    text-transform: capitalize;
   }
   .workspace-header {
     padding: 10px 150px;

@@ -6,10 +6,13 @@ import { WorkspaceConsumer } from '../../Context'
 import { RiDeleteBin6Line } from 'react-icons/ri'
 import ActivitiesModal from '../ResourceModals/ActivitiesModal'
 
-export default function Activities() {
+export default function Activities(props) {
   return (
-    <ActivitiesWrapper>
+    <>
       <Switch>
+        <Route path='/workspace/:id/details/:spaceKey/insideworkshop/:workshopID/resourcedata/:resourceID/shareactivities/:activitiesID'>
+          <ActivitiesModal isSharing />
+        </Route>
         <Route path='/workspace/:id/details/:spaceKey/insideworkshop/:workshopID/resourcedata/:resourceID/editactivities/:activitiesID'>
           <ActivitiesModal isEditing />
         </Route>
@@ -19,16 +22,18 @@ export default function Activities() {
       </Switch>
       <WorkspaceConsumer>
         {(value) => {
-          return <ActivitiesComponent value={value}></ActivitiesComponent>
+          return (
+            <ActivitiesComponent value={value} {...props}></ActivitiesComponent>
+          )
         }}
       </WorkspaceConsumer>
-    </ActivitiesWrapper>
+    </>
   )
 }
 
 function ActivitiesComponent(props) {
   const param = useParams()
-  const { value } = props
+  const { value, isSharing } = props
   const space = value.workspaceElements.find(
     (item) => item.workspaceID === param.id && item.id === param.spaceKey
   )
@@ -39,50 +44,85 @@ function ActivitiesComponent(props) {
     (item) => item.id === param.resourceID
   )
   return (
-    <div className='activities-page'>
-      <h1 className='activities-page-header'>All</h1>
-      <div className='activities-container'>
-        <Link
-          to={`/workspace/${param.id}/details/${param.spaceKey}/insideworkshop/${param.workshopID}/resourcedata/${param.resourceID}/addactivities`}
-        >
-          <div className='add-new-btn'>
-            <AiOutlinePlus />
-            <p>Add new</p>
+    <>
+      {isSharing ? (
+        <ActivitiesWrapper>
+          <div className='activities-page'>
+            <h1 className='activities-page-header'>All</h1>
+            <div className='activities-container'>
+              {resource?.activitiesList?.map((item) => {
+                return (
+                  <div className='activities-card' key={item.id}>
+                    <Link
+                      to={`/workspace/${param.id}/details/${param.spaceKey}/insideworkshop/${param.workshopID}/resourcedata/${param.resourceID}/shareactivities/${item.id}`}
+                    >
+                      <div className='card-info'>
+                        <h4 className='title'>
+                          {item.title.length > 12
+                            ? `${item.title.slice(0, 12)}...`
+                            : item.title}
+                        </h4>
+                        <p className='created-on'>{item.createdOn}</p>
+                      </div>
+                    </Link>
+                    <div className='delete-btn'>
+                      <RiDeleteBin6Line />
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
           </div>
-        </Link>
-        {resource?.activitiesList?.map((item) => {
-          return (
-            <div className='activities-card' key={item.id}>
+        </ActivitiesWrapper>
+      ) : (
+        <ActivitiesWrapper>
+          <div className='activities-page'>
+            <h1 className='activities-page-header'>All</h1>
+            <div className='activities-container'>
               <Link
-                to={`/workspace/${param.id}/details/${param.spaceKey}/insideworkshop/${param.workshopID}/resourcedata/${param.resourceID}/editactivities/${item.id}`}
+                to={`/workspace/${param.id}/details/${param.spaceKey}/insideworkshop/${param.workshopID}/resourcedata/${param.resourceID}/addactivities`}
               >
-                <div className='card-info'>
-                  <h4 className='title'>
-                    {item.title.length > 12
-                      ? `${item.title.slice(0, 12)}...`
-                      : item.title}
-                  </h4>
-                  <p className='created-on'>{item.createdOn}</p>
+                <div className='add-new-btn'>
+                  <AiOutlinePlus />
+                  <p>Add new</p>
                 </div>
               </Link>
-              <div className='delete-btn'>
-                <RiDeleteBin6Line
-                  onClick={() =>
-                    value.deleteActivities(
-                      param.id,
-                      param.spaceKey,
-                      param.workshopID,
-                      param.resourceID,
-                      item.id
-                    )
-                  }
-                />
-              </div>
+              {resource?.activitiesList?.map((item) => {
+                return (
+                  <div className='activities-card' key={item.id}>
+                    <Link
+                      to={`/workspace/${param.id}/details/${param.spaceKey}/insideworkshop/${param.workshopID}/resourcedata/${param.resourceID}/editactivities/${item.id}`}
+                    >
+                      <div className='card-info'>
+                        <h4 className='title'>
+                          {item.title.length > 12
+                            ? `${item.title.slice(0, 12)}...`
+                            : item.title}
+                        </h4>
+                        <p className='created-on'>{item.createdOn}</p>
+                      </div>
+                    </Link>
+                    <div className='delete-btn'>
+                      <RiDeleteBin6Line
+                        onClick={() =>
+                          value.deleteActivities(
+                            param.id,
+                            param.spaceKey,
+                            param.workshopID,
+                            param.resourceID,
+                            item.id
+                          )
+                        }
+                      />
+                    </div>
+                  </div>
+                )
+              })}
             </div>
-          )
-        })}
-      </div>
-    </div>
+          </div>
+        </ActivitiesWrapper>
+      )}
+    </>
   )
 }
 

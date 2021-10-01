@@ -34,10 +34,32 @@ class WorkspaceProvider extends Component {
     let oldList = this.state.workspaceList
     const selectedItem = oldList.find((item) => item.id === id)
     oldList = oldList.filter((element) => element.id !== id)
+    selectedItem.type = 'Workspace'
     this.setState(() => {
       return {
         workspaceList: oldList,
         trash: [...this.state.trash, selectedItem],
+      }
+    })
+  }
+  restoreWorkspace = (id) => {
+    let oldTrashList = this.state.trash
+    const selectedItem = oldTrashList.find((item) => item.id === id)
+    oldTrashList = oldTrashList.filter((element) => element.id !== id)
+    this.setState(() => {
+      return {
+        trash: oldTrashList,
+        workspaceList: [...this.state.workspaceList, selectedItem],
+      }
+    })
+  }
+  deleteWorkspacePermanently = (id) => {
+    let oldTrashList = this.state.trash
+    // const selectedItem = oldTrashList.find((item) => item.id === id)
+    oldTrashList = oldTrashList.filter((element) => element.id !== id)
+    this.setState(() => {
+      return {
+        trash: oldTrashList,
       }
     })
   }
@@ -1132,6 +1154,61 @@ class WorkspaceProvider extends Component {
     })
   }
 
+  addTodo = (id, key, todo) => {
+    const oldList = [...this.state.workspaceElements]
+    let element = oldList.find(
+      (item) => item.id === key && item.workspaceID === id
+    )
+    element.todoList = element.todoList || []
+    element.todoList = [...element.todoList, todo]
+    this.setState(() => {
+      return { workspaceElements: oldList }
+    })
+  }
+
+  deleteTodo = (id, key, todoId) => {
+    const oldList = [...this.state.workspaceElements]
+    let element = oldList.find(
+      (item) => item.id === key && item.workspaceID === id
+    )
+    const newTodoList = element.todoList.filter((item) => item.id !== todoId)
+    element.todoList = newTodoList
+    this.setState(() => {
+      return { workspaceElements: oldList }
+    })
+  }
+
+  editTodo = (id, key, todoId, todo) => {
+    const oldList = [...this.state.workspaceElements]
+    let element = oldList.find(
+      (item) => item.id === key && item.workspaceID === id
+    )
+    let todoElement = element.todoList.find((item) => item.id === todoId)
+
+    todoElement.title = todo.title
+    todoElement.createdOn = todo.createdOn
+    todoElement.dueDate = todo.dueDate
+    todoElement.links = todo.links
+    todoElement.pdfList = todo.pdfList
+    todoElement.description = todo.description
+
+    this.setState(() => {
+      return { workspaceElements: oldList }
+    })
+  }
+
+  todoManipulation = (id, key, todoId) => {
+    const oldList = [...this.state.workspaceElements]
+    let element = oldList.find(
+      (item) => item.id === key && item.workspaceID === id
+    )
+    let todoElement = element.todoList.find((item) => item.id === todoId)
+    todoElement.completed = !todoElement.completed
+    this.setState(() => {
+      return { workspaceElements: oldList }
+    })
+  }
+
   render() {
     return (
       <WorkspaceContext.Provider
@@ -1140,6 +1217,8 @@ class WorkspaceProvider extends Component {
           addNewWorkspace: this.addNewWorkspace,
           editWorkspace: this.editWorkspace,
           deleteWorkspace: this.deleteWorkspace,
+          restoreWorkspace: this.restoreWorkspace,
+          deleteWorkspacePermanently: this.deleteWorkspacePermanently,
           handleDetail: this.handleDetail,
           addNewSpace: this.addNewSpace,
           deleteSpace: this.deleteSpace,
@@ -1199,6 +1278,10 @@ class WorkspaceProvider extends Component {
           addNewVenueDetails: this.addNewVenueDetails,
           editVenueDetails: this.editVenueDetails,
           deleteVenueDetails: this.deleteVenueDetails,
+          addTodo: this.addTodo,
+          deleteTodo: this.deleteTodo,
+          editTodo: this.editTodo,
+          todoManipulation: this.todoManipulation,
         }}
       >
         {this.props.children}

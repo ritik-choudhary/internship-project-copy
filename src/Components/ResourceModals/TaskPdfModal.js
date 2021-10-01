@@ -8,22 +8,29 @@ import { Worker } from '@react-pdf-viewer/core'
 import '@react-pdf-viewer/core/lib/styles/index.css'
 import '@react-pdf-viewer/default-layout/lib/styles/index.css'
 
-export default function TaskPdfModal() {
+export default function TaskPdfModal(props) {
   return (
     <>
       <Switch>
+        <Route path='/workspace/:id/details/:spaceKey/addtodo/readpdf/readfullpage'>
+          <TaskFullPagePdf isTodo />
+        </Route>
         <Route path='/workspace/:id/details/:spaceKey/insideclub/:clubID/resourcedata/:resourceID/addtask/readpdf/readfullpage'>
           <TaskFullPagePdf />
         </Route>
+        <Route path='/workspace/:id/details/:spaceKey/addtodo/readpdf'>
+          <TaskPdfModalComponent {...props} />
+        </Route>
         <Route path='/workspace/:id/details/:spaceKey/insideclub/:clubID/resourcedata/:resourceID/addtask/readpdf'>
-          <TaskPdfModalComponent />
+          <TaskPdfModalComponent {...props} />
         </Route>
       </Switch>
     </>
   )
 }
 
-const TaskPdfModalComponent = () => {
+const TaskPdfModalComponent = (props) => {
+  const { isTodo } = props
   const param = useParams()
   const location = useLocation()
   return (
@@ -65,32 +72,62 @@ const TaskPdfModalComponent = () => {
           zIndex: '1',
         }}
       >
-        <Link
-          to={{
-            pathname: `/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/addtask/readpdf/readfullpage`,
-            state: { data: location.state.src },
-          }}
-        >
-          <AiOutlineFullscreen
-            style={{
-              fontSize: '25px',
-              fontWeight: '500',
-              color: '#105eee',
-              cursor: 'pointer',
+        {isTodo ? (
+          <Link
+            to={{
+              pathname: `/workspace/${param.id}/details/${param.spaceKey}/addtodo/readpdf/readfullpage`,
+              state: { data: location.state.src },
             }}
-          />
-        </Link>
-        <Link
-          to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}`}
-        >
-          <AiFillCloseCircle
-            style={{
-              fontSize: '30px',
-              color: '#FFC8C8',
-              cursor: 'pointer',
+          >
+            <AiOutlineFullscreen
+              style={{
+                fontSize: '25px',
+                fontWeight: '500',
+                color: '#105eee',
+                cursor: 'pointer',
+              }}
+            />
+          </Link>
+        ) : (
+          <Link
+            to={{
+              pathname: `/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/addtask/readpdf/readfullpage`,
+              state: { data: location.state.src },
             }}
-          />
-        </Link>
+          >
+            <AiOutlineFullscreen
+              style={{
+                fontSize: '25px',
+                fontWeight: '500',
+                color: '#105eee',
+                cursor: 'pointer',
+              }}
+            />
+          </Link>
+        )}
+        {isTodo ? (
+          <Link to={`/workspace/${param.id}/details/${param.spaceKey}`}>
+            <AiFillCloseCircle
+              style={{
+                fontSize: '30px',
+                color: '#FFC8C8',
+                cursor: 'pointer',
+              }}
+            />
+          </Link>
+        ) : (
+          <Link
+            to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}`}
+          >
+            <AiFillCloseCircle
+              style={{
+                fontSize: '30px',
+                color: '#FFC8C8',
+                cursor: 'pointer',
+              }}
+            />
+          </Link>
+        )}
       </header>
       <div
         className='modal-content'

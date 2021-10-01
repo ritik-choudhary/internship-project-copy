@@ -4,11 +4,14 @@ import { AiOutlineClose } from 'react-icons/ai'
 import { WorkspaceConsumer } from '../Context'
 import { useParams, Link, useHistory } from 'react-router-dom'
 import { FaCheckCircle } from 'react-icons/fa'
+import { Images } from '../assets/DefaultImage'
 
 export default function MoodboardModal() {
+  const randomIndex = Math.floor(Math.random() * Images.length)
+
   const [moodboardName, setMoodboardName] = useState('')
   const [thumbnail, setThumbnail] = useState()
-  const [preview, setPreview] = useState()
+  const [preview, setPreview] = useState(Images[randomIndex])
 
   const param = useParams()
   const history = useHistory()
@@ -20,8 +23,6 @@ export default function MoodboardModal() {
         setPreview(reader.result)
       }
       reader.readAsDataURL(thumbnail)
-    } else {
-      setPreview(null)
     }
   }, [thumbnail])
 
@@ -145,7 +146,7 @@ export default function MoodboardModal() {
                     marginBottom: '5px',
                   }}
                 >
-                  Thumbnail image
+                  Thumbnail image (optional)
                 </label>
 
                 <input

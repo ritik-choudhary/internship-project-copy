@@ -11,6 +11,7 @@ import Moodboards from '../Components/SpacePages/Moodboards'
 import { FaBell } from 'react-icons/fa'
 import HabitTracker from '../Components/SpacePages/HabitTracker'
 import Workshop from '../Components/SpacePages/Workshop'
+import TodoList from '../Components/SpacePages/TodoList'
 
 export default function SpaceContent() {
   const param = useParams()
@@ -88,6 +89,9 @@ export default function SpaceContent() {
                 }
                 if (page === 'Workshop') {
                   return <Workshop />
+                }
+                if (page === 'To-do List') {
+                  return <TodoList />
                 }
               }}
             </WorkspaceConsumer>

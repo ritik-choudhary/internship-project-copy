@@ -33,7 +33,7 @@ const HOTKEYS = {
 const LIST_TYPES = ['numbered-list', 'bulleted-list']
 
 const RichTextExample = (props) => {
-  const { textNote, setTextNote } = props
+  const { textNote, setTextNote, isSharing } = props
   const renderElement = useCallback((props) => <Element {...props} />, [])
   const renderLeaf = useCallback((props) => <Leaf {...props} />, [])
   const editor = useMemo(() => withHistory(withReact(createEditor())), [])
@@ -42,7 +42,11 @@ const RichTextExample = (props) => {
     <Slate
       editor={editor}
       value={textNote}
-      onChange={(value) => setTextNote(value)}
+      onChange={(value) => {
+        if (!isSharing) {
+          setTextNote(value)
+        }
+      }}
     >
       <Toolbar>
         <MarkButton format='bold' icon={<AiOutlineBold />} />

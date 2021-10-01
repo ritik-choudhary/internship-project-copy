@@ -7,7 +7,8 @@ import '@react-pdf-viewer/core/lib/styles/index.css'
 import '@react-pdf-viewer/default-layout/lib/styles/index.css'
 import { AiFillCloseCircle } from 'react-icons/ai'
 
-export default function TaskFullPagePdf() {
+export default function TaskFullPagePdf(props) {
+  const { isTodo } = props
   const location = useLocation()
   const param = useParams()
   return (
@@ -44,13 +45,21 @@ export default function TaskFullPagePdf() {
           zIndex: '1',
         }}
       >
-        <Link
-          to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}`}
-        >
-          <AiFillCloseCircle
-            style={{ color: '#FFC8C8', fontSize: '30px', cursor: 'pointer' }}
-          />
-        </Link>
+        {isTodo ? (
+          <Link to={`/workspace/${param.id}/details/${param.spaceKey}`}>
+            <AiFillCloseCircle
+              style={{ color: '#FFC8C8', fontSize: '30px', cursor: 'pointer' }}
+            />
+          </Link>
+        ) : (
+          <Link
+            to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}`}
+          >
+            <AiFillCloseCircle
+              style={{ color: '#FFC8C8', fontSize: '30px', cursor: 'pointer' }}
+            />
+          </Link>
+        )}
       </header>
       <div
         className='pdf-container'

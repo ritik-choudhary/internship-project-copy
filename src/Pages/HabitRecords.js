@@ -119,13 +119,12 @@ function HabitRecordsComponent(props) {
               style={{
                 display: 'grid',
                 gridTemplateColumns: `repeat(${
-                  habit.fieldsList.length + 2
-                },200px)`,
+                  habit.fieldsList.length + 1
+                },130px)`,
               }}
             >
-              <div className='date-col'>Date</div>
-              <div className='habit-title-col'>
-                <p>{habit.title}</p>
+              <div className='date-col'>
+                Date
                 <p style={{ color: '#C4C4C4', fontSize: '12px' }}>
                   {habit.createdOn}
                 </p>
@@ -151,14 +150,11 @@ function HabitRecordsComponent(props) {
                   style={{
                     display: 'grid',
                     gridTemplateColumns: `repeat(${
-                      habit.fieldsList.length + 2
-                    },200px)`,
+                      habit.fieldsList.length + 1
+                    },130px)`,
                   }}
                 >
                   <div className='col-1'>{stringDate}</div>
-                  <div className='col-2'>
-                    <input type='checkbox' name='' id='' />
-                  </div>
                   {habit.fieldsList.map((field) => {
                     return (
                       <div className='sec-dynamic-col'>

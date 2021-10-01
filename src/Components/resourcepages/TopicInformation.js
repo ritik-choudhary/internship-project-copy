@@ -3,13 +3,16 @@ import { AiOutlinePlus } from 'react-icons/ai'
 import { Switch, Route, Link, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import { WorkspaceConsumer } from '../../Context'
-import { RiDeleteBin6Line } from 'react-icons/ri'
+import { RiDeleteBin6Line, RiArrowGoBackFill } from 'react-icons/ri'
 import TopicInformationModal from '../ResourceModals/TopicInformationModal'
 
-export default function TopicInformation() {
+export default function TopicInformation(props) {
   return (
-    <TopicInformationWrapper>
+    <>
       <Switch>
+        <Route path='/workspace/:id/details/:spaceKey/insideworkshop/:workshopID/resourcedata/:resourceID/sharetopicinformation/:topicInformationID'>
+          <TopicInformationModal isSharing />
+        </Route>
         <Route path='/workspace/:id/details/:spaceKey/insideworkshop/:workshopID/resourcedata/:resourceID/edittopicinformation/:topicInformationID'>
           <TopicInformationModal isEditing />
         </Route>
@@ -22,17 +25,18 @@ export default function TopicInformation() {
           return (
             <TopicInformationComponent
               value={value}
+              {...props}
             ></TopicInformationComponent>
           )
         }}
       </WorkspaceConsumer>
-    </TopicInformationWrapper>
+    </>
   )
 }
 
 function TopicInformationComponent(props) {
   const param = useParams()
-  const { value } = props
+  const { value, isSharing } = props
   const space = value.workspaceElements.find(
     (item) => item.workspaceID === param.id && item.id === param.spaceKey
   )
@@ -43,50 +47,85 @@ function TopicInformationComponent(props) {
     (item) => item.id === param.resourceID
   )
   return (
-    <div className='topic-information-page'>
-      <h1 className='topic-information-page-header'>All</h1>
-      <div className='topic-information-container'>
-        <Link
-          to={`/workspace/${param.id}/details/${param.spaceKey}/insideworkshop/${param.workshopID}/resourcedata/${param.resourceID}/addtopicinformation`}
-        >
-          <div className='add-new-btn'>
-            <AiOutlinePlus />
-            <p>Add new</p>
+    <>
+      {isSharing ? (
+        <TopicInformationWrapper>
+          <div className='topic-information-page'>
+            <h1 className='topic-information-page-header'>All</h1>
+            <div className='topic-information-container'>
+              {resource?.topicInformations?.map((item) => {
+                return (
+                  <div className='topic-information-card' key={item.id}>
+                    <Link
+                      to={`/workspace/${param.id}/details/${param.spaceKey}/insideworkshop/${param.workshopID}/resourcedata/${param.resourceID}/sharetopicinformation/${item.id}`}
+                    >
+                      <div className='card-info'>
+                        <h4 className='title'>
+                          {item.title.length > 12
+                            ? `${item.title.slice(0, 12)}...`
+                            : item.title}
+                        </h4>
+                        <p className='created-on'>{item.createdOn}</p>
+                      </div>
+                    </Link>
+                    <div className='delete-btn'>
+                      <RiDeleteBin6Line />
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
           </div>
-        </Link>
-        {resource?.topicInformations?.map((item) => {
-          return (
-            <div className='topic-information-card' key={item.id}>
+        </TopicInformationWrapper>
+      ) : (
+        <TopicInformationWrapper>
+          <div className='topic-information-page'>
+            <h1 className='topic-information-page-header'>All</h1>
+            <div className='topic-information-container'>
               <Link
-                to={`/workspace/${param.id}/details/${param.spaceKey}/insideworkshop/${param.workshopID}/resourcedata/${param.resourceID}/edittopicinformation/${item.id}`}
+                to={`/workspace/${param.id}/details/${param.spaceKey}/insideworkshop/${param.workshopID}/resourcedata/${param.resourceID}/addtopicinformation`}
               >
-                <div className='card-info'>
-                  <h4 className='title'>
-                    {item.title.length > 12
-                      ? `${item.title.slice(0, 12)}...`
-                      : item.title}
-                  </h4>
-                  <p className='created-on'>{item.createdOn}</p>
+                <div className='add-new-btn'>
+                  <AiOutlinePlus />
+                  <p>Add new</p>
                 </div>
               </Link>
-              <div className='delete-btn'>
-                <RiDeleteBin6Line
-                  onClick={() =>
-                    value.deleteTopicInformation(
-                      param.id,
-                      param.spaceKey,
-                      param.workshopID,
-                      param.resourceID,
-                      item.id
-                    )
-                  }
-                />
-              </div>
+              {resource?.topicInformations?.map((item) => {
+                return (
+                  <div className='topic-information-card' key={item.id}>
+                    <Link
+                      to={`/workspace/${param.id}/details/${param.spaceKey}/insideworkshop/${param.workshopID}/resourcedata/${param.resourceID}/edittopicinformation/${item.id}`}
+                    >
+                      <div className='card-info'>
+                        <h4 className='title'>
+                          {item.title.length > 12
+                            ? `${item.title.slice(0, 12)}...`
+                            : item.title}
+                        </h4>
+                        <p className='created-on'>{item.createdOn}</p>
+                      </div>
+                    </Link>
+                    <div className='delete-btn'>
+                      <RiDeleteBin6Line
+                        onClick={() =>
+                          value.deleteTopicInformation(
+                            param.id,
+                            param.spaceKey,
+                            param.workshopID,
+                            param.resourceID,
+                            item.id
+                          )
+                        }
+                      />
+                    </div>
+                  </div>
+                )
+              })}
             </div>
-          )
-        })}
-      </div>
-    </div>
+          </div>
+        </TopicInformationWrapper>
+      )}
+    </>
   )
 }
 

@@ -21,7 +21,7 @@ export default function TopicInformtaionModal(props) {
 }
 
 function ParticipantsModalComponent(props) {
-  const { value, isEditing } = props
+  const { value, isEditing, isSharing } = props
   const date = `${new Date().getDate()}/${
     new Date().getMonth() + 1
   }/${new Date().getFullYear()}`
@@ -42,7 +42,7 @@ function ParticipantsModalComponent(props) {
   const [participantsToEdit, setParticipantsToEdit] = useState()
 
   useEffect(() => {
-    if (isEditing) {
+    if (isEditing || isSharing) {
       const selectedSpace = value.workspaceElements.find(
         (item) => item.id === param.spaceKey && item.workspaceID === param.id
       )
@@ -63,6 +63,7 @@ function ParticipantsModalComponent(props) {
     }
   }, [
     isEditing,
+    isSharing,
     param.id,
     param.spaceKey,
     param.workshopID,
@@ -100,17 +101,31 @@ function ParticipantsModalComponent(props) {
           padding: '12px 30px',
         }}
       >
-        <Link
-          to={`/workspace/${param.id}/details/${param.spaceKey}/insideworkshop/${param.workshopID}/resourcedata/${param.resourceID}`}
-        >
-          <AiFillCloseCircle
-            style={{
-              fontSize: '30px',
-              color: '#FFC8C8',
-              cursor: 'pointer',
-            }}
-          />
-        </Link>
+        {isSharing ? (
+          <Link
+            to={`/workspace/${param.id}/details/${param.spaceKey}/insideworkshop/${param.workshopID}/resourcedata/${param.resourceID}/share`}
+          >
+            <AiFillCloseCircle
+              style={{
+                fontSize: '30px',
+                color: '#FFC8C8',
+                cursor: 'pointer',
+              }}
+            />
+          </Link>
+        ) : (
+          <Link
+            to={`/workspace/${param.id}/details/${param.spaceKey}/insideworkshop/${param.workshopID}/resourcedata/${param.resourceID}`}
+          >
+            <AiFillCloseCircle
+              style={{
+                fontSize: '30px',
+                color: '#FFC8C8',
+                cursor: 'pointer',
+              }}
+            />
+          </Link>
+        )}
       </header>
       <form
         style={{
@@ -120,40 +135,47 @@ function ParticipantsModalComponent(props) {
         }}
         onSubmit={(e) => {
           e.preventDefault()
-          if (isEditing) {
-            const participant = {
-              title: title,
-              createdOn: createdOn,
-              createdBy: createdBy,
-              note: textNote,
+          if (!isSharing) {
+            if (isEditing) {
+              const participant = {
+                title: title,
+                createdOn: createdOn,
+                createdBy: createdBy,
+                note: textNote,
+              }
+              value.editParticipants(
+                param.id,
+                param.spaceKey,
+                param.workshopID,
+                param.resourceID,
+                participantsToEdit.id,
+                participant
+              )
+            } else {
+              const participant = {
+                id: new Date().getTime().toString(),
+                title: title,
+                createdOn: createdOn,
+                createdBy: createdBy,
+                note: textNote,
+              }
+              value.addNewParticipants(
+                param.id,
+                param.spaceKey,
+                param.workshopID,
+                param.resourceID,
+                participant
+              )
             }
-            value.editParticipants(
-              param.id,
-              param.spaceKey,
-              param.workshopID,
-              param.resourceID,
-              participantsToEdit.id,
-              participant
-            )
-          } else {
-            const participant = {
-              id: new Date().getTime().toString(),
-              title: title,
-              createdOn: createdOn,
-              createdBy: createdBy,
-              note: textNote,
-            }
-            value.addNewParticipants(
-              param.id,
-              param.spaceKey,
-              param.workshopID,
-              param.resourceID,
-              participant
+            history.push(
+              `/workspace/${param.id}/details/${param.spaceKey}/insideworkshop/${param.workshopID}/resourcedata/${param.resourceID}`
             )
           }
-          history.push(
-            `/workspace/${param.id}/details/${param.spaceKey}/insideworkshop/${param.workshopID}/resourcedata/${param.resourceID}`
-          )
+          if (isSharing) {
+            history.push(
+              `/workspace/${param.id}/details/${param.spaceKey}/insideworkshop/${param.workshopID}/resourcedata/${param.resourceID}/share`
+            )
+          }
         }}
       >
         <div className='participants-name' style={{ paddingBottom: '20px' }}>
@@ -164,7 +186,9 @@ function ParticipantsModalComponent(props) {
             name='name'
             id='name'
             value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            onChange={(e) => {
+              if (!isSharing) setTitle(e.target.value)
+            }}
             placeholder='Untitled Meeting Document'
             style={{
               width: '400px',
@@ -189,11 +213,19 @@ function ParticipantsModalComponent(props) {
               id='created-by'
               value={createdBy}
               className={createdBy ? '' : 'skeleton'}
-              onChange={(e) => setCreatedBy(e.target.value)}
+              onChange={(e) => {
+                if (!isSharing) {
+                  setCreatedBy(e.target.value)
+                }
+              }}
             />
           </div>
         </div>
-        <TextEditor textNote={textNote} setTextNote={setTextNote} />
+        <TextEditor
+          textNote={textNote}
+          isSharing={isSharing ? true : false}
+          setTextNote={setTextNote}
+        />
         <div
           className='save-btn'
           style={{ display: 'flex', justifyContent: 'flex-end' }}

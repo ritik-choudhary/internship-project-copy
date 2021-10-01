@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useParams, Switch, Route } from 'react-router-dom'
 import { WorkspaceConsumer } from '../Context'
-import { FaBell } from 'react-icons/fa'
+import { FaBell, FaShareSquare } from 'react-icons/fa'
 import { RiArrowGoBackFill } from 'react-icons/ri'
 import Sidebar from '../Components/Sidebar'
 import styled from 'styled-components'
 import { AiOutlinePlus } from 'react-icons/ai'
 import WorkshopResourceModal from '../Components/WorkshopResourceModal'
+
 // import WorkshopResourcePage from './WorkshopResourcePage'
 
 export default function SingleWorkshopPage() {
@@ -119,6 +120,11 @@ function SingleWorkshopPageComponent(props) {
                   ? `${workshop.title.slice(0, 30)}...`
                   : workshop.title}
               </h1>
+              <Link
+                to={`/workspace/${param.id}/details/${param.spaceKey}/insideworkshop/${param.workshopID}/share`}
+              >
+                <FaShareSquare />
+              </Link>
             </div>
             <div className='basic-info'>
               <form>
@@ -185,6 +191,7 @@ function SingleWorkshopPageComponent(props) {
                     id='about'
                     value={about}
                     onChange={(e) => setAbout(e.target.value)}
+                    maxLength='100'
                     onBlur={(e) => {
                       e.preventDefault()
                       value.handleWorkshopInfo(
@@ -320,9 +327,18 @@ const SingleWorkshopPageWrapper = styled.section`
     flex-direction: column;
     gap: 10px;
   }
-  .info h1 {
+  .single-workshop-details .info .heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     font-size: 20px;
     color: #468aef;
+  }
+  .single-workshop-details .info .heading svg {
+    cursor: pointer;
+  }
+  .info h1 {
+    font-size: 20px;
     font-weight: 400;
   }
   .basic-info {

@@ -131,23 +131,25 @@ export default function MoodboardElementModal() {
               }}
               onSubmit={(e) => {
                 e.preventDefault()
-                const moodboardField = {
-                  id: new Date().getTime().toString(),
-                  image: imagePreview,
-                  pdf: pdf,
-                  pdfPreview: pdfPreview,
-                  link: link,
-                  video: videoPreview,
+                if (imagePreview || pdf || link || videoPreview) {
+                  const moodboardField = {
+                    id: new Date().getTime().toString(),
+                    image: imagePreview,
+                    pdf: pdf,
+                    pdfPreview: pdfPreview,
+                    link: link,
+                    video: videoPreview,
+                  }
+                  value.addMoodboardField(
+                    param.id,
+                    param.spaceKey,
+                    param.moodboardID,
+                    moodboardField
+                  )
+                  history.push(
+                    `/workspace/${param.id}/details/${param.spaceKey}/insidemoodboard/${param.moodboardID}`
+                  )
                 }
-                value.addMoodboardField(
-                  param.id,
-                  param.spaceKey,
-                  param.moodboardID,
-                  moodboardField
-                )
-                history.push(
-                  `/workspace/${param.id}/details/${param.spaceKey}/insidemoodboard/${param.moodboardID}`
-                )
               }}
             >
               <div style={{ display: 'flex', flexDirection: 'column' }}>

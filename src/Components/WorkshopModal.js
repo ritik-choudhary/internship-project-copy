@@ -145,7 +145,7 @@ export default function WorkshopModal() {
                     marginBottom: '5px',
                   }}
                 >
-                  Thumbnail image
+                  Thumbnail image (optional)
                 </label>
 
                 <input

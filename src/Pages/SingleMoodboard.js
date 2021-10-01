@@ -69,6 +69,8 @@ function SingleMoodboardComponent(props) {
     setCurrent(current === 0 ? length - 1 : current - 1)
   }
 
+  console.log(current)
+
   return (
     <div className='single-moodboard-page'>
       <Sidebar />
@@ -426,6 +428,7 @@ const SingleMoodboardWrapper = styled.section`
     border-radius: 6px;
     overflow: hidden;
     position: relative;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
   }
   .slider-field-card {
     margin-top: 10px;
@@ -491,7 +494,6 @@ const SingleMoodboardWrapper = styled.section`
   }
   .field-card:hover .card-options,
   .slider-field-card:hover .card-options {
-    // display: grid;
     transform: translateY(0);
   }
   .slider-field-card .card-options {
@@ -560,6 +562,7 @@ const SingleMoodboardWrapper = styled.section`
     width: 100%;
     font-size: 40px;
     color: white;
+    z-index: 5;
   }
   .slider-navigations svg {
     cursor: pointer;

@@ -148,7 +148,9 @@ export default function WorkspaceModal(props) {
                     marginBottom: '5px',
                   }}
                 >
-                  {isEditing ? 'Set new thumbnail image' : 'Thumbnail image'}
+                  {isEditing
+                    ? 'Set new thumbnail image (optional)'
+                    : 'Thumbnail image (optional)'}
                 </label>
 
                 <input

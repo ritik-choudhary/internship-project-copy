@@ -23,7 +23,7 @@ function TaskModalComponent(props) {
     new Date().getMonth() + 1
   }/${new Date().getFullYear()}`
 
-  const { isEditing, value } = props
+  const { isEditing, value, isTodo } = props
   const param = useParams()
   const history = useHistory()
 
@@ -50,29 +50,48 @@ function TaskModalComponent(props) {
   }
 
   useEffect(() => {
-    if (isEditing) {
-      const selectedSpace = value.workspaceElements.find(
-        (item) => item.id === param.spaceKey && item.workspaceID === param.id
-      )
-      const selectedClub = selectedSpace.clubs.find(
-        (item) => item.id === param.clubID
-      )
-      const selectedResource = selectedClub.resources.find(
-        (item) => item.id === param.resourceID
-      )
-      const selectedTask = selectedResource.tasks.find(
-        (item) => item.id === param.taskID
-      )
-      setSelectedTask(selectedTask)
-      setTaskTitle(selectedTask.title)
-      setCreatedOn(selectedTask.createdOn)
-      setDuedate(selectedTask.dueDate)
-      setLinks(selectedTask.links)
-      setPdfList(selectedTask.pdfList)
-      setDescription(selectedTask.description)
+    if (!isTodo) {
+      if (isEditing) {
+        const selectedSpace = value.workspaceElements.find(
+          (item) => item.id === param.spaceKey && item.workspaceID === param.id
+        )
+        const selectedClub = selectedSpace.clubs.find(
+          (item) => item.id === param.clubID
+        )
+        const selectedResource = selectedClub.resources.find(
+          (item) => item.id === param.resourceID
+        )
+        const selectedTask = selectedResource.tasks.find(
+          (item) => item.id === param.taskID
+        )
+        setSelectedTask(selectedTask)
+        setTaskTitle(selectedTask.title)
+        setCreatedOn(selectedTask.createdOn)
+        setDuedate(selectedTask.dueDate)
+        setLinks(selectedTask.links)
+        setPdfList(selectedTask.pdfList)
+        setDescription(selectedTask.description)
+      }
+    } else {
+      if (isEditing) {
+        const selectedSpace = value.workspaceElements.find(
+          (item) => item.id === param.spaceKey && item.workspaceID === param.id
+        )
+        const selectedTodo = selectedSpace.todoList.find(
+          (item) => item.id === param.todoID
+        )
+        setSelectedTask(selectedTodo)
+        setTaskTitle(selectedTodo.title)
+        setCreatedOn(selectedTodo.createdOn)
+        setDuedate(selectedTodo.dueDate)
+        setLinks(selectedTodo.links)
+        setPdfList(selectedTodo.pdfList)
+        setDescription(selectedTodo.description)
+      }
     }
   }, [
     isEditing,
+    isTodo,
     param.clubID,
     param.id,
     param.resourceID,
@@ -139,17 +158,29 @@ function TaskModalComponent(props) {
         >
           Add new task
         </h3>
-        <Link
-          to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}`}
-        >
-          <AiOutlineClose
-            style={{
-              fontSize: '20px',
-              color: '#C4C4C4',
-              cursor: 'pointer',
-            }}
-          />
-        </Link>
+        {isTodo ? (
+          <Link to={`/workspace/${param.id}/details/${param.spaceKey}`}>
+            <AiOutlineClose
+              style={{
+                fontSize: '20px',
+                color: '#C4C4C4',
+                cursor: 'pointer',
+              }}
+            />
+          </Link>
+        ) : (
+          <Link
+            to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}`}
+          >
+            <AiOutlineClose
+              style={{
+                fontSize: '20px',
+                color: '#C4C4C4',
+                cursor: 'pointer',
+              }}
+            />
+          </Link>
+        )}
       </header>
 
       <form
@@ -162,46 +193,78 @@ function TaskModalComponent(props) {
         }}
         onSubmit={(e) => {
           e.preventDefault()
-          if (isEditing) {
-            value.editTask(
-              param.id,
-              param.spaceKey,
-              param.clubID,
-              param.resourceID,
-              param.taskID,
-              {
+          if (!isTodo) {
+            if (isEditing) {
+              value.editTask(
+                param.id,
+                param.spaceKey,
+                param.clubID,
+                param.resourceID,
+                param.taskID,
+                {
+                  id: selectedTask.id,
+                  title: taskTitle,
+                  createdOn: createdOn,
+                  dueDate: duedate,
+                  links: links,
+                  pdfList: pdfList,
+                  pdfPreview: pdfPreview,
+                  description: description,
+                  completed: false,
+                }
+              )
+            } else {
+              const taskToAdd = {
+                id: new Date().getTime().toString(),
+                title: taskTitle,
+                createdOn: createdOn,
+                dueDate: duedate,
+                links: links,
+                pdfList: pdfList,
+                pdfPreview: pdfPreview,
+                description: description,
+                completed: false,
+              }
+              value.addTask(
+                param.id,
+                param.spaceKey,
+                param.clubID,
+                param.resourceID,
+                taskToAdd
+              )
+            }
+            history.push(
+              `/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}`
+            )
+          } else {
+            if (isEditing) {
+              value.editTodo(param.id, param.spaceKey, param.todoID, {
                 id: selectedTask.id,
                 title: taskTitle,
                 createdOn: createdOn,
                 dueDate: duedate,
                 links: links,
                 pdfList: pdfList,
+                pdfPreview: pdfPreview,
+                description: description,
+                completed: false,
+              })
+            } else {
+              const taskToAdd = {
+                id: new Date().getTime().toString(),
+                title: taskTitle,
+                createdOn: createdOn,
+                dueDate: duedate,
+                links: links,
+                pdfList: pdfList,
+                pdfPreview: pdfPreview,
                 description: description,
                 completed: false,
               }
-            )
-          } else {
-            const taskToAdd = {
-              id: new Date().getTime().toString(),
-              title: taskTitle,
-              createdOn: createdOn,
-              dueDate: duedate,
-              links: links,
-              pdfList: pdfList,
-              description: description,
-              completed: false,
+              value.addTodo(param.id, param.spaceKey, taskToAdd)
             }
-            value.addTask(
-              param.id,
-              param.spaceKey,
-              param.clubID,
-              param.resourceID,
-              taskToAdd
-            )
+            history.push(`/workspace/${param.id}/details/${param.spaceKey}`)
           }
-          history.push(
-            `/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}`
-          )
         }}
       >
         <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -337,7 +400,6 @@ function TaskModalComponent(props) {
             }}
           >
             {links?.map((item) => {
-              console.log('item', item)
               return (
                 <a
                   style={{ fontSize: '12px' }}
@@ -437,24 +499,47 @@ function TaskModalComponent(props) {
                 (item) => item.previewId === pdf.pdfId
               )
               return (
-                <Link
-                  to={{
-                    pathname: `/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/addtask/readpdf`,
-                    state: { src: linkToPdf?.source },
-                  }}
-                  key={pdf.pdfId}
-                  onClick={(e) => {
-                    if (!isEditing) {
-                      e.preventDefault()
-                    }
-                  }}
-                >
-                  <div className='pdf-file' style={{ fontSize: '12px' }}>
-                    {pdf.pdfFile.name.length > 15
-                      ? `${pdf.pdfFile.name.slice(0, 15)}...`
-                      : pdf.pdfFile.name}
-                  </div>
-                </Link>
+                <>
+                  {isTodo ? (
+                    <Link
+                      to={{
+                        pathname: `/workspace/${param.id}/details/${param.spaceKey}/addtodo/readpdf`,
+                        state: { src: linkToPdf?.source },
+                      }}
+                      key={pdf.pdfId}
+                      onClick={(e) => {
+                        if (!isEditing) {
+                          e.preventDefault()
+                        }
+                      }}
+                    >
+                      <div className='pdf-file' style={{ fontSize: '12px' }}>
+                        {pdf.pdfFile.name.length > 15
+                          ? `${pdf.pdfFile.name.slice(0, 15)}...`
+                          : pdf.pdfFile.name}
+                      </div>
+                    </Link>
+                  ) : (
+                    <Link
+                      to={{
+                        pathname: `/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/addtask/readpdf`,
+                        state: { src: linkToPdf?.source },
+                      }}
+                      key={pdf.pdfId}
+                      onClick={(e) => {
+                        if (!isEditing) {
+                          e.preventDefault()
+                        }
+                      }}
+                    >
+                      <div className='pdf-file' style={{ fontSize: '12px' }}>
+                        {pdf.pdfFile.name.length > 15
+                          ? `${pdf.pdfFile.name.slice(0, 15)}...`
+                          : pdf.pdfFile.name}
+                      </div>
+                    </Link>
+                  )}
+                </>
               )
             })}
           </div>
@@ -495,9 +580,7 @@ function TaskModalComponent(props) {
             justifyContent: 'flex-end',
           }}
         >
-          <Link
-            to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}`}
-          >
+          <Link to={`/workspace/${param.id}/details/${param.spaceKey}`}>
             <button
               style={{
                 color: '#FF0000',

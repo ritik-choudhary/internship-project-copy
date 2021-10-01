@@ -8,30 +8,30 @@ import { FiEdit } from 'react-icons/fi'
 import TasksModal from '../ResourceModals/TasksModal'
 import TaskPdfModal from '../ResourceModals/TaskPdfModal'
 
-export default function Tasks() {
+export default function TodoList() {
   return (
-    <TasksPageWrapper>
+    <TodoListPageWrapper>
       <Switch>
-        <Route path='/workspace/:id/details/:spaceKey/insideclub/:clubID/resourcedata/:resourceID/addtask/readpdf'>
-          <TaskPdfModal />
+        <Route path='/workspace/:id/details/:spaceKey/addtodo/readpdf'>
+          <TaskPdfModal isTodo />
         </Route>
-        <Route path='/workspace/:id/details/:spaceKey/insideclub/:clubID/resourcedata/:resourceID/edittask/:taskID'>
-          <TasksModal isEditing />
+        <Route path='/workspace/:id/details/:spaceKey/edittodo/:todoID'>
+          <TasksModal isEditing isTodo />
         </Route>
-        <Route path='/workspace/:id/details/:spaceKey/insideclub/:clubID/resourcedata/:resourceID/addtask'>
-          <TasksModal />
+        <Route path='/workspace/:id/details/:spaceKey/addtodo'>
+          <TasksModal isTodo />
         </Route>
       </Switch>
       <WorkspaceConsumer>
         {(value) => {
-          return <TasksComponent value={value}></TasksComponent>
+          return <TodoListComponent value={value}></TodoListComponent>
         }}
       </WorkspaceConsumer>
-    </TasksPageWrapper>
+    </TodoListPageWrapper>
   )
 }
 
-function TasksComponent(props) {
+function TodoListComponent(props) {
   const { value } = props
   const param = useParams()
 
@@ -39,23 +39,16 @@ function TasksComponent(props) {
     (item) => item.workspaceID === param.id && item.id === param.spaceKey
   )
 
-  const club = space.clubs.find((item) => item.id === param.clubID)
-
-  const resource = club.resources.find((item) => item.id === param.resourceID)
-
   return (
-    <div className='tasks-page'>
-      <h1 className='tasks-header'>{resource.createdOn}</h1>
-      <div className='tasks-container'>
-        <Link
-          to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/addtask`}
-        >
+    <div className='todoList-page'>
+      <div className='todoList-container'>
+        <Link to={`/workspace/${param.id}/details/${param.spaceKey}/addtodo`}>
           <div className='add-new-btn'>
             <AiOutlinePlus />
             <p>Add new task</p>
           </div>
         </Link>
-        {resource?.tasks?.map((item) => {
+        {space?.todoList?.map((item) => {
           let count = 0
           let pdfCount = 0
           return (
@@ -73,13 +66,7 @@ function TasksComponent(props) {
                     id={item.id}
                     checked={item.completed}
                     onChange={(e) =>
-                      value.taskManipulation(
-                        param.id,
-                        param.spaceKey,
-                        param.clubID,
-                        param.resourceID,
-                        item.id
-                      )
+                      value.todoManipulation(param.id, param.spaceKey, item.id)
                     }
                   />
                   <label
@@ -93,20 +80,14 @@ function TasksComponent(props) {
                 </div>
                 <div className='right'>
                   <Link
-                    to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/edittask/${item.id}`}
+                    to={`/workspace/${param.id}/details/${param.spaceKey}/edittodo/${item.id}`}
                   >
                     <FiEdit className='edit-btn' />
                   </Link>
                   <RiDeleteBin6Line
                     className='delete-btn'
                     onClick={(e) =>
-                      value.deleteTask(
-                        param.id,
-                        param.spaceKey,
-                        param.clubID,
-                        param.resourceID,
-                        item.id
-                      )
+                      value.deleteTodo(param.id, param.spaceKey, item.id)
                     }
                   />
                 </div>
@@ -147,7 +128,7 @@ function TasksComponent(props) {
                   {item.links.length > 3 ? (
                     <div className='see-more-btn'>
                       <Link
-                        to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/edittask/${item.id}`}
+                        to={`/workspace/${param.id}/details/${param.spaceKey}/edittodo/${item.id}`}
                       >
                         See more
                       </Link>
@@ -166,7 +147,7 @@ function TasksComponent(props) {
                     return (
                       <Link
                         to={{
-                          pathname: `/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/addtask/readpdf`,
+                          pathname: `/workspace/${param.id}/details/${param.spaceKey}/addtodo/readpdf`,
                           state: { src: linkToPdf?.source },
                         }}
                         key={pdf.pdfId}
@@ -181,7 +162,7 @@ function TasksComponent(props) {
                   {item.pdfList.length > 3 ? (
                     <div className='see-more-btn'>
                       <Link
-                        to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/edittask/${item.id}`}
+                        to={`/workspace/${param.id}/details/${param.spaceKey}/edittodo/${item.id}`}
                       >
                         See more
                       </Link>
@@ -197,8 +178,8 @@ function TasksComponent(props) {
   )
 }
 
-const TasksPageWrapper = styled.section`
-  .tasks-page {
+const TodoListPageWrapper = styled.section`
+  .todoList-page {
     display: flex;
     flex-direction: column;
     padding: 0px 150px;
@@ -206,12 +187,12 @@ const TasksPageWrapper = styled.section`
     gap: 10px;
     width: 100%;
   }
-  .tasks-header {
+  .todoList-header {
     font-size: 20px;
     font-weight: 600;
     color: #468aef;
   }
-  .tasks-container {
+  .todoList-container {
     display: flex;
     flex-direction: column;
     gap: 10px;

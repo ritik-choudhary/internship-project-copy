@@ -215,7 +215,7 @@ function HabitTrackerModalComponent(props) {
               fontWeight: '400',
             }}
           >
-            Upload image
+            Upload image (optional)
           </label>
           <input
             type='file'

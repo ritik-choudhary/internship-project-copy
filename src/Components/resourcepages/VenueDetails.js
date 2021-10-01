@@ -6,10 +6,13 @@ import { WorkspaceConsumer } from '../../Context'
 import { RiDeleteBin6Line } from 'react-icons/ri'
 import VenueDetailsModal from '../ResourceModals/VenueDetailsModal'
 
-export default function VenueDetails() {
+export default function VenueDetails(props) {
   return (
-    <VenueDetailsWrapper>
+    <>
       <Switch>
+        <Route path='/workspace/:id/details/:spaceKey/insideworkshop/:workshopID/resourcedata/:resourceID/sharevenueDetails/:venueDetailsID'>
+          <VenueDetailsModal isSharing />
+        </Route>
         <Route path='/workspace/:id/details/:spaceKey/insideworkshop/:workshopID/resourcedata/:resourceID/editvenueDetails/:venueDetailsID'>
           <VenueDetailsModal isEditing />
         </Route>
@@ -19,16 +22,21 @@ export default function VenueDetails() {
       </Switch>
       <WorkspaceConsumer>
         {(value) => {
-          return <VenueDetailsComponent value={value}></VenueDetailsComponent>
+          return (
+            <VenueDetailsComponent
+              value={value}
+              {...props}
+            ></VenueDetailsComponent>
+          )
         }}
       </WorkspaceConsumer>
-    </VenueDetailsWrapper>
+    </>
   )
 }
 
 function VenueDetailsComponent(props) {
   const param = useParams()
-  const { value } = props
+  const { value, isSharing } = props
   const space = value.workspaceElements.find(
     (item) => item.workspaceID === param.id && item.id === param.spaceKey
   )
@@ -39,50 +47,85 @@ function VenueDetailsComponent(props) {
     (item) => item.id === param.resourceID
   )
   return (
-    <div className='venueDetails-page'>
-      <h1 className='venueDetails-page-header'>All</h1>
-      <div className='venueDetails-container'>
-        <Link
-          to={`/workspace/${param.id}/details/${param.spaceKey}/insideworkshop/${param.workshopID}/resourcedata/${param.resourceID}/addvenueDetails`}
-        >
-          <div className='add-new-btn'>
-            <AiOutlinePlus />
-            <p>Add new</p>
+    <>
+      {isSharing ? (
+        <VenueDetailsWrapper>
+          <div className='venueDetails-page'>
+            <h1 className='venueDetails-page-header'>All</h1>
+            <div className='venueDetails-container'>
+              {resource?.venueDetailsList?.map((item) => {
+                return (
+                  <div className='venueDetails-card' key={item.id}>
+                    <Link
+                      to={`/workspace/${param.id}/details/${param.spaceKey}/insideworkshop/${param.workshopID}/resourcedata/${param.resourceID}/sharevenueDetails/${item.id}`}
+                    >
+                      <div className='card-info'>
+                        <h4 className='title'>
+                          {item.title.length > 12
+                            ? `${item.title.slice(0, 12)}...`
+                            : item.title}
+                        </h4>
+                        <p className='created-on'>{item.createdOn}</p>
+                      </div>
+                    </Link>
+                    <div className='delete-btn'>
+                      <RiDeleteBin6Line />
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
           </div>
-        </Link>
-        {resource?.venueDetailsList?.map((item) => {
-          return (
-            <div className='venueDetails-card' key={item.id}>
+        </VenueDetailsWrapper>
+      ) : (
+        <VenueDetailsWrapper>
+          <div className='venueDetails-page'>
+            <h1 className='venueDetails-page-header'>All</h1>
+            <div className='venueDetails-container'>
               <Link
-                to={`/workspace/${param.id}/details/${param.spaceKey}/insideworkshop/${param.workshopID}/resourcedata/${param.resourceID}/editvenueDetails/${item.id}`}
+                to={`/workspace/${param.id}/details/${param.spaceKey}/insideworkshop/${param.workshopID}/resourcedata/${param.resourceID}/addvenueDetails`}
               >
-                <div className='card-info'>
-                  <h4 className='title'>
-                    {item.title.length > 12
-                      ? `${item.title.slice(0, 12)}...`
-                      : item.title}
-                  </h4>
-                  <p className='created-on'>{item.createdOn}</p>
+                <div className='add-new-btn'>
+                  <AiOutlinePlus />
+                  <p>Add new</p>
                 </div>
               </Link>
-              <div className='delete-btn'>
-                <RiDeleteBin6Line
-                  onClick={() =>
-                    value.deleteVenueDetails(
-                      param.id,
-                      param.spaceKey,
-                      param.workshopID,
-                      param.resourceID,
-                      item.id
-                    )
-                  }
-                />
-              </div>
+              {resource?.venueDetailsList?.map((item) => {
+                return (
+                  <div className='venueDetails-card' key={item.id}>
+                    <Link
+                      to={`/workspace/${param.id}/details/${param.spaceKey}/insideworkshop/${param.workshopID}/resourcedata/${param.resourceID}/editvenueDetails/${item.id}`}
+                    >
+                      <div className='card-info'>
+                        <h4 className='title'>
+                          {item.title.length > 12
+                            ? `${item.title.slice(0, 12)}...`
+                            : item.title}
+                        </h4>
+                        <p className='created-on'>{item.createdOn}</p>
+                      </div>
+                    </Link>
+                    <div className='delete-btn'>
+                      <RiDeleteBin6Line
+                        onClick={() =>
+                          value.deleteVenueDetails(
+                            param.id,
+                            param.spaceKey,
+                            param.workshopID,
+                            param.resourceID,
+                            item.id
+                          )
+                        }
+                      />
+                    </div>
+                  </div>
+                )
+              })}
             </div>
-          )
-        })}
-      </div>
-    </div>
+          </div>
+        </VenueDetailsWrapper>
+      )}
+    </>
   )
 }
 
