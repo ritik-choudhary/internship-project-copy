@@ -151,16 +151,20 @@ function HabitTrackerModalComponent(props) {
         }}
         onSubmit={(e) => {
           e.preventDefault()
-          value.addNewHabit(param.id, param.spaceKey, {
-            id: new Date().getTime().toString(),
-            title: nameOfHabit,
-            createdOn: date,
-            image: preview,
-            fieldsList: fieldsList,
-            startDate: startDate,
-            endDate: endDate,
-          })
-          history.push(`/workspace/${param.id}/details/${param.spaceKey}`)
+          if (fieldsList.length > 0) {
+            value.addNewHabit(param.id, param.spaceKey, {
+              id: new Date().getTime().toString(),
+              title: nameOfHabit,
+              createdOn: date,
+              image: preview,
+              fieldsList: fieldsList,
+              startDate: startDate,
+              endDate: endDate,
+            })
+            history.push(`/workspace/${param.id}/details/${param.spaceKey}`)
+          } else {
+            alert('Please select atleast one task')
+          }
         }}
       >
         <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>

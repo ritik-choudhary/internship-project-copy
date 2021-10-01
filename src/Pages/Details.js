@@ -129,25 +129,30 @@ const DetailPageComponent = () => {
                 const printable = num ? true : false
                 return (
                   <div key={item.id}>
-                    <div
-                      className='grid-card'
-                      onClick={(e) => value.handleDetailSpace(item.id)}
-                    >
-                      <div className='card-image-container'>
-                        <img src={item.image || defaultImage} alt='' />
-                      </div>
-                      <Link to={`/workspace/${param.id}/details/${item.id}`}>
+                    <Link to={`/workspace/${param.id}/details/${item.id}`}>
+                      <div
+                        className='grid-card'
+                        onClick={(e) => value.handleDetailSpace(item.id)}
+                      >
+                        <div className='card-image-container'>
+                          <img src={item.image || defaultImage} alt='' />
+                        </div>
+
                         <p className='space-title'>
                           {item.title}
                           {printable ? ` (${num})` : ''}
                         </p>
-                      </Link>
-                      <div className='space-delete-btn'>
-                        <RiDeleteBin6Line
-                          onClick={() => value.deleteSpace(item.id)}
-                        />
+
+                        <div className='space-delete-btn'>
+                          <RiDeleteBin6Line
+                            onClick={(e) => {
+                              e.preventDefault()
+                              value.deleteSpace(item.id)
+                            }}
+                          />
+                        </div>
                       </div>
-                    </div>
+                    </Link>
                   </div>
                 )
               })

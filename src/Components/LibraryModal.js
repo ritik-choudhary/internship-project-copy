@@ -120,7 +120,7 @@ export default function LibraryModal(props) {
                       {
                         favourite: false,
                         link: bookLink,
-                        id: new Date().getDate().toString(),
+                        id: new Date().getTime().toString(),
                       },
                       param.id,
                       param.spaceKey
@@ -132,7 +132,7 @@ export default function LibraryModal(props) {
                         favourite: false,
                         pdf: pdf,
                         preview: pdfPreview,
-                        id: new Date().getDate().toString(),
+                        id: new Date().getTime().toString(),
                       },
                       param.id,
                       param.spaceKey

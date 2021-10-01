@@ -55,10 +55,10 @@ function IdeasComponent(props) {
         </Link>
         {resource?.ideas?.map((item) => {
           return (
-            <div className='ideas-card' key={item.id}>
-              <Link
-                to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/editidea/${item.id}`}
-              >
+            <Link
+              to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/editidea/${item.id}`}
+            >
+              <div className='ideas-card' key={item.id}>
                 <div className='card-info'>
                   <h4 className='title'>
                     {item.title.length > 12
@@ -67,21 +67,23 @@ function IdeasComponent(props) {
                   </h4>
                   <p className='created-on'>{item.createdOn}</p>
                 </div>
-              </Link>
-              <div className='delete-btn'>
-                <RiDeleteBin6Line
-                  onClick={() =>
-                    value.deleteIdea(
-                      param.id,
-                      param.spaceKey,
-                      param.clubID,
-                      param.resourceID,
-                      item.id
-                    )
-                  }
-                />
+
+                <div className='delete-btn'>
+                  <RiDeleteBin6Line
+                    onClick={(e) => {
+                      e.preventDefault()
+                      value.deleteIdea(
+                        param.id,
+                        param.spaceKey,
+                        param.clubID,
+                        param.resourceID,
+                        item.id
+                      )
+                    }}
+                  />
+                </div>
               </div>
-            </div>
+            </Link>
           )
         })}
       </div>
@@ -127,6 +129,11 @@ const IdeasWrapper = styled.section`
     height: 56px;
     background: #f2f4f8;
     border-radius: 6px;
+    cursor: pointer;
+  }
+  .ideas-card:hover {
+    border: 1px solid #468aef;
+    transform: scale(1.02);
   }
   .card-info {
     display: flex;

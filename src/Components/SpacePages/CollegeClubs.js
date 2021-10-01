@@ -35,44 +35,43 @@ export default function CollegeClubs() {
                 if (item.clubs) {
                   return item.clubs.map((club) => {
                     return (
-                      <div className='club-card' key={club.id}>
-                        <Link
-                          to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${club.id}`}
-                        >
+                      <Link
+                        to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${club.id}`}
+                      >
+                        <div className='club-card' key={club.id}>
                           <div className='image-container'>
                             <img src={club.image || defaultImage} alt='club' />
                           </div>
-                        </Link>
-                        <div className='card-footer'>
-                          <div className='left'>
-                            <Link
-                              to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${club.id}`}
-                            >
+
+                          <div className='card-footer'>
+                            <div className='left'>
                               <h4 className='club-name'>
                                 {club.title.length > 10
                                   ? `${club.title.slice(0, 10)}...`
                                   : club.title}
                               </h4>
-                            </Link>
-                            <p style={{ fontSize: '10px', color: '#468AEF' }}>
-                              {club.createdOn}
-                            </p>
-                          </div>
-                          <div className='right'>
-                            <div className='delete-btn'>
-                              <RiDeleteBin6Line
-                                onClick={(e) =>
-                                  value.deleteClub(
-                                    param.id,
-                                    param.spaceKey,
-                                    club.id
-                                  )
-                                }
-                              />
+
+                              <p style={{ fontSize: '10px', color: '#468AEF' }}>
+                                {club.createdOn}
+                              </p>
+                            </div>
+                            <div className='right'>
+                              <div className='delete-btn'>
+                                <RiDeleteBin6Line
+                                  onClick={(e) => {
+                                    e.preventDefault()
+                                    value.deleteClub(
+                                      param.id,
+                                      param.spaceKey,
+                                      club.id
+                                    )
+                                  }}
+                                />
+                              </div>
                             </div>
                           </div>
                         </div>
-                      </div>
+                      </Link>
                     )
                   })
                 }

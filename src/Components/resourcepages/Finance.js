@@ -51,10 +51,10 @@ function FinanceComponent(props) {
         </Link>
         {resource?.finances?.map((item) => {
           return (
-            <div className='finance-card' key={item.id}>
-              <Link
-                to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/editfinance/${item.id}`}
-              >
+            <Link
+              to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/editfinance/${item.id}`}
+            >
+              <div className='finance-card' key={item.id}>
                 <div className='card-info'>
                   <h4 className='title'>
                     {item.title.length > 12
@@ -63,21 +63,23 @@ function FinanceComponent(props) {
                   </h4>
                   <p className='created-on'>{item.createdOn}</p>
                 </div>
-              </Link>
-              <div className='delete-btn'>
-                <RiDeleteBin6Line
-                  onClick={() =>
-                    value.deleteFinance(
-                      param.id,
-                      param.spaceKey,
-                      param.clubID,
-                      param.resourceID,
-                      item.id
-                    )
-                  }
-                />
+
+                <div className='delete-btn'>
+                  <RiDeleteBin6Line
+                    onClick={(e) => {
+                      e.preventDefault()
+                      value.deleteFinance(
+                        param.id,
+                        param.spaceKey,
+                        param.clubID,
+                        param.resourceID,
+                        item.id
+                      )
+                    }}
+                  />
+                </div>
               </div>
-            </div>
+            </Link>
           )
         })}
       </div>
@@ -125,6 +127,11 @@ const FinancePageWrapper = styled.section`
     background: #f2f4f8;
     box-sizing: border-box;
     border-radius: 6px;
+    cursor: pointer;
+  }
+  .finance-card:hover {
+    border: 1px solid #468aef;
+    transform: scale(1.02);
   }
   .card-info {
     display: flex;

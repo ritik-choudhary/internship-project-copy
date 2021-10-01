@@ -47,40 +47,39 @@ function HabitTrackerComponent(props) {
         </Link>
         {selectedSpace?.habits?.map((habit) => {
           return (
-            <div className='habit-card'>
-              <Link
-                to={`/workspace/${param.id}/details/${param.spaceKey}/insidehabit/${habit.id}`}
-              >
+            <Link
+              to={`/workspace/${param.id}/details/${param.spaceKey}/insidehabit/${habit.id}`}
+            >
+              <div className='habit-card'>
                 <div className='image-container'>
                   <img src={habit.image || defaultImage} alt='habit' />
                 </div>
-              </Link>
-              <div className='card-footer'>
-                <div className='left'>
-                  <Link
-                    to={`/workspace/${param.id}/details/${param.spaceKey}/insidehabit/${habit.id}`}
-                  >
+
+                <div className='card-footer'>
+                  <div className='left'>
                     <h4 className='habit-name'>
                       {habit.title.length > 10
                         ? `${habit.title.slice(0, 10)}...`
                         : habit.title}
                     </h4>
-                  </Link>
-                  <p style={{ fontSize: '10px', color: '#468AEF' }}>
-                    {habit.createdOn}
-                  </p>
-                </div>
-                <div className='right'>
-                  <div className='delete-btn'>
-                    <RiDeleteBin6Line
-                      onClick={(e) =>
-                        value.deleteHabit(param.id, param.spaceKey, habit.id)
-                      }
-                    />
+
+                    <p style={{ fontSize: '10px', color: '#468AEF' }}>
+                      {habit.createdOn}
+                    </p>
+                  </div>
+                  <div className='right'>
+                    <div className='delete-btn'>
+                      <RiDeleteBin6Line
+                        onClick={(e) => {
+                          e.preventDefault()
+                          value.deleteHabit(param.id, param.spaceKey, habit.id)
+                        }}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
+            </Link>
           )
         })}
       </div>

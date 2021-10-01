@@ -41,47 +41,45 @@ export default function Moodboards() {
                 if (item.moodboards) {
                   return item.moodboards.map((moodboard) => {
                     return (
-                      <div className='moodboard-card' key={moodboard.id}>
-                        <Link
-                          to={`/workspace/${param.id}/details/${param.spaceKey}/insidemoodboard/${moodboard.id}`}
-                        >
+                      <Link
+                        to={`/workspace/${param.id}/details/${param.spaceKey}/insidemoodboard/${moodboard.id}`}
+                      >
+                        <div className='moodboard-card' key={moodboard.id}>
                           <div className='image-container'>
                             <img
                               src={moodboard.image || defaultImage}
                               alt='moodboard'
                             />
                           </div>
-                        </Link>
-                        <div className='card-footer'>
-                          <div className='left'>
-                            <Link
-                              to={`/workspace/${param.id}/details/${param.spaceKey}/insidemoodboard/${moodboard.id}`}
-                            >
+
+                          <div className='card-footer'>
+                            <div className='left'>
                               <h4 className='moodboard-name'>
                                 {moodboard.title.length > 10
                                   ? `${moodboard.title.slice(0, 10)}...`
                                   : moodboard.title}
                               </h4>
-                            </Link>
-                            <p style={{ fontSize: '10px', color: '#468AEF' }}>
-                              {moodboard.createdOn}
-                            </p>
-                          </div>
-                          <div className='right'>
-                            <div className='delete-btn'>
-                              <RiDeleteBin6Line
-                                onClick={(e) =>
-                                  value.deleteMoodboard(
-                                    param.id,
-                                    param.spaceKey,
-                                    moodboard.id
-                                  )
-                                }
-                              />
+                              <p style={{ fontSize: '10px', color: '#468AEF' }}>
+                                {moodboard.createdOn}
+                              </p>
+                            </div>
+                            <div className='right'>
+                              <div className='delete-btn'>
+                                <RiDeleteBin6Line
+                                  onClick={(e) => {
+                                    e.preventDefault()
+                                    value.deleteMoodboard(
+                                      param.id,
+                                      param.spaceKey,
+                                      moodboard.id
+                                    )
+                                  }}
+                                />
+                              </div>
                             </div>
                           </div>
                         </div>
-                      </div>
+                      </Link>
                     )
                   })
                 }
@@ -113,12 +111,12 @@ export default function Moodboards() {
                 if (item.digitalBrainboards) {
                   return item.digitalBrainboards.map((digitalBrainboard) => {
                     return (
-                      <div
-                        className='digitalBrainboard-card'
-                        key={digitalBrainboard.id}
+                      <Link
+                        to={`/workspace/${param.id}/details/${param.spaceKey}/insidedigitalBrainboard/${digitalBrainboard.id}`}
                       >
-                        <Link
-                          to={`/workspace/${param.id}/details/${param.spaceKey}/insidedigitalBrainboard/${digitalBrainboard.id}`}
+                        <div
+                          className='digitalBrainboard-card'
+                          key={digitalBrainboard.id}
                         >
                           <div className='image-container'>
                             <img
@@ -126,37 +124,35 @@ export default function Moodboards() {
                               alt='digital brainboard'
                             />
                           </div>
-                        </Link>
-                        <div className='card-footer'>
-                          <div className='left'>
-                            <Link
-                              to={`/workspace/${param.id}/details/${param.spaceKey}/insidedigitalBrainboard/${digitalBrainboard.id}`}
-                            >
+
+                          <div className='card-footer'>
+                            <div className='left'>
                               <h4 className='digitalBrainboard-name'>
                                 {digitalBrainboard.title.length > 10
                                   ? `${digitalBrainboard.title.slice(0, 10)}...`
                                   : digitalBrainboard.title}
                               </h4>
-                            </Link>
-                            <p style={{ fontSize: '10px', color: '#468AEF' }}>
-                              {digitalBrainboard.createdOn}
-                            </p>
-                          </div>
-                          <div className='right'>
-                            <div className='delete-btn'>
-                              <RiDeleteBin6Line
-                                onClick={(e) =>
-                                  value.deleteDigitalBrainboard(
-                                    param.id,
-                                    param.spaceKey,
-                                    digitalBrainboard.id
-                                  )
-                                }
-                              />
+                              <p style={{ fontSize: '10px', color: '#468AEF' }}>
+                                {digitalBrainboard.createdOn}
+                              </p>
+                            </div>
+                            <div className='right'>
+                              <div className='delete-btn'>
+                                <RiDeleteBin6Line
+                                  onClick={(e) => {
+                                    e.preventDefault()
+                                    value.deleteDigitalBrainboard(
+                                      param.id,
+                                      param.spaceKey,
+                                      digitalBrainboard.id
+                                    )
+                                  }}
+                                />
+                              </div>
                             </div>
                           </div>
                         </div>
-                      </div>
+                      </Link>
                     )
                   })
                 }

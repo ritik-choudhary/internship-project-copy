@@ -97,12 +97,12 @@ function WorkspacePageComponent(props) {
               {value.workspaceList.map((item) => {
                 const id = item.id
                 return (
-                  <div
-                    key={id}
-                    className={`${gridStyle ? 'grid-card' : 'list-card'}`}
-                    onClick={(e) => value.handleDetail(id)}
-                  >
-                    <Link to={`/workspace/${id}/details`}>
+                  <Link to={`/workspace/${id}/details`}>
+                    <div
+                      key={id}
+                      className={`${gridStyle ? 'grid-card' : 'list-card'}`}
+                      onClick={(e) => value.handleDetail(id)}
+                    >
                       <div className='workspace-info'>
                         <div className='thumbnail'>
                           <img src={item.image} alt='thumbnail' />
@@ -113,24 +113,26 @@ function WorkspacePageComponent(props) {
                             : item.title}
                         </h2>
                       </div>
-                    </Link>
-                    <div className='workspace-options'>
-                      <div className='options'>
-                        <Link to={`/workspace/${id}/edit`}>
-                          <FiEdit className='edit-btn' />
-                        </Link>
-                        <RiDeleteBin6Line
-                          className='delete-btn'
-                          onClick={(e) => {
-                            value.deleteWorkspace(id)
-                          }}
-                        />
-                      </div>
-                      <div className='created-on'>
-                        Created on: {item.createdOn}
+
+                      <div className='workspace-options'>
+                        <div className='options'>
+                          <Link to={`/workspace/${id}/edit`}>
+                            <FiEdit className='edit-btn' />
+                          </Link>
+                          <RiDeleteBin6Line
+                            className='delete-btn'
+                            onClick={(e) => {
+                              e.preventDefault()
+                              value.deleteWorkspace(id)
+                            }}
+                          />
+                        </div>
+                        <div className='created-on'>
+                          Created on: {item.createdOn}
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  </Link>
                 )
               })}
             </div>
@@ -348,6 +350,8 @@ const WorkspaceWrapper = styled.section`
   .workspace-options .created-on {
     font-size: 12px;
     color: #468aef;
+    font-weight: 400;
+    white-space: nowrap;
   }
   .grid-card .workspace-options .created-on {
     display: none;

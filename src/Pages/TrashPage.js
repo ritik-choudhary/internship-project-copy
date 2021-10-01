@@ -284,6 +284,7 @@ const TrashWrapper = styled.section`
     font-size: 12px;
     color: #468aef;
     white-space: nowrap;
+    font-weight: 400;
   }
   .workspace-options .restore-btn:hover {
     color: #3e77f1;

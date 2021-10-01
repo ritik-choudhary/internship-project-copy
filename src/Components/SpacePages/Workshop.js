@@ -47,44 +47,43 @@ function WorkshopComponent(props) {
         </Link>
         {selectedSpace?.workshops?.map((workshop) => {
           return (
-            <div className='workshop-card'>
-              <Link
-                to={`/workspace/${param.id}/details/${param.spaceKey}/insideworkshop/${workshop.id}`}
-              >
+            <Link
+              to={`/workspace/${param.id}/details/${param.spaceKey}/insideworkshop/${workshop.id}`}
+            >
+              <div className='workshop-card'>
                 <div className='image-container'>
                   <img src={workshop.image || defaultImage} alt='workshop' />
                 </div>
-              </Link>
-              <div className='card-footer'>
-                <div className='left'>
-                  <Link
-                    to={`/workspace/${param.id}/details/${param.spaceKey}/insideworkshop/${workshop.id}`}
-                  >
+
+                <div className='card-footer'>
+                  <div className='left'>
                     <h4 className='workshop-name'>
                       {workshop.title.length > 10
                         ? `${workshop.title.slice(0, 10)}...`
                         : workshop.title}
                     </h4>
-                  </Link>
-                  <p style={{ fontSize: '10px', color: '#468AEF' }}>
-                    {workshop.createdOn}
-                  </p>
-                </div>
-                <div className='right'>
-                  <div className='delete-btn'>
-                    <RiDeleteBin6Line
-                      onClick={(e) =>
-                        value.deleteWorkshop(
-                          param.id,
-                          param.spaceKey,
-                          workshop.id
-                        )
-                      }
-                    />
+
+                    <p style={{ fontSize: '10px', color: '#468AEF' }}>
+                      {workshop.createdOn}
+                    </p>
+                  </div>
+                  <div className='right'>
+                    <div className='delete-btn'>
+                      <RiDeleteBin6Line
+                        onClick={(e) => {
+                          e.preventDefault()
+                          value.deleteWorkshop(
+                            param.id,
+                            param.spaceKey,
+                            workshop.id
+                          )
+                        }}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
+            </Link>
           )
         })}
       </div>
