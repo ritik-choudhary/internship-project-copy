@@ -3,7 +3,6 @@ import Modal from 'react-modal'
 import { useParams, Link, useHistory } from 'react-router-dom'
 import { AiOutlineClose } from 'react-icons/ai'
 import { WorkspaceConsumer } from '../Context'
-import { AiOutlinePlus } from 'react-icons/ai'
 import { FaUpload } from 'react-icons/fa'
 
 export default function BucketListModal(props) {
@@ -298,9 +297,9 @@ function BucketListModalComponent(props) {
             }}
           >
             {images.map((image) => {
-              const linkToimage = previews.find(
-                (item) => item.previewId === image.imageId
-              )
+              //   const linkToimage = previews.find(
+              //     (item) => item.previewId === image.imageId
+              //   )
               return (
                 <>
                   <div className='image-file' style={{ fontSize: '12px' }}>

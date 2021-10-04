@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link, useParams, Switch, Route } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { WorkspaceConsumer } from '../Context'
 import { FaBell, FaShareSquare, FaDownload } from 'react-icons/fa'
 import { RiArrowGoBackFill } from 'react-icons/ri'

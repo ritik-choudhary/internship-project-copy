@@ -62,7 +62,7 @@ function BucketListComponent(props) {
                         {item.previews.map((image) => {
                           count++
                           if (count > 3) {
-                            return
+                            return <></>
                           }
                           return (
                             <div>
