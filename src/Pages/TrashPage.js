@@ -23,9 +23,11 @@ export default function TrashPage() {
 function TrashPageComponent(props) {
   const { value } = props
 
-  const [isWorkspace, setIsWorkspace] = useState(true)
+  const [isWorkspace, setIsWorkspace] = useState(false)
   const [isDocs, setIsDocs] = useState(false)
   const [isImages, setIsImages] = useState(false)
+  const [isRecents, setIsRecents] = useState(true)
+  const [isNotes, setIsNotes] = useState(false)
 
   return (
     <div className='trash-page'>
@@ -48,11 +50,25 @@ function TrashPageComponent(props) {
         </div>
         <div className='trash-options'>
           <div
+            className={`workspace-option ${isRecents ? 'active' : ''}`}
+            onClick={() => {
+              setIsRecents(true)
+              setIsWorkspace(false)
+              setIsDocs(false)
+              setIsImages(false)
+              setIsNotes(false)
+            }}
+          >
+            <h1>Recents</h1>
+          </div>
+          <div
             className={`workspace-option ${isWorkspace ? 'active' : ''}`}
             onClick={() => {
               setIsWorkspace(true)
               setIsDocs(false)
               setIsImages(false)
+              setIsRecents(false)
+              setIsNotes(false)
             }}
           >
             <h1>Workspaces</h1>
@@ -63,9 +79,23 @@ function TrashPageComponent(props) {
               setIsWorkspace(false)
               setIsDocs(true)
               setIsImages(false)
+              setIsRecents(false)
+              setIsNotes(false)
             }}
           >
             <h1>Docs</h1>
+          </div>
+          <div
+            className={`images-option ${isNotes ? 'active' : ''}`}
+            onClick={() => {
+              setIsWorkspace(false)
+              setIsDocs(false)
+              setIsImages(false)
+              setIsRecents(false)
+              setIsNotes(true)
+            }}
+          >
+            <h1>Notes</h1>
           </div>
           <div
             className={`images-option ${isImages ? 'active' : ''}`}
@@ -73,6 +103,8 @@ function TrashPageComponent(props) {
               setIsWorkspace(false)
               setIsDocs(false)
               setIsImages(true)
+              setIsRecents(false)
+              setIsNotes(false)
             }}
           >
             <h1>Images</h1>
@@ -126,6 +158,40 @@ function TrashPageComponent(props) {
                 }
                 return <></>
               })
+            : isImages
+            ? value.trash.map((item) => {
+                console.log('trash item', item)
+                if (item.type === 'Image') {
+                  return (
+                    <div className='bucket-image-card' key={item.previewId}>
+                      <div className='trash-image-container'>
+                        <img src={item.source} alt='' />
+                      </div>
+                      <div className='card-options'>
+                        <div className='delete-btn'>
+                          <RiDeleteBin6Line
+                            onClick={() => {
+                              value.deleteBucketImagePermanently(item.previewId)
+                            }}
+                          />
+                        </div>
+                        <div className='restore-btn'>
+                          <VscDebugRestart
+                            onClick={() =>
+                              value.restoreBucketImage(
+                                item.workspaceId,
+                                item.spaceKey,
+                                item.bucketId,
+                                item.previewId
+                              )
+                            }
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  )
+                }
+              })
             : null}
         </div>
       </div>
@@ -153,6 +219,7 @@ const TrashWrapper = styled.section`
     justify-content: space-between;
     align-items: center;
     background: black;
+    border-radius: 0px 0px 6px 6px;
   }
   .trash-header h3 {
     color: white;
@@ -201,7 +268,7 @@ const TrashWrapper = styled.section`
   .trash-options {
     padding: 0px 150px;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(5, 1fr);
   }
   .trash-options .workspace-option h1,
   .trash-options .docs-option h1,
@@ -297,5 +364,63 @@ const TrashWrapper = styled.section`
   }
   .workspace-options svg {
     cursor: pointer;
+  }
+  .images-storage {
+    display: grid;
+    padding: 10px 150px;
+    gap: 35px;
+    grid-template-columns: repeat(6, 1fr);
+  }
+  .bucket-image-card {
+    display: flex;
+    flex-direction: column;
+    height: 140px;
+    border-radius: 6px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  .bucket-image-card .trash-image-container {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: linear-gradient(to bottom, grey, black);
+    border-radius: 0px;
+  }
+  .trash-image-container img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    opacity: 0.6;
+  }
+  .bucket-image-card .card-options {
+    position: absolute;
+    bottom: 0px;
+    display: grid;
+    transform: translateY(100%);
+    transition: all 0.2s ease-in-out;
+    grid-template-columns: repeat(2, 1fr);
+    width: 100%;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.31);
+  }
+  .bucket-image-card:hover .card-options {
+    transform: translateY(0);
+  }
+  .bucket-image-card .card-options .delete-btn,
+  .bucket-image-card .card-options .restore-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 0;
+    font-size: 12px;
+    font-weight: 400;
+    cursor: pointer;
+  }
+  .bucket-image-card .card-options .delete-btn:hover {
+    color: #f54848;
+  }
+  .bucket-image-card .card-options .restore-btn:hover {
+    color: #1ca806;
   }
 `

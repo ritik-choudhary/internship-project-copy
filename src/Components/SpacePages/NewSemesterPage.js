@@ -74,7 +74,12 @@ export default function NewSemesterPage() {
                                 count++
                                 return (
                                   <div className='single-day'>
-                                    <p className='day'>Monday</p>
+                                    <p
+                                      className='day'
+                                      style={{ background: '#ffd2d9' }}
+                                    >
+                                      Monday
+                                    </p>
                                     <p className='timing'>
                                       {day.startTime}-{day.endTime}
                                     </p>
@@ -84,7 +89,12 @@ export default function NewSemesterPage() {
                                 count++
                                 return (
                                   <div className='single-day'>
-                                    <p className='day'>Tuesday</p>
+                                    <p
+                                      className='day'
+                                      style={{ background: '#81e8e8' }}
+                                    >
+                                      Tuesday
+                                    </p>
                                     <p className='timing'>
                                       {day.startTime}-{day.endTime}
                                     </p>
@@ -94,7 +104,12 @@ export default function NewSemesterPage() {
                                 count++
                                 return (
                                   <div className='single-day'>
-                                    <p className='day'>Wednesday</p>
+                                    <p
+                                      className='day'
+                                      style={{ background: '#ffd487' }}
+                                    >
+                                      Wednesday
+                                    </p>
                                     <p className='timing'>
                                       {day.startTime}-{day.endTime}
                                     </p>
@@ -104,7 +119,12 @@ export default function NewSemesterPage() {
                                 count++
                                 return (
                                   <div className='single-day'>
-                                    <p className='day'>Thursday</p>
+                                    <p
+                                      className='day'
+                                      style={{ background: '#8af3f3' }}
+                                    >
+                                      Thursday
+                                    </p>
                                     <p className='timing'>
                                       {day.startTime}-{day.endTime}
                                     </p>
@@ -114,7 +134,12 @@ export default function NewSemesterPage() {
                                 count++
                                 return (
                                   <div className='single-day'>
-                                    <p className='day'>Friday</p>
+                                    <p
+                                      className='day'
+                                      style={{ background: '#f3cc68' }}
+                                    >
+                                      Friday
+                                    </p>
                                     <p className='timing'>
                                       {day.startTime}-{day.endTime}
                                     </p>
@@ -124,7 +149,12 @@ export default function NewSemesterPage() {
                                 count++
                                 return (
                                   <div className='single-day'>
-                                    <p className='day'>Saturday</p>
+                                    <p
+                                      className='day'
+                                      style={{ background: '#97ec97' }}
+                                    >
+                                      Saturday
+                                    </p>
                                     <p className='timing'>
                                       {day.startTime}-{day.endTime}
                                     </p>
@@ -225,6 +255,7 @@ const NewSemesterPageWrapper = styled.section`
     height: 143px;
     background: #f2f4f8;
     border-radius: 6px;
+    overflow: hidden;
   }
   .card-header {
     display: flex;
@@ -266,9 +297,9 @@ const NewSemesterPageWrapper = styled.section`
     width: 70px;
     font-size: 12px;
     font-weight: 400;
-    background: #fff;
+    // background: #fff;
     border-radius: 3px;
-    color: #9cc4e8;
+    color: white;
   }
   .timing {
     font-size: 12px;

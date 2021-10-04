@@ -69,8 +69,6 @@ function SingleMoodboardComponent(props) {
     setCurrent(current === 0 ? length - 1 : current - 1)
   }
 
-  console.log(current)
-
   return (
     <div className='single-moodboard-page'>
       <Sidebar />

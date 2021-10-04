@@ -14,7 +14,7 @@ import HabitRecords from './Pages/HabitRecords'
 import SingleWorkshopPage from './Pages/SingleWorkshopPage'
 import WorkshopResourcePage from './Pages/WorkshopResourcePage'
 import ShareWorkshopResourceModal from './Components/ShareWorkshopResourceModal'
-// import TaskPdfModal from './Components/ResourceModals/TaskPdfModal'
+import BucketListContent from './Components/BucketListContent'
 
 Modal.setAppElement('#root')
 
@@ -51,9 +51,9 @@ function App() {
           <Route path='/workspace/:id/details/:spaceKey/insideworkshop/:workshopID'>
             <SingleWorkshopPage />
           </Route>
-          {/* <Route path='/workspace/:id/details/:spaceKey/addtodo/readpdf'>
-            <TaskPdfModal isTodo />
-          </Route> */}
+          <Route path='/workspace/:id/details/:spaceKey/bucketlistcontent/:bucketListID'>
+            <BucketListContent />
+          </Route>
           <Route path='/workspace/:id/details' component={Details}></Route>
           <Route path='/workspace' component={Workspace}></Route>
           <Route exact path='/trash' component={Trash}></Route>

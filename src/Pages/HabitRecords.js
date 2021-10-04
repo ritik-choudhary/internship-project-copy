@@ -109,6 +109,8 @@ function HabitRecordsComponent(props) {
                   : habit.title}
               </h3>
             </div>
+
+            <button className='add-field-btn'>Add Field</button>
           </div>
           <div className='line'></div>
         </header>
@@ -121,6 +123,7 @@ function HabitRecordsComponent(props) {
                 gridTemplateColumns: `repeat(${
                   habit.fieldsList.length + 1
                 },130px)`,
+                gap: '5px',
               }}
             >
               <div className='date-col'>
@@ -152,6 +155,7 @@ function HabitRecordsComponent(props) {
                     gridTemplateColumns: `repeat(${
                       habit.fieldsList.length + 1
                     },130px)`,
+                    gap: '5px',
                   }}
                 >
                   <div className='col-1'>{stringDate}</div>
@@ -243,6 +247,20 @@ const HabitRecordsWrapper = styled.section`
   .habit-title-container .title div {
     display: flex;
   }
+  .add-field-btn {
+    padding: 5px 10px 5px 10px;
+    border-radius: 6px;
+    background: #468aef;
+    color: white;
+    border: none;
+    outline: none;
+    cursor: pointer;
+  }
+  .add-field-btn:hover {
+    background: white;
+    color: #468aef;
+    border: 1px solid #468aef;
+  }
   .line {
     width: 100%;
     height: 1.5px;
@@ -266,53 +284,44 @@ const HabitRecordsWrapper = styled.section`
   }
   .single-habit-page .storage {
     display: grid;
+    gap: 5px;
   }
   .date-col {
     background: #f2f4f8;
-    padding: 20px;
-    border-radius: 6px 0px 0px 6px;
-    border-right: 1px solid #c4c4c4;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #c4c4c4;
     font-size: 14px;
     font-weight: 600;
+    height: 60px;
   }
-  .habit-title-col {
-    background: #f2f4f8;
-    padding: 20px;
-    border-right: 1px solid #c4c4c4;
-    font-size: 14px;
-    font-weight: 600;
-  }
+
   .dynamic-col {
     background: #f2f4f8;
     padding: 20px;
-    border-right: 1px solid #c4c4c4;
+    border: 1px solid #c4c4c4;
     font-size: 14px;
     font-weight: 600;
+    height: 60px;
   }
   .col-1 {
-    padding: 20px;
-    border-right: 1px solid #c4c4c4;
-    border-bottom: 1px solid #c4c4c4;
+    padding: 10px;
+    border: 1px solid #c4c4c4;
+    border-radius: 6px;
     font-size: 14px;
     font-weight: 600;
+    height: 40px;
+    color: #468aef;
   }
-  .col-2 {
-    padding: 20px;
-    border-right: 1px solid #c4c4c4;
-    border-bottom: 1px solid #c4c4c4;
-  }
-  .col-2 input {
-    height: 20px;
-    width: 20px;
-  }
+
   .sec-dynamic-col {
-    padding: 20px;
-    border-right: 1px solid #c4c4c4;
-    border-bottom: 1px solid #c4c4c4;
+    padding: 10px;
+    border: 1px solid #c4c4c4;
+    height: 40px;
   }
   .sec-dynamic-col input {
-    height: 20px;
-    width: 20px;
+    height: 15px;
+    width: 15px;
   }
   .storage-container {
     padding: 10px 0px;

@@ -12,6 +12,7 @@ import { FaBell } from 'react-icons/fa'
 import HabitTracker from '../Components/SpacePages/HabitTracker'
 import Workshop from '../Components/SpacePages/Workshop'
 import TodoList from '../Components/SpacePages/TodoList'
+import BucketList from '../Components/SpacePages/BucketList'
 
 export default function SpaceContent() {
   const param = useParams()
@@ -92,6 +93,9 @@ export default function SpaceContent() {
                 }
                 if (page === 'To-do List') {
                   return <TodoList />
+                }
+                if (page === 'Bucket List') {
+                  return <BucketList />
                 }
               }}
             </WorkspaceConsumer>

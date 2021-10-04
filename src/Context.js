@@ -55,7 +55,6 @@ class WorkspaceProvider extends Component {
   }
   deleteWorkspacePermanently = (id) => {
     let oldTrashList = this.state.trash
-    // const selectedItem = oldTrashList.find((item) => item.id === id)
     oldTrashList = oldTrashList.filter((element) => element.id !== id)
     this.setState(() => {
       return {
@@ -310,8 +309,6 @@ class WorkspaceProvider extends Component {
     let meetingElement = resourceElement.meetings.find(
       (item) => item.id === meetingId
     )
-    console.log('meetingelement', meetingElement)
-    console.log('incoming meeting', newMeeting)
     meetingElement.title = newMeeting.title
     meetingElement.createdOn = newMeeting.createdOn
     meetingElement.createdBy = newMeeting.createdBy
@@ -1209,6 +1206,121 @@ class WorkspaceProvider extends Component {
     })
   }
 
+  addBucketList = (id, key, bucket) => {
+    const oldList = [...this.state.workspaceElements]
+    let element = oldList.find(
+      (item) => item.id === key && item.workspaceID === id
+    )
+    element.bucketList = element.bucketList || []
+    element.bucketList = [...element.bucketList, bucket]
+    this.setState(() => {
+      return { workspaceElements: oldList }
+    })
+  }
+
+  editBucketList = (id, key, bucketId, bucket) => {
+    const oldList = [...this.state.workspaceElements]
+    let element = oldList.find(
+      (item) => item.id === key && item.workspaceID === id
+    )
+    let bucketElement = element.bucketList.find((item) => item.id === bucketId)
+
+    bucketElement.title = bucket.title
+    bucketElement.createdOn = bucket.createdOn
+    bucketElement.type = bucket.type
+    bucketElement.images = bucket.images
+    bucketElement.previews = bucket.previews
+
+    this.setState(() => {
+      return { workspaceElements: oldList }
+    })
+  }
+
+  deleteBucketImage = (id, key, bucketId, imageId) => {
+    const oldList = [...this.state.workspaceElements]
+    let element = oldList.find(
+      (item) => item.id === key && item.workspaceID === id
+    )
+    let bucketElement = element.bucketList.find((item) => item.id === bucketId)
+
+    const previewToDelete = bucketElement.previews.find(
+      (item) => item.previewId === imageId
+    )
+
+    const imageToDelete = bucketElement.images.find(
+      (item) => item.imageId === imageId
+    )
+    console.log('image to delete', imageToDelete)
+
+    previewToDelete.type = 'Image'
+    previewToDelete.workspaceId = id
+    previewToDelete.spaceKey = key
+    previewToDelete.bucketId = bucketId
+    previewToDelete.file = imageToDelete.imageFile
+
+    let newPreviews = bucketElement.previews.filter(
+      (item) => item.previewId !== imageId
+    )
+
+    let newImages = bucketElement.images.filter(
+      (item) => item.imageId !== imageId
+    )
+
+    bucketElement.previews = newPreviews
+    bucketElement.images = newImages
+
+    this.setState(() => {
+      return {
+        workspaceElements: oldList,
+        trash: [...this.state.trash, previewToDelete],
+      }
+    })
+  }
+
+  restoreBucketImage = (id, key, bucketId, imageId) => {
+    const oldTrashList = [...this.state.trash]
+    const trashElement = oldTrashList.find((item) => item.previewId === imageId)
+    console.log('trash element', trashElement)
+    const oldWorkspaceElements = [...this.state.workspaceElements]
+    let spaceElement = oldWorkspaceElements.find(
+      (item) => item.id === key && item.workspaceID === id
+    )
+    let bucketElement = spaceElement.bucketList.find(
+      (item) => item.id === bucketId
+    )
+    console.log('bucketElement', bucketElement)
+    let newPreviews = bucketElement.previews
+    let newImages = bucketElement.images
+    newImages = [
+      ...newImages,
+      { imageId: trashElement.previewId, imageFile: trashElement.file },
+    ]
+    newPreviews = [...newPreviews, trashElement]
+    bucketElement.previews = newPreviews
+    bucketElement.images = newImages
+    console.log('new previews', newPreviews)
+    console.log('new images', newImages)
+    const newTrashList = oldTrashList.filter(
+      (item) => item.previewId !== imageId
+    )
+    this.setState(() => {
+      return {
+        workspaceElements: oldWorkspaceElements,
+        trash: newTrashList,
+      }
+    })
+  }
+
+  deleteBucketImagePermanently = (id) => {
+    let oldTrashList = [...this.state.trash]
+    const newTrashList = oldTrashList.filter((item) => item.previewId !== id)
+    this.setState(() => {
+      return {
+        trash: newTrashList,
+      }
+    })
+  }
+
   render() {
     return (
       <WorkspaceContext.Provider
@@ -1282,6 +1394,11 @@ class WorkspaceProvider extends Component {
           deleteTodo: this.deleteTodo,
           editTodo: this.editTodo,
           todoManipulation: this.todoManipulation,
+          addBucketList: this.addBucketList,
+          editBucketList: this.editBucketList,
+          deleteBucketImage: this.deleteBucketImage,
+          restoreBucketImage: this.restoreBucketImage,
+          deleteBucketImagePermanently: this.deleteBucketImagePermanently,
         }}
       >
         {this.props.children}

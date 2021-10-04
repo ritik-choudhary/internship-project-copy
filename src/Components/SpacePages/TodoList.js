@@ -99,7 +99,7 @@ function TodoListComponent(props) {
                 </p>
               </div>
               <div className='bottom'>
-                <p>{item?.description}</p>
+                <p className='description'>{item?.description}</p>
                 <div className='links-container'>
                   {item.links.map((link) => {
                     count++
@@ -153,7 +153,7 @@ function TodoListComponent(props) {
                         key={pdf.pdfId}
                       >
                         <div className='pdf'>
-                          Pdf {pdfCount}{' '}
+                          <p style={{ width: '80%' }}>Pdf {pdfCount}</p>
                           <AiOutlineClose style={{ color: '#f54848' }} />
                         </div>
                       </Link>
@@ -272,6 +272,9 @@ const TodoListPageWrapper = styled.section`
   .single-task .bottom {
     padding-left: 30px;
   }
+  .single-task .bottom .description {
+    padding-bottom: 10px;
+  }
   .task-completed {
     text-decoration: line-through;
   }
@@ -282,12 +285,13 @@ const TodoListPageWrapper = styled.section`
   .pdf-container {
     display: flex;
     gap: 5px;
+    justify-content: flex-end;
     padding-bottom: 5px;
   }
   .single-task .link,
   .single-task .pdf {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     width: 60px;
     height: 20px;
@@ -298,6 +302,10 @@ const TodoListPageWrapper = styled.section`
     padding: 0 5px;
     color: black;
     font-weight: 400;
+  }
+  .single-task .link:hover,
+  .single-task .pdf:hover {
+    transform: scale(1.05);
   }
   .see-more-btn a {
     text-decoration: underline;

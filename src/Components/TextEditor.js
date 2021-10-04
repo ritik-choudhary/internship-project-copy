@@ -19,15 +19,24 @@ import {
   AiOutlineUnderline,
 } from 'react-icons/ai'
 
-import { BiHeading } from 'react-icons/bi'
 import { FaQuoteRight, FaCode } from 'react-icons/fa'
 import { MdFormatListNumbered, MdFormatListBulleted } from 'react-icons/md'
+import H1 from '../assets/h1.png'
+import H2 from '../assets/h2.png'
 
 const HOTKEYS = {
   'mod+b': 'bold',
   'mod+i': 'italic',
   'mod+u': 'underline',
   'mod+`': 'code',
+}
+
+const H1Img = () => {
+  return <img src={H1} alt='' style={{ width: '12px', height: '12px' }} />
+}
+
+const H2Img = () => {
+  return <img src={H2} alt='' style={{ width: '14px', height: '14px' }} />
 }
 
 const LIST_TYPES = ['numbered-list', 'bulleted-list']
@@ -53,8 +62,8 @@ const RichTextExample = (props) => {
         <MarkButton format='italic' icon={<AiOutlineItalic />} />
         <MarkButton format='underline' icon={<AiOutlineUnderline />} />
         <MarkButton format='code' icon={<FaCode />} />
-        <BlockButton format='heading-one' icon={<BiHeading />} />
-        <BlockButton format='heading-two' icon='looks_two' />
+        <BlockButton format='heading-one' icon={<H1Img />} />
+        <BlockButton format='heading-two' icon={<H2Img />} />
         <BlockButton format='block-quote' icon={<FaQuoteRight />} />
         <BlockButton format='numbered-list' icon={<MdFormatListNumbered />} />
         <BlockButton format='bulleted-list' icon={<MdFormatListBulleted />} />
