@@ -34,6 +34,17 @@ function HabitTrackerModalComponent(props) {
     new Date().getMonth() + 1
   }/${new Date().getFullYear()}`
 
+  var getDaysArray = function (start, end) {
+    for (
+      var arr = [], dt = new Date(start);
+      dt <= end;
+      dt.setDate(dt.getDate() + 1)
+    ) {
+      arr.push(new Date(dt))
+    }
+    return arr
+  }
+
   const [habitImage, setHabitImage] = useState()
   const [preview, setPreview] = useState(Images[randomIndex])
   const [nameOfHabit, setNameOfHabit] = useState()
@@ -156,16 +167,6 @@ function HabitTrackerModalComponent(props) {
             if (fieldsList.length > 0) {
               const start = moment(startDate).format('YYYY-MM-DD')
               const end = moment(endDate).format('YYYY-MM-DD')
-              var getDaysArray = function (start, end) {
-                for (
-                  var arr = [], dt = new Date(start);
-                  dt <= end;
-                  dt.setDate(dt.getDate() + 1)
-                ) {
-                  arr.push(new Date(dt))
-                }
-                return arr
-              }
 
               var daylist = getDaysArray(new Date(start), new Date(end))
               daylist.map((v) => v.toISOString().slice(0, 10)).join('')
@@ -199,17 +200,8 @@ function HabitTrackerModalComponent(props) {
           } else {
             const start = moment(startDate).format('YYYY-MM-DD')
             const end = moment(endDate).format('YYYY-MM-DD')
-            var getDaysArray = function (start, end) {
-              for (
-                var arr = [], dt = new Date(start);
-                dt <= end;
-                dt.setDate(dt.getDate() + 1)
-              ) {
-                arr.push(new Date(dt))
-              }
-              return arr
-            }
-            var daylist = getDaysArray(new Date(start), new Date(end))
+
+            daylist = getDaysArray(new Date(start), new Date(end))
             daylist.map((v) => v.toISOString().slice(0, 10)).join('')
             let tempStatus = [...status]
             tempFieldsList.forEach((item) => {

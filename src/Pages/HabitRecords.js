@@ -75,6 +75,7 @@ function HabitRecordsComponent(props) {
         if (singleDate.completed) {
           return totalCompleted++
         }
+        return <></>
       })
     })
   })

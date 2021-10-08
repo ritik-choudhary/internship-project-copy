@@ -670,9 +670,9 @@ class WorkspaceProvider extends Component {
     )
     let habitElement = element.habits.find((item) => item.id === habitId)
     habitElement.status.map((item) => {
-      return Object.keys(item).map((singleField) => {
+      return Object.keys(item).forEach((singleField) => {
         if (singleField === fieldName) {
-          item[singleField].map((date) => {
+          item[singleField].forEach((date) => {
             if (date === singleDate) {
               date.completed = !date.completed
             }

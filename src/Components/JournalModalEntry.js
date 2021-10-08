@@ -1,11 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Modal from 'react-modal'
 import { useParams, Link, useHistory } from 'react-router-dom'
-import {
-  AiFillCloseCircle,
-  AiOutlinePlus,
-  AiOutlineClose,
-} from 'react-icons/ai'
+import { AiFillCloseCircle } from 'react-icons/ai'
 import { WorkspaceConsumer } from '../Context'
 import TextEditor from './TextEditor'
 import Styled from 'styled-components'

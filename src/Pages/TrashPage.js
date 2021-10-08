@@ -226,6 +226,7 @@ function TrashPageComponent(props) {
                     </div>
                   )
                 }
+                return <></>
               })
             : null}
         </div>

@@ -4,7 +4,6 @@ import styled from 'styled-components'
 import { Switch, Route, Link, useParams } from 'react-router-dom'
 import SubjectModal from '../SubjectModal'
 import { WorkspaceConsumer } from '../../Context'
-import { CgArrowsExpandUpRight } from 'react-icons/cg'
 import SubjectPdfModal from '../SubjectPdfModal'
 
 export default function NewSemesterPage() {
