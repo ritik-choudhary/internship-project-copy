@@ -15,6 +15,8 @@ import SingleWorkshopPage from './Pages/SingleWorkshopPage'
 import WorkshopResourcePage from './Pages/WorkshopResourcePage'
 import ShareWorkshopResourceModal from './Components/ShareWorkshopResourceModal'
 import BucketListContent from './Components/BucketListContent'
+import Journal from './Pages/Journal'
+import ShareClubResourceModal from './Components/ShareClubResourceModal'
 
 Modal.setAppElement('#root')
 
@@ -30,12 +32,20 @@ function App() {
           <Route path='/workspace/:id/details/:spaceKey/insideworkshop/:workshopID/resourcedata/:resourceID'>
             <WorkshopResourcePage />
           </Route>
-          <Route path='/workspace/:id/details/:spaceKey/insideworkshop/:workshopID/share'>
-            <ShareWorkshopResourceModal />
+
+          <Route path='/workspace/:id/details/:spaceKey/insideclub/:clubID/resourcedata/:resourceID/share'>
+            <ResourcePage isSharing />
           </Route>
           <Route path='/workspace/:id/details/:spaceKey/insideclub/:clubID/resourcedata/:resourceID'>
             <ResourcePage />
           </Route>
+          <Route path='/workspace/:id/details/:spaceKey/insideclub/:clubID/share'>
+            <ShareClubResourceModal />
+          </Route>
+          <Route path='/workspace/:id/details/:spaceKey/insideworkshop/:workshopID/share'>
+            <ShareWorkshopResourceModal />
+          </Route>
+
           <Route path='/workspace/:id/details/:spaceKey/insidemoodboard/:moodboardID'>
             <SingleMoodboard />
           </Route>
@@ -56,6 +66,7 @@ function App() {
           </Route>
           <Route path='/workspace/:id/details' component={Details}></Route>
           <Route path='/workspace' component={Workspace}></Route>
+          <Route path='/journal' component={Journal}></Route>
           <Route exact path='/trash' component={Trash}></Route>
         </Switch>
       </Router>

@@ -45,7 +45,7 @@ function TrashPageComponent(props) {
           </div>
         </div>
         <div className='trash-title'>
-          <h1>Trash</h1>
+          <h1 className='animation-title'>Trash</h1>
           <div className='line'></div>
         </div>
         <div className='trash-options'>
@@ -160,7 +160,6 @@ function TrashPageComponent(props) {
               })
             : isImages
             ? value.trash.map((item) => {
-                console.log('trash item', item)
                 if (item.type === 'Image') {
                   return (
                     <div className='bucket-image-card' key={item.previewId}>
@@ -192,6 +191,41 @@ function TrashPageComponent(props) {
                   )
                 }
                 return <></>
+              })
+            : isDocs
+            ? value.trash.map((item) => {
+                if (item.type === 'Docs') {
+                  return (
+                    <div className='docs-card'>
+                      <div className='top'>
+                        <p className='title'>{item.title}</p>
+                      </div>
+                      <div className='bottom'>
+                        <p className='created-on'>{item.createdOn}</p>
+                        <div className='docs-card-options'>
+                          <div className='restore-btn'>
+                            <VscDebugRestart
+                              onClick={() =>
+                                value.restoreDocs(
+                                  item.workspaceId,
+                                  item.spaceKey,
+                                  item.id
+                                )
+                              }
+                            />
+                          </div>
+                          <div className='delete-btn'>
+                            <RiDeleteBin6Line
+                              onClick={() => {
+                                value.deleteDocsPermanently(item.id)
+                              }}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )
+                }
               })
             : null}
         </div>
@@ -354,6 +388,22 @@ const TrashWrapper = styled.section`
     white-space: nowrap;
     font-weight: 400;
   }
+  .animation-title {
+    animation: slide-in 0.3s ease-out;
+  }
+  @keyframes slide-in {
+    0% {
+      transform: translateY(100%);
+      opacity: 0;
+    }
+    40% {
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0%);
+      opacity: 1;
+    }
+  }
   .workspace-options .restore-btn:hover {
     color: #3e77f1;
   }
@@ -422,6 +472,54 @@ const TrashWrapper = styled.section`
     color: #f54848;
   }
   .bucket-image-card .card-options .restore-btn:hover {
+    color: #1ca806;
+  }
+  .docs-storage {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 25px;
+    padding: 0px 150px;
+  }
+  .docs-card {
+    height: 56px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    height: 100%;
+    background: #f2f4f8;
+    border-radius: 5px;
+    padding: 5px 10px;
+    font-size: 12px;
+    cursor: pointer;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  .docs-card .title {
+    font-size: 14px;
+    color: black;
+    font-weight: 400;
+  }
+  .docs-card .bottom {
+    display: flex;
+    justify-content: space-between;
+  }
+  .docs-card .created-on {
+    color: #c4c4c4;
+  }
+  .docs-card .docs-card-options {
+    display: flex;
+    gap: 10px;
+  }
+  .docs-card .bottom .delete-btn,
+  .docs-card .bottom .restore-btn {
+    color: #c4c4c4;
+    font-size: 16px;
+  }
+  .docs-card .bottom .delete-btn:hover {
+    color: #f54848;
+    cursor: pointer;
+  }
+  .docs-card .bottom .restore-btn:hover {
     color: #1ca806;
   }
 `

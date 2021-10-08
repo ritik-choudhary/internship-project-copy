@@ -63,17 +63,19 @@ const DetailPageComponent = () => {
                 const subtitle = value.detailWorkspace.title
                 return (
                   <div>
-                    <h3
-                      style={{
-                        fontSize: '20px',
-                        fontWeight: '400',
-                        color: '#c4c4c4',
-                      }}
-                    >
-                      {'My Workspaces > '}
+                    <Link to={'/workspace'}>
+                      <h3
+                        style={{
+                          fontSize: '20px',
+                          fontWeight: '400',
+                          color: '#c4c4c4',
+                        }}
+                      >
+                        {'My Workspaces > '}
 
-                      <span>&nbsp;</span>
-                    </h3>
+                        <span>&nbsp;</span>
+                      </h3>
+                    </Link>
 
                     <h3
                       className='animation-title'

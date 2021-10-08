@@ -43,7 +43,7 @@ function BucketListComponent(props) {
           >
             <div className='add-new-btn'>
               <AiOutlinePlus />
-              <p>Add new task</p>
+              <p>Add new item</p>
             </div>
           </Link>
           {space?.bucketList?.map((item) => {
@@ -57,11 +57,10 @@ function BucketListComponent(props) {
                   <h2 className='bucket-title'>{item.title}</h2>
                   <div className='bottom'>
                     <div className='left'>
-                      <p className='created-on'>{item.createdOn}</p>
                       <div className='images-container'>
                         {item.previews.map((image) => {
                           count++
-                          if (count > 3) {
+                          if (count > 5) {
                             return <></>
                           }
                           return (
@@ -71,7 +70,7 @@ function BucketListComponent(props) {
                           )
                         })}
                       </div>
-                      {item.previews.length > 3 ? (
+                      {item.previews.length > 5 ? (
                         <Link
                           to={`/workspace/${param.id}/details/${param.spaceKey}/bucketlistcontent/${item.id}`}
                         >
@@ -79,7 +78,10 @@ function BucketListComponent(props) {
                         </Link>
                       ) : null}
                     </div>
-                    <p className='bucket-type'>{item.type}</p>
+                    <div className='right'>
+                      <p className='bucket-type'>{item.type}</p>
+                      <p className='created-on'>{item.createdOn}</p>
+                    </div>
                   </div>
                 </div>
               </Link>
@@ -142,8 +144,9 @@ const BucketListWrapper = styled.section`
   .single-bucket .bottom .left {
     display: flex;
     gap: 20px;
+    align-items: flex-end;
   }
-  .single-bucket .bottom .left .created-on {
+  .single-bucket .bottom .right .created-on {
     color: #c4c4c4;
     font-size: 12px;
   }
@@ -152,8 +155,8 @@ const BucketListWrapper = styled.section`
     gap: 5px;
   }
   .single-bucket .bottom .left .images-container div {
-    height: 25px;
-    width: 25px;
+    height: 140px;
+    width: 160px;
   }
   .single-bucket .bottom .left .images-container div img {
     height: 100%;

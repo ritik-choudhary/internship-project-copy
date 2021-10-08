@@ -9,6 +9,7 @@ class WorkspaceProvider extends Component {
     detailWorkspace: {},
     detailSpace: {},
     workspaceElements: [],
+    journal: [],
   }
 
   addNewWorkspace = (newItem) => {
@@ -98,6 +99,8 @@ class WorkspaceProvider extends Component {
     if (favourite) {
       element.favouriteBooks = element.favouriteBooks || []
       element.favouriteBooks = [...element.favouriteBooks, book]
+      element.bookShelf = element.bookShelf || []
+      element.bookShelf = [...element.bookShelf, book]
     } else {
       element.bookShelf = element.bookShelf || []
       element.bookShelf = [...element.bookShelf, book]
@@ -635,6 +638,19 @@ class WorkspaceProvider extends Component {
     })
   }
 
+  addNewHabitField = (id, key, habitId, newFieldsList, newStatus) => {
+    const oldList = [...this.state.workspaceElements]
+    let element = oldList.find(
+      (item) => item.id === key && item.workspaceID === id
+    )
+    let habitElement = element.habits.find((item) => item.id === habitId)
+    habitElement.fieldsList = newFieldsList
+    habitElement.status = newStatus
+    this.setState(() => {
+      return { workspaceElements: oldList }
+    })
+  }
+
   deleteHabit = (id, key, habitId) => {
     const oldList = [...this.state.workspaceElements]
     let element = oldList.find(
@@ -642,6 +658,28 @@ class WorkspaceProvider extends Component {
     )
     const newHabitList = element.habits.filter((item) => item.id !== habitId)
     element.habits = newHabitList
+    this.setState(() => {
+      return { workspaceElements: oldList }
+    })
+  }
+
+  handleStatusOfHabit = (id, key, habitId, singleDate, fieldName) => {
+    const oldList = [...this.state.workspaceElements]
+    let element = oldList.find(
+      (item) => item.id === key && item.workspaceID === id
+    )
+    let habitElement = element.habits.find((item) => item.id === habitId)
+    habitElement.status.map((item) => {
+      return Object.keys(item).map((singleField) => {
+        if (singleField === fieldName) {
+          item[singleField].map((date) => {
+            if (date === singleDate) {
+              date.completed = !date.completed
+            }
+          })
+        }
+      })
+    })
     this.setState(() => {
       return { workspaceElements: oldList }
     })
@@ -1280,7 +1318,7 @@ class WorkspaceProvider extends Component {
   restoreBucketImage = (id, key, bucketId, imageId) => {
     const oldTrashList = [...this.state.trash]
     const trashElement = oldTrashList.find((item) => item.previewId === imageId)
-    console.log('trash element', trashElement)
+
     const oldWorkspaceElements = [...this.state.workspaceElements]
     let spaceElement = oldWorkspaceElements.find(
       (item) => item.id === key && item.workspaceID === id
@@ -1288,7 +1326,7 @@ class WorkspaceProvider extends Component {
     let bucketElement = spaceElement.bucketList.find(
       (item) => item.id === bucketId
     )
-    console.log('bucketElement', bucketElement)
+
     let newPreviews = bucketElement.previews
     let newImages = bucketElement.images
     newImages = [
@@ -1298,8 +1336,6 @@ class WorkspaceProvider extends Component {
     newPreviews = [...newPreviews, trashElement]
     bucketElement.previews = newPreviews
     bucketElement.images = newImages
-    console.log('new previews', newPreviews)
-    console.log('new images', newImages)
     const newTrashList = oldTrashList.filter(
       (item) => item.previewId !== imageId
     )
@@ -1318,6 +1354,161 @@ class WorkspaceProvider extends Component {
       return {
         trash: newTrashList,
       }
+    })
+  }
+
+  addNewDocs = (id, key, docs) => {
+    const oldList = [...this.state.workspaceElements]
+    let element = oldList.find(
+      (item) => item.id === key && item.workspaceID === id
+    )
+    element.docsList = element.docsList || []
+    element.docsList = [...element.docsList, docs]
+    this.setState(() => {
+      return { workspaceElements: oldList }
+    })
+  }
+
+  editDocs = (id, key, docsId, docs) => {
+    const oldList = [...this.state.workspaceElements]
+    let element = oldList.find(
+      (item) => item.id === key && item.workspaceID === id
+    )
+    let docsElement = element.docsList.find((item) => item.id === docsId)
+
+    docsElement.title = docs.title
+    docsElement.createdOn = docs.createdOn
+    docsElement.createdBy = docs.createdBy
+    docsElement.type = docs.type
+    docsElement.note = docs.note
+
+    this.setState(() => {
+      return { workspaceElements: oldList }
+    })
+  }
+
+  deleteDocs = (id, key, docsId) => {
+    const oldList = [...this.state.workspaceElements]
+    let element = oldList.find(
+      (item) => item.id === key && item.workspaceID === id
+    )
+    const docsToDelete = element.docsList.find((item) => item.id === docsId)
+    docsToDelete.type = 'Docs'
+    docsToDelete.workspaceId = id
+    docsToDelete.spaceKey = key
+    const newDocsList = element.docsList.filter((item) => item.id !== docsId)
+    element.docsList = newDocsList
+
+    this.setState(() => {
+      return {
+        workspaceElements: oldList,
+        trash: [...this.state.trash, docsToDelete],
+      }
+    })
+  }
+
+  deleteDocsPermanently = (id) => {
+    let oldTrashList = [...this.state.trash]
+    const newTrashList = oldTrashList.filter((item) => item.id !== id)
+    this.setState(() => {
+      return {
+        trash: newTrashList,
+      }
+    })
+  }
+
+  restoreDocs = (id, key, docsId) => {
+    const oldTrashList = [...this.state.trash]
+    const trashElement = oldTrashList.find((item) => item.id === docsId)
+
+    const oldWorkspaceElements = [...this.state.workspaceElements]
+    let spaceElement = oldWorkspaceElements.find(
+      (item) => item.id === key && item.workspaceID === id
+    )
+    let newDocsElement = [...spaceElement.docsList]
+    newDocsElement = [...newDocsElement, trashElement]
+    spaceElement.docsList = newDocsElement
+    const newTrashList = oldTrashList.filter((item) => item.id !== docsId)
+    this.setState(() => {
+      return {
+        workspaceElements: oldWorkspaceElements,
+        trash: newTrashList,
+      }
+    })
+  }
+
+  addNewMeetingNotes = (id, key, meeting) => {
+    const oldList = [...this.state.workspaceElements]
+    let element = oldList.find(
+      (item) => item.id === key && item.workspaceID === id
+    )
+    element.meetingNotes = element.meetingNotes || []
+    element.meetingNotes = [...element.meetingNotes, meeting]
+    this.setState(() => {
+      return { workspaceElements: oldList }
+    })
+  }
+
+  editMeetingNotes = (id, key, meetingId, newMeeting) => {
+    const oldList = [...this.state.workspaceElements]
+    let element = oldList.find(
+      (item) => item.id === key && item.workspaceID === id
+    )
+
+    let meetingElement = element.meetingNotes.find(
+      (item) => item.id === meetingId
+    )
+    meetingElement.title = newMeeting.title
+    meetingElement.createdOn = newMeeting.createdOn
+    meetingElement.createdBy = newMeeting.createdBy
+    meetingElement.type = newMeeting.type
+    meetingElement.participants = newMeeting.participants
+    meetingElement.links = newMeeting.links
+    meetingElement.pdfList = newMeeting.pdfList
+    meetingElement.note = newMeeting.note
+
+    this.setState(() => {
+      return { workspaceElements: oldList }
+    })
+  }
+
+  deleteMeetingNotes = (id, key, meetingId) => {
+    const oldList = [...this.state.workspaceElements]
+    let element = oldList.find(
+      (item) => item.id === key && item.workspaceID === id
+    )
+    const newMeetingNotes = element.meetingNotes.filter(
+      (item) => item.id !== meetingId
+    )
+    element.meetingNotes = newMeetingNotes
+    this.setState(() => {
+      return { workspaceElements: oldList }
+    })
+  }
+
+  addNewJournal = (journal) => {
+    const oldJournalList = [...this.state.journal]
+    const newJournalList = [...oldJournalList, journal]
+    this.setState(() => {
+      return { journal: newJournalList }
+    })
+  }
+
+  deleteJournal = (id) => {
+    const oldJournalList = [...this.state.journal]
+    const newJournalList = oldJournalList.filter((item) => item.id !== id)
+    this.setState(() => {
+      return { journal: newJournalList }
+    })
+  }
+
+  editJournal = (id, journal) => {
+    const oldJournalList = [...this.state.journal]
+    const journalElement = oldJournalList.find((item) => item.id === id)
+    journalElement.createdBy = journal.createdBy
+    journalElement.note = journal.note
+    this.setState(() => {
+      return { journal: oldJournalList }
     })
   }
 
@@ -1366,7 +1557,9 @@ class WorkspaceProvider extends Component {
           addMoodboardField: this.addMoodboardField,
           deleteMoodboardField: this.deleteMoodboardField,
           addNewHabit: this.addNewHabit,
+          addNewHabitField: this.addNewHabitField,
           deleteHabit: this.deleteHabit,
+          handleStatusOfHabit: this.handleStatusOfHabit,
           addNewWorkshop: this.addNewWorkshop,
           deleteWorkshop: this.deleteWorkshop,
           handleWorkshopInfo: this.handleWorkshopInfo,
@@ -1399,6 +1592,17 @@ class WorkspaceProvider extends Component {
           deleteBucketImage: this.deleteBucketImage,
           restoreBucketImage: this.restoreBucketImage,
           deleteBucketImagePermanently: this.deleteBucketImagePermanently,
+          addNewDocs: this.addNewDocs,
+          editDocs: this.editDocs,
+          deleteDocs: this.deleteDocs,
+          deleteDocsPermanently: this.deleteDocsPermanently,
+          restoreDocs: this.restoreDocs,
+          addNewMeetingNotes: this.addNewMeetingNotes,
+          deleteMeetingNotes: this.deleteMeetingNotes,
+          editMeetingNotes: this.editMeetingNotes,
+          addNewJournal: this.addNewJournal,
+          deleteJournal: this.deleteJournal,
+          editJournal: this.editJournal,
         }}
       >
         {this.props.children}

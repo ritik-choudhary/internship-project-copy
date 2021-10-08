@@ -15,10 +15,16 @@ export default function TaskPdfModal(props) {
         <Route path='/workspace/:id/details/:spaceKey/addtodo/readpdf/readfullpage'>
           <TaskFullPagePdf isTodo />
         </Route>
+        <Route path='/workspace/:id/details/:spaceKey/insideclub/:clubID/resourcedata/:resourceID/share/sharetask/readpdf/readfullpage'>
+          <TaskFullPagePdf isSharing />
+        </Route>
         <Route path='/workspace/:id/details/:spaceKey/insideclub/:clubID/resourcedata/:resourceID/addtask/readpdf/readfullpage'>
           <TaskFullPagePdf />
         </Route>
         <Route path='/workspace/:id/details/:spaceKey/addtodo/readpdf'>
+          <TaskPdfModalComponent {...props} />
+        </Route>
+        <Route path='/workspace/:id/details/:spaceKey/insideclub/:clubID/resourcedata/:resourceID/share/sharetask/readpdf'>
           <TaskPdfModalComponent {...props} />
         </Route>
         <Route path='/workspace/:id/details/:spaceKey/insideclub/:clubID/resourcedata/:resourceID/addtask/readpdf'>
@@ -30,7 +36,7 @@ export default function TaskPdfModal(props) {
 }
 
 const TaskPdfModalComponent = (props) => {
-  const { isTodo } = props
+  const { isTodo, isSharing } = props
   const param = useParams()
   const location = useLocation()
   return (
@@ -88,6 +94,22 @@ const TaskPdfModalComponent = (props) => {
               }}
             />
           </Link>
+        ) : isSharing ? (
+          <Link
+            to={{
+              pathname: `/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/share/sharetask/readpdf/readfullpage`,
+              state: { data: location.state.src },
+            }}
+          >
+            <AiOutlineFullscreen
+              style={{
+                fontSize: '25px',
+                fontWeight: '500',
+                color: '#105eee',
+                cursor: 'pointer',
+              }}
+            />
+          </Link>
         ) : (
           <Link
             to={{
@@ -107,6 +129,18 @@ const TaskPdfModalComponent = (props) => {
         )}
         {isTodo ? (
           <Link to={`/workspace/${param.id}/details/${param.spaceKey}`}>
+            <AiFillCloseCircle
+              style={{
+                fontSize: '30px',
+                color: '#FFC8C8',
+                cursor: 'pointer',
+              }}
+            />
+          </Link>
+        ) : isSharing ? (
+          <Link
+            to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/share`}
+          >
             <AiFillCloseCircle
               style={{
                 fontSize: '30px',

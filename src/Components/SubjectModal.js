@@ -431,7 +431,10 @@ function SubjectModalComponent(props) {
                     }}
                     key={pdf.pdfId}
                   >
-                    <div className='pdf-file'>
+                    <div
+                      className='pdf-file'
+                      style={{ fontSize: '12px', fontWeight: '400' }}
+                    >
                       {pdf.pdfFile.name.length > 15
                         ? `${pdf.pdfFile.name.slice(0, 15)}...`
                         : pdf.pdfFile.name}
@@ -513,6 +516,7 @@ function SubjectModalComponent(props) {
                     target='_blank'
                     rel='noreferrer noopener'
                     key={index}
+                    style={{ fontSize: '12px', fontWeight: '400' }}
                   >
                     {link?.slice(8, 50)}
                   </a>

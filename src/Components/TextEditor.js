@@ -42,7 +42,7 @@ const H2Img = () => {
 const LIST_TYPES = ['numbered-list', 'bulleted-list']
 
 const RichTextExample = (props) => {
-  const { textNote, setTextNote, isSharing } = props
+  const { textNote, setTextNote } = props
   const renderElement = useCallback((props) => <Element {...props} />, [])
   const renderLeaf = useCallback((props) => <Leaf {...props} />, [])
   const editor = useMemo(() => withHistory(withReact(createEditor())), [])
@@ -52,9 +52,7 @@ const RichTextExample = (props) => {
       editor={editor}
       value={textNote}
       onChange={(value) => {
-        if (!isSharing) {
-          setTextNote(value)
-        }
+        setTextNote(value)
       }}
     >
       <Toolbar>

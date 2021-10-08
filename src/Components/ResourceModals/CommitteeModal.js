@@ -5,7 +5,7 @@ import { AiFillCloseCircle } from 'react-icons/ai'
 import { WorkspaceConsumer } from '../../Context'
 import TextEditor from '../TextEditor'
 
-export default function TopicInformtaionModal(props) {
+export default function CommitteeModal(props) {
   return (
     <WorkspaceConsumer>
       {(value) => {

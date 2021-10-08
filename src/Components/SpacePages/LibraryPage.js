@@ -184,94 +184,87 @@ export default function LibraryPage() {
                     item.id === param.spaceKey && item.workspaceID === param.id
                 )
                 return displayItems.map((item) => {
-                  if (item.bookShelf) {
-                    return item.bookShelf.map((singleBook) => {
-                      let name = ''
-                      let randomIndex = Math.floor(
-                        Math.random() * backgroundImages.length
+                  return item?.bookShelf?.map((singleBook) => {
+                    let name = ''
+                    let randomIndex = Math.floor(
+                      Math.random() * backgroundImages.length
+                    )
+                    const favourite = singleBook.favourite
+                    if (singleBook.pdf) {
+                      name = singleBook.pdf.name
+                      return (
+                        <Link
+                          to={{
+                            pathname: `/workspace/${param.id}/details/${param.spaceKey}/readpdf/${singleBook.id}`,
+                            state: { favourite: false },
+                          }}
+                        >
+                          <div className='book-card' key={singleBook.id}>
+                            <div className='book-card-image-container'>
+                              <img
+                                src={backgroundImages[randomIndex]}
+                                alt='book'
+                              />
+                            </div>
+                            <div className='book-card-btns'>
+                              <h4 style={{ color: 'white', fontWeight: '400' }}>
+                                {name.slice(0, 15)}
+                              </h4>
+
+                              <RiDeleteBin6Line
+                                className='book-delete-btn'
+                                onClick={(e) => {
+                                  e.preventDefault()
+                                  value.deleteBook(
+                                    favourite,
+                                    singleBook.id,
+                                    param.id,
+                                    param.spaceKey
+                                  )
+                                }}
+                              />
+                            </div>
+                          </div>
+                        </Link>
                       )
-                      if (singleBook.pdf) {
-                        name = singleBook.pdf.name
-                        return (
-                          <Link
-                            to={{
-                              pathname: `/workspace/${param.id}/details/${param.spaceKey}/readpdf/${singleBook.id}`,
-                              state: { favourite: false },
-                            }}
-                          >
-                            <div className='book-card' key={singleBook.id}>
-                              <div className='book-card-image-container'>
-                                <img
-                                  src={backgroundImages[randomIndex]}
-                                  alt='book'
-                                />
-                              </div>
-                              <div className='book-card-btns'>
-                                <h4
-                                  style={{ color: 'white', fontWeight: '400' }}
-                                >
-                                  {name.slice(0, 15)}
-                                </h4>
-
-                                <RiDeleteBin6Line
-                                  className='book-delete-btn'
-                                  onClick={(e) => {
-                                    e.preventDefault()
-                                    const favourite = false
-                                    value.deleteBook(
-                                      favourite,
-                                      singleBook.id,
-                                      param.id,
-                                      param.spaceKey
-                                    )
-                                  }}
-                                />
-                              </div>
+                    } else {
+                      return (
+                        <a
+                          href={singleBook.link}
+                          target='_blank'
+                          rel='noreferrer noopener'
+                        >
+                          <div className='book-card' key={singleBook.id}>
+                            <div className='book-card-image-container'>
+                              <img
+                                src={backgroundImages[randomIndex]}
+                                alt='book'
+                              />
                             </div>
-                          </Link>
-                        )
-                      } else {
-                        return (
-                          <a
-                            href={singleBook.link}
-                            target='_blank'
-                            rel='noreferrer noopener'
-                          >
-                            <div className='book-card' key={singleBook.id}>
-                              <div className='book-card-image-container'>
-                                <img
-                                  src={backgroundImages[randomIndex]}
-                                  alt='book'
-                                />
-                              </div>
-                              <div className='book-card-btns'>
-                                <h4
-                                  style={{ color: 'white', fontWeight: '400' }}
-                                >
-                                  {singleBook.link.slice(8, 22)}
-                                </h4>
+                            <div className='book-card-btns'>
+                              <h4 style={{ color: 'white', fontWeight: '400' }}>
+                                {singleBook.link.slice(8, 22)}
+                              </h4>
 
-                                <RiDeleteBin6Line
-                                  className='book-delete-btn'
-                                  onClick={(e) => {
-                                    e.preventDefault()
-                                    const favourite = false
-                                    value.deleteBook(
-                                      favourite,
-                                      singleBook.id,
-                                      param.id,
-                                      param.spaceKey
-                                    )
-                                  }}
-                                />
-                              </div>
+                              <RiDeleteBin6Line
+                                className='book-delete-btn'
+                                onClick={(e) => {
+                                  e.preventDefault()
+                                  const favourite = false
+                                  value.deleteBook(
+                                    favourite,
+                                    singleBook.id,
+                                    param.id,
+                                    param.spaceKey
+                                  )
+                                }}
+                              />
                             </div>
-                          </a>
-                        )
-                      }
-                    })
-                  }
-                  return <div key={Math.floor(Math.random() * 100000)}></div>
+                          </div>
+                        </a>
+                      )
+                    }
+                  })
                 })
               }}
             </WorkspaceConsumer>

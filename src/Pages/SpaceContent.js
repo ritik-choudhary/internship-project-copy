@@ -13,6 +13,8 @@ import HabitTracker from '../Components/SpacePages/HabitTracker'
 import Workshop from '../Components/SpacePages/Workshop'
 import TodoList from '../Components/SpacePages/TodoList'
 import BucketList from '../Components/SpacePages/BucketList'
+import Docs from '../Components/SpacePages/Docs'
+import MeetingNotes from '../Components/SpacePages/MeetingNotes'
 
 export default function SpaceContent() {
   const param = useParams()
@@ -43,20 +45,32 @@ export default function SpaceContent() {
                     ).title
                     return (
                       <div>
-                        <h3
-                          style={{
-                            fontSize: '20px',
-                            fontWeight: '400',
-                            color: '#c4c4c4',
-                          }}
-                        >
-                          {`My Workspace > ${
-                            heading.length > 15
-                              ? `${heading.slice(0, 15)}...`
-                              : heading
-                          } > `}
-                          <span>&nbsp;</span>
-                        </h3>
+                        <Link to='/workspace'>
+                          <h3
+                            style={{
+                              fontSize: '20px',
+                              fontWeight: '400',
+                              color: '#c4c4c4',
+                            }}
+                          >
+                            {'My Workspaces > '}
+                            <span>&nbsp;</span>
+                          </h3>
+                        </Link>
+                        <Link to={`/workspace/${param.id}/details`}>
+                          <h3
+                            style={{
+                              fontSize: '20px',
+                              fontWeight: '400',
+                              color: '#c4c4c4',
+                            }}
+                          >
+                            {heading.length > 15
+                              ? `${heading.slice(0, 15)}...>`
+                              : `${heading} > `}
+                            <span>&nbsp;</span>
+                          </h3>
+                        </Link>
                         <h3
                           className='animation-title'
                           style={{ fontSize: '20px', fontWeight: '400' }}
@@ -96,6 +110,12 @@ export default function SpaceContent() {
                 }
                 if (page === 'Bucket List') {
                   return <BucketList />
+                }
+                if (page === 'Docs') {
+                  return <Docs />
+                }
+                if (page === 'Meeting Notes') {
+                  return <MeetingNotes />
                 }
               }}
             </WorkspaceConsumer>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useParams, Switch, Route } from 'react-router-dom'
 import { WorkspaceConsumer } from '../Context'
-import { FaBell } from 'react-icons/fa'
+import { FaBell, FaShareSquare } from 'react-icons/fa'
 import { RiArrowGoBackFill } from 'react-icons/ri'
 import Sidebar from '../Components/Sidebar'
 import styled from 'styled-components'
@@ -75,30 +75,44 @@ function SingleClubPageComponent(props) {
         <header className='club-title-container'>
           <div className='title'>
             <div>
-              <h3
-                style={{
-                  fontSize: '20px',
-                  color: '#c4c4c4',
-                  fontWeight: '400',
-                }}
-              >
-                {`My Workspace > ${
-                  workspaceName.length > 15
-                    ? ` ${workspaceName.slice(0, 15)}...`
-                    : workspaceName
-                } > `}
-                <span>&nbsp;</span>
-              </h3>
-              <h3
-                style={{
-                  color: '#c4c4c4',
-                  fontSize: '20px',
-                  fontWeight: '400',
-                }}
-              >
-                {`${space.title} > `}
-                <span>&nbsp;</span>
-              </h3>
+              <Link to='/workspace'>
+                <h3
+                  style={{
+                    fontSize: '20px',
+                    color: '#c4c4c4',
+                    fontWeight: '400',
+                  }}
+                >
+                  {`My Workspace >`}
+                  <span>&nbsp;</span>
+                </h3>
+              </Link>
+              <Link to={`/workspace/${param.id}/details`}>
+                <h3
+                  style={{
+                    fontSize: '20px',
+                    color: '#c4c4c4',
+                    fontWeight: '400',
+                  }}
+                >
+                  {workspaceName.length > 15
+                    ? ` ${workspaceName.slice(0, 15)}... > `
+                    : `${workspaceName} > `}
+                  <span>&nbsp;</span>
+                </h3>
+              </Link>
+              <Link to={`/workspace/${param.id}/details/${param.spaceKey}`}>
+                <h3
+                  style={{
+                    color: '#c4c4c4',
+                    fontSize: '20px',
+                    fontWeight: '400',
+                  }}
+                >
+                  {`${space.title} > `}
+                  <span>&nbsp;</span>
+                </h3>
+              </Link>
               <h3
                 className='animation-title'
                 style={{ fontSize: '20px', fontWeight: '400' }}
@@ -120,6 +134,11 @@ function SingleClubPageComponent(props) {
                   ? `${club.title.slice(0, 30)}...`
                   : club.title}
               </h1>
+              <Link
+                to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/share`}
+              >
+                <FaShareSquare />
+              </Link>
             </div>
             <div className='basic-info'>
               <form>
@@ -332,6 +351,14 @@ const SingleClubPageWrapper = styled.section`
     display: flex;
     flex-direction: column;
     gap: 10px;
+  }
+  .single-club-details .info .heading {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: space-between;
+    font-size: 20px;
+    color: #468aef;
   }
   .info h1 {
     font-size: 20px;

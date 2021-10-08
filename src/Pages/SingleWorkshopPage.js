@@ -75,30 +75,44 @@ function SingleWorkshopPageComponent(props) {
         <header className='workshop-title-container'>
           <div className='title'>
             <div>
-              <h3
-                style={{
-                  fontSize: '20px',
-                  color: '#c4c4c4',
-                  fontWeight: '400',
-                }}
-              >
-                {`My Workspace > ${
-                  workspaceName.length > 15
-                    ? ` ${workspaceName.slice(0, 15)}...`
-                    : workspaceName
-                } > `}
-                <span>&nbsp;</span>
-              </h3>
-              <h3
-                style={{
-                  color: '#c4c4c4',
-                  fontSize: '20px',
-                  fontWeight: '400',
-                }}
-              >
-                {`${space.title} > `}
-                <span>&nbsp;</span>
-              </h3>
+              <Link to='/workspace'>
+                <h3
+                  style={{
+                    fontSize: '20px',
+                    color: '#c4c4c4',
+                    fontWeight: '400',
+                  }}
+                >
+                  {`My Workspace >`}
+                  <span>&nbsp;</span>
+                </h3>
+              </Link>
+              <Link to={`/workspace/${param.id}/details`}>
+                <h3
+                  style={{
+                    fontSize: '20px',
+                    color: '#c4c4c4',
+                    fontWeight: '400',
+                  }}
+                >
+                  {workspaceName.length > 15
+                    ? ` ${workspaceName.slice(0, 15)}... > `
+                    : `${workspaceName} > `}
+                  <span>&nbsp;</span>
+                </h3>
+              </Link>
+              <Link to={`/workspace/${param.id}/details/${param.spaceKey}`}>
+                <h3
+                  style={{
+                    color: '#c4c4c4',
+                    fontSize: '20px',
+                    fontWeight: '400',
+                  }}
+                >
+                  {`${space.title} > `}
+                  <span>&nbsp;</span>
+                </h3>
+              </Link>
               <h3
                 className='animation-title'
                 style={{ fontSize: '20px', fontWeight: '400' }}

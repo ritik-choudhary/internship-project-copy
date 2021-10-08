@@ -10,21 +10,25 @@ import Ideas from '../Components/resourcepages/Ideas'
 import Finance from '../Components/resourcepages/Finance'
 import MeetingNotes from '../Components/resourcepages/MeetingNotes'
 import Contacts from '../Components/resourcepages/Contacts'
+import Modal from 'react-modal'
 
-export default function ResourcePage() {
+export default function ResourcePage(props) {
   return (
-    <ResourcePageWrapper>
-      <WorkspaceConsumer>
-        {(value) => {
-          return <ResourcePageComponent value={value}></ResourcePageComponent>
-        }}
-      </WorkspaceConsumer>
-    </ResourcePageWrapper>
+    <WorkspaceConsumer>
+      {(value) => {
+        return (
+          <ResourcePageComponent
+            value={value}
+            {...props}
+          ></ResourcePageComponent>
+        )
+      }}
+    </WorkspaceConsumer>
   )
 }
 
 function ResourcePageComponent(props) {
-  const { value } = props
+  const { value, isSharing } = props
   const param = useParams()
 
   const workspaceName = value.workspaceList.find(
@@ -40,85 +44,167 @@ function ResourcePageComponent(props) {
   const resource = club.resources.find((item) => item.id === param.resourceID)
 
   return (
-    <div className='resource-content-page'>
-      <Sidebar />
-      <div className='page-container'>
-        <div className='resource-content-header'>
-          <h3>thesocialcomment</h3>
-          <div className='right-header'>
-            <FaBell className='bell-icon' />
-            <Link
-              to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}`}
-            >
-              <div className='resource-content-back-btn'>
-                <RiArrowGoBackFill /> Back
+    <>
+      {isSharing ? (
+        <Modal
+          isOpen={true}
+          style={{
+            content: {
+              width: '95vw',
+              minHeight: '95vh',
+              top: '20%',
+              left: '50%',
+              right: 'auto',
+              marginRight: '-50%',
+              transform: 'translate(-50%, -20%)',
+              boxShadow: '0px 4px 25px rgba(0, 0, 0, 0.08)',
+              borderRadius: '10px',
+              background: 'white',
+              padding: '-20px',
+            },
+            overlay: {
+              background: 'rgba(0, 0, 0, 0.31)',
+            },
+          }}
+        >
+          <ResourcePageWrapper>
+            <div className='resource-content-page'>
+              <div className='page-container'>
+                <div className='resource-content-header'>
+                  <h3>thesocialcomment</h3>
+                  <div className='right-header'>
+                    <FaBell className='bell-icon' />
+                    <Link
+                      to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/share`}
+                    >
+                      <div className='resource-content-back-btn'>
+                        <RiArrowGoBackFill /> Back
+                      </div>
+                    </Link>
+                  </div>
+                </div>
+                <header className='resource-page-title-container'>
+                  <div className='line'></div>
+                </header>
+                {resource.title === 'Tasks' ? (
+                  <Tasks isSharing />
+                ) : resource.title === 'Ideas' ? (
+                  <Ideas isSharing />
+                ) : resource.title === 'Meeting Notes' ? (
+                  <MeetingNotes isSharing />
+                ) : resource.title === 'Finance and Sponsorships' ? (
+                  <Finance isSharing />
+                ) : resource.title === 'External contacts' ? (
+                  <Contacts isSharing />
+                ) : null}
               </div>
-            </Link>
-          </div>
-        </div>
-        <header className='resource-page-title-container'>
-          <div className='title'>
-            <div>
-              <h3
-                style={{
-                  color: '#c4c4c4',
-                  fontSize: '20px',
-                  fontWeight: '400',
-                }}
-              >
-                {`My Workspace > ${
-                  workspaceName.length > 15
-                    ? `${workspaceName.slice(0, 15)}...`
-                    : workspaceName
-                } > `}
-                <span>&nbsp;</span>
-              </h3>
-              <h3
-                style={{
-                  color: '#c4c4c4',
-                  fontSize: '20px',
-                  fontWeight: '400',
-                }}
-              >
-                {`${space.title} > `}
-                <span>&nbsp;</span>
-              </h3>
-              <h3
-                style={{
-                  color: '#c4c4c4',
-                  fontSize: '20px',
-                  fontWeight: '400',
-                }}
-              >
-                <span>&nbsp;</span>
-                {club.title.length > 15
-                  ? `${club.title.slice(0, 12)}...>`
-                  : `${club.title} > `}
-                <span>&nbsp;</span>
-              </h3>
-              <h3
-                className='animation-title'
-                style={{ fontSize: '20px', fontWeight: '400' }}
-              >
-                {resource.title}
-              </h3>
+            </div>
+          </ResourcePageWrapper>
+        </Modal>
+      ) : (
+        <ResourcePageWrapper>
+          <div className='resource-content-page'>
+            <Sidebar />
+            <div className='page-container'>
+              <div className='resource-content-header'>
+                <h3>thesocialcomment</h3>
+                <div className='right-header'>
+                  <FaBell className='bell-icon' />
+                  <Link
+                    to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}`}
+                  >
+                    <div className='resource-content-back-btn'>
+                      <RiArrowGoBackFill /> Back
+                    </div>
+                  </Link>
+                </div>
+              </div>
+              <header className='resource-page-title-container'>
+                <div className='title'>
+                  <div>
+                    <Link to='/workspace'>
+                      <h3
+                        style={{
+                          fontSize: '20px',
+                          color: '#c4c4c4',
+                          fontWeight: '400',
+                        }}
+                      >
+                        {`My Workspace >`}
+                        <span>&nbsp;</span>
+                      </h3>
+                    </Link>
+                    <Link to={`/workspace/${param.id}/details`}>
+                      <h3
+                        style={{
+                          fontSize: '20px',
+                          color: '#c4c4c4',
+                          fontWeight: '400',
+                        }}
+                      >
+                        {workspaceName.length > 15
+                          ? ` ${workspaceName.slice(0, 15)}... > `
+                          : `${workspaceName} > `}
+                        <span>&nbsp;</span>
+                      </h3>
+                    </Link>
+                    <Link
+                      to={`/workspace/${param.id}/details/${param.spaceKey}`}
+                    >
+                      <h3
+                        style={{
+                          color: '#c4c4c4',
+                          fontSize: '20px',
+                          fontWeight: '400',
+                        }}
+                      >
+                        {`${space.title} > `}
+                        <span>&nbsp;</span>
+                      </h3>
+                    </Link>
+                    <Link
+                      to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}`}
+                    >
+                      <h3
+                        style={{
+                          color: '#c4c4c4',
+                          fontSize: '20px',
+                          fontWeight: '400',
+                        }}
+                      >
+                        <span>&nbsp;</span>
+                        {club.title.length > 15
+                          ? `${club.title.slice(0, 12)}...>`
+                          : `${club.title} > `}
+                        <span>&nbsp;</span>
+                      </h3>
+                    </Link>
+                    <h3
+                      className='animation-title'
+                      style={{ fontSize: '20px', fontWeight: '400' }}
+                    >
+                      {resource.title}
+                    </h3>
+                  </div>
+                </div>
+                <div className='line'></div>
+              </header>
+              {resource.title === 'Tasks' ? (
+                <Tasks />
+              ) : resource.title === 'Ideas' ? (
+                <Ideas />
+              ) : resource.title === 'Meeting Notes' ? (
+                <MeetingNotes />
+              ) : resource.title === 'Finance and Sponsorships' ? (
+                <Finance />
+              ) : resource.title === 'External contacts' ? (
+                <Contacts />
+              ) : null}
             </div>
           </div>
-          <div className='line'></div>
-        </header>
-        {resource.title === 'Tasks' ? (
-          <Tasks />
-        ) : resource.title === 'Ideas' ? (
-          <Ideas />
-        ) : resource.title === 'Meeting Notes' ? (
-          <MeetingNotes />
-        ) : resource.title === 'Finance and Sponsorships' ? (
-          <Finance />
-        ) : resource.title === 'External contacts' ? (
-          <Contacts />
-        ) : null}
-      </div>
-    </div>
+        </ResourcePageWrapper>
+      )}
+    </>
   )
 }
 

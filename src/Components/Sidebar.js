@@ -54,12 +54,14 @@ export default function Sidebar() {
           setIsSidebarOpen={setIsSidebarOpen}
           isSidebarOpen={isSidebarOpen}
         />
-        <Option
-          Icon={BsBook}
-          title={'Journal'}
-          setIsSidebarOpen={setIsSidebarOpen}
-          isSidebarOpen={isSidebarOpen}
-        />
+        <Link to='/journal' className='sidebar-icon-link'>
+          <Option
+            Icon={BsBook}
+            title={'Journal'}
+            setIsSidebarOpen={setIsSidebarOpen}
+            isSidebarOpen={isSidebarOpen}
+          />
+        </Link>
         <Option
           Icon={FaBriefcase}
           title={'Internships'}

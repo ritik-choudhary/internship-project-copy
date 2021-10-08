@@ -410,6 +410,7 @@ function MeetingModalComponent(props) {
               overflow: 'auto',
               overflowX: 'hidden',
               marginLeft: '132px',
+              gap: '5px',
             }}
           >
             {pdfList.map((pdf) => {

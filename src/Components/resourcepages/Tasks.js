@@ -8,12 +8,18 @@ import { FiEdit } from 'react-icons/fi'
 import TasksModal from '../ResourceModals/TasksModal'
 import TaskPdfModal from '../ResourceModals/TaskPdfModal'
 
-export default function Tasks() {
+export default function Tasks(props) {
   return (
-    <TasksPageWrapper>
+    <>
       <Switch>
+        <Route path='/workspace/:id/details/:spaceKey/insideclub/:clubID/resourcedata/:resourceID/share/sharetask/readpdf'>
+          <TaskPdfModal isSharing />
+        </Route>
         <Route path='/workspace/:id/details/:spaceKey/insideclub/:clubID/resourcedata/:resourceID/addtask/readpdf'>
           <TaskPdfModal />
+        </Route>
+        <Route path='/workspace/:id/details/:spaceKey/insideclub/:clubID/resourcedata/:resourceID/share/sharetask/:taskID'>
+          <TasksModal isSharing />
         </Route>
         <Route path='/workspace/:id/details/:spaceKey/insideclub/:clubID/resourcedata/:resourceID/edittask/:taskID'>
           <TasksModal isEditing />
@@ -24,15 +30,15 @@ export default function Tasks() {
       </Switch>
       <WorkspaceConsumer>
         {(value) => {
-          return <TasksComponent value={value}></TasksComponent>
+          return <TasksComponent value={value} {...props}></TasksComponent>
         }}
       </WorkspaceConsumer>
-    </TasksPageWrapper>
+    </>
   )
 }
 
 function TasksComponent(props) {
-  const { value } = props
+  const { value, isSharing } = props
   const param = useParams()
 
   const space = value.workspaceElements.find(
@@ -44,156 +50,299 @@ function TasksComponent(props) {
   const resource = club.resources.find((item) => item.id === param.resourceID)
 
   return (
-    <div className='tasks-page'>
-      <h1 className='tasks-header'>{resource.createdOn}</h1>
-      <div className='tasks-container'>
-        <Link
-          to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/addtask`}
-        >
-          <div className='add-new-btn'>
-            <AiOutlinePlus />
-            <p>Add new task</p>
-          </div>
-        </Link>
-        {resource?.tasks?.map((item) => {
-          let count = 0
-          let pdfCount = 0
-          return (
-            <div
-              className={
-                item.completed ? 'task-completed-bg single-task' : 'single-task'
-              }
-              key={item.id}
-            >
-              <div className='top'>
-                <div className='left'>
-                  <input
-                    type='checkbox'
-                    name={item.title}
-                    id={item.id}
-                    checked={item.completed}
-                    onChange={(e) =>
-                      value.taskManipulation(
-                        param.id,
-                        param.spaceKey,
-                        param.clubID,
-                        param.resourceID,
-                        item.id
-                      )
+    <>
+      {isSharing ? (
+        <TasksPageWrapper>
+          <div className='tasks-page'>
+            <h1 className='tasks-header'>{resource.createdOn}</h1>
+            <div className='tasks-container'>
+              {resource?.tasks?.map((item) => {
+                let count = 0
+                let pdfCount = 0
+                return (
+                  <div
+                    className={
+                      item.completed
+                        ? 'task-completed-bg single-task'
+                        : 'single-task'
                     }
-                  />
-                  <label
-                    htmlFor={item.id}
-                    className={item.completed ? 'task-completed' : ''}
+                    key={item.id}
                   >
-                    {item.title > 15
-                      ? `${item.title.slice(0, 12)}...`
-                      : item.title}
-                  </label>
-                </div>
-                <div className='right'>
-                  <Link
-                    to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/edittask/${item.id}`}
-                  >
-                    <FiEdit className='edit-btn' />
-                  </Link>
-                  <RiDeleteBin6Line
-                    className='delete-btn'
-                    onClick={(e) =>
-                      value.deleteTask(
-                        param.id,
-                        param.spaceKey,
-                        param.clubID,
-                        param.resourceID,
-                        item.id
-                      )
-                    }
-                  />
-                </div>
-              </div>
-              <div className='middle'>
-                <p className='created-on'>Created on: {item.createdOn}</p>
-                <p className='due-date'>
-                  {item.dueDate ? `Due: ${item.dueDate}` : null}
-                </p>
-              </div>
-              <div className='bottom'>
-                <p className='description'>{item?.description}</p>
-                <div className='links-container'>
-                  {item.links.map((link) => {
-                    count++
-                    if (count > 3) {
-                      return <></>
-                    }
-                    return (
-                      <div className='link' key={count}>
-                        <a
-                          href={link}
-                          target='_blank'
-                          rel='noreferrer noopener'
-                          style={{
-                            color: 'black',
-                            fontSize: '12px',
-                            fontWeight: '400',
-                            width: '80%',
-                          }}
+                    <div className='top'>
+                      <div className='left'>
+                        <input
+                          type='checkbox'
+                          name={item.title}
+                          id={item.id}
+                          checked={item.completed}
+                        />
+                        <label
+                          htmlFor={item.id}
+                          className={item.completed ? 'task-completed' : ''}
                         >
-                          Link {count}
-                        </a>
-                        <AiOutlineClose style={{ color: '#f54848' }} />
+                          {item.title > 15
+                            ? `${item.title.slice(0, 12)}...`
+                            : item.title}
+                        </label>
                       </div>
-                    )
-                  })}
-                  {item.links.length > 3 ? (
-                    <div className='see-more-btn'>
-                      <Link
-                        to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/edittask/${item.id}`}
-                      >
-                        See more
-                      </Link>
+                      <div className='right'>
+                        <Link
+                          to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/share/sharetask/${item.id}`}
+                        >
+                          <FiEdit className='edit-btn' />
+                        </Link>
+                        <RiDeleteBin6Line className='delete-btn' />
+                      </div>
                     </div>
-                  ) : null}
-                </div>
-                <div className='pdf-container'>
-                  {item.pdfList.map((pdf) => {
-                    pdfCount++
-                    if (pdfCount > 3) {
-                      return <></>
-                    }
-                    const linkToPdf = item.pdfPreview.find(
-                      (item) => item.previewId === pdf.pdfId
-                    )
-                    return (
-                      <Link
-                        to={{
-                          pathname: `/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/addtask/readpdf`,
-                          state: { src: linkToPdf?.source },
-                        }}
-                        key={pdf.pdfId}
-                      >
-                        <div className='pdf'>
-                          <p style={{ width: '80%' }}>Pdf {pdfCount}</p>
-                          <AiOutlineClose style={{ color: '#f54848' }} />
-                        </div>
-                      </Link>
-                    )
-                  })}
-                  {item.pdfList.length > 3 ? (
-                    <div className='see-more-btn'>
-                      <Link
-                        to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/edittask/${item.id}`}
-                      >
-                        See more
-                      </Link>
+                    <div className='middle'>
+                      <p className='created-on'>Created on: {item.createdOn}</p>
+                      <p className='due-date'>
+                        {item.dueDate ? `Due: ${item.dueDate}` : null}
+                      </p>
                     </div>
-                  ) : null}
-                </div>
-              </div>
+                    <div className='bottom'>
+                      <p className='description'>
+                        {item?.description.length > 600
+                          ? `${item.description.slice(0, 600)}...`
+                          : item.description}
+                      </p>
+                      <div className='links-container'>
+                        {item.links.map((link) => {
+                          count++
+                          if (count > 3) {
+                            return <></>
+                          }
+                          return (
+                            <div className='link' key={count}>
+                              <a
+                                href={link}
+                                target='_blank'
+                                rel='noreferrer noopener'
+                                style={{
+                                  color: 'black',
+                                  fontSize: '12px',
+                                  fontWeight: '400',
+                                  width: '80%',
+                                }}
+                              >
+                                Link {count}
+                              </a>
+                              <AiOutlineClose style={{ color: '#f54848' }} />
+                            </div>
+                          )
+                        })}
+                        {item.links.length > 3 ? (
+                          <div className='see-more-btn'>
+                            <Link
+                              to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/share/sharetask/${item.id}`}
+                            >
+                              See more
+                            </Link>
+                          </div>
+                        ) : null}
+                      </div>
+                      <div className='pdf-container'>
+                        {item.pdfList.map((pdf) => {
+                          pdfCount++
+                          if (pdfCount > 3) {
+                            return <></>
+                          }
+                          const linkToPdf = item.pdfPreview.find(
+                            (item) => item.previewId === pdf.pdfId
+                          )
+                          return (
+                            <Link
+                              to={{
+                                pathname: `/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/share/sharetask/readpdf`,
+                                state: { src: linkToPdf?.source },
+                              }}
+                              key={pdf.pdfId}
+                            >
+                              <div className='pdf'>
+                                <p style={{ width: '80%' }}>Pdf {pdfCount}</p>
+                                <AiOutlineClose style={{ color: '#f54848' }} />
+                              </div>
+                            </Link>
+                          )
+                        })}
+                        {item.pdfList.length > 3 ? (
+                          <div className='see-more-btn'>
+                            <Link
+                              to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/share/sharetask/${item.id}`}
+                            >
+                              See more
+                            </Link>
+                          </div>
+                        ) : null}
+                      </div>
+                    </div>
+                  </div>
+                )
+              })}
             </div>
-          )
-        })}
-      </div>
-    </div>
+          </div>
+        </TasksPageWrapper>
+      ) : (
+        <TasksPageWrapper>
+          <div className='tasks-page'>
+            <h1 className='tasks-header'>{resource.createdOn}</h1>
+            <div className='tasks-container'>
+              <Link
+                to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/addtask`}
+              >
+                <div className='add-new-btn'>
+                  <AiOutlinePlus />
+                  <p>Add new task</p>
+                </div>
+              </Link>
+              {resource?.tasks?.map((item) => {
+                let count = 0
+                let pdfCount = 0
+                return (
+                  <div
+                    className={
+                      item.completed
+                        ? 'task-completed-bg single-task'
+                        : 'single-task'
+                    }
+                    key={item.id}
+                  >
+                    <div className='top'>
+                      <div className='left'>
+                        <input
+                          type='checkbox'
+                          name={item.title}
+                          id={item.id}
+                          checked={item.completed}
+                          onChange={(e) =>
+                            value.taskManipulation(
+                              param.id,
+                              param.spaceKey,
+                              param.clubID,
+                              param.resourceID,
+                              item.id
+                            )
+                          }
+                        />
+                        <label
+                          htmlFor={item.id}
+                          className={item.completed ? 'task-completed' : ''}
+                        >
+                          {item.title > 15
+                            ? `${item.title.slice(0, 12)}...`
+                            : item.title}
+                        </label>
+                      </div>
+                      <div className='right'>
+                        <Link
+                          to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/edittask/${item.id}`}
+                        >
+                          <FiEdit className='edit-btn' />
+                        </Link>
+                        <RiDeleteBin6Line
+                          className='delete-btn'
+                          onClick={(e) =>
+                            value.deleteTask(
+                              param.id,
+                              param.spaceKey,
+                              param.clubID,
+                              param.resourceID,
+                              item.id
+                            )
+                          }
+                        />
+                      </div>
+                    </div>
+                    <div className='middle'>
+                      <p className='created-on'>Created on: {item.createdOn}</p>
+                      <p className='due-date'>
+                        {item.dueDate ? `Due: ${item.dueDate}` : null}
+                      </p>
+                    </div>
+                    <div className='bottom'>
+                      <p className='description'>
+                        {item?.description.length > 600
+                          ? `${item.description.slice(0, 600)}...`
+                          : item.description}
+                      </p>
+                      <div className='links-container'>
+                        {item.links.map((link) => {
+                          count++
+                          if (count > 3) {
+                            return <></>
+                          }
+                          return (
+                            <div className='link' key={count}>
+                              <a
+                                href={link}
+                                target='_blank'
+                                rel='noreferrer noopener'
+                                style={{
+                                  color: 'black',
+                                  fontSize: '12px',
+                                  fontWeight: '400',
+                                  width: '80%',
+                                }}
+                              >
+                                Link {count}
+                              </a>
+                              <AiOutlineClose style={{ color: '#f54848' }} />
+                            </div>
+                          )
+                        })}
+                        {item.links.length > 3 ? (
+                          <div className='see-more-btn'>
+                            <Link
+                              to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/edittask/${item.id}`}
+                            >
+                              See more
+                            </Link>
+                          </div>
+                        ) : null}
+                      </div>
+                      <div className='pdf-container'>
+                        {item.pdfList.map((pdf) => {
+                          pdfCount++
+                          if (pdfCount > 3) {
+                            return <></>
+                          }
+                          const linkToPdf = item.pdfPreview.find(
+                            (item) => item.previewId === pdf.pdfId
+                          )
+                          return (
+                            <Link
+                              to={{
+                                pathname: `/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/addtask/readpdf`,
+                                state: { src: linkToPdf?.source },
+                              }}
+                              key={pdf.pdfId}
+                            >
+                              <div className='pdf'>
+                                <p style={{ width: '80%' }}>Pdf {pdfCount}</p>
+                                <AiOutlineClose style={{ color: '#f54848' }} />
+                              </div>
+                            </Link>
+                          )
+                        })}
+                        {item.pdfList.length > 3 ? (
+                          <div className='see-more-btn'>
+                            <Link
+                              to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/edittask/${item.id}`}
+                            >
+                              See more
+                            </Link>
+                          </div>
+                        ) : null}
+                      </div>
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+        </TasksPageWrapper>
+      )}
+    </>
   )
 }
 

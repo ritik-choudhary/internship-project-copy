@@ -6,6 +6,7 @@ import { WorkspaceConsumer } from '../Context'
 import { FaCheckCircle } from 'react-icons/fa'
 import DatePicker from 'react-date-picker'
 import { Images } from '../assets/DefaultImage'
+import moment from 'moment'
 
 export default function HabitTrackerModal(props) {
   return (
@@ -25,23 +26,14 @@ export default function HabitTrackerModal(props) {
 function HabitTrackerModalComponent(props) {
   const randomIndex = Math.floor(Math.random() * Images.length)
 
-  const { value } = props
+  const { value, isAddField } = props
   const param = useParams()
   const history = useHistory()
-
-  // const disablePastDate = () => {
-  //   const today = new Date()
-  //   const dd = String(today.getDate() + 1).padStart(2, '0')
-  //   const mm = String(today.getMonth() + 1).padStart(2, '0') //January is 0!
-  //   const yyyy = today.getFullYear()
-  //   return yyyy + '-' + mm + '-' + dd
-  // }
 
   const date = `${new Date().getDate()}/${
     new Date().getMonth() + 1
   }/${new Date().getFullYear()}`
 
-  // const [createdOn, setCreatedOn] = useState(date)
   const [habitImage, setHabitImage] = useState()
   const [preview, setPreview] = useState(Images[randomIndex])
   const [nameOfHabit, setNameOfHabit] = useState()
@@ -49,8 +41,32 @@ function HabitTrackerModalComponent(props) {
   const [fieldToAdd, setFieldToAdd] = useState()
   const [startDate, setStartDate] = useState()
   const [endDate, setEndDate] = useState()
+  const [status, setStatus] = useState([])
+  const [tempFieldsList, setTempFieldsList] = useState([])
 
-  // const [status, setStatus] = useState([])
+  useEffect(() => {
+    if (isAddField) {
+      const selectedSpace = value.workspaceElements.find(
+        (item) => item.id === param.spaceKey && item.workspaceID === param.id
+      )
+      const selectedHabit = selectedSpace.habits.find(
+        (item) => item.id === param.habitID
+      )
+      setPreview(selectedHabit.image)
+      setNameOfHabit(selectedHabit.title)
+      setFieldsList(selectedHabit.fieldsList)
+      setStartDate(selectedHabit.startDate)
+      setEndDate(selectedHabit.endDate)
+      setStatus(selectedHabit.status)
+      setTempFieldsList([])
+    }
+  }, [
+    param.id,
+    param.spaceKey,
+    param.habitID,
+    value.workspaceElements,
+    isAddField,
+  ])
 
   useEffect(() => {
     if (habitImage) {
@@ -61,35 +77,6 @@ function HabitTrackerModalComponent(props) {
       reader.readAsDataURL(habitImage)
     }
   }, [habitImage])
-
-  // useEffect(() => {
-  //   if (startDate && endDate) {
-  //     const start = moment(startDate).format('YYYY-MM-DD')
-  //     const end = moment(endDate).format('YYYY-MM-DD')
-
-  //     var getDaysArray = function (start, end) {
-  //       for (
-  //         var arr = [], dt = new Date(start);
-  //         dt <= end;
-  //         dt.setDate(dt.getDate() + 1)
-  //       ) {
-  //         arr.push(new Date(dt))
-  //       }
-  //       return arr
-  //     }
-
-  //     var daylist = getDaysArray(new Date(start), new Date(end))
-  //     daylist.map((v) => v.toISOString().slice(0, 10)).join('')
-
-  //     fieldsList.map((field) => {
-  //       daylist.map((singleDate) => {
-  //         setStatus([...status, { field: { singleDate: false } }])
-  //       })
-  //     })
-  //   }
-  // }, [startDate, endDate, fieldsList])
-
-  // console.log(status)
 
   return (
     <Modal
@@ -128,17 +115,31 @@ function HabitTrackerModalComponent(props) {
             fontWeight: '600',
           }}
         >
-          Add new habit
+          {isAddField ? 'Add new field' : 'Add new habit'}
         </h3>
-        <Link to={`/workspace/${param.id}/details/${param.spaceKey}`}>
-          <AiOutlineClose
-            style={{
-              fontSize: '20px',
-              color: '#C4C4C4',
-              cursor: 'pointer',
-            }}
-          />
-        </Link>
+        {isAddField ? (
+          <Link
+            to={`/workspace/${param.id}/details/${param.spaceKey}/insidehabit/${param.habitID}`}
+          >
+            <AiOutlineClose
+              style={{
+                fontSize: '20px',
+                color: '#C4C4C4',
+                cursor: 'pointer',
+              }}
+            />
+          </Link>
+        ) : (
+          <Link to={`/workspace/${param.id}/details/${param.spaceKey}`}>
+            <AiOutlineClose
+              style={{
+                fontSize: '20px',
+                color: '#C4C4C4',
+                cursor: 'pointer',
+              }}
+            />
+          </Link>
+        )}
       </header>
 
       <form
@@ -151,19 +152,89 @@ function HabitTrackerModalComponent(props) {
         }}
         onSubmit={(e) => {
           e.preventDefault()
-          if (fieldsList.length > 0) {
-            value.addNewHabit(param.id, param.spaceKey, {
-              id: new Date().getTime().toString(),
-              title: nameOfHabit,
-              createdOn: date,
-              image: preview,
-              fieldsList: fieldsList,
-              startDate: startDate,
-              endDate: endDate,
-            })
-            history.push(`/workspace/${param.id}/details/${param.spaceKey}`)
+          if (!isAddField) {
+            if (fieldsList.length > 0) {
+              const start = moment(startDate).format('YYYY-MM-DD')
+              const end = moment(endDate).format('YYYY-MM-DD')
+              var getDaysArray = function (start, end) {
+                for (
+                  var arr = [], dt = new Date(start);
+                  dt <= end;
+                  dt.setDate(dt.getDate() + 1)
+                ) {
+                  arr.push(new Date(dt))
+                }
+                return arr
+              }
+
+              var daylist = getDaysArray(new Date(start), new Date(end))
+              daylist.map((v) => v.toISOString().slice(0, 10)).join('')
+              let tempStatus = []
+              fieldsList.forEach((item) => {
+                let dateListTemp = []
+                daylist.forEach((day) => {
+                  const date = new Date(day)
+                  dateListTemp = [
+                    ...dateListTemp,
+                    { date: date, completed: false },
+                  ]
+                })
+                tempStatus = [...tempStatus, { [item.field]: dateListTemp }]
+                setStatus(tempStatus)
+              })
+              value.addNewHabit(param.id, param.spaceKey, {
+                id: new Date().getTime().toString(),
+                title: nameOfHabit,
+                createdOn: date,
+                image: preview,
+                fieldsList: fieldsList,
+                startDate: startDate,
+                status: tempStatus,
+                endDate: endDate,
+              })
+              history.push(`/workspace/${param.id}/details/${param.spaceKey}`)
+            } else {
+              alert('Please select atleast one task')
+            }
           } else {
-            alert('Please select atleast one task')
+            const start = moment(startDate).format('YYYY-MM-DD')
+            const end = moment(endDate).format('YYYY-MM-DD')
+            var getDaysArray = function (start, end) {
+              for (
+                var arr = [], dt = new Date(start);
+                dt <= end;
+                dt.setDate(dt.getDate() + 1)
+              ) {
+                arr.push(new Date(dt))
+              }
+              return arr
+            }
+            var daylist = getDaysArray(new Date(start), new Date(end))
+            daylist.map((v) => v.toISOString().slice(0, 10)).join('')
+            let tempStatus = [...status]
+            tempFieldsList.forEach((item) => {
+              let dateListTemp = []
+              daylist.forEach((day) => {
+                const date = new Date(day)
+                dateListTemp = [
+                  ...dateListTemp,
+                  { date: date, completed: false },
+                ]
+              })
+              tempStatus = [...tempStatus, { [item]: dateListTemp }]
+              setStatus(tempStatus)
+            })
+            value.addNewHabitField(
+              param.id,
+              param.spaceKey,
+              param.habitID,
+              fieldsList,
+              tempStatus
+            )
+
+            history.push(
+              `/workspace/${param.id}/details/${param.spaceKey}/insidehabit/${param.habitID}`
+            )
           }
         }}
       >
@@ -198,7 +269,9 @@ function HabitTrackerModalComponent(props) {
             name='habit-name'
             id='habit-name'
             value={nameOfHabit}
-            onChange={(e) => setNameOfHabit(e.target.value)}
+            onChange={(e) => {
+              if (!isAddField) setNameOfHabit(e.target.value)
+            }}
             style={{
               height: '32px',
               border: '1px solid #C4C4C4',
@@ -227,7 +300,9 @@ function HabitTrackerModalComponent(props) {
             id='habit-image'
             hidden
             accept='image/*'
-            onChange={(e) => setHabitImage(e.target.files[0])}
+            onChange={(e) => {
+              if (!isAddField) setHabitImage(e.target.files[0])
+            }}
           />
           <label htmlFor='habit-image'>
             <span
@@ -279,7 +354,18 @@ function HabitTrackerModalComponent(props) {
               style={{ fontSize: '16px', color: '#468AEF', cursor: 'pointer' }}
               onClick={() => {
                 if (fieldToAdd) {
-                  setFieldsList([...fieldsList, fieldToAdd])
+                  setTempFieldsList([...tempFieldsList, fieldToAdd])
+                  setFieldsList([
+                    ...fieldsList,
+                    {
+                      field: fieldToAdd,
+                      color:
+                        '#' +
+                        (0x1000000 + Math.random() * 0xffffff)
+                          .toString(16)
+                          .substr(1, 6),
+                    },
+                  ])
                   setFieldToAdd('')
                 }
               }}
@@ -313,7 +399,7 @@ function HabitTrackerModalComponent(props) {
           {fieldsList.map((item) => {
             return (
               <div className='field-to-add'>
-                <p style={{ fontSize: '12px' }}>{item}</p>
+                <p style={{ fontSize: '12px' }}>{item.field}</p>
               </div>
             )
           })}
@@ -330,22 +416,6 @@ function HabitTrackerModalComponent(props) {
             >
               Start Date
             </label>
-            {/* <input
-              required
-              type='date'
-              name='habit-start-date'
-              id='habit-start-date'
-              value={startDate}
-              onChange={(e) => setStartDate(e.target.value)}
-              style={{
-                height: '32px',
-                border: '1px solid #C4C4C4',
-                borderRadius: '5px',
-                fontSize: '16px',
-                padding: '5px 10px',
-                outline: 'none',
-              }}
-            /> */}
             <DatePicker
               required={true}
               value={startDate}
@@ -367,25 +437,6 @@ function HabitTrackerModalComponent(props) {
             >
               End Date
             </label>
-            {/* <input
-              required
-              type='date'
-              name='habit-end-date'
-              id='habit-end-date'
-              value={endDate}
-              min={disablePastDate()}
-              onChange={(e) => {
-                setEndDate(e.target.value)
-              }}
-              style={{
-                height: '32px',
-                border: '1px solid #C4C4C4',
-                borderRadius: '5px',
-                fontSize: '16px',
-                padding: '5px 10px',
-                outline: 'none',
-              }}
-            /> */}
             <DatePicker
               required={true}
               value={endDate}

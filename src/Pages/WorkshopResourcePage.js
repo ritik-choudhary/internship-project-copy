@@ -109,7 +109,7 @@ function WorkshopResourcePageComponent(props) {
       ) : (
         <ResourcePageWrapper>
           <div className='resource-content-page'>
-            {isSharing ? null : <Sidebar />}
+            <Sidebar />
             <div className='page-container'>
               <div className='resource-content-header'>
                 <h3>thesocialcomment</h3>
@@ -127,43 +127,63 @@ function WorkshopResourcePageComponent(props) {
               <header className='resource-page-title-container'>
                 <div className='title'>
                   <div>
-                    <h3
-                      style={{
-                        color: '#c4c4c4',
-                        fontSize: '20px',
-                        fontWeight: '400',
-                      }}
+                    <Link to='/workspace'>
+                      <h3
+                        style={{
+                          fontSize: '20px',
+                          color: '#c4c4c4',
+                          fontWeight: '400',
+                        }}
+                      >
+                        {`My Workspace >`}
+                        <span>&nbsp;</span>
+                      </h3>
+                    </Link>
+                    <Link to={`/workspace/${param.id}/details`}>
+                      <h3
+                        style={{
+                          fontSize: '20px',
+                          color: '#c4c4c4',
+                          fontWeight: '400',
+                        }}
+                      >
+                        {workspaceName.length > 15
+                          ? ` ${workspaceName.slice(0, 15)}... > `
+                          : `${workspaceName} > `}
+                        <span>&nbsp;</span>
+                      </h3>
+                    </Link>
+                    <Link
+                      to={`/workspace/${param.id}/details/${param.spaceKey}`}
                     >
-                      {`My Workspace > ${
-                        workspaceName.length > 15
-                          ? `${workspaceName.slice(0, 15)}...`
-                          : workspaceName
-                      } > `}
-                      <span>&nbsp;</span>
-                    </h3>
-                    <h3
-                      style={{
-                        color: '#c4c4c4',
-                        fontSize: '20px',
-                        fontWeight: '400',
-                      }}
+                      <h3
+                        style={{
+                          color: '#c4c4c4',
+                          fontSize: '20px',
+                          fontWeight: '400',
+                        }}
+                      >
+                        {`${space.title} > `}
+                        <span>&nbsp;</span>
+                      </h3>
+                    </Link>
+                    <Link
+                      to={`/workspace/${param.id}/details/${param.spaceKey}/insideworkshop/${param.workshopID}`}
                     >
-                      {`${space.title} > `}
-                      <span>&nbsp;</span>
-                    </h3>
-                    <h3
-                      style={{
-                        color: '#c4c4c4',
-                        fontSize: '20px',
-                        fontWeight: '400',
-                      }}
-                    >
-                      <span>&nbsp;</span>
-                      {workshop.title.length > 15
-                        ? `${workshop.title.slice(0, 12)}...>`
-                        : `${workshop.title} > `}
-                      <span>&nbsp;</span>
-                    </h3>
+                      <h3
+                        style={{
+                          color: '#c4c4c4',
+                          fontSize: '20px',
+                          fontWeight: '400',
+                        }}
+                      >
+                        <span>&nbsp;</span>
+                        {workshop.title.length > 15
+                          ? `${workshop.title.slice(0, 12)}...>`
+                          : `${workshop.title} > `}
+                        <span>&nbsp;</span>
+                      </h3>
+                    </Link>
                     <h3
                       className='animation-title'
                       style={{ fontSize: '20px', fontWeight: '400' }}

@@ -128,6 +128,7 @@ function BucketListModalComponent(props) {
       </header>
 
       <form
+        encType='multipart/form-data'
         style={{
           width: '100%',
           display: 'flex',
@@ -247,15 +248,21 @@ function BucketListModalComponent(props) {
             name='image'
             id='image'
             hidden
+            // webkitdirectory='true'
+            multiple
             accept='image/*'
             onChange={(e) => {
-              setImages([
-                ...images,
-                {
-                  imageId: new Date().getTime().toString(),
-                  imageFile: e.target.files[0],
-                },
-              ])
+              let tempImages = images
+              for (let i = 0; i < e.target.files.length; i++) {
+                tempImages = [
+                  ...tempImages,
+                  {
+                    imageId: new Date().getTime().toString() + i,
+                    imageFile: e.target.files[i],
+                  },
+                ]
+              }
+              setImages(tempImages)
             }}
           />
           <label htmlFor='image'>

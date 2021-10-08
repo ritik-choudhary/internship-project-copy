@@ -51,139 +51,131 @@ export default function NewSemesterPage() {
                         >
                           <div className='card-header'>
                             <div className='header-left'>
-                              <p className='subject-code'>
-                                {singleSubject.code}
-                              </p>
                               <h4 className='subject-name'>
                                 {singleSubject.name}
                               </h4>
-                            </div>
-                            <div className='header-right'>
-                              <Link
-                                to={`/workspace/${param.id}/details/${param.spaceKey}/editsubject/${singleSubject.subjectID}`}
-                              >
-                                <CgArrowsExpandUpRight
-                                  style={{ color: '#468aef' }}
-                                />
-                              </Link>
+                              <p className='subject-code'>
+                                {singleSubject.code}
+                              </p>
                             </div>
                           </div>
                           <div className='card-content'>
-                            {singleSubject.timetable.map((day) => {
-                              if (day.Monday) {
-                                count++
-                                return (
-                                  <div className='single-day'>
-                                    <p
-                                      className='day'
-                                      style={{ background: '#ffd2d9' }}
-                                    >
-                                      Monday
-                                    </p>
-                                    <p className='timing'>
-                                      {day.startTime}-{day.endTime}
-                                    </p>
-                                  </div>
-                                )
-                              } else if (day.Tuesday) {
-                                count++
-                                return (
-                                  <div className='single-day'>
-                                    <p
-                                      className='day'
-                                      style={{ background: '#81e8e8' }}
-                                    >
-                                      Tuesday
-                                    </p>
-                                    <p className='timing'>
-                                      {day.startTime}-{day.endTime}
-                                    </p>
-                                  </div>
-                                )
-                              } else if (day.Wednesday) {
-                                count++
-                                return (
-                                  <div className='single-day'>
-                                    <p
-                                      className='day'
-                                      style={{ background: '#ffd487' }}
-                                    >
-                                      Wednesday
-                                    </p>
-                                    <p className='timing'>
-                                      {day.startTime}-{day.endTime}
-                                    </p>
-                                  </div>
-                                )
-                              } else if (day.Thursday && count < 3) {
-                                count++
-                                return (
-                                  <div className='single-day'>
-                                    <p
-                                      className='day'
-                                      style={{ background: '#8af3f3' }}
-                                    >
-                                      Thursday
-                                    </p>
-                                    <p className='timing'>
-                                      {day.startTime}-{day.endTime}
-                                    </p>
-                                  </div>
-                                )
-                              } else if (day.Friday && count < 3) {
-                                count++
-                                return (
-                                  <div className='single-day'>
-                                    <p
-                                      className='day'
-                                      style={{ background: '#f3cc68' }}
-                                    >
-                                      Friday
-                                    </p>
-                                    <p className='timing'>
-                                      {day.startTime}-{day.endTime}
-                                    </p>
-                                  </div>
-                                )
-                              } else if (day.Saturday && count < 3) {
-                                count++
-                                return (
-                                  <div className='single-day'>
-                                    <p
-                                      className='day'
-                                      style={{ background: '#97ec97' }}
-                                    >
-                                      Saturday
-                                    </p>
-                                    <p className='timing'>
-                                      {day.startTime}-{day.endTime}
-                                    </p>
-                                  </div>
-                                )
-                              }
+                            <div className='timetable'>
+                              {singleSubject.timetable.map((day) => {
+                                if (day.Monday) {
+                                  count++
+                                  return (
+                                    <div className='single-day'>
+                                      <p
+                                        className='day'
+                                        style={{ background: '#ffd2d9' }}
+                                      >
+                                        Monday
+                                      </p>
+                                      <p className='timing'>
+                                        {day.startTime}-{day.endTime}
+                                      </p>
+                                    </div>
+                                  )
+                                } else if (day.Tuesday) {
+                                  count++
+                                  return (
+                                    <div className='single-day'>
+                                      <p
+                                        className='day'
+                                        style={{ background: '#81e8e8' }}
+                                      >
+                                        Tuesday
+                                      </p>
+                                      <p className='timing'>
+                                        {day.startTime}-{day.endTime}
+                                      </p>
+                                    </div>
+                                  )
+                                } else if (day.Wednesday) {
+                                  count++
+                                  return (
+                                    <div className='single-day'>
+                                      <p
+                                        className='day'
+                                        style={{ background: '#ffd487' }}
+                                      >
+                                        Wednesday
+                                      </p>
+                                      <p className='timing'>
+                                        {day.startTime}-{day.endTime}
+                                      </p>
+                                    </div>
+                                  )
+                                } else if (day.Thursday && count < 3) {
+                                  count++
+                                  return (
+                                    <div className='single-day'>
+                                      <p
+                                        className='day'
+                                        style={{ background: '#8af3f3' }}
+                                      >
+                                        Thursday
+                                      </p>
+                                      <p className='timing'>
+                                        {day.startTime}-{day.endTime}
+                                      </p>
+                                    </div>
+                                  )
+                                } else if (day.Friday && count < 3) {
+                                  count++
+                                  return (
+                                    <div className='single-day'>
+                                      <p
+                                        className='day'
+                                        style={{ background: '#f3cc68' }}
+                                      >
+                                        Friday
+                                      </p>
+                                      <p className='timing'>
+                                        {day.startTime}-{day.endTime}
+                                      </p>
+                                    </div>
+                                  )
+                                } else if (day.Saturday && count < 3) {
+                                  count++
+                                  return (
+                                    <div className='single-day'>
+                                      <p
+                                        className='day'
+                                        style={{ background: '#97ec97' }}
+                                      >
+                                        Saturday
+                                      </p>
+                                      <p className='timing'>
+                                        {day.startTime}-{day.endTime}
+                                      </p>
+                                    </div>
+                                  )
+                                }
 
-                              return (
-                                <React.Fragment
-                                  key={Math.floor(Math.random() * 100000)}
-                                ></React.Fragment>
-                              )
-                            })}
-                            <div className='see-more-option'>
-                              {count >= 3 ? (
-                                <Link
-                                  to={`/workspace/${param.id}/details/${param.spaceKey}/editsubject/${singleSubject.subjectID}`}
-                                >
-                                  <p
-                                    style={{
-                                      color: '#468aef',
-                                      fontSize: '12px',
-                                    }}
-                                  >
-                                    see more
-                                  </p>
-                                </Link>
-                              ) : null}
+                                return (
+                                  <React.Fragment
+                                    key={Math.floor(Math.random() * 100000)}
+                                  ></React.Fragment>
+                                )
+                              })}
                             </div>
+
+                            <Link
+                              to={`/workspace/${param.id}/details/${param.spaceKey}/editsubject/${singleSubject.subjectID}`}
+                            >
+                              <div className='see-more-option'>
+                                <p
+                                  style={{
+                                    color: '#468aef',
+                                    fontSize: '12px',
+                                  }}
+                                >
+                                  see more
+                                </p>
+                              </div>
+                            </Link>
                           </div>
                         </div>
                       )
@@ -263,7 +255,8 @@ const NewSemesterPageWrapper = styled.section`
   }
   .header-left {
     display: flex;
-    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
   }
   .subject-code {
     font-size: 10px;
@@ -272,17 +265,19 @@ const NewSemesterPageWrapper = styled.section`
   }
   .subject-name {
     font-size: 12px;
-    font-weight: 600;
+    font-weight: 400;
     text-transform: capitalize;
-  }
-  .header-right {
-    font-size: 20px;
-    cursor: pointer;
   }
   .card-content {
     display: flex;
     flex-direction: column;
-    gap: 3px;
+    justify-content: space-between;
+    height: 100%;
+  }
+  .timetable {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
   }
   .single-day {
     display: flex;
@@ -297,17 +292,19 @@ const NewSemesterPageWrapper = styled.section`
     width: 70px;
     font-size: 12px;
     font-weight: 400;
-    // background: #fff;
     border-radius: 3px;
     color: white;
   }
   .timing {
-    font-size: 12px;
+    font-size: 11px;
     white-space: nowrap;
   }
   .see-more-option {
     display: flex;
     justify-content: center;
-    padding-bottom: 10px;
+    background: #d8e2f7;
+    margin: 0px -10px -10px -10px;
+    padding: 5px 0px;
+    cursor: pointer;
   }
 `
