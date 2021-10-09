@@ -63,7 +63,7 @@ function JournalEntryModalComponent(props) {
       setCreatedBy(selectedNotes.createdBy)
       setTextNote(selectedNotes?.note)
     }
-  }, [param.notesID, param.journalID, value.journal, value.notes])
+  }, [isNotes, param.notesID, param.journalID, value.journal, value.notes])
 
   return (
     <Modal

@@ -89,6 +89,7 @@ function IdeaModalComponent(props) {
       setTextNote(selectedIdea.note)
     }
   }, [
+    isSharing,
     isEditing,
     param.id,
     param.spaceKey,

@@ -80,6 +80,7 @@ function ContactModalComponent(props) {
       setLinks(selectedContact.links)
     }
   }, [
+    isSharing,
     isEditing,
     param.id,
     param.spaceKey,

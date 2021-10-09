@@ -92,6 +92,7 @@ function MeetingModalComponent(props) {
       setTextNote(selectedMeeting.note)
     }
   }, [
+    isSharing,
     isEditing,
     param.id,
     param.spaceKey,

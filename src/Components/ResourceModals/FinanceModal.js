@@ -81,6 +81,7 @@ function FinanceModalComponent(props) {
       setLinks(selectedFinance.links)
     }
   }, [
+    isSharing,
     isEditing,
     param.id,
     param.spaceKey,
