@@ -7,12 +7,18 @@ import { RiDeleteBin6Line } from 'react-icons/ri'
 import MeetingModal from '../ResourceModals/MeetingModal'
 import MeetingPdfModal from '../ResourceModals/MeetingPdfModal'
 
-export default function MeetingNotes() {
+export default function MeetingNotes(props) {
   return (
-    <MeetingNotesWrapper>
+    <>
       <Switch>
+        <Route path='/workspace/:id/details/:spaceKey/insideclub/:clubID/resourcedata/:resourceID/share/sharemeeting/readpdf'>
+          <MeetingPdfModal isSharing />
+        </Route>
         <Route path='/workspace/:id/details/:spaceKey/insideclub/:clubID/resourcedata/:resourceID/addmeeting/readpdf'>
           <MeetingPdfModal />
+        </Route>
+        <Route path='/workspace/:id/details/:spaceKey/insideclub/:clubID/resourcedata/:resourceID/share/sharemeeting/:meetingID'>
+          <MeetingModal isSharing />
         </Route>
         <Route path='/workspace/:id/details/:spaceKey/insideclub/:clubID/resourcedata/:resourceID/editmeeting/:meetingID'>
           <MeetingModal isEditing />
@@ -23,16 +29,21 @@ export default function MeetingNotes() {
       </Switch>
       <WorkspaceConsumer>
         {(value) => {
-          return <MeetingNotesComponent value={value}></MeetingNotesComponent>
+          return (
+            <MeetingNotesComponent
+              value={value}
+              {...props}
+            ></MeetingNotesComponent>
+          )
         }}
       </WorkspaceConsumer>
-    </MeetingNotesWrapper>
+    </>
   )
 }
 
 function MeetingNotesComponent(props) {
   const param = useParams()
-  const { value } = props
+  const { value, isSharing } = props
   const space = value.workspaceElements.find(
     (item) => item.workspaceID === param.id && item.id === param.spaceKey
   )
@@ -41,52 +52,84 @@ function MeetingNotesComponent(props) {
 
   const resource = club.resources.find((item) => item.id === param.resourceID)
   return (
-    <div className='meeting-page'>
-      <h1 className='meeting-page-header'>All</h1>
-      <div className='meeting-container'>
-        <Link
-          to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/addmeeting`}
-        >
-          <div className='add-new-btn'>
-            <AiOutlinePlus />
-            <p>Add new</p>
+    <>
+      {isSharing ? (
+        <MeetingNotesWrapper>
+          <div className='meeting-page'>
+            <h1 className='meeting-page-header'>All</h1>
+            <div className='meeting-container'>
+              {resource?.meetings?.map((item) => {
+                return (
+                  <Link
+                    to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/share/sharemeeting/${item.id}`}
+                  >
+                    <div className='meeting-card' key={item.id}>
+                      <div className='card-info'>
+                        <h4 className='title'>
+                          {item.title.length > 12
+                            ? `${item.title.slice(0, 12)}...`
+                            : item.title}
+                        </h4>
+                        <p className='created-on'>{item.createdOn}</p>
+                      </div>
+                    </div>
+                  </Link>
+                )
+              })}
+            </div>
           </div>
-        </Link>
-        {resource?.meetings?.map((item) => {
-          return (
-            <Link
-              to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/editmeeting/${item.id}`}
-            >
-              <div className='meeting-card' key={item.id}>
-                <div className='card-info'>
-                  <h4 className='title'>
-                    {item.title.length > 12
-                      ? `${item.title.slice(0, 12)}...`
-                      : item.title}
-                  </h4>
-                  <p className='created-on'>{item.createdOn}</p>
+        </MeetingNotesWrapper>
+      ) : (
+        <MeetingNotesWrapper>
+          <div className='meeting-page'>
+            <h1 className='meeting-page-header'>All</h1>
+            <div className='meeting-container'>
+              <Link
+                to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/addmeeting`}
+              >
+                <div className='add-new-btn'>
+                  <AiOutlinePlus />
+                  <p>Add new</p>
                 </div>
+              </Link>
+              {resource?.meetings?.map((item) => {
+                return (
+                  <Link
+                    to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/editmeeting/${item.id}`}
+                  >
+                    <div className='meeting-card' key={item.id}>
+                      <div className='card-info'>
+                        <h4 className='title'>
+                          {item.title.length > 12
+                            ? `${item.title.slice(0, 12)}...`
+                            : item.title}
+                        </h4>
+                        <p className='created-on'>{item.createdOn}</p>
+                      </div>
 
-                <div className='delete-btn'>
-                  <RiDeleteBin6Line
-                    onClick={(e) => {
-                      e.preventDefault()
-                      value.deleteMeeting(
-                        param.id,
-                        param.spaceKey,
-                        param.clubID,
-                        param.resourceID,
-                        item.id
-                      )
-                    }}
-                  />
-                </div>
-              </div>
-            </Link>
-          )
-        })}
-      </div>
-    </div>
+                      <div className='delete-btn'>
+                        <RiDeleteBin6Line
+                          onClick={(e) => {
+                            e.preventDefault()
+                            value.deleteMeeting(
+                              param.id,
+                              param.spaceKey,
+                              param.clubID,
+                              param.resourceID,
+                              item.id
+                            )
+                          }}
+                        />
+                      </div>
+                    </div>
+                  </Link>
+                )
+              })}
+            </div>
+          </div>
+        </MeetingNotesWrapper>
+      )}
+    </>
   )
 }
 

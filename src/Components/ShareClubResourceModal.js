@@ -4,6 +4,7 @@ import { WorkspaceConsumer } from '../Context'
 import styled from 'styled-components'
 import Modal from 'react-modal'
 import { RiArrowGoBackFill } from 'react-icons/ri'
+import { AiFillCloseCircle } from 'react-icons/ai'
 
 export default function ShareClubPage() {
   return (
@@ -70,6 +71,13 @@ function SingleClubPageComponent(props) {
                 >
                   <div className='single-club-back-btn'>
                     <RiArrowGoBackFill /> Back
+                  </div>
+                </Link>
+                <Link
+                  to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}`}
+                >
+                  <div className='single-club-close-btn'>
+                    <AiFillCloseCircle />
                   </div>
                 </Link>
               </div>
@@ -167,7 +175,7 @@ const SingleClubPageWrapper = styled.section`
     gap: 10px;
   }
   .single-club-header {
-    padding: 10px 150px;
+    padding: 10px 50px 10px 150px;
     width: 100%;
     display: flex;
     justify-content: space-between;
@@ -181,7 +189,7 @@ const SingleClubPageWrapper = styled.section`
   .right-header {
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 70px;
   }
   .bell-icon {
     color: #ffca10;
@@ -201,6 +209,10 @@ const SingleClubPageWrapper = styled.section`
   }
   .club-title-container .title div {
     display: flex;
+  }
+  .single-club-close-btn {
+    color: #ffc8c8;
+    font-size: 30px;
   }
   .line {
     width: 100%;

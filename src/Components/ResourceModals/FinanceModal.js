@@ -20,7 +20,7 @@ export default function FinanceModal(props) {
 }
 
 function FinanceModalComponent(props) {
-  const { value, isEditing } = props
+  const { value, isEditing, isSharing } = props
   const date = `${new Date().getDate()}/${
     new Date().getMonth() + 1
   }/${new Date().getFullYear()}`
@@ -57,7 +57,7 @@ function FinanceModalComponent(props) {
   }
 
   useEffect(() => {
-    if (isEditing) {
+    if (isEditing || isSharing) {
       const selectedSpace = value.workspaceElements.find(
         (item) => item.id === param.spaceKey && item.workspaceID === param.id
       )
@@ -119,17 +119,31 @@ function FinanceModalComponent(props) {
           padding: '12px',
         }}
       >
-        <Link
-          to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}`}
-        >
-          <AiOutlineClose
-            style={{
-              fontSize: '20px',
-              color: '#C4C4C4',
-              cursor: 'pointer',
-            }}
-          />
-        </Link>
+        {isSharing ? (
+          <Link
+            to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/share`}
+          >
+            <AiOutlineClose
+              style={{
+                fontSize: '20px',
+                color: '#C4C4C4',
+                cursor: 'pointer',
+              }}
+            />
+          </Link>
+        ) : (
+          <Link
+            to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}`}
+          >
+            <AiOutlineClose
+              style={{
+                fontSize: '20px',
+                color: '#C4C4C4',
+                cursor: 'pointer',
+              }}
+            />
+          </Link>
+        )}
       </header>
       <form
         style={{
@@ -139,48 +153,54 @@ function FinanceModalComponent(props) {
         }}
         onSubmit={(e) => {
           e.preventDefault()
-          if (isEditing) {
-            const finance = {
-              title: title,
-              createdOn: createdOn,
-              createdBy: createdBy,
-              financersList: financersList,
-              sponsorsList: sponsorsList,
-              company: company,
-              personalDetails: personalDetails,
-              links: links,
+          if (!isSharing) {
+            if (isEditing) {
+              const finance = {
+                title: title,
+                createdOn: createdOn,
+                createdBy: createdBy,
+                financersList: financersList,
+                sponsorsList: sponsorsList,
+                company: company,
+                personalDetails: personalDetails,
+                links: links,
+              }
+              value.editFinance(
+                param.id,
+                param.spaceKey,
+                param.clubID,
+                param.resourceID,
+                financeToEdit.id,
+                finance
+              )
+            } else {
+              const finance = {
+                id: new Date().getTime().toString(),
+                title: title,
+                createdOn: createdOn,
+                createdBy: createdBy,
+                financersList: financersList,
+                sponsorsList: sponsorsList,
+                company: company,
+                personalDetails: personalDetails,
+                links: links,
+              }
+              value.addNewFinance(
+                param.id,
+                param.spaceKey,
+                param.clubID,
+                param.resourceID,
+                finance
+              )
             }
-            value.editFinance(
-              param.id,
-              param.spaceKey,
-              param.clubID,
-              param.resourceID,
-              financeToEdit.id,
-              finance
+            history.push(
+              `/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}`
             )
           } else {
-            const finance = {
-              id: new Date().getTime().toString(),
-              title: title,
-              createdOn: createdOn,
-              createdBy: createdBy,
-              financersList: financersList,
-              sponsorsList: sponsorsList,
-              company: company,
-              personalDetails: personalDetails,
-              links: links,
-            }
-            value.addNewFinance(
-              param.id,
-              param.spaceKey,
-              param.clubID,
-              param.resourceID,
-              finance
+            history.push(
+              `/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/share`
             )
           }
-          history.push(
-            `/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}`
-          )
         }}
       >
         <div className='finance-note-name' style={{ paddingBottom: '20px' }}>
@@ -191,7 +211,9 @@ function FinanceModalComponent(props) {
             name='name'
             id='name'
             value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            onChange={(e) => {
+              if (!isSharing) setTitle(e.target.value)
+            }}
             placeholder='Untitled Finance Document'
             style={{
               width: '400px',
@@ -216,7 +238,9 @@ function FinanceModalComponent(props) {
               id='created-by'
               value={createdBy}
               className={createdBy ? '' : 'skeleton'}
-              onChange={(e) => setCreatedBy(e.target.value)}
+              onChange={(e) => {
+                if (!isSharing) setCreatedBy(e.target.value)
+              }}
             />
           </div>
           <div className='single-option'>
@@ -235,7 +259,9 @@ function FinanceModalComponent(props) {
                 id='financer'
                 value={financerToAdd}
                 className={financerToAdd ? '' : 'skeleton'}
-                onChange={(e) => setFinancerToAdd(e.target.value)}
+                onChange={(e) => {
+                  if (!isSharing) setFinancerToAdd(e.target.value)
+                }}
               />
 
               <div className='add-financer-btn'>
@@ -253,9 +279,11 @@ function FinanceModalComponent(props) {
                     cursor: 'pointer',
                   }}
                   onClick={(e) => {
-                    if (financerToAdd) {
-                      setFinancersList([...financersList, financerToAdd])
-                      setFinancerToAdd('')
+                    if (!isSharing) {
+                      if (financerToAdd) {
+                        setFinancersList([...financersList, financerToAdd])
+                        setFinancerToAdd('')
+                      }
                     }
                   }}
                 />
@@ -304,7 +332,9 @@ function FinanceModalComponent(props) {
                 id='sponsor'
                 value={sponsorToAdd}
                 className={sponsorToAdd ? '' : 'skeleton'}
-                onChange={(e) => setSponsorToAdd(e.target.value)}
+                onChange={(e) => {
+                  if (!isSharing) setSponsorToAdd(e.target.value)
+                }}
               />
 
               <div className='add-sponsor-btn'>
@@ -322,9 +352,11 @@ function FinanceModalComponent(props) {
                     cursor: 'pointer',
                   }}
                   onClick={(e) => {
-                    if (sponsorToAdd) {
-                      setSponsorsList([...sponsorsList, sponsorToAdd])
-                      setSponsorToAdd('')
+                    if (!isSharing) {
+                      if (sponsorToAdd) {
+                        setSponsorsList([...sponsorsList, sponsorToAdd])
+                        setSponsorToAdd('')
+                      }
                     }
                   }}
                 />
@@ -366,7 +398,9 @@ function FinanceModalComponent(props) {
               id='company'
               value={company}
               className={company ? '' : 'skeleton'}
-              onChange={(e) => setCompany(e.target.value)}
+              onChange={(e) => {
+                if (!isSharing) setCompany(e.target.value)
+              }}
             />
           </div>
           <div className='single-option'>
@@ -377,7 +411,9 @@ function FinanceModalComponent(props) {
               id='personalDetails'
               value={personalDetails}
               className={personalDetails ? '' : 'skeleton'}
-              onChange={(e) => setPersonalDetails(e.target.value)}
+              onChange={(e) => {
+                if (!isSharing) setPersonalDetails(e.target.value)
+              }}
             />
           </div>
           <div className='single-option'>
@@ -389,7 +425,9 @@ function FinanceModalComponent(props) {
               id='link'
               value={linkToAdd}
               className={linkToAdd ? '' : 'skeleton'}
-              onChange={(e) => setLinkToAdd(e.target.value)}
+              onChange={(e) => {
+                if (!isSharing) setLinkToAdd(e.target.value)
+              }}
             />
             <div className='add-link-btn'>
               <AiOutlinePlus
@@ -406,9 +444,11 @@ function FinanceModalComponent(props) {
                   cursor: 'pointer',
                 }}
                 onClick={(e) => {
-                  if (linkToAdd && isValidHttpUrl(linkToAdd)) {
-                    setLinks([...links, linkToAdd])
-                    setLinkToAdd('')
+                  if (!isSharing) {
+                    if (linkToAdd && isValidHttpUrl(linkToAdd)) {
+                      setLinks([...links, linkToAdd])
+                      setLinkToAdd('')
+                    }
                   }
                 }}
               />
@@ -437,11 +477,12 @@ function FinanceModalComponent(props) {
                     alignItems: 'center',
                     width: '60px',
                     height: '20px',
-                    background: '#C8E1FF',
+                    border: '1px solid #468AEF',
                     borderRadius: '5px',
                     fontSize: '12px',
                     gap: '5px',
                     padding: '0 5px',
+                    whiteSpace: 'nowrap',
                   }}
                   key={count}
                 >
@@ -450,7 +491,7 @@ function FinanceModalComponent(props) {
                     target='_blank'
                     rel='noreferrer noopener'
                     style={{
-                      color: 'black',
+                      color: '#468AEF',
                       fontSize: '12px',
                       fontWeight: '400',
                       width: '80%',

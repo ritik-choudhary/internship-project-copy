@@ -6,10 +6,13 @@ import { WorkspaceConsumer } from '../../Context'
 import { RiDeleteBin6Line } from 'react-icons/ri'
 import ContactModal from '../ResourceModals/ContactModal'
 
-export default function Contacts() {
+export default function Contacts(props) {
   return (
-    <ContactsPageWrapper>
+    <>
       <Switch>
+        <Route path='/workspace/:id/details/:spaceKey/insideclub/:clubID/resourcedata/:resourceID/share/sharecontact/:contactID'>
+          <ContactModal isSharing />
+        </Route>
         <Route path='/workspace/:id/details/:spaceKey/insideclub/:clubID/resourcedata/:resourceID/editcontact/:contactID'>
           <ContactModal isEditing />
         </Route>
@@ -19,15 +22,17 @@ export default function Contacts() {
       </Switch>
       <WorkspaceConsumer>
         {(value) => {
-          return <ContactsComponent value={value}></ContactsComponent>
+          return (
+            <ContactsComponent value={value} {...props}></ContactsComponent>
+          )
         }}
       </WorkspaceConsumer>
-    </ContactsPageWrapper>
+    </>
   )
 }
 
 function ContactsComponent(props) {
-  const { value } = props
+  const { value, isSharing } = props
   const param = useParams()
 
   const space = value.workspaceElements.find(
@@ -38,52 +43,84 @@ function ContactsComponent(props) {
 
   const resource = club.resources.find((item) => item.id === param.resourceID)
   return (
-    <div className='contacts-page'>
-      <h1 className='contacts-page-header'>All</h1>
-      <div className='contacts-container'>
-        <Link
-          to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/addcontact`}
-        >
-          <div className='add-new-btn'>
-            <AiOutlinePlus />
-            <p>Add new</p>
+    <>
+      {isSharing ? (
+        <ContactsPageWrapper>
+          <div className='contacts-page'>
+            <h1 className='contacts-page-header'>All</h1>
+            <div className='contacts-container'>
+              {resource?.contacts?.map((item) => {
+                return (
+                  <Link
+                    to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/share/sharecontact/${item.id}`}
+                  >
+                    <div className='contact-card' key={item.id}>
+                      <div className='card-info'>
+                        <h4 className='title'>
+                          {item.title.length > 12
+                            ? `${item.title.slice(0, 12)}...`
+                            : item.title}
+                        </h4>
+                        <p className='created-on'>{item.createdOn}</p>
+                      </div>
+                    </div>
+                  </Link>
+                )
+              })}
+            </div>
           </div>
-        </Link>
-        {resource?.contacts?.map((item) => {
-          return (
-            <Link
-              to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/editcontact/${item.id}`}
-            >
-              <div className='contact-card' key={item.id}>
-                <div className='card-info'>
-                  <h4 className='title'>
-                    {item.title.length > 12
-                      ? `${item.title.slice(0, 12)}...`
-                      : item.title}
-                  </h4>
-                  <p className='created-on'>{item.createdOn}</p>
+        </ContactsPageWrapper>
+      ) : (
+        <ContactsPageWrapper>
+          <div className='contacts-page'>
+            <h1 className='contacts-page-header'>All</h1>
+            <div className='contacts-container'>
+              <Link
+                to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/addcontact`}
+              >
+                <div className='add-new-btn'>
+                  <AiOutlinePlus />
+                  <p>Add new</p>
                 </div>
+              </Link>
+              {resource?.contacts?.map((item) => {
+                return (
+                  <Link
+                    to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/editcontact/${item.id}`}
+                  >
+                    <div className='contact-card' key={item.id}>
+                      <div className='card-info'>
+                        <h4 className='title'>
+                          {item.title.length > 12
+                            ? `${item.title.slice(0, 12)}...`
+                            : item.title}
+                        </h4>
+                        <p className='created-on'>{item.createdOn}</p>
+                      </div>
 
-                <div className='delete-btn'>
-                  <RiDeleteBin6Line
-                    onClick={(e) => {
-                      e.preventDefault()
-                      value.deleteContact(
-                        param.id,
-                        param.spaceKey,
-                        param.clubID,
-                        param.resourceID,
-                        item.id
-                      )
-                    }}
-                  />
-                </div>
-              </div>
-            </Link>
-          )
-        })}
-      </div>
-    </div>
+                      <div className='delete-btn'>
+                        <RiDeleteBin6Line
+                          onClick={(e) => {
+                            e.preventDefault()
+                            value.deleteContact(
+                              param.id,
+                              param.spaceKey,
+                              param.clubID,
+                              param.resourceID,
+                              item.id
+                            )
+                          }}
+                        />
+                      </div>
+                    </div>
+                  </Link>
+                )
+              })}
+            </div>
+          </div>
+        </ContactsPageWrapper>
+      )}
+    </>
   )
 }
 

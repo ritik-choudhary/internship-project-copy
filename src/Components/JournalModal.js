@@ -8,14 +8,19 @@ export default function JournalModal(props) {
   return (
     <WorkspaceConsumer>
       {(value) => {
-        return <JournalModalComponent value={value}></JournalModalComponent>
+        return (
+          <JournalModalComponent
+            value={value}
+            {...props}
+          ></JournalModalComponent>
+        )
       }}
     </WorkspaceConsumer>
   )
 }
 
 function JournalModalComponent(props) {
-  const { value } = props
+  const { value, isNotes } = props
   const date = `${new Date().getDate()}/${
     new Date().getMonth() + 1
   }/${new Date().getFullYear()}`
@@ -60,17 +65,29 @@ function JournalModalComponent(props) {
             fontWeight: '700',
           }}
         >
-          Add new Entry
+          {isNotes ? 'Add new notes' : 'Add new Entry'}
         </h3>
-        <Link to='/journal'>
-          <AiOutlineClose
-            style={{
-              fontSize: '20px',
-              color: '#C4C4C4',
-              cursor: 'pointer',
-            }}
-          />
-        </Link>
+        {isNotes ? (
+          <Link to='/notes'>
+            <AiOutlineClose
+              style={{
+                fontSize: '20px',
+                color: '#C4C4C4',
+                cursor: 'pointer',
+              }}
+            />
+          </Link>
+        ) : (
+          <Link to='/journal'>
+            <AiOutlineClose
+              style={{
+                fontSize: '20px',
+                color: '#C4C4C4',
+                cursor: 'pointer',
+              }}
+            />
+          </Link>
+        )}
       </header>
       <form
         style={{
@@ -82,19 +99,35 @@ function JournalModalComponent(props) {
         }}
         onSubmit={(e) => {
           e.preventDefault()
-          value.addNewJournal({
-            id: new Date().getTime().toString(),
-            createdOn: date,
-            title: title,
-            createdBy: '',
-            note: [
-              {
-                type: 'paragraph',
-                children: [{ text: '' }],
-              },
-            ],
-          })
-          history.push('/journal')
+          if (!isNotes) {
+            value.addNewJournal({
+              id: new Date().getTime().toString(),
+              createdOn: date,
+              title: title,
+              createdBy: '',
+              note: [
+                {
+                  type: 'paragraph',
+                  children: [{ text: '' }],
+                },
+              ],
+            })
+            history.push('/journal')
+          } else {
+            value.addNewNotes({
+              id: new Date().getTime().toString(),
+              createdOn: date,
+              title: title,
+              createdBy: '',
+              note: [
+                {
+                  type: 'paragraph',
+                  children: [{ text: '' }],
+                },
+              ],
+            })
+            history.push('/notes')
+          }
         }}
       >
         <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -106,7 +139,7 @@ function JournalModalComponent(props) {
               marginBottom: '5px',
             }}
           >
-            Title of the entry
+            {isNotes ? 'Title of the notes' : 'Title of the entry'}
           </label>
           <input
             type='text'
@@ -132,20 +165,38 @@ function JournalModalComponent(props) {
             justifyContent: 'flex-end',
           }}
         >
-          <Link to='/journal'>
-            <button
-              style={{
-                color: '#FF0000',
-                border: 'none',
-                background: 'none',
-                padding: '10px 20px',
-                outline: 'none',
-                cursor: 'pointer',
-              }}
-            >
-              Cancel
-            </button>
-          </Link>
+          {isNotes ? (
+            <Link to='/notes'>
+              <button
+                style={{
+                  color: '#FF0000',
+                  border: 'none',
+                  background: 'none',
+                  padding: '10px 20px',
+                  outline: 'none',
+                  cursor: 'pointer',
+                }}
+              >
+                Cancel
+              </button>
+            </Link>
+          ) : (
+            <Link to='/journal'>
+              <button
+                style={{
+                  color: '#FF0000',
+                  border: 'none',
+                  background: 'none',
+                  padding: '10px 20px',
+                  outline: 'none',
+                  cursor: 'pointer',
+                }}
+              >
+                Cancel
+              </button>
+            </Link>
+          )}
+
           <button
             type='submit'
             style={{

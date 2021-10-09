@@ -17,6 +17,7 @@ import ShareWorkshopResourceModal from './Components/ShareWorkshopResourceModal'
 import BucketListContent from './Components/BucketListContent'
 import Journal from './Pages/Journal'
 import ShareClubResourceModal from './Components/ShareClubResourceModal'
+import Notes from './Pages/Notes'
 
 Modal.setAppElement('#root')
 
@@ -66,7 +67,9 @@ function App() {
           </Route>
           <Route path='/workspace/:id/details' component={Details}></Route>
           <Route path='/workspace' component={Workspace}></Route>
+
           <Route path='/journal' component={Journal}></Route>
+          <Route path='/notes' component={Notes} />
           <Route exact path='/trash' component={Trash}></Route>
         </Switch>
       </Router>

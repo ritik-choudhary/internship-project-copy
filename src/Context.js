@@ -10,6 +10,7 @@ class WorkspaceProvider extends Component {
     detailSpace: {},
     workspaceElements: [],
     journal: [],
+    notes: [],
   }
 
   addNewWorkspace = (newItem) => {
@@ -1512,6 +1513,57 @@ class WorkspaceProvider extends Component {
     })
   }
 
+  addNewNotes = (notes) => {
+    const oldNotesList = [...this.state.notes]
+    const newNotesList = [...oldNotesList, notes]
+    this.setState(() => {
+      return { notes: newNotesList }
+    })
+  }
+
+  deleteNotes = (id) => {
+    const oldnotesList = [...this.state.notes]
+    const oldTrashList = [...this.state.trash]
+    const noteToDelete = oldnotesList.find((item) => item.id === id)
+    noteToDelete.type = 'Notes'
+    let newTrashList = [...oldTrashList]
+    newTrashList = [...newTrashList, noteToDelete]
+    const newnotesList = oldnotesList.filter((item) => item.id !== id)
+
+    this.setState(() => {
+      return { notes: newnotesList, trash: newTrashList }
+    })
+  }
+
+  deleteNotesPermanently = (id) => {
+    const oldTrashList = [...this.state.trash]
+    const newtrashList = oldTrashList.filter((item) => item.id !== id)
+    this.setState(() => {
+      return { trash: newtrashList }
+    })
+  }
+
+  restoreNotes = (id) => {
+    const oldTrashList = [...this.state.trash]
+    const itemToRestore = oldTrashList.find((item) => item.id === id)
+    let oldNotesList = [...this.state.notes]
+    oldNotesList = [...oldNotesList, itemToRestore]
+    const newTrashList = oldTrashList.filter((item) => item.id !== id)
+    this.setState(() => {
+      return { trash: newTrashList, notes: oldNotesList }
+    })
+  }
+
+  editNotes = (id, notes) => {
+    const oldnotesList = [...this.state.notes]
+    const notesElement = oldnotesList.find((item) => item.id === id)
+    notesElement.createdBy = notes.createdBy
+    notesElement.note = notes.note
+    this.setState(() => {
+      return { notes: oldnotesList }
+    })
+  }
+
   render() {
     return (
       <WorkspaceContext.Provider
@@ -1603,6 +1655,11 @@ class WorkspaceProvider extends Component {
           addNewJournal: this.addNewJournal,
           deleteJournal: this.deleteJournal,
           editJournal: this.editJournal,
+          addNewNotes: this.addNewNotes,
+          deleteNotes: this.deleteNotes,
+          editNotes: this.editNotes,
+          deleteNotesPermanently: this.deleteNotesPermanently,
+          restoreNotes: this.restoreNotes,
         }}
       >
         {this.props.children}

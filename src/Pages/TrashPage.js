@@ -118,6 +118,8 @@ function TrashPageComponent(props) {
               ? 'docs-storage'
               : isImages
               ? 'images-storage'
+              : isNotes
+              ? 'docs-storage'
               : ''
           }`}
         >
@@ -218,6 +220,36 @@ function TrashPageComponent(props) {
                             <RiDeleteBin6Line
                               onClick={() => {
                                 value.deleteDocsPermanently(item.id)
+                              }}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )
+                }
+                return <></>
+              })
+            : isNotes
+            ? value.trash.map((item) => {
+                if (item.type === 'Notes') {
+                  return (
+                    <div className='docs-card'>
+                      <div className='top'>
+                        <p className='title'>{item.title}</p>
+                      </div>
+                      <div className='bottom'>
+                        <p className='created-on'>{item.createdOn}</p>
+                        <div className='docs-card-options'>
+                          <div className='restore-btn'>
+                            <VscDebugRestart
+                              onClick={() => value.restoreNotes(item.id)}
+                            />
+                          </div>
+                          <div className='delete-btn'>
+                            <RiDeleteBin6Line
+                              onClick={() => {
+                                value.deleteNotesPermanently(item.id)
                               }}
                             />
                           </div>

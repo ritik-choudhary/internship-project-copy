@@ -13,6 +13,7 @@ export default function JournalEntryModal(props) {
         return (
           <JournalEntryModalComponent
             value={value}
+            {...props}
           ></JournalEntryModalComponent>
         )
       }}
@@ -21,7 +22,7 @@ export default function JournalEntryModal(props) {
 }
 
 function JournalEntryModalComponent(props) {
-  const { value } = props
+  const { value, isNotes } = props
   const date = `${new Date().getDate()}/${
     new Date().getMonth() + 1
   }/${new Date().getFullYear()}`
@@ -40,17 +41,29 @@ function JournalEntryModalComponent(props) {
   ])
 
   const [journalToEdit, setJournalToEdit] = useState()
+  const [notesToEdit, setNotesToEdit] = useState()
 
   useEffect(() => {
-    const selectedJournal = value.journal.find(
-      (item) => item.id === param.journalID
-    )
-    setJournalToEdit(selectedJournal)
-    setTitle(selectedJournal.title)
-    setCreatedOn(selectedJournal.createdOn)
-    setCreatedBy(selectedJournal.createdBy)
-    setTextNote(selectedJournal?.note)
-  }, [param.journalID, value.journal])
+    if (!isNotes) {
+      const selectedJournal = value.journal.find(
+        (item) => item.id === param.journalID
+      )
+      setJournalToEdit(selectedJournal)
+      setTitle(selectedJournal.title)
+      setCreatedOn(selectedJournal.createdOn)
+      setCreatedBy(selectedJournal.createdBy)
+      setTextNote(selectedJournal?.note)
+    } else {
+      const selectedNotes = value.notes.find(
+        (item) => item.id === param.notesID
+      )
+      setNotesToEdit(selectedNotes)
+      setTitle(selectedNotes.title)
+      setCreatedOn(selectedNotes.createdOn)
+      setCreatedBy(selectedNotes.createdBy)
+      setTextNote(selectedNotes?.note)
+    }
+  }, [param.notesID, param.journalID, value.journal, value.notes])
 
   return (
     <Modal
@@ -82,15 +95,27 @@ function JournalEntryModalComponent(props) {
             padding: '12px 30px',
           }}
         >
-          <Link to={`/journal`}>
-            <AiFillCloseCircle
-              style={{
-                fontSize: '30px',
-                color: '#FFC8C8',
-                cursor: 'pointer',
-              }}
-            />
-          </Link>
+          {isNotes ? (
+            <Link to={`/notes`}>
+              <AiFillCloseCircle
+                style={{
+                  fontSize: '30px',
+                  color: '#FFC8C8',
+                  cursor: 'pointer',
+                }}
+              />
+            </Link>
+          ) : (
+            <Link to={`/journal`}>
+              <AiFillCloseCircle
+                style={{
+                  fontSize: '30px',
+                  color: '#FFC8C8',
+                  cursor: 'pointer',
+                }}
+              />
+            </Link>
+          )}
         </header>
         <form
           style={{
@@ -100,14 +125,25 @@ function JournalEntryModalComponent(props) {
           }}
           onSubmit={(e) => {
             e.preventDefault()
-            const journal = {
-              title: title,
-              createdOn: createdOn,
-              createdBy: createdBy,
-              note: textNote,
+            if (!isNotes) {
+              const journal = {
+                title: title,
+                createdOn: createdOn,
+                createdBy: createdBy,
+                note: textNote,
+              }
+              value.editJournal(journalToEdit.id, journal)
+              history.push(`/journal`)
+            } else {
+              const notes = {
+                title: title,
+                createdOn: createdOn,
+                createdBy: createdBy,
+                note: textNote,
+              }
+              value.editNotes(notesToEdit.id, notes)
+              history.push(`/notes`)
             }
-            value.editJournal(journalToEdit.id, journal)
-            history.push(`/journal`)
           }}
         >
           <div className='journal-name' style={{ paddingBottom: '20px' }}>

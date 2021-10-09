@@ -416,6 +416,14 @@ function TaskModalComponent(props) {
               onChange={(e) => {
                 if (!isSharing) setLinkToAdd(e.target.value)
               }}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  if (linkToAdd && isValidHttpUrl(linkToAdd)) {
+                    setLinks([...links, linkToAdd])
+                    setLinkToAdd('')
+                  }
+                }
+              }}
             />
             <div className='link-add-btn'></div>
           </div>

@@ -40,6 +40,8 @@ function HabitRecordsComponent(props) {
 
   const habit = space.habits.find((item) => item.id === param.habitID)
 
+  console.log(habit.status)
+
   const start = moment(habit.startDate).format('YYYY-MM-DD')
   const end = moment(habit.endDate).format('YYYY-MM-DD')
 
@@ -212,7 +214,7 @@ function HabitRecordsComponent(props) {
                         <p>{field.field}</p>
                       </div>
                       {habit.status.map((item) => {
-                        if (Object.keys(item)[0] !== field.field) {
+                        if (Object.keys(item)[0] !== field.id) {
                           return <></>
                         }
                         return Object.keys(item).map((singleEntry) => {

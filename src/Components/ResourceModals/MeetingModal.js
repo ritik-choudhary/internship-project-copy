@@ -26,7 +26,7 @@ export default function MeetingModal(props) {
 }
 
 function MeetingModalComponent(props) {
-  const { value, isEditing } = props
+  const { value, isEditing, isSharing } = props
   const date = `${new Date().getDate()}/${
     new Date().getMonth() + 1
   }/${new Date().getFullYear()}`
@@ -68,7 +68,7 @@ function MeetingModalComponent(props) {
   }
 
   useEffect(() => {
-    if (isEditing) {
+    if (isEditing || isSharing) {
       const selectedSpace = value.workspaceElements.find(
         (item) => item.id === param.spaceKey && item.workspaceID === param.id
       )
@@ -148,17 +148,31 @@ function MeetingModalComponent(props) {
           padding: '12px 30px',
         }}
       >
-        <Link
-          to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}`}
-        >
-          <AiFillCloseCircle
-            style={{
-              fontSize: '30px',
-              color: '#FFC8C8',
-              cursor: 'pointer',
-            }}
-          />
-        </Link>
+        {isSharing ? (
+          <Link
+            to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/share`}
+          >
+            <AiFillCloseCircle
+              style={{
+                fontSize: '30px',
+                color: '#FFC8C8',
+                cursor: 'pointer',
+              }}
+            />
+          </Link>
+        ) : (
+          <Link
+            to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}`}
+          >
+            <AiFillCloseCircle
+              style={{
+                fontSize: '30px',
+                color: '#FFC8C8',
+                cursor: 'pointer',
+              }}
+            />
+          </Link>
+        )}
       </header>
       <form
         style={{
@@ -168,49 +182,55 @@ function MeetingModalComponent(props) {
         }}
         onSubmit={(e) => {
           e.preventDefault()
-          if (isEditing) {
-            const meeting = {
-              title: title,
-              createdOn: createdOn,
-              createdBy: createdBy,
-              type: type,
-              participants: participants,
-              links: links,
-              pdfList: pdfList,
+          if (!isSharing) {
+            if (isEditing) {
+              const meeting = {
+                title: title,
+                createdOn: createdOn,
+                createdBy: createdBy,
+                type: type,
+                participants: participants,
+                links: links,
+                pdfList: pdfList,
 
-              note: textNote,
+                note: textNote,
+              }
+              value.editMeeting(
+                param.id,
+                param.spaceKey,
+                param.clubID,
+                param.resourceID,
+                meetingToEdit.id,
+                meeting
+              )
+            } else {
+              const meeting = {
+                id: new Date().getTime().toString(),
+                title: title,
+                createdOn: createdOn,
+                createdBy: createdBy,
+                type: type,
+                participants: participants,
+                links: links,
+                pdfList: pdfList,
+                note: textNote,
+              }
+              value.addNewMeeting(
+                param.id,
+                param.spaceKey,
+                param.clubID,
+                param.resourceID,
+                meeting
+              )
             }
-            value.editMeeting(
-              param.id,
-              param.spaceKey,
-              param.clubID,
-              param.resourceID,
-              meetingToEdit.id,
-              meeting
+            history.push(
+              `/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}`
             )
           } else {
-            const meeting = {
-              id: new Date().getTime().toString(),
-              title: title,
-              createdOn: createdOn,
-              createdBy: createdBy,
-              type: type,
-              participants: participants,
-              links: links,
-              pdfList: pdfList,
-              note: textNote,
-            }
-            value.addNewMeeting(
-              param.id,
-              param.spaceKey,
-              param.clubID,
-              param.resourceID,
-              meeting
+            history.push(
+              `/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/share`
             )
           }
-          history.push(
-            `/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}`
-          )
         }}
       >
         <div className='meeting-note-name' style={{ paddingBottom: '20px' }}>
@@ -221,7 +241,9 @@ function MeetingModalComponent(props) {
             name='name'
             id='name'
             value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            onChange={(e) => {
+              if (!isSharing) setTitle(e.target.value)
+            }}
             placeholder='Untitled Meeting Document'
             style={{
               width: '400px',
@@ -246,7 +268,9 @@ function MeetingModalComponent(props) {
               id='created-by'
               value={createdBy}
               className={createdBy ? '' : 'skeleton'}
-              onChange={(e) => setCreatedBy(e.target.value)}
+              onChange={(e) => {
+                if (!isSharing) setCreatedBy(e.target.value)
+              }}
             />
           </div>
           <div className='single-option'>
@@ -257,7 +281,9 @@ function MeetingModalComponent(props) {
               id='type'
               value={type}
               className={type ? '' : 'skeleton'}
-              onChange={(e) => setType(e.target.value)}
+              onChange={(e) => {
+                if (!isSharing) setType(e.target.value)
+              }}
             />
           </div>
           <div className='single-option'>
@@ -268,7 +294,9 @@ function MeetingModalComponent(props) {
               id='participants'
               value={participants}
               className={participants ? '' : 'skeleton'}
-              onChange={(e) => setParticipants(e.target.value)}
+              onChange={(e) => {
+                if (!isSharing) setParticipants(e.target.value)
+              }}
             />
           </div>
           <div className='single-option'>
@@ -280,7 +308,9 @@ function MeetingModalComponent(props) {
               id='link'
               value={linkToAdd}
               className={linkToAdd ? '' : 'skeleton'}
-              onChange={(e) => setLinkToAdd(e.target.value)}
+              onChange={(e) => {
+                if (!isSharing) setLinkToAdd(e.target.value)
+              }}
             />
             <div className='add-link-btn'>
               <AiOutlinePlus
@@ -297,9 +327,11 @@ function MeetingModalComponent(props) {
                   cursor: 'pointer',
                 }}
                 onClick={(e) => {
-                  if (linkToAdd && isValidHttpUrl(linkToAdd)) {
-                    setLinks([...links, linkToAdd])
-                    setLinkToAdd('')
+                  if (!isSharing) {
+                    if (linkToAdd && isValidHttpUrl(linkToAdd)) {
+                      setLinks([...links, linkToAdd])
+                      setLinkToAdd('')
+                    }
                   }
                 }}
               />
@@ -328,7 +360,8 @@ function MeetingModalComponent(props) {
                     alignItems: 'center',
                     width: '60px',
                     height: '20px',
-                    background: '#C8E1FF',
+                    border: '1px solid #468AEF',
+                    whiteSpace: 'nowrap',
                     borderRadius: '5px',
                     fontSize: '12px',
                     gap: '5px',
@@ -341,7 +374,7 @@ function MeetingModalComponent(props) {
                     target='_blank'
                     rel='noreferrer noopener'
                     style={{
-                      color: 'black',
+                      color: '#468AEF',
                       fontSize: '12px',
                       fontWeight: '400',
                       width: '80%',
@@ -361,6 +394,7 @@ function MeetingModalComponent(props) {
               name='pdf'
               id='pdf'
               hidden
+              disabled={isSharing}
               accept='.pdf'
               onChange={(e) => {
                 setPdfList([
@@ -419,46 +453,93 @@ function MeetingModalComponent(props) {
               )
               pdfCount++
               return (
-                <Link
-                  to={{
-                    pathname: `/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/addmeeting/readpdf`,
-                    state: { src: linkToPdf?.source },
-                  }}
-                  key={pdf.pdfId}
-                  onClick={(e) => {
-                    if (!isEditing) {
-                      e.preventDefault()
-                    }
-                  }}
-                >
-                  <div
-                    className='pdf-file'
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      width: '60px',
-                      height: '20px',
-                      background: '#C8E1FF',
-                      borderRadius: '5px',
-                      fontSize: '12px',
-                      gap: '5px',
-                      padding: '0 5px',
-                    }}
-                  >
-                    <p
-                      style={{
-                        color: 'black',
-                        fontSize: '12px',
-                        fontWeight: '400',
-                        width: '80%',
+                <>
+                  {isSharing ? (
+                    <Link
+                      to={{
+                        pathname: `/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/share/sharemeeting/readpdf`,
+                        state: { src: linkToPdf?.source },
+                      }}
+                      key={pdf.pdfId}
+                      onClick={(e) => {
+                        if (!isSharing) {
+                          e.preventDefault()
+                        }
                       }}
                     >
-                      Pdf {pdfCount}
-                    </p>
-                    <AiOutlineClose style={{ color: '#f54848' }} />
-                  </div>
-                </Link>
+                      <div
+                        className='pdf-file'
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          width: '60px',
+                          height: '20px',
+                          border: '1px solid #468AEF',
+                          whiteSpace: 'nowrap',
+                          borderRadius: '5px',
+                          fontSize: '12px',
+                          gap: '5px',
+                          padding: '0 5px',
+                        }}
+                      >
+                        <p
+                          style={{
+                            color: '#468AEF',
+                            fontSize: '12px',
+                            fontWeight: '400',
+                            width: '80%',
+                          }}
+                        >
+                          Pdf {pdfCount}
+                        </p>
+                        <AiOutlineClose style={{ color: '#f54848' }} />
+                      </div>
+                    </Link>
+                  ) : (
+                    <Link
+                      to={{
+                        pathname: `/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/addmeeting/readpdf`,
+                        state: { src: linkToPdf?.source },
+                      }}
+                      key={pdf.pdfId}
+                      onClick={(e) => {
+                        if (!isEditing) {
+                          e.preventDefault()
+                        }
+                      }}
+                    >
+                      <div
+                        className='pdf-file'
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          width: '60px',
+                          height: '20px',
+                          border: '1px solid #468AEF',
+                          whiteSpace: 'nowrap',
+                          borderRadius: '5px',
+                          fontSize: '12px',
+                          gap: '5px',
+                          padding: '0 5px',
+                        }}
+                      >
+                        <p
+                          style={{
+                            color: '#468AEF',
+                            fontSize: '12px',
+                            fontWeight: '400',
+                            width: '80%',
+                          }}
+                        >
+                          Pdf {pdfCount}
+                        </p>
+                        <AiOutlineClose style={{ color: '#f54848' }} />
+                      </div>
+                    </Link>
+                  )}
+                </>
               )
             })}
           </div>

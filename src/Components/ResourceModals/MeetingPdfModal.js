@@ -8,12 +8,18 @@ import { Worker } from '@react-pdf-viewer/core'
 import '@react-pdf-viewer/core/lib/styles/index.css'
 import '@react-pdf-viewer/default-layout/lib/styles/index.css'
 
-export default function IdeaPdfModal() {
+export default function IdeaPdfModal(props) {
   return (
     <>
       <Switch>
+        <Route path='/workspace/:id/details/:spaceKey/insideclub/:clubID/resourcedata/:resourceID/share/sharemeeting/readpdf/readfullpage'>
+          <MeetingFullPagePdf isSharing />
+        </Route>
         <Route path='/workspace/:id/details/:spaceKey/insideclub/:clubID/resourcedata/:resourceID/addmeeting/readpdf/readfullpage'>
           <MeetingFullPagePdf />
+        </Route>
+        <Route path='/workspace/:id/details/:spaceKey/insideclub/:clubID/resourcedata/:resourceID/share/sharemeeting/readpdf'>
+          <MeetingPdfModalComponent {...props} />
         </Route>
         <Route path='/workspace/:id/details/:spaceKey/insideclub/:clubID/resourcedata/:resourceID/addmeeting/readpdf'>
           <MeetingPdfModalComponent />
@@ -23,7 +29,8 @@ export default function IdeaPdfModal() {
   )
 }
 
-const MeetingPdfModalComponent = () => {
+const MeetingPdfModalComponent = (props) => {
+  const { isSharing } = props
   const param = useParams()
   const location = useLocation()
   return (
@@ -65,32 +72,64 @@ const MeetingPdfModalComponent = () => {
           zIndex: '1',
         }}
       >
-        <Link
-          to={{
-            pathname: `/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/addmeeting/readpdf/readfullpage`,
-            state: { data: location.state.src },
-          }}
-        >
-          <AiOutlineFullscreen
-            style={{
-              fontSize: '25px',
-              fontWeight: '500',
-              color: '#105eee',
-              cursor: 'pointer',
+        {isSharing ? (
+          <Link
+            to={{
+              pathname: `/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/share/sharemeeting/readpdf/readfullpage`,
+              state: { data: location.state.src },
             }}
-          />
-        </Link>
-        <Link
-          to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}`}
-        >
-          <AiFillCloseCircle
-            style={{
-              fontSize: '30px',
-              color: '#FFC8C8',
-              cursor: 'pointer',
+          >
+            <AiOutlineFullscreen
+              style={{
+                fontSize: '25px',
+                fontWeight: '500',
+                color: '#105eee',
+                cursor: 'pointer',
+              }}
+            />
+          </Link>
+        ) : (
+          <Link
+            to={{
+              pathname: `/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/addmeeting/readpdf/readfullpage`,
+              state: { data: location.state.src },
             }}
-          />
-        </Link>
+          >
+            <AiOutlineFullscreen
+              style={{
+                fontSize: '25px',
+                fontWeight: '500',
+                color: '#105eee',
+                cursor: 'pointer',
+              }}
+            />
+          </Link>
+        )}
+        {isSharing ? (
+          <Link
+            to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/share`}
+          >
+            <AiFillCloseCircle
+              style={{
+                fontSize: '30px',
+                color: '#FFC8C8',
+                cursor: 'pointer',
+              }}
+            />
+          </Link>
+        ) : (
+          <Link
+            to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}`}
+          >
+            <AiFillCloseCircle
+              style={{
+                fontSize: '30px',
+                color: '#FFC8C8',
+                cursor: 'pointer',
+              }}
+            />
+          </Link>
+        )}
       </header>
       <div
         className='modal-content'

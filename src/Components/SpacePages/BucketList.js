@@ -48,7 +48,7 @@ function BucketListComponent(props) {
           </Link>
           {space?.bucketList?.map((item) => {
             let count = 0
-            console.log(item.previews)
+
             return (
               <Link
                 to={`/workspace/${param.id}/details/${param.spaceKey}/editbucketlist/${item.id}`}
@@ -157,6 +157,8 @@ const BucketListWrapper = styled.section`
   .single-bucket .bottom .left .images-container div {
     height: 140px;
     width: 160px;
+    border-radius: 6px;
+    overflow: hidden;
   }
   .single-bucket .bottom .left .images-container div img {
     height: 100%;
@@ -164,8 +166,18 @@ const BucketListWrapper = styled.section`
     object-fit: cover;
   }
   .see-more-btn {
+    height: 140px;
+    width: 160px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #468aef;
     color: #468aef;
-    font-size: 12px;
+    font-size: 14px;
+    background: #dce5f0;
+  }
+  .see-more-btn:hover {
     text-decoration: underline;
   }
   .bucket-type {

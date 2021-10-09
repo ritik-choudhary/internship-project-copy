@@ -7,12 +7,18 @@ import { RiDeleteBin6Line } from 'react-icons/ri'
 import IdeaModal from '../ResourceModals/IdeaModal'
 import IdeaPdfModal from '../ResourceModals/IdeaPdfModal'
 
-export default function Ideas() {
+export default function Ideas(props) {
   return (
-    <IdeasWrapper>
+    <>
       <Switch>
+        <Route path='/workspace/:id/details/:spaceKey/insideclub/:clubID/resourcedata/:resourceID/share/shareidea/readpdf'>
+          <IdeaPdfModal isSharing />
+        </Route>
         <Route path='/workspace/:id/details/:spaceKey/insideclub/:clubID/resourcedata/:resourceID/addidea/readpdf'>
           <IdeaPdfModal />
+        </Route>
+        <Route path='/workspace/:id/details/:spaceKey/insideclub/:clubID/resourcedata/:resourceID/share/shareidea/:ideaID'>
+          <IdeaModal isSharing />
         </Route>
         <Route path='/workspace/:id/details/:spaceKey/insideclub/:clubID/resourcedata/:resourceID/editidea/:ideaID'>
           <IdeaModal isEditing />
@@ -23,16 +29,16 @@ export default function Ideas() {
       </Switch>
       <WorkspaceConsumer>
         {(value) => {
-          return <IdeasComponent value={value}></IdeasComponent>
+          return <IdeasComponent value={value} {...props}></IdeasComponent>
         }}
       </WorkspaceConsumer>
-    </IdeasWrapper>
+    </>
   )
 }
 
 function IdeasComponent(props) {
   const param = useParams()
-  const { value } = props
+  const { value, isSharing } = props
   const space = value.workspaceElements.find(
     (item) => item.workspaceID === param.id && item.id === param.spaceKey
   )
@@ -42,52 +48,84 @@ function IdeasComponent(props) {
   const resource = club.resources.find((item) => item.id === param.resourceID)
 
   return (
-    <div className='ideas-page'>
-      <h1 className='ideas-page-header'>All</h1>
-      <div className='ideas-container'>
-        <Link
-          to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/addidea`}
-        >
-          <div className='add-new-btn'>
-            <AiOutlinePlus />
-            <p>Add new</p>
+    <>
+      {isSharing ? (
+        <IdeasWrapper>
+          <div className='ideas-page'>
+            <h1 className='ideas-page-header'>All</h1>
+            <div className='ideas-container'>
+              {resource?.ideas?.map((item) => {
+                return (
+                  <Link
+                    to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/share/shareidea/${item.id}`}
+                  >
+                    <div className='ideas-card' key={item.id}>
+                      <div className='card-info'>
+                        <h4 className='title'>
+                          {item.title.length > 12
+                            ? `${item.title.slice(0, 12)}...`
+                            : item.title}
+                        </h4>
+                        <p className='created-on'>{item.createdOn}</p>
+                      </div>
+                    </div>
+                  </Link>
+                )
+              })}
+            </div>
           </div>
-        </Link>
-        {resource?.ideas?.map((item) => {
-          return (
-            <Link
-              to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/editidea/${item.id}`}
-            >
-              <div className='ideas-card' key={item.id}>
-                <div className='card-info'>
-                  <h4 className='title'>
-                    {item.title.length > 12
-                      ? `${item.title.slice(0, 12)}...`
-                      : item.title}
-                  </h4>
-                  <p className='created-on'>{item.createdOn}</p>
+        </IdeasWrapper>
+      ) : (
+        <IdeasWrapper>
+          <div className='ideas-page'>
+            <h1 className='ideas-page-header'>All</h1>
+            <div className='ideas-container'>
+              <Link
+                to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/addidea`}
+              >
+                <div className='add-new-btn'>
+                  <AiOutlinePlus />
+                  <p>Add new</p>
                 </div>
+              </Link>
+              {resource?.ideas?.map((item) => {
+                return (
+                  <Link
+                    to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/editidea/${item.id}`}
+                  >
+                    <div className='ideas-card' key={item.id}>
+                      <div className='card-info'>
+                        <h4 className='title'>
+                          {item.title.length > 12
+                            ? `${item.title.slice(0, 12)}...`
+                            : item.title}
+                        </h4>
+                        <p className='created-on'>{item.createdOn}</p>
+                      </div>
 
-                <div className='delete-btn'>
-                  <RiDeleteBin6Line
-                    onClick={(e) => {
-                      e.preventDefault()
-                      value.deleteIdea(
-                        param.id,
-                        param.spaceKey,
-                        param.clubID,
-                        param.resourceID,
-                        item.id
-                      )
-                    }}
-                  />
-                </div>
-              </div>
-            </Link>
-          )
-        })}
-      </div>
-    </div>
+                      <div className='delete-btn'>
+                        <RiDeleteBin6Line
+                          onClick={(e) => {
+                            e.preventDefault()
+                            value.deleteIdea(
+                              param.id,
+                              param.spaceKey,
+                              param.clubID,
+                              param.resourceID,
+                              item.id
+                            )
+                          }}
+                        />
+                      </div>
+                    </div>
+                  </Link>
+                )
+              })}
+            </div>
+          </div>
+        </IdeasWrapper>
+      )}
+    </>
   )
 }
 

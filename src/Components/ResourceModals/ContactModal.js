@@ -21,7 +21,7 @@ export default function ContactModal(props) {
 }
 
 function ContactModalComponent(props) {
-  const { value, isEditing } = props
+  const { value, isEditing, isSharing } = props
 
   const date = `${new Date().getDate()}/${
     new Date().getMonth() + 1
@@ -57,7 +57,7 @@ function ContactModalComponent(props) {
   }
 
   useEffect(() => {
-    if (isEditing) {
+    if (isEditing || isSharing) {
       const selectedSpace = value.workspaceElements.find(
         (item) => item.id === param.spaceKey && item.workspaceID === param.id
       )
@@ -118,17 +118,31 @@ function ContactModalComponent(props) {
           padding: '12px',
         }}
       >
-        <Link
-          to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}`}
-        >
-          <AiOutlineClose
-            style={{
-              fontSize: '20px',
-              color: '#c4c4c4',
-              cursor: 'pointer',
-            }}
-          />
-        </Link>
+        {isSharing ? (
+          <Link
+            to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/share`}
+          >
+            <AiOutlineClose
+              style={{
+                fontSize: '20px',
+                color: '#c4c4c4',
+                cursor: 'pointer',
+              }}
+            />
+          </Link>
+        ) : (
+          <Link
+            to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}`}
+          >
+            <AiOutlineClose
+              style={{
+                fontSize: '20px',
+                color: '#c4c4c4',
+                cursor: 'pointer',
+              }}
+            />
+          </Link>
+        )}
       </header>
       <form
         style={{
@@ -138,46 +152,52 @@ function ContactModalComponent(props) {
         }}
         onSubmit={(e) => {
           e.preventDefault()
-          if (isEditing) {
-            const contact = {
-              title: title,
-              createdOn: createdOn,
-              createdBy: createdBy,
-              personNamesList: personNamesList,
-              company: company,
-              personalDetails: personalDetails,
-              links: links,
+          if (!isSharing) {
+            if (isEditing) {
+              const contact = {
+                title: title,
+                createdOn: createdOn,
+                createdBy: createdBy,
+                personNamesList: personNamesList,
+                company: company,
+                personalDetails: personalDetails,
+                links: links,
+              }
+              value.editContact(
+                param.id,
+                param.spaceKey,
+                param.clubID,
+                param.resourceID,
+                contactToEdit.id,
+                contact
+              )
+            } else {
+              const contact = {
+                id: new Date().getTime().toString(),
+                title: title,
+                createdOn: createdOn,
+                createdBy: createdBy,
+                personNamesList: personNamesList,
+                company: company,
+                personalDetails: personalDetails,
+                links: links,
+              }
+              value.addNewContact(
+                param.id,
+                param.spaceKey,
+                param.clubID,
+                param.resourceID,
+                contact
+              )
             }
-            value.editContact(
-              param.id,
-              param.spaceKey,
-              param.clubID,
-              param.resourceID,
-              contactToEdit.id,
-              contact
+            history.push(
+              `/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}`
             )
           } else {
-            const contact = {
-              id: new Date().getTime().toString(),
-              title: title,
-              createdOn: createdOn,
-              createdBy: createdBy,
-              personNamesList: personNamesList,
-              company: company,
-              personalDetails: personalDetails,
-              links: links,
-            }
-            value.addNewContact(
-              param.id,
-              param.spaceKey,
-              param.clubID,
-              param.resourceID,
-              contact
+            history.push(
+              `/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/share`
             )
           }
-          history.push(
-            `/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}`
-          )
         }}
       >
         <div className='contact-note-name' style={{ paddingBottom: '20px' }}>
@@ -188,7 +208,9 @@ function ContactModalComponent(props) {
             name='name'
             id='name'
             value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            onChange={(e) => {
+              if (!isSharing) setTitle(e.target.value)
+            }}
             placeholder='Untitled Contact Document'
             style={{
               width: '400px',
@@ -213,7 +235,9 @@ function ContactModalComponent(props) {
               id='created-by'
               value={createdBy}
               className={createdBy ? '' : 'skeleton'}
-              onChange={(e) => setCreatedBy(e.target.value)}
+              onChange={(e) => {
+                if (!isSharing) setCreatedBy(e.target.value)
+              }}
             />
           </div>
           <div className='single-option'>
@@ -231,8 +255,11 @@ function ContactModalComponent(props) {
                 name='person-name'
                 id='person-name'
                 value={personName}
+                disabled={isSharing}
                 className={personName ? '' : 'skeleton'}
-                onChange={(e) => setPersonName(e.target.value)}
+                onChange={(e) => {
+                  setPersonName(e.target.value)
+                }}
               />
 
               <div className='add-sponsor-btn'>
@@ -250,9 +277,11 @@ function ContactModalComponent(props) {
                     cursor: 'pointer',
                   }}
                   onClick={(e) => {
-                    if (personName) {
-                      setPersonNamesList([...personNamesList, personName])
-                      setPersonName('')
+                    if (!isSharing) {
+                      if (personName) {
+                        setPersonNamesList([...personNamesList, personName])
+                        setPersonName('')
+                      }
                     }
                   }}
                 />
@@ -294,7 +323,9 @@ function ContactModalComponent(props) {
               id='company'
               value={company}
               className={company ? '' : 'skeleton'}
-              onChange={(e) => setCompany(e.target.value)}
+              onChange={(e) => {
+                if (!isSharing) setCompany(e.target.value)
+              }}
             />
           </div>
           <div className='single-option'>
@@ -305,7 +336,9 @@ function ContactModalComponent(props) {
               id='personalDetails'
               value={personalDetails}
               className={personalDetails ? '' : 'skeleton'}
-              onChange={(e) => setPersonalDetails(e.target.value)}
+              onChange={(e) => {
+                if (!isSharing) setPersonalDetails(e.target.value)
+              }}
             />
           </div>
           <div className='single-option'>
@@ -316,6 +349,7 @@ function ContactModalComponent(props) {
               name='link'
               id='link'
               value={linkToAdd}
+              disabled={isSharing}
               className={linkToAdd ? '' : 'skeleton'}
               onChange={(e) => setLinkToAdd(e.target.value)}
             />
@@ -365,7 +399,8 @@ function ContactModalComponent(props) {
                     alignItems: 'center',
                     width: '60px',
                     height: '20px',
-                    background: '#C8E1FF',
+                    border: '1px solid #468AEF',
+                    whiteSpace: 'nowrap',
                     borderRadius: '5px',
                     fontSize: '12px',
                     gap: '5px',
@@ -377,7 +412,7 @@ function ContactModalComponent(props) {
                     target='_blank'
                     rel='noreferrer noopener'
                     style={{
-                      color: 'black',
+                      color: '#468AEF',
                       fontSize: '12px',
                       fontWeight: '400',
                     }}

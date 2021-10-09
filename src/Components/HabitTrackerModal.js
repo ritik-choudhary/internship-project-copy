@@ -180,7 +180,7 @@ function HabitTrackerModalComponent(props) {
                     { date: date, completed: false },
                   ]
                 })
-                tempStatus = [...tempStatus, { [item.field]: dateListTemp }]
+                tempStatus = [...tempStatus, { [item.id]: dateListTemp }]
                 setStatus(tempStatus)
               })
               value.addNewHabit(param.id, param.spaceKey, {
@@ -213,7 +213,7 @@ function HabitTrackerModalComponent(props) {
                   { date: date, completed: false },
                 ]
               })
-              tempStatus = [...tempStatus, { [item]: dateListTemp }]
+              tempStatus = [...tempStatus, { [item.id]: dateListTemp }]
               setStatus(tempStatus)
             })
             value.addNewHabitField(
@@ -346,10 +346,22 @@ function HabitTrackerModalComponent(props) {
               style={{ fontSize: '16px', color: '#468AEF', cursor: 'pointer' }}
               onClick={() => {
                 if (fieldToAdd) {
-                  setTempFieldsList([...tempFieldsList, fieldToAdd])
+                  setTempFieldsList([
+                    ...tempFieldsList,
+                    {
+                      id: new Date().getTime().toString(),
+                      field: fieldToAdd,
+                      color:
+                        '#' +
+                        (0x1000000 + Math.random() * 0xffffff)
+                          .toString(16)
+                          .substr(1, 6),
+                    },
+                  ])
                   setFieldsList([
                     ...fieldsList,
                     {
+                      id: new Date().getTime().toString(),
                       field: fieldToAdd,
                       color:
                         '#' +

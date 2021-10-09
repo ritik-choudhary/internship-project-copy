@@ -85,14 +85,6 @@ function TasksComponent(props) {
                             : item.title}
                         </label>
                       </div>
-                      <div className='right'>
-                        <Link
-                          to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/share/sharetask/${item.id}`}
-                        >
-                          <FiEdit className='edit-btn' />
-                        </Link>
-                        <RiDeleteBin6Line className='delete-btn' />
-                      </div>
                     </div>
                     <div className='middle'>
                       <p className='created-on'>Created on: {item.createdOn}</p>
@@ -119,7 +111,7 @@ function TasksComponent(props) {
                                 target='_blank'
                                 rel='noreferrer noopener'
                                 style={{
-                                  color: 'black',
+                                  color: '#468aef',
                                   fontSize: '12px',
                                   fontWeight: '400',
                                   width: '80%',
@@ -131,15 +123,6 @@ function TasksComponent(props) {
                             </div>
                           )
                         })}
-                        {item.links.length > 3 ? (
-                          <div className='see-more-btn'>
-                            <Link
-                              to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/share/sharetask/${item.id}`}
-                            >
-                              See more
-                            </Link>
-                          </div>
-                        ) : null}
                       </div>
                       <div className='pdf-container'>
                         {item.pdfList.map((pdf) => {
@@ -165,15 +148,6 @@ function TasksComponent(props) {
                             </Link>
                           )
                         })}
-                        {item.pdfList.length > 3 ? (
-                          <div className='see-more-btn'>
-                            <Link
-                              to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/share/sharetask/${item.id}`}
-                            >
-                              See more
-                            </Link>
-                          </div>
-                        ) : null}
                       </div>
                     </div>
                   </div>
@@ -278,7 +252,7 @@ function TasksComponent(props) {
                                 target='_blank'
                                 rel='noreferrer noopener'
                                 style={{
-                                  color: 'black',
+                                  color: '#468aef',
                                   fontSize: '12px',
                                   fontWeight: '400',
                                   width: '80%',
@@ -463,13 +437,14 @@ const TasksPageWrapper = styled.section`
     align-items: center;
     width: 60px;
     height: 20px;
-    background: #c8e1ff;
+    border: 1px solid #468aef;
     border-radius: 5px;
     font-size: 12px;
     gap: 5px;
     padding: 0 5px;
-    color: black;
+    color: #468aef;
     font-weight: 400;
+    white-space: nowrap;
   }
   .single-task .link:hover,
   .single-task .pdf:hover {

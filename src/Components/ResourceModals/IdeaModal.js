@@ -23,7 +23,7 @@ export default function IdeaModal(props) {
 }
 
 function IdeaModalComponent(props) {
-  const { value, isEditing } = props
+  const { value, isEditing, isSharing } = props
 
   const date = `${new Date().getDate()}/${
     new Date().getMonth() + 1
@@ -66,7 +66,7 @@ function IdeaModalComponent(props) {
   }
 
   useEffect(() => {
-    if (isEditing) {
+    if (isEditing || isSharing) {
       const selectedSpace = value.workspaceElements.find(
         (item) => item.id === param.spaceKey && item.workspaceID === param.id
       )
@@ -145,17 +145,31 @@ function IdeaModalComponent(props) {
           padding: '12px 30px',
         }}
       >
-        <Link
-          to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}`}
-        >
-          <AiFillCloseCircle
-            style={{
-              fontSize: '30px',
-              color: '#FFC8C8',
-              cursor: 'pointer',
-            }}
-          />
-        </Link>
+        {isSharing ? (
+          <Link
+            to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/share`}
+          >
+            <AiFillCloseCircle
+              style={{
+                fontSize: '30px',
+                color: '#FFC8C8',
+                cursor: 'pointer',
+              }}
+            />
+          </Link>
+        ) : (
+          <Link
+            to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}`}
+          >
+            <AiFillCloseCircle
+              style={{
+                fontSize: '30px',
+                color: '#FFC8C8',
+                cursor: 'pointer',
+              }}
+            />
+          </Link>
+        )}
       </header>
       <form
         style={{
@@ -165,47 +179,53 @@ function IdeaModalComponent(props) {
         }}
         onSubmit={(e) => {
           e.preventDefault()
-          if (isEditing) {
-            const idea = {
-              title: title,
-              createdOn: createdOn,
-              createdBy: createdBy,
-              type: type,
-              links: links,
-              pdfList: pdfList,
-              note: textNote,
-            }
-            value.editIdea(
-              param.id,
-              param.spaceKey,
-              param.clubID,
-              param.resourceID,
-              ideaToEdit.id,
+          if (!isSharing) {
+            if (isEditing) {
+              const idea = {
+                title: title,
+                createdOn: createdOn,
+                createdBy: createdBy,
+                type: type,
+                links: links,
+                pdfList: pdfList,
+                note: textNote,
+              }
+              value.editIdea(
+                param.id,
+                param.spaceKey,
+                param.clubID,
+                param.resourceID,
+                ideaToEdit.id,
 
-              idea
+                idea
+              )
+            } else {
+              const idea = {
+                id: new Date().getTime().toString(),
+                title: title,
+                createdOn: createdOn,
+                createdBy: createdBy,
+                type: type,
+                links: links,
+                pdfList: pdfList,
+                note: textNote,
+              }
+              value.addNewIdea(
+                param.id,
+                param.spaceKey,
+                param.clubID,
+                param.resourceID,
+                idea
+              )
+            }
+            history.push(
+              `/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}`
             )
           } else {
-            const idea = {
-              id: new Date().getTime().toString(),
-              title: title,
-              createdOn: createdOn,
-              createdBy: createdBy,
-              type: type,
-              links: links,
-              pdfList: pdfList,
-              note: textNote,
-            }
-            value.addNewIdea(
-              param.id,
-              param.spaceKey,
-              param.clubID,
-              param.resourceID,
-              idea
+            history.push(
+              `/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/share`
             )
           }
-          history.push(
-            `/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}`
-          )
         }}
       >
         <div className='idea-note-name' style={{ paddingBottom: '20px' }}>
@@ -241,7 +261,9 @@ function IdeaModalComponent(props) {
               id='created-by'
               value={createdBy}
               className={createdBy ? '' : 'skeleton'}
-              onChange={(e) => setCreatedBy(e.target.value)}
+              onChange={(e) => {
+                if (!isSharing) setCreatedBy(e.target.value)
+              }}
             />
           </div>
           <div className='single-option'>
@@ -252,7 +274,9 @@ function IdeaModalComponent(props) {
               id='type'
               value={type}
               className={type ? '' : 'skeleton'}
-              onChange={(e) => setType(e.target.value)}
+              onChange={(e) => {
+                if (!isSharing) setType(e.target.value)
+              }}
             />
           </div>
 
@@ -265,7 +289,9 @@ function IdeaModalComponent(props) {
               id='link'
               value={linkToAdd}
               className={linkToAdd ? '' : 'skeleton'}
-              onChange={(e) => setLinkToAdd(e.target.value)}
+              onChange={(e) => {
+                if (!isSharing) setLinkToAdd(e.target.value)
+              }}
             />
             <div className='add-link-btn'>
               <AiOutlinePlus
@@ -282,9 +308,11 @@ function IdeaModalComponent(props) {
                   cursor: 'pointer',
                 }}
                 onClick={(e) => {
-                  if (linkToAdd && isValidHttpUrl(linkToAdd)) {
-                    setLinks([...links, linkToAdd])
-                    setLinkToAdd('')
+                  if (!isSharing) {
+                    if (linkToAdd && isValidHttpUrl(linkToAdd)) {
+                      setLinks([...links, linkToAdd])
+                      setLinkToAdd('')
+                    }
                   }
                 }}
               />
@@ -313,7 +341,8 @@ function IdeaModalComponent(props) {
                     alignItems: 'center',
                     width: '60px',
                     height: '20px',
-                    background: '#C8E1FF',
+                    border: '1px solid #468AEF',
+                    whiteSpace: 'nowrap',
                     borderRadius: '5px',
                     fontSize: '12px',
                     gap: '5px',
@@ -326,7 +355,7 @@ function IdeaModalComponent(props) {
                     target='_blank'
                     rel='noreferrer noopener'
                     style={{
-                      color: 'black',
+                      color: '#468AEF',
                       fontSize: '12px',
                       fontWeight: '400',
                       width: '80%',
@@ -346,15 +375,18 @@ function IdeaModalComponent(props) {
               name='pdf'
               id='pdf'
               hidden
+              disabled={isSharing}
               accept='.pdf'
               onChange={(e) => {
-                setPdfList([
-                  ...pdfList,
-                  {
-                    pdfId: new Date().getTime().toString(),
-                    pdfFile: e.target.files[0],
-                  },
-                ])
+                if (!isSharing) {
+                  setPdfList([
+                    ...pdfList,
+                    {
+                      pdfId: new Date().getTime().toString(),
+                      pdfFile: e.target.files[0],
+                    },
+                  ])
+                }
               }}
             />
             <label htmlFor='pdf'>
@@ -403,45 +435,91 @@ function IdeaModalComponent(props) {
               )
               pdfCount++
               return (
-                <Link
-                  to={{
-                    pathname: `/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/addidea/readpdf`,
-                    state: { src: linkToPdf?.source },
-                  }}
-                  key={pdf.pdfId}
-                  onClick={(e) => {
-                    if (!isEditing) {
-                      e.preventDefault()
-                    }
-                  }}
-                >
-                  <div
-                    className='pdf-file'
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'center',
-                      gap: '5px',
-                      alignItems: 'center',
-                      width: '60px',
-                      height: '20px',
-                      background: '#C8E1FF',
-                      borderRadius: '5px',
-                      fontSize: '12px',
-                      padding: '0 5px',
-                    }}
-                  >
-                    <p
-                      style={{
-                        color: 'black',
-                        width: '80%',
-                        fontWeight: '400',
+                <>
+                  {isSharing ? (
+                    <Link
+                      to={{
+                        pathname: `/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/share/shareidea/readpdf`,
+                        state: { src: linkToPdf?.source },
+                      }}
+                      key={pdf.pdfId}
+                      onClick={(e) => {
+                        if (!isEditing && !isSharing) {
+                          e.preventDefault()
+                        }
                       }}
                     >
-                      Pdf {pdfCount}
-                    </p>
-                    <AiOutlineClose style={{ color: '#f54848' }} />
-                  </div>
-                </Link>
+                      <div
+                        className='pdf-file'
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'center',
+                          gap: '5px',
+                          alignItems: 'center',
+                          width: '60px',
+                          height: '20px',
+                          border: '1px solid #468AEF',
+                          whiteSpace: 'nowrap',
+                          borderRadius: '5px',
+                          fontSize: '12px',
+                          padding: '0 5px',
+                        }}
+                      >
+                        <p
+                          style={{
+                            color: '#468AEF',
+                            width: '80%',
+                            fontWeight: '400',
+                          }}
+                        >
+                          Pdf {pdfCount}
+                        </p>
+                        <AiOutlineClose style={{ color: '#f54848' }} />
+                      </div>
+                    </Link>
+                  ) : (
+                    <Link
+                      to={{
+                        pathname: `/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/addidea/readpdf`,
+                        state: { src: linkToPdf?.source },
+                      }}
+                      key={pdf.pdfId}
+                      onClick={(e) => {
+                        if (!isEditing) {
+                          e.preventDefault()
+                        }
+                      }}
+                    >
+                      <div
+                        className='pdf-file'
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'center',
+                          gap: '5px',
+                          alignItems: 'center',
+                          width: '60px',
+                          height: '20px',
+                          border: '1px solid #468AEF',
+                          whiteSpace: 'nowrap',
+                          borderRadius: '5px',
+                          fontSize: '12px',
+                          padding: '0 5px',
+                        }}
+                      >
+                        <p
+                          style={{
+                            color: '#468AEF',
+                            width: '80%',
+                            fontWeight: '400',
+                          }}
+                        >
+                          Pdf {pdfCount}
+                        </p>
+                        <AiOutlineClose style={{ color: '#f54848' }} />
+                      </div>
+                    </Link>
+                  )}
+                </>
               )
             })}
           </div>

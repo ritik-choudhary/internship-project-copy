@@ -6,10 +6,13 @@ import { WorkspaceConsumer } from '../../Context'
 import { RiDeleteBin6Line } from 'react-icons/ri'
 import FinanceModal from '../ResourceModals/FinanceModal'
 
-export default function Finance() {
+export default function Finance(props) {
   return (
-    <FinancePageWrapper>
+    <>
       <Switch>
+        <Route path='/workspace/:id/details/:spaceKey/insideclub/:clubID/resourcedata/:resourceID/share/sharefinance/:financeID'>
+          <FinanceModal isSharing />
+        </Route>
         <Route path='/workspace/:id/details/:spaceKey/insideclub/:clubID/resourcedata/:resourceID/editfinance/:financeID'>
           <FinanceModal isEditing />
         </Route>
@@ -19,15 +22,15 @@ export default function Finance() {
       </Switch>
       <WorkspaceConsumer>
         {(value) => {
-          return <FinanceComponent value={value}></FinanceComponent>
+          return <FinanceComponent value={value} {...props}></FinanceComponent>
         }}
       </WorkspaceConsumer>
-    </FinancePageWrapper>
+    </>
   )
 }
 
 function FinanceComponent(props) {
-  const { value } = props
+  const { value, isSharing } = props
   const param = useParams()
 
   const space = value.workspaceElements.find(
@@ -38,52 +41,84 @@ function FinanceComponent(props) {
 
   const resource = club.resources.find((item) => item.id === param.resourceID)
   return (
-    <div className='finance-page'>
-      <h1 className='finance-page-header'>All</h1>
-      <div className='finance-container'>
-        <Link
-          to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/addfinance`}
-        >
-          <div className='add-new-btn'>
-            <AiOutlinePlus />
-            <p>Add new</p>
+    <>
+      {isSharing ? (
+        <FinancePageWrapper>
+          <div className='finance-page'>
+            <h1 className='finance-page-header'>All</h1>
+            <div className='finance-container'>
+              {resource?.finances?.map((item) => {
+                return (
+                  <Link
+                    to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/share/sharefinance/${item.id}`}
+                  >
+                    <div className='finance-card' key={item.id}>
+                      <div className='card-info'>
+                        <h4 className='title'>
+                          {item.title.length > 12
+                            ? `${item.title.slice(0, 12)}...`
+                            : item.title}
+                        </h4>
+                        <p className='created-on'>{item.createdOn}</p>
+                      </div>
+                    </div>
+                  </Link>
+                )
+              })}
+            </div>
           </div>
-        </Link>
-        {resource?.finances?.map((item) => {
-          return (
-            <Link
-              to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/editfinance/${item.id}`}
-            >
-              <div className='finance-card' key={item.id}>
-                <div className='card-info'>
-                  <h4 className='title'>
-                    {item.title.length > 12
-                      ? `${item.title.slice(0, 12)}...`
-                      : item.title}
-                  </h4>
-                  <p className='created-on'>{item.createdOn}</p>
+        </FinancePageWrapper>
+      ) : (
+        <FinancePageWrapper>
+          <div className='finance-page'>
+            <h1 className='finance-page-header'>All</h1>
+            <div className='finance-container'>
+              <Link
+                to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/addfinance`}
+              >
+                <div className='add-new-btn'>
+                  <AiOutlinePlus />
+                  <p>Add new</p>
                 </div>
+              </Link>
+              {resource?.finances?.map((item) => {
+                return (
+                  <Link
+                    to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/editfinance/${item.id}`}
+                  >
+                    <div className='finance-card' key={item.id}>
+                      <div className='card-info'>
+                        <h4 className='title'>
+                          {item.title.length > 12
+                            ? `${item.title.slice(0, 12)}...`
+                            : item.title}
+                        </h4>
+                        <p className='created-on'>{item.createdOn}</p>
+                      </div>
 
-                <div className='delete-btn'>
-                  <RiDeleteBin6Line
-                    onClick={(e) => {
-                      e.preventDefault()
-                      value.deleteFinance(
-                        param.id,
-                        param.spaceKey,
-                        param.clubID,
-                        param.resourceID,
-                        item.id
-                      )
-                    }}
-                  />
-                </div>
-              </div>
-            </Link>
-          )
-        })}
-      </div>
-    </div>
+                      <div className='delete-btn'>
+                        <RiDeleteBin6Line
+                          onClick={(e) => {
+                            e.preventDefault()
+                            value.deleteFinance(
+                              param.id,
+                              param.spaceKey,
+                              param.clubID,
+                              param.resourceID,
+                              item.id
+                            )
+                          }}
+                        />
+                      </div>
+                    </div>
+                  </Link>
+                )
+              })}
+            </div>
+          </div>
+        </FinancePageWrapper>
+      )}
+    </>
   )
 }
 

@@ -11,6 +11,7 @@ import Finance from '../Components/resourcepages/Finance'
 import MeetingNotes from '../Components/resourcepages/MeetingNotes'
 import Contacts from '../Components/resourcepages/Contacts'
 import Modal from 'react-modal'
+import { AiFillCloseCircle } from 'react-icons/ai'
 
 export default function ResourcePage(props) {
   return (
@@ -70,15 +71,21 @@ function ResourcePageComponent(props) {
           <ResourcePageWrapper>
             <div className='resource-content-page'>
               <div className='page-container'>
-                <div className='resource-content-header'>
+                <div className='share-content-header'>
                   <h3>thesocialcomment</h3>
-                  <div className='right-header'>
-                    <FaBell className='bell-icon' />
+                  <div className='share-right-header'>
                     <Link
                       to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/share`}
                     >
                       <div className='resource-content-back-btn'>
                         <RiArrowGoBackFill /> Back
+                      </div>
+                    </Link>
+                    <Link
+                      to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}`}
+                    >
+                      <div className='single-club-close-btn'>
+                        <AiFillCloseCircle />
                       </div>
                     </Link>
                   </div>
@@ -231,7 +238,16 @@ const ResourcePageWrapper = styled.section`
     align-items: center;
     background: black;
   }
-  .resource-content-header h3 {
+  .share-content-header {
+    padding: 10px 50px 10px 150px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: black;
+  }
+  .resource-content-header h3,
+  .share-content-header h3 {
     color: white;
     margin-left: -130px;
   }
@@ -240,8 +256,17 @@ const ResourcePageWrapper = styled.section`
     align-items: center;
     gap: 20px;
   }
+  .share-right-header {
+    display: flex;
+    align-items: center;
+    gap: 70px;
+  }
   .bell-icon {
     color: #ffca10;
+  }
+  .single-club-close-btn {
+    color: #ffc8c8;
+    font-size: 30px;
   }
   .resource-content-back-btn {
     padding: 10px 20px;
@@ -259,6 +284,7 @@ const ResourcePageWrapper = styled.section`
     align-items: center;
     gap: 5px;
   }
+
   .resource-content-back-btn:hover {
     transform: scale(1.05);
   }
