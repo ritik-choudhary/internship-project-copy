@@ -54,13 +54,19 @@ function BucketListComponent(props) {
                 to={`/workspace/${param.id}/details/${param.spaceKey}/editbucketlist/${item.id}`}
               >
                 <div className='single-bucket'>
-                  <h2 className='bucket-title'>{item.title}</h2>
+                  <div className='top'>
+                    <h2 className='bucket-title'>{item.title}</h2>
+                    <div className='right'>
+                      <p className='bucket-type'>{item.type}</p>
+                      <p className='created-on'>{item.createdOn}</p>
+                    </div>
+                  </div>
                   <div className='bottom'>
                     <div className='left'>
                       <div className='images-container'>
                         {item.previews.map((image) => {
                           count++
-                          if (count > 5) {
+                          if (count > 6) {
                             return <></>
                           }
                           return (
@@ -70,17 +76,13 @@ function BucketListComponent(props) {
                           )
                         })}
                       </div>
-                      {item.previews.length > 5 ? (
+                      {item.previews.length > 6 ? (
                         <Link
                           to={`/workspace/${param.id}/details/${param.spaceKey}/bucketlistcontent/${item.id}`}
                         >
                           <div className='see-more-btn'>see more</div>
                         </Link>
                       ) : null}
-                    </div>
-                    <div className='right'>
-                      <p className='bucket-type'>{item.type}</p>
-                      <p className='created-on'>{item.createdOn}</p>
                     </div>
                   </div>
                 </div>
@@ -141,18 +143,23 @@ const BucketListWrapper = styled.section`
     justify-content: space-between;
     align-items: center;
   }
+  .single-bucket .top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
   .single-bucket .bottom .left {
     display: flex;
-    gap: 20px;
+    gap: 10px;
     align-items: flex-end;
   }
-  .single-bucket .bottom .right .created-on {
+  .single-bucket .top .right .created-on {
     color: #c4c4c4;
     font-size: 12px;
   }
   .single-bucket .bottom .left .images-container {
     display: flex;
-    gap: 5px;
+    gap: 10px;
   }
   .single-bucket .bottom .left .images-container div {
     height: 140px;

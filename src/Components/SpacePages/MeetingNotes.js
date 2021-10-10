@@ -135,6 +135,9 @@ const MeetingNotesWrapper = styled.section`
     cursor: pointer;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
   }
+  .meeting-notes-card:hover {
+    transform: translateY(-3px);
+  }
   .meeting-notes-card .title {
     font-size: 14px;
     color: black;

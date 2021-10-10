@@ -64,12 +64,14 @@ export default function Sidebar() {
             isSidebarOpen={isSidebarOpen}
           />
         </Link>
-        <Option
-          Icon={FaBriefcase}
-          title={'Internships'}
-          setIsSidebarOpen={setIsSidebarOpen}
-          isSidebarOpen={isSidebarOpen}
-        />
+        <Link to='/internships' className='sidebar-icon-link'>
+          <Option
+            Icon={FaBriefcase}
+            title={'Internships'}
+            setIsSidebarOpen={setIsSidebarOpen}
+            isSidebarOpen={isSidebarOpen}
+          />
+        </Link>
         <Option
           Icon={BsFillBarChartFill}
           title={'Insights'}

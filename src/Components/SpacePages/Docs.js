@@ -125,6 +125,9 @@ const DocsWrapper = styled.section`
     cursor: pointer;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
   }
+  .docs-card:hover {
+    transform: translateY(-3px);
+  }
   .docs-card .title {
     font-size: 14px;
     color: black;

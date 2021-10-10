@@ -11,6 +11,7 @@ class WorkspaceProvider extends Component {
     workspaceElements: [],
     journal: [],
     notes: [],
+    internships: [],
   }
 
   addNewWorkspace = (newItem) => {
@@ -1564,6 +1565,49 @@ class WorkspaceProvider extends Component {
     })
   }
 
+  addNewOngoingInternship = (internship) => {
+    const oldInternships = [...this.state.internships]
+    internship.status = 'ONGOING'
+    const newInternships = [...oldInternships, internship]
+    this.setState(() => {
+      return { internships: newInternships }
+    })
+  }
+
+  addNewAppliedInternship = (internship) => {
+    const oldInternships = [...this.state.internships]
+    const newInternships = [...oldInternships, internship]
+    this.setState(() => {
+      return { internships: newInternships }
+    })
+  }
+
+  addNewInternshipTask = (internshipId, task) => {
+    const oldInternships = [...this.state.internships]
+    let selectedInternship = oldInternships.find(
+      (item) => item.id === internshipId
+    )
+    selectedInternship.tasks = selectedInternship.tasks || []
+    selectedInternship.tasks = [...selectedInternship.tasks, task]
+    this.setState(() => {
+      return { internships: oldInternships }
+    })
+  }
+
+  internshipTaskManipulation = (internshipId, taskId) => {
+    const oldInternships = [...this.state.internships]
+    const selectedInternship = oldInternships.find(
+      (item) => item.id === internshipId
+    )
+    let selectedTask = selectedInternship.tasks.find(
+      (item) => item.id === taskId
+    )
+    selectedTask.completed = !selectedTask.completed
+    this.setState(() => {
+      return { internships: oldInternships }
+    })
+  }
+
   render() {
     return (
       <WorkspaceContext.Provider
@@ -1660,6 +1704,10 @@ class WorkspaceProvider extends Component {
           editNotes: this.editNotes,
           deleteNotesPermanently: this.deleteNotesPermanently,
           restoreNotes: this.restoreNotes,
+          addNewOngoingInternship: this.addNewOngoingInternship,
+          addNewAppliedInternship: this.addNewAppliedInternship,
+          addNewInternshipTask: this.addNewInternshipTask,
+          internshipTaskManipulation: this.internshipTaskManipulation,
         }}
       >
         {this.props.children}

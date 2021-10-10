@@ -630,6 +630,7 @@ function TaskModalComponent(props) {
               border: '1px solid #C4C4C4',
               fontSize: '12px',
               padding: '5px 5px',
+              fontFamily: 'Open Sans',
             }}
           />
         </div>

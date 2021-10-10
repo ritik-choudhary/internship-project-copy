@@ -18,6 +18,7 @@ import BucketListContent from './Components/BucketListContent'
 import Journal from './Pages/Journal'
 import ShareClubResourceModal from './Components/ShareClubResourceModal'
 import Notes from './Pages/Notes'
+import Internships from './Pages/Internships'
 
 Modal.setAppElement('#root')
 
@@ -70,6 +71,9 @@ function App() {
 
           <Route path='/journal' component={Journal}></Route>
           <Route path='/notes' component={Notes} />
+          <Route path='/internships'>
+            <Internships />
+          </Route>
           <Route exact path='/trash' component={Trash}></Route>
         </Switch>
       </Router>

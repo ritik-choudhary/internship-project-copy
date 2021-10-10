@@ -221,6 +221,9 @@ const JournalWrapper = styled.section`
     cursor: pointer;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
   }
+  .journal-card:hover {
+    transform: translateY(-3px);
+  }
   .journal-card .title {
     font-size: 14px;
     color: black;

@@ -14,6 +14,7 @@ export default function SpaceUploadModal() {
   const history = useHistory()
   const [thumbnail, setThumbnail] = useState()
   const [preview, setPreview] = useState(Images[randomIndex])
+  const [altName, setAltName] = useState()
 
   useEffect(() => {
     if (thumbnail) {
@@ -87,8 +88,17 @@ export default function SpaceUploadModal() {
               }}
               onSubmit={(e) => {
                 e.preventDefault()
-                value.addNewSpace({ ...location.state.space, image: preview })
-                history.push(`/workspace/${param.id}/details`)
+                if (location.state.space.version > 1) {
+                  let newSpaceObject = { ...location.state.space }
+                  if (altName) {
+                    newSpaceObject.altName = altName
+                  }
+                  value.addNewSpace({ ...newSpaceObject, image: preview })
+                  history.push(`/workspace/${param.id}/details`)
+                } else {
+                  value.addNewSpace({ ...location.state.space, image: preview })
+                  history.push(`/workspace/${param.id}/details`)
+                }
               }}
             >
               <div
@@ -107,9 +117,37 @@ export default function SpaceUploadModal() {
                 >
                   Name of the new space
                 </p>
-                <h4 style={{ fontSize: '16px', fontWeight: '500' }}>
-                  {location.state.space.title}
-                </h4>
+                <div
+                  style={{ display: 'flex', gap: '10px', alignItems: 'center' }}
+                >
+                  <h4 style={{ fontSize: '16px', fontWeight: '500' }}>
+                    {location.state.space.title}{' '}
+                    {location.state.space.version > 1
+                      ? `(${location.state.space.version})`
+                      : null}
+                  </h4>
+                  {location.state.space.version > 1 ? (
+                    <p style={{ color: '#c4c4c4', fontSize: '40px' }}>/</p>
+                  ) : null}
+
+                  {location.state.space.version > 1 ? (
+                    <input
+                      type='text'
+                      name='alternative-name'
+                      id='alt-name'
+                      value={altName}
+                      onChange={(e) => setAltName(e.target.value)}
+                      style={{
+                        borderRadius: '6px',
+                        outline: 'none',
+                        border: '1px solid #c4c4c4',
+                        fontSize: '15px',
+                        padding: '0px 5px',
+                        height: '25px',
+                      }}
+                    />
+                  ) : null}
+                </div>
               </div>
               <div
                 style={{

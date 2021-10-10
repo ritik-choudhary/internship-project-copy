@@ -123,12 +123,18 @@ const DetailPageComponent = () => {
               const displayItemList = value.workspaceElements.filter(
                 (item) => item.workspaceID === param.id
               )
+              console.log(displayItemList)
               return displayItemList.map((item) => {
                 let num = 0
+                let alt = ''
                 if (item.version > 1) {
+                  if (item?.altName) {
+                    alt = item.altName
+                  }
                   num = item.version
                 }
                 const printable = num ? true : false
+                const isAlt = alt ? true : false
                 return (
                   <div key={item.id}>
                     <Link to={`/workspace/${param.id}/details/${item.id}`}>
@@ -142,7 +148,11 @@ const DetailPageComponent = () => {
 
                         <p className='space-title'>
                           {item.title}
-                          {printable ? ` (${num})` : ''}
+                          {printable
+                            ? isAlt
+                              ? ` (${item.altName})`
+                              : `(${num})`
+                            : ''}
                         </p>
 
                         <div className='space-delete-btn'>
