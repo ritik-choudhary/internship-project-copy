@@ -1576,6 +1576,9 @@ class WorkspaceProvider extends Component {
 
   addNewAppliedInternship = (internship) => {
     const oldInternships = [...this.state.internships]
+    if (internship.status === 'ONGOING') {
+      internship.startDate = new Date()
+    }
     const newInternships = [...oldInternships, internship]
     this.setState(() => {
       return { internships: newInternships }
@@ -1603,6 +1606,20 @@ class WorkspaceProvider extends Component {
       (item) => item.id === taskId
     )
     selectedTask.completed = !selectedTask.completed
+    this.setState(() => {
+      return { internships: oldInternships }
+    })
+  }
+
+  handleInternshipStatus = (internshipId, status) => {
+    const oldInternships = [...this.state.internships]
+    let selectedInternship = oldInternships.find(
+      (item) => item.id === internshipId
+    )
+    selectedInternship.status = status
+    if (status === 'ONGOING') {
+      selectedInternship.startDate = new Date()
+    }
     this.setState(() => {
       return { internships: oldInternships }
     })
@@ -1708,6 +1725,7 @@ class WorkspaceProvider extends Component {
           addNewAppliedInternship: this.addNewAppliedInternship,
           addNewInternshipTask: this.addNewInternshipTask,
           internshipTaskManipulation: this.internshipTaskManipulation,
+          handleInternshipStatus: this.handleInternshipStatus,
         }}
       >
         {this.props.children}

@@ -46,6 +46,7 @@ function InternshipsComponent(props) {
   const { value } = props
   const [isOngoing, setIsOngoing] = useState(true)
   const [isApplied, setIsApplied] = useState(false)
+  const [isStatusBarOpen, setIsStatusBarOpen] = useState(false)
   return (
     <InternshipsWrapper>
       <div className='internships-page'>
@@ -193,13 +194,59 @@ function InternshipsComponent(props) {
                   console.log(item)
                   if (item.status !== 'ONGOING') {
                     return (
-                      <div className='internship-card'>
+                      <div className='internship-card pos'>
                         <section>
-                          <div className='left'>
+                          <div className='left '>
                             <h1 className='title'>{item.title}</h1>
                             <p className='company'>{item.company}</p>
                           </div>
-                          <div className='right'>{item.status}</div>
+                          <div
+                            className='right'
+                            onClick={() => setIsStatusBarOpen(!isStatusBarOpen)}
+                          >
+                            {item.status}
+                          </div>
+                          <div
+                            className={`status-change-options ${
+                              isStatusBarOpen
+                                ? 'status-bar-open'
+                                : 'status-bar-closed'
+                            }`}
+                          >
+                            <p
+                              className='in-review'
+                              onClick={(e) => {
+                                value.handleInternshipStatus(
+                                  item.id,
+                                  'IN REVIEW'
+                                )
+                                setIsStatusBarOpen(false)
+                              }}
+                            >
+                              IN REVIEW
+                            </p>
+                            <p
+                              className='in-touch'
+                              onClick={(e) => {
+                                value.handleInternshipStatus(
+                                  item.id,
+                                  'IN TOUCH'
+                                )
+                                setIsStatusBarOpen(false)
+                              }}
+                            >
+                              IN TOUCH
+                            </p>
+                            <p
+                              className='ongoing'
+                              onClick={(e) => {
+                                value.handleInternshipStatus(item.id, 'ONGOING')
+                                setIsStatusBarOpen(false)
+                              }}
+                            >
+                              ONGOING
+                            </p>
+                          </div>
                         </section>
                       </div>
                     )
@@ -433,10 +480,37 @@ const InternshipsWrapper = styled.section`
   .internship-card .right {
     color: #468aef;
     font-size: 12px;
+    cursor: pointer;
   }
   .internship-card section {
     display: flex;
     justify-content: space-between;
     align-items: center;
+  }
+  .pos {
+    position: relative;
+  }
+  .status-change-options {
+    position: absolute;
+    right: 0;
+    font-size: 12px;
+    color: #468aef;
+    top: 50px;
+    background: #f9f9f9;
+    padding: 10px;
+
+    flex-direction: column;
+    gap: 5px;
+  }
+  .ongoing,
+  .in-touch,
+  .in-review {
+    cursor: pointer;
+  }
+  .status-bar-open {
+    display: flex;
+  }
+  .status-bar-closed {
+    display: none;
   }
 `
