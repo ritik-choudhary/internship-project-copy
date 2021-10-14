@@ -1,35 +1,43 @@
 import React, { useState, useEffect } from 'react'
 import Modal from 'react-modal'
+import { Link, useHistory } from 'react-router-dom'
 import { AiOutlineClose } from 'react-icons/ai'
 import { WorkspaceConsumer } from '../../Context'
-import { Link, useHistory } from 'react-router-dom'
 import { AiOutlinePlus } from 'react-icons/ai'
 import { FaUpload } from 'react-icons/fa'
 
-export default function OngoingModal() {
+export default function TasksModal() {
   return (
     <WorkspaceConsumer>
       {(value) => {
-        return <OngoingModalComponent value={value}></OngoingModalComponent>
+        return <TaskModalComponent value={value}></TaskModalComponent>
       }}
     </WorkspaceConsumer>
   )
 }
 
-function OngoingModalComponent(props) {
+function TaskModalComponent(props) {
   const { value } = props
   const history = useHistory()
 
   const defaultDate = new Date().toISOString().substring(0, 10)
 
-  const [title, setTitle] = useState()
-  const [company, setCompany] = useState()
-  const [startDate, setStartDate] = useState(defaultDate)
-  const [description, setDescription] = useState()
+  const [taskTitle, setTaskTitle] = useState()
+  const [createdBy, setCreatedBy] = useState()
+  const [duedate, setDuedate] = useState(defaultDate)
   const [linkToAdd, setLinkToAdd] = useState()
   const [links, setLinks] = useState([])
   const [pdfList, setPdfList] = useState([])
   const [pdfPreview, setPdfPreview] = useState([])
+  const [description, setDescription] = useState('')
+
+  const disablePastDate = () => {
+    const today = new Date()
+    const dd = String(today.getDate() + 1).padStart(2, '0')
+    const mm = String(today.getMonth() + 1).padStart(2, '0')
+    const yyyy = today.getFullYear()
+    return yyyy + '-' + mm + '-' + dd
+  }
 
   function isValidHttpUrl(string) {
     let url
@@ -66,7 +74,8 @@ function OngoingModalComponent(props) {
       isOpen={true}
       style={{
         content: {
-          width: '450px',
+          width: '520px',
+          minHeight: '90vh',
           top: '50%',
           left: '50%',
           right: 'auto',
@@ -98,9 +107,10 @@ function OngoingModalComponent(props) {
             fontWeight: '700',
           }}
         >
-          Add new internship
+          Create Task
         </h3>
-        <Link to='/internships'>
+
+        <Link to='/taskmanager'>
           <AiOutlineClose
             style={{
               fontSize: '20px',
@@ -110,27 +120,35 @@ function OngoingModalComponent(props) {
           />
         </Link>
       </header>
+
       <form
         style={{
           width: '100%',
           display: 'flex',
           flexDirection: 'column',
-          gap: '10px',
+          gap: '20px',
           padding: '22px 32px',
         }}
         onSubmit={(e) => {
           e.preventDefault()
-          value.addNewOngoingInternship({
+          let tempDueDate = new Date(duedate)
+          tempDueDate = `${tempDueDate.getDate()}-${
+            tempDueDate.getMonth() + 1
+          }-${tempDueDate.getFullYear()}`
+          const taskToAdd = {
             id: new Date().getTime().toString(),
-            title: title,
-            company: company,
-            startDate: startDate,
-            description: description,
+            title: taskTitle,
+            createdBy: createdBy,
+            dueDate: tempDueDate,
             links: links,
-            pdfPreview: pdfPreview,
             pdfList: pdfList,
-          })
-          history.push('/internships')
+            pdfPreview: pdfPreview,
+            description: description,
+            completed: false,
+          }
+          value.createTask(taskToAdd)
+
+          history.push(`/taskmanager`)
         }}
       >
         <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -145,12 +163,16 @@ function OngoingModalComponent(props) {
             Title
           </label>
           <input
+            autoFocus
+            required
+            maxLength='30'
             type='text'
             name='title'
             id='title'
-            maxLength='100'
-            autoFocus
-            required
+            value={taskTitle}
+            onChange={(e) => {
+              setTaskTitle(e.target.value)
+            }}
             style={{
               borderRadius: '5px',
               height: '32px',
@@ -159,27 +181,26 @@ function OngoingModalComponent(props) {
               fontSize: '16px',
               padding: '3px 8px',
             }}
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
           />
         </div>
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           <label
-            htmlFor='company'
+            htmlFor='created-by'
             style={{
               color: '#959595',
               fontSize: '12px',
               marginBottom: '5px',
             }}
           >
-            Company
+            Created by
           </label>
           <input
             type='text'
-            name='company'
-            id='company'
-            maxLength='30'
-            required
+            name='created-by'
+            id='created-by'
+            maxLength='20'
+            value={createdBy}
+            onChange={(e) => setCreatedBy(e.target.value)}
             style={{
               borderRadius: '5px',
               height: '32px',
@@ -188,26 +209,29 @@ function OngoingModalComponent(props) {
               fontSize: '16px',
               padding: '3px 8px',
             }}
-            value={company}
-            onChange={(e) => setCompany(e.target.value)}
           />
         </div>
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           <label
-            htmlFor='start-date'
+            htmlFor='due-date'
             style={{
               color: '#959595',
               fontSize: '12px',
               marginBottom: '5px',
             }}
           >
-            Start Date
+            Due date (optional)
           </label>
           <input
             type='date'
-            name='start-date'
-            id='start-date'
-            required
+            name='due-date'
+            id='due-date'
+            min={disablePastDate()}
+            format='dd-MM-yyyy'
+            value={duedate}
+            onChange={(e) => {
+              setDuedate(e.target.value)
+            }}
             style={{
               borderRadius: '5px',
               height: '32px',
@@ -216,38 +240,6 @@ function OngoingModalComponent(props) {
               fontSize: '16px',
               padding: '3px 8px',
             }}
-            value={startDate}
-            onChange={(e) => setStartDate(e.target.value)}
-          />
-        </div>
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <label
-            htmlFor='description'
-            style={{
-              color: '#959595',
-              fontSize: '12px',
-              marginBottom: '5px',
-            }}
-          >
-            Description
-          </label>
-
-          <textarea
-            id='description'
-            name='description'
-            rows='4'
-            cols='50'
-            maxLength='500'
-            style={{
-              borderRadius: '5px',
-              outline: 'none',
-              border: '1px solid #C4C4C4',
-              fontSize: '12px',
-              padding: '3px 8px',
-              fontFamily: 'Open Sans',
-            }}
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
           />
         </div>
         <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -420,28 +412,46 @@ function OngoingModalComponent(props) {
             }}
           >
             {pdfList.map((pdf) => {
-              const linkToPdf = pdfPreview.find(
-                (item) => item.previewId === pdf.pdfId
-              )
               return (
-                <>
-                  <Link
-                    to={{
-                      pathname: `/internships/addnewongoing/readpdf`,
-                      state: { src: linkToPdf?.source },
-                    }}
-                    key={pdf.pdfId}
-                  >
-                    <div className='pdf-file' style={{ fontSize: '12px' }}>
-                      {pdf.pdfFile.name.length > 15
-                        ? `${pdf.pdfFile.name.slice(0, 15)}...`
-                        : pdf.pdfFile.name}
-                    </div>
-                  </Link>
-                </>
+                <div className='pdf-file' style={{ fontSize: '12px' }}>
+                  {pdf.pdfFile.name.length > 15
+                    ? `${pdf.pdfFile.name.slice(0, 15)}...`
+                    : pdf.pdfFile.name}
+                </div>
               )
             })}
           </div>
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+          <label
+            htmlFor='description'
+            style={{
+              color: '#959595',
+              fontSize: '12px',
+              marginBottom: '5px',
+            }}
+          >
+            Description
+          </label>
+          <textarea
+            type='text'
+            name='description'
+            id='description'
+            fontFamily='Open Sans, sans-serif'
+            value={description}
+            onChange={(e) => {
+              setDescription(e.target.value)
+            }}
+            style={{
+              borderRadius: '5px',
+              height: '80px',
+              outline: 'none',
+              border: '1px solid #C4C4C4',
+              fontSize: '12px',
+              padding: '5px 5px',
+              fontFamily: 'Open Sans',
+            }}
+          />
         </div>
         <div
           style={{
@@ -451,7 +461,7 @@ function OngoingModalComponent(props) {
             justifyContent: 'flex-end',
           }}
         >
-          <Link to='/internships'>
+          <Link to={`/taskmanager`}>
             <div
               style={{
                 color: '#FF0000',
@@ -460,13 +470,14 @@ function OngoingModalComponent(props) {
                 padding: '10px 20px',
                 outline: 'none',
                 cursor: 'pointer',
-                fontSize: '14px',
                 fontWeight: '400',
+                fontSize: '14px',
               }}
             >
               Cancel
             </div>
           </Link>
+
           <button
             type='submit'
             style={{

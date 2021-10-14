@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import Modal from 'react-modal'
 import { AiOutlineClose } from 'react-icons/ai'
-import { WorkspaceConsumer } from '../Context'
+import { WorkspaceConsumer } from '../../Context'
 import { useParams, Link, useHistory } from 'react-router-dom'
 import { FaCheckCircle } from 'react-icons/fa'
-import { Images } from '../assets/DefaultImage'
+import { Images } from '../../assets/DefaultImage'
 
-export default function DigitalBrainboardModal() {
+export default function ClubModal() {
   const randomIndex = Math.floor(Math.random() * Images.length)
 
-  const [digitalBrainboardName, setDigitalBrainboardName] = useState('')
+  const [clubName, setClubName] = useState('')
   const [thumbnail, setThumbnail] = useState()
   const [preview, setPreview] = useState(Images[randomIndex])
 
@@ -63,7 +63,7 @@ export default function DigitalBrainboardModal() {
             fontWeight: '700',
           }}
         >
-          Add new Digital Brainboard
+          Add new club
         </h3>
         <Link to={`/workspace/${param.id}/details/${param.spaceKey}`}>
           <AiOutlineClose
@@ -88,22 +88,18 @@ export default function DigitalBrainboardModal() {
               }}
               onSubmit={(e) => {
                 e.preventDefault()
-                if (digitalBrainboardName) {
+                if (clubName) {
                   const date = new Date()
                   const day = date.getDate()
                   const month = date.getMonth() + 1
                   const year = date.getFullYear()
-                  value.addNewDigitalBrainboard(param.id, param.spaceKey, {
+                  value.addNewClub(param.id, param.spaceKey, {
                     id: new Date().getTime().toString(),
                     createdOn: `${day}/${month}/${year}`,
-                    title: digitalBrainboardName,
+                    title: clubName,
                     image: preview,
-                    createdBy: '',
-                    tags: '',
-                    subject: '',
-                    links: [],
                   })
-                  setDigitalBrainboardName('')
+                  setClubName('')
 
                   history.push(
                     `/workspace/${param.id}/details/${param.spaceKey}`
@@ -120,7 +116,7 @@ export default function DigitalBrainboardModal() {
                     marginBottom: '5px',
                   }}
                 >
-                  Name of the Digital Brainboard
+                  Name of the club
                 </label>
                 <input
                   autoFocus
@@ -136,8 +132,8 @@ export default function DigitalBrainboardModal() {
                     fontSize: '16px',
                     padding: '3px 8px',
                   }}
-                  value={digitalBrainboardName}
-                  onChange={(e) => setDigitalBrainboardName(e.target.value)}
+                  value={clubName}
+                  onChange={(e) => setClubName(e.target.value)}
                 />
               </div>
               <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -202,7 +198,7 @@ export default function DigitalBrainboardModal() {
                 }}
               >
                 <Link to={`/workspace/${param.id}/details/${param.spaceKey}`}>
-                  <button
+                  <div
                     style={{
                       color: '#FF0000',
                       border: 'none',
@@ -210,10 +206,12 @@ export default function DigitalBrainboardModal() {
                       padding: '10px 20px',
                       outline: 'none',
                       cursor: 'pointer',
+                      fontSize: '14px',
+                      fontWeight: '400',
                     }}
                   >
                     Cancel
-                  </button>
+                  </div>
                 </Link>
                 <button
                   type='submit'

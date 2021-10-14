@@ -258,6 +258,7 @@ function FinanceModalComponent(props) {
                 type='text'
                 name='financer'
                 id='financer'
+                maxLength='30'
                 value={financerToAdd}
                 className={financerToAdd ? '' : 'skeleton'}
                 onChange={(e) => {
@@ -282,7 +283,13 @@ function FinanceModalComponent(props) {
                   onClick={(e) => {
                     if (!isSharing) {
                       if (financerToAdd) {
-                        setFinancersList([...financersList, financerToAdd])
+                        setFinancersList([
+                          ...financersList,
+                          {
+                            financer: financerToAdd,
+                            id: new Date().getTime().toString(),
+                          },
+                        ])
                         setFinancerToAdd('')
                       }
                     }
@@ -294,25 +301,51 @@ function FinanceModalComponent(props) {
           <div
             className='financers-list'
             style={{
-              display: `${financersList.length > 0 ? 'flex' : 'none'}`,
-              flexDirection: 'column',
-              gap: '3px',
-              background: '#e4e4e4',
+              display: `${financersList.length > 0 ? 'grid' : 'none'}`,
+              gridTemplateColumns: '1fr',
+              width: '52%',
+              gap: '5px',
               borderRadius: '3px',
               maxHeight: '60px',
               overflow: 'auto',
               overflowX: 'hidden',
               padding: '3px 10px',
-              marginLeft: '179px',
+              marginLeft: '170px',
               marginRight: '10px',
+              fontSize: '12px',
             }}
           >
             {financersList.map((item) => {
               return (
-                <div className='single-financer'>
-                  <p style={{ fontSize: '12px' }}>
-                    {item.length > 20 ? `${item.slice(0, 20)}...` : item}
+                <div
+                  className='single-financer'
+                  style={{
+                    display: 'flex',
+                    gap: '3px',
+                    alignItems: 'center',
+                    height: '20px',
+                    border: '1px solid #468aef',
+                    borderRadius: '5px',
+                    fontSize: '12px',
+                    padding: '3px',
+                    color: '#468aef',
+                  }}
+                >
+                  <p style={{ width: '90%' }}>
+                    {item.financer.length > 20
+                      ? `${item.slice(0, 20)}...`
+                      : item.financer}
                   </p>
+                  <AiOutlineClose
+                    style={{ cursor: 'pointer', color: '#ff0000' }}
+                    onClick={() => {
+                      let tempFinancers = [...financersList]
+                      const newFinancers = tempFinancers.filter(
+                        (temp) => temp.id !== item.id
+                      )
+                      setFinancersList(newFinancers)
+                    }}
+                  />
                 </div>
               )
             })}
@@ -355,7 +388,13 @@ function FinanceModalComponent(props) {
                   onClick={(e) => {
                     if (!isSharing) {
                       if (sponsorToAdd) {
-                        setSponsorsList([...sponsorsList, sponsorToAdd])
+                        setSponsorsList([
+                          ...sponsorsList,
+                          {
+                            sponsor: sponsorToAdd,
+                            id: new Date().getTime().toString(),
+                          },
+                        ])
                         setSponsorToAdd('')
                       }
                     }
@@ -367,26 +406,51 @@ function FinanceModalComponent(props) {
           <div
             className='sponsors-list'
             style={{
-              display: `${sponsorsList.length > 0 ? 'flex' : 'none'}`,
-              flexDirection: 'column',
-              gap: '3px',
-              background: '#e4e4e4',
+              display: `${sponsorsList.length > 0 ? 'grid' : 'none'}`,
+              gridTemplateColumns: '1fr',
+              width: '52%',
+              gap: '5px',
               borderRadius: '3px',
               maxHeight: '60px',
-
               overflow: 'auto',
               overflowX: 'hidden',
               padding: '3px 10px',
-              marginLeft: '179px',
+              marginLeft: '170px',
               marginRight: '10px',
             }}
           >
             {sponsorsList.map((item) => {
               return (
-                <div className='single-sponsor'>
-                  <p style={{ fontSize: '12px' }}>
-                    {item.length > 20 ? `${item.slice(0, 20)}...` : item}
+                <div
+                  className='single-sponsor'
+                  style={{
+                    display: 'flex',
+                    gap: '3px',
+                    alignItems: 'center',
+                    height: '20px',
+                    border: '1px solid #468aef',
+                    borderRadius: '5px',
+                    fontSize: '12px',
+                    padding: '3px',
+                    color: '#468aef',
+                  }}
+                >
+                  <p style={{ width: '90%' }}>
+                    {item.length > 20
+                      ? `${item.sponsor.slice(0, 20)}...`
+                      : item.sponsor}
                   </p>
+
+                  <AiOutlineClose
+                    style={{ cursor: 'pointer', color: '#ff0000' }}
+                    onClick={() => {
+                      let tempSponsors = [...sponsorsList]
+                      const newSponsors = tempSponsors.filter(
+                        (temp) => temp.id !== item.id
+                      )
+                      setSponsorsList(newSponsors)
+                    }}
+                  />
                 </div>
               )
             })}
@@ -447,7 +511,13 @@ function FinanceModalComponent(props) {
                 onClick={(e) => {
                   if (!isSharing) {
                     if (linkToAdd && isValidHttpUrl(linkToAdd)) {
-                      setLinks([...links, linkToAdd])
+                      setLinks([
+                        ...links,
+                        {
+                          link: linkToAdd,
+                          id: new Date().getTime().toString(),
+                        },
+                      ])
                       setLinkToAdd('')
                     }
                   }
@@ -459,9 +529,10 @@ function FinanceModalComponent(props) {
             className='links-container'
             style={{
               display: `${links.length > 0 ? 'grid' : 'none'}`,
-              gap: '5px',
+              gap: '3px',
               gridTemplateColumns: 'repeat(3,1fr)',
               marginLeft: '179px',
+              width: '50%',
               maxHeight: '40px',
               overflow: 'auto',
               overflowX: 'hidden',
@@ -474,7 +545,7 @@ function FinanceModalComponent(props) {
                   className='link'
                   style={{
                     display: 'flex',
-                    justifyContent: 'center',
+
                     alignItems: 'center',
                     width: '60px',
                     height: '20px',
@@ -488,7 +559,7 @@ function FinanceModalComponent(props) {
                   key={count}
                 >
                   <a
-                    href={item}
+                    href={item.link}
                     target='_blank'
                     rel='noreferrer noopener'
                     style={{
@@ -500,7 +571,16 @@ function FinanceModalComponent(props) {
                   >
                     Link {count}
                   </a>
-                  <AiOutlineClose style={{ color: '#f54848' }} />
+                  <AiOutlineClose
+                    style={{ color: '#f54848', cursor: 'pointer' }}
+                    onClick={() => {
+                      let tempLinks = [...links]
+                      const newLinks = tempLinks.filter(
+                        (temp) => temp.id !== item.id
+                      )
+                      setLinks(newLinks)
+                    }}
+                  />
                 </div>
               )
             })}

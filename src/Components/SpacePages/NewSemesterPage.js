@@ -2,9 +2,9 @@ import React from 'react'
 import { AiOutlinePlus } from 'react-icons/ai'
 import styled from 'styled-components'
 import { Switch, Route, Link, useParams } from 'react-router-dom'
-import SubjectModal from '../SubjectModal'
+import SubjectModal from '../NewsemesterComponents/SubjectModal'
 import { WorkspaceConsumer } from '../../Context'
-import SubjectPdfModal from '../SubjectPdfModal'
+import SubjectPdfModal from '../NewsemesterComponents/SubjectPdfModal'
 
 export default function NewSemesterPage() {
   const param = useParams()

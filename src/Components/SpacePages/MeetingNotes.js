@@ -3,9 +3,9 @@ import { WorkspaceConsumer } from '../../Context'
 import styled from 'styled-components'
 import { AiOutlinePlus } from 'react-icons/ai'
 import { Switch, Route, Link, useParams } from 'react-router-dom'
-import MeetingNotesModal from '../MeetingNotesModal'
+import MeetingNotesModal from '../MeetingNotesComponents/MeetingNotesModal'
 import { RiDeleteBin6Line } from 'react-icons/ri'
-import MeetingPdfModal from '../MeetingPdfModal'
+import MeetingPdfModal from '../MeetingNotesComponents/MeetingPdfModal'
 
 export default function MeetingNotes() {
   return (

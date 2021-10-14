@@ -4,8 +4,8 @@ import styled from 'styled-components'
 import { Switch, Route, Link, useParams } from 'react-router-dom'
 import { WorkspaceConsumer } from '../../Context'
 import { RiDeleteBin6Line } from 'react-icons/ri'
-import MoodboardModal from '../MoodboardModal'
-import DigitalBrainboardModal from '../DigitalBrainboardModal'
+import MoodboardModal from '../MoodboardComponents/MoodboardModal'
+import DigitalBrainboardModal from '../MoodboardComponents/DigitalBrainboardModal'
 
 export default function Moodboards() {
   const defaultImage =

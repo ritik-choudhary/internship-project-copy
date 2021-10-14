@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import Modal from 'react-modal'
 import { Link, useParams, useHistory } from 'react-router-dom'
 import { AiOutlineClose, AiOutlinePlus } from 'react-icons/ai'
-import { WorkspaceConsumer } from '../Context'
+import { WorkspaceConsumer } from '../../Context'
 import { FaCheckCircle, FaUpload } from 'react-icons/fa'
 
 export default function SubjectModal(props) {
@@ -424,22 +424,20 @@ function SubjectModalComponent(props) {
                   (item) => item.previewId === pdf.pdfId
                 )
                 return (
-                  <Link
-                    to={{
-                      pathname: `/workspace/${param.id}/details/${param.spaceKey}/editsubject/${param.subjectID}/readsubjectpdf`,
-                      state: { src: linkToPdf?.source },
-                    }}
-                    key={pdf.pdfId}
-                  >
-                    <div
-                      className='pdf-file'
+                  <div className='pdf-file'>
+                    <Link
+                      to={{
+                        pathname: `/workspace/${param.id}/details/${param.spaceKey}/editsubject/${param.subjectID}/readsubjectpdf`,
+                        state: { src: linkToPdf?.source },
+                      }}
+                      key={pdf.pdfId}
                       style={{ fontSize: '12px', fontWeight: '400' }}
                     >
                       {pdf.pdfFile.name.length > 15
                         ? `${pdf.pdfFile.name.slice(0, 15)}...`
                         : pdf.pdfFile.name}
-                    </div>
-                  </Link>
+                    </Link>
+                  </div>
                 )
               })}
             </div>
@@ -518,7 +516,7 @@ function SubjectModalComponent(props) {
                     key={index}
                     style={{ fontSize: '12px', fontWeight: '400' }}
                   >
-                    {link?.slice(8, 50)}
+                    {link?.slice(8, 80)}
                   </a>
                 )
               })}

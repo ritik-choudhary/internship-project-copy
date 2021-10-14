@@ -7,8 +7,8 @@ import {
   AiOutlinePlus,
   AiOutlineClose,
 } from 'react-icons/ai'
-import { WorkspaceConsumer } from '../Context'
-import TextEditor from './TextEditor'
+import { WorkspaceConsumer } from '../../Context'
+import TextEditor from '../TextEditor'
 import Styled from 'styled-components'
 
 export default function MeetingNotesModal(props) {

@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { Switch, Route, Link, useParams } from 'react-router-dom'
 import { WorkspaceConsumer } from '../../Context'
 import { RiDeleteBin6Line } from 'react-icons/ri'
-import WorkshopModal from '../WorkshopModal'
+import WorkshopModal from '../Workshop/WorkshopModal'
 
 export default function Workshop() {
   return (

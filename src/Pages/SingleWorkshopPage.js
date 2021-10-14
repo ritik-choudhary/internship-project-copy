@@ -6,7 +6,7 @@ import { RiArrowGoBackFill } from 'react-icons/ri'
 import Sidebar from '../Components/Sidebar'
 import styled from 'styled-components'
 import { AiOutlinePlus } from 'react-icons/ai'
-import WorkshopResourceModal from '../Components/WorkshopResourceModal'
+import WorkshopResourceModal from '../Components/Workshop/WorkshopResourceModal'
 
 // import WorkshopResourcePage from './WorkshopResourcePage'
 
@@ -157,6 +157,7 @@ function SingleWorkshopPageComponent(props) {
                     type='text'
                     name='conducted-by'
                     id='conducted-by'
+                    maxLength='100'
                     value={conductedBy}
                     onChange={(e) => setConductedBy(e.target.value)}
                     onBlur={(e) => {

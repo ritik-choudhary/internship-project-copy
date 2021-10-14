@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from 'react'
 import Modal from 'react-modal'
 import { AiOutlineClose } from 'react-icons/ai'
-import { Link, useParams, useHistory, useLocation } from 'react-router-dom'
-import { WorkspaceConsumer } from '../Context'
+import { WorkspaceConsumer } from '../../Context'
+import { useParams, Link, useHistory } from 'react-router-dom'
 import { FaCheckCircle } from 'react-icons/fa'
-import { Images } from '../assets/DefaultImage'
+import { Images } from '../../assets/DefaultImage'
 
-export default function SpaceUploadModal() {
+export default function DigitalBrainboardModal() {
   const randomIndex = Math.floor(Math.random() * Images.length)
 
-  const param = useParams()
-  const location = useLocation()
-  const history = useHistory()
+  const [digitalBrainboardName, setDigitalBrainboardName] = useState('')
   const [thumbnail, setThumbnail] = useState()
   const [preview, setPreview] = useState(Images[randomIndex])
-  const [altName, setAltName] = useState()
+
+  const param = useParams()
+  const history = useHistory()
 
   useEffect(() => {
     if (thumbnail) {
@@ -31,7 +31,7 @@ export default function SpaceUploadModal() {
       isOpen={true}
       style={{
         content: {
-          width: '519px',
+          width: '520px',
           top: '50%',
           left: '50%',
           right: 'auto',
@@ -63,9 +63,9 @@ export default function SpaceUploadModal() {
             fontWeight: '700',
           }}
         >
-          Add new space
+          Add new Digital Brainboard
         </h3>
-        <Link to={`/workspace/${param.id}/details/createspace`}>
+        <Link to={`/workspace/${param.id}/details/${param.spaceKey}`}>
           <AiOutlineClose
             style={{
               fontSize: '20px',
@@ -88,74 +88,59 @@ export default function SpaceUploadModal() {
               }}
               onSubmit={(e) => {
                 e.preventDefault()
-                if (location.state.space.version > 1) {
-                  let newSpaceObject = { ...location.state.space }
-                  if (altName) {
-                    newSpaceObject.altName = altName
-                  }
-                  value.addNewSpace({ ...newSpaceObject, image: preview })
-                  history.push(`/workspace/${param.id}/details`)
-                } else {
-                  value.addNewSpace({ ...location.state.space, image: preview })
-                  history.push(`/workspace/${param.id}/details`)
+                if (digitalBrainboardName) {
+                  const date = new Date()
+                  const day = date.getDate()
+                  const month = date.getMonth() + 1
+                  const year = date.getFullYear()
+                  value.addNewDigitalBrainboard(param.id, param.spaceKey, {
+                    id: new Date().getTime().toString(),
+                    createdOn: `${day}/${month}/${year}`,
+                    title: digitalBrainboardName,
+                    image: preview,
+                    createdBy: '',
+                    tags: '',
+                    subject: '',
+                    links: [],
+                  })
+                  setDigitalBrainboardName('')
+
+                  history.push(
+                    `/workspace/${param.id}/details/${param.spaceKey}`
+                  )
                 }
               }}
             >
-              <div
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '5px',
-                }}
-              >
-                <p
+              <div style={{ display: 'flex', flexDirection: 'column' }}>
+                <label
+                  htmlFor='name'
                   style={{
                     color: '#959595',
                     fontSize: '12px',
-                    fontWeight: '500',
+                    marginBottom: '5px',
                   }}
                 >
-                  Name of the new space
-                </p>
-                <div
-                  style={{ display: 'flex', gap: '10px', alignItems: 'center' }}
-                >
-                  <h4 style={{ fontSize: '16px', fontWeight: '500' }}>
-                    {location.state.space.title}{' '}
-                    {location.state.space.version > 1
-                      ? `(${location.state.space.version})`
-                      : null}
-                  </h4>
-                  {location.state.space.version > 1 ? (
-                    <p style={{ color: '#c4c4c4', fontSize: '40px' }}>/</p>
-                  ) : null}
-
-                  {location.state.space.version > 1 ? (
-                    <input
-                      type='text'
-                      name='alternative-name'
-                      id='alt-name'
-                      value={altName}
-                      onChange={(e) => setAltName(e.target.value)}
-                      style={{
-                        borderRadius: '6px',
-                        outline: 'none',
-                        border: '1px solid #c4c4c4',
-                        fontSize: '15px',
-                        padding: '0px 5px',
-                        height: '25px',
-                      }}
-                    />
-                  ) : null}
-                </div>
+                  Name of the Digital Brainboard
+                </label>
+                <input
+                  autoFocus
+                  required
+                  type='text'
+                  name='club'
+                  id='name'
+                  style={{
+                    borderRadius: '5px',
+                    height: '32px',
+                    outline: 'none',
+                    border: '1px solid #C4C4C4',
+                    fontSize: '16px',
+                    padding: '3px 8px',
+                  }}
+                  value={digitalBrainboardName}
+                  onChange={(e) => setDigitalBrainboardName(e.target.value)}
+                />
               </div>
-              <div
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '5px',
-                }}
-              >
+              <div style={{ display: 'flex', flexDirection: 'column' }}>
                 <label
                   htmlFor='thumbnail'
                   style={{
@@ -169,7 +154,7 @@ export default function SpaceUploadModal() {
 
                 <input
                   type='file'
-                  name='workspace'
+                  name='club'
                   id='thumbnail'
                   accept='image/*'
                   hidden
@@ -182,7 +167,6 @@ export default function SpaceUploadModal() {
                       background: 'none',
                       borderRadius: '5px',
                       border: '1px dashed #468AEF',
-
                       color: '#468AEF',
                       fontSize: '16px',
                       fontWeight: '500',
@@ -209,8 +193,15 @@ export default function SpaceUploadModal() {
                   {thumbnail ? <FaCheckCircle /> : null}
                 </div>
               </div>
-              <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                <Link to={`/workspace/${param.id}/details/createspace`}>
+              <div
+                style={{
+                  display: 'flex',
+                  gap: '20px',
+                  alignItems: 'center',
+                  justifyContent: 'flex-end',
+                }}
+              >
+                <Link to={`/workspace/${param.id}/details/${param.spaceKey}`}>
                   <button
                     style={{
                       color: '#FF0000',

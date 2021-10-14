@@ -241,6 +241,7 @@ function MeetingModalComponent(props) {
             type='text'
             name='name'
             id='name'
+            maxLength='100'
             value={title}
             onChange={(e) => {
               if (!isSharing) setTitle(e.target.value)
@@ -267,6 +268,7 @@ function MeetingModalComponent(props) {
               type='text'
               name='created-by'
               id='created-by'
+              maxLength='100'
               value={createdBy}
               className={createdBy ? '' : 'skeleton'}
               onChange={(e) => {
@@ -280,6 +282,7 @@ function MeetingModalComponent(props) {
               type='text'
               name='type'
               id='type'
+              maxLength='100'
               value={type}
               className={type ? '' : 'skeleton'}
               onChange={(e) => {

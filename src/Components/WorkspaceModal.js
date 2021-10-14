@@ -204,7 +204,7 @@ export default function WorkspaceModal(props) {
                 }}
               >
                 <Link to='/workspace'>
-                  <button
+                  <div
                     style={{
                       color: '#FF0000',
                       border: 'none',
@@ -212,10 +212,12 @@ export default function WorkspaceModal(props) {
                       padding: '10px 20px',
                       outline: 'none',
                       cursor: 'pointer',
+                      fontWeight: '400',
+                      fontSize: '14px',
                     }}
                   >
                     Cancel
-                  </button>
+                  </div>
                 </Link>
                 <button
                   type='submit'

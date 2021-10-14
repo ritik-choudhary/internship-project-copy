@@ -3,7 +3,7 @@ import { AiOutlinePlus } from 'react-icons/ai'
 import { Switch, Route, Link, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import { WorkspaceConsumer } from '../../Context'
-import BucketListModal from '../BucketListModal'
+import BucketListModal from '../BucketList/BucketListModal'
 
 export default function BucketList() {
   return (

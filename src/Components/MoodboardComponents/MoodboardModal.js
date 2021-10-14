@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import Modal from 'react-modal'
 import { AiOutlineClose } from 'react-icons/ai'
-import { WorkspaceConsumer } from '../Context'
+import { WorkspaceConsumer } from '../../Context'
 import { useParams, Link, useHistory } from 'react-router-dom'
 import { FaCheckCircle } from 'react-icons/fa'
-import { Images } from '../assets/DefaultImage'
+import { Images } from '../../assets/DefaultImage'
 
-export default function WorkshopModal() {
+export default function MoodboardModal() {
   const randomIndex = Math.floor(Math.random() * Images.length)
 
-  const [workshopName, setWorkshopName] = useState('')
+  const [moodboardName, setMoodboardName] = useState('')
   const [thumbnail, setThumbnail] = useState()
   const [preview, setPreview] = useState(Images[randomIndex])
 
@@ -63,7 +63,7 @@ export default function WorkshopModal() {
             fontWeight: '700',
           }}
         >
-          Add new club
+          Add new Moodboard
         </h3>
         <Link to={`/workspace/${param.id}/details/${param.spaceKey}`}>
           <AiOutlineClose
@@ -88,18 +88,19 @@ export default function WorkshopModal() {
               }}
               onSubmit={(e) => {
                 e.preventDefault()
-                if (workshopName) {
+                console.log('SUBMIT')
+                if (moodboardName) {
                   const date = new Date()
                   const day = date.getDate()
                   const month = date.getMonth() + 1
                   const year = date.getFullYear()
-                  value.addNewWorkshop(param.id, param.spaceKey, {
+                  value.addNewMoodboard(param.id, param.spaceKey, {
                     id: new Date().getTime().toString(),
                     createdOn: `${day}/${month}/${year}`,
-                    title: workshopName,
+                    title: moodboardName,
                     image: preview,
                   })
-                  setWorkshopName('')
+                  setMoodboardName('')
 
                   history.push(
                     `/workspace/${param.id}/details/${param.spaceKey}`
@@ -116,7 +117,7 @@ export default function WorkshopModal() {
                     marginBottom: '5px',
                   }}
                 >
-                  Name of the Workshop
+                  Name of the Moodboard
                 </label>
                 <input
                   autoFocus
@@ -132,8 +133,8 @@ export default function WorkshopModal() {
                     fontSize: '16px',
                     padding: '3px 8px',
                   }}
-                  value={workshopName}
-                  onChange={(e) => setWorkshopName(e.target.value)}
+                  value={moodboardName}
+                  onChange={(e) => setMoodboardName(e.target.value)}
                 />
               </div>
               <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -206,8 +207,6 @@ export default function WorkshopModal() {
                       padding: '10px 20px',
                       outline: 'none',
                       cursor: 'pointer',
-                      fontSize: '14px',
-                      fontWeight: '400',
                     }}
                   >
                     Cancel

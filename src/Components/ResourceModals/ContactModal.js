@@ -208,6 +208,7 @@ function ContactModalComponent(props) {
             type='text'
             name='name'
             id='name'
+            maxLength='100'
             value={title}
             onChange={(e) => {
               if (!isSharing) setTitle(e.target.value)
@@ -234,6 +235,7 @@ function ContactModalComponent(props) {
               type='text'
               name='created-by'
               id='created-by'
+              maxLength='100'
               value={createdBy}
               className={createdBy ? '' : 'skeleton'}
               onChange={(e) => {
@@ -255,6 +257,7 @@ function ContactModalComponent(props) {
                 type='text'
                 name='person-name'
                 id='person-name'
+                maxLength='30'
                 value={personName}
                 disabled={isSharing}
                 className={personName ? '' : 'skeleton'}
@@ -280,7 +283,13 @@ function ContactModalComponent(props) {
                   onClick={(e) => {
                     if (!isSharing) {
                       if (personName) {
-                        setPersonNamesList([...personNamesList, personName])
+                        setPersonNamesList([
+                          ...personNamesList,
+                          {
+                            person: personName,
+                            id: new Date().getTime().toString(),
+                          },
+                        ])
                         setPersonName('')
                       }
                     }
@@ -292,26 +301,50 @@ function ContactModalComponent(props) {
           <div
             className='person-names-list'
             style={{
-              display: `${personNamesList.length > 0 ? 'flex' : 'none'}`,
-              flexDirection: 'column',
+              display: `${personNamesList.length > 0 ? 'grid' : 'none'}`,
+              gridTemplateColumns: '1fr',
+              width: '52%',
               gap: '3px',
-              background: '#e4e4e4',
               borderRadius: '3px',
               maxHeight: '60px',
-
               overflow: 'auto',
               overflowX: 'hidden',
               padding: '3px 10px',
-              marginLeft: '179px',
+              marginLeft: '170px',
               marginRight: '10px',
             }}
           >
             {personNamesList.map((item) => {
               return (
-                <div className='single-sponsor'>
-                  <p style={{ fontSize: '12px' }}>
-                    {item.length > 20 ? `${item.slice(0, 20)}...` : item}
+                <div
+                  className='single-person'
+                  style={{
+                    display: 'flex',
+                    gap: '3px',
+                    alignItems: 'center',
+                    height: '20px',
+                    border: '1px solid #468aef',
+                    borderRadius: '5px',
+                    fontSize: '12px',
+                    padding: '3px',
+                    color: '#468aef',
+                  }}
+                >
+                  <p style={{ width: '90%' }}>
+                    {item.person.length > 20
+                      ? `${item.slice(0, 20)}...`
+                      : item.person}
                   </p>
+                  <AiOutlineClose
+                    style={{ cursor: 'pointer', color: '#ff0000' }}
+                    onClick={() => {
+                      let tempPersonList = [...personNamesList]
+                      const newPersonList = tempPersonList.filter(
+                        (temp) => temp.id !== item.id
+                      )
+                      setPersonNamesList(newPersonList)
+                    }}
+                  />
                 </div>
               )
             })}
@@ -370,7 +403,10 @@ function ContactModalComponent(props) {
                 }}
                 onClick={(e) => {
                   if (linkToAdd && isValidHttpUrl(linkToAdd)) {
-                    setLinks([...links, linkToAdd])
+                    setLinks([
+                      ...links,
+                      { link: linkToAdd, id: new Date().getTime().toString() },
+                    ])
                     setLinkToAdd('')
                   }
                 }}
@@ -381,9 +417,10 @@ function ContactModalComponent(props) {
             className='links-container'
             style={{
               display: `${links.length > 0 ? 'grid' : 'none'}`,
-              gap: '5px',
+              gap: '3px',
               gridTemplateColumns: 'repeat(3,1fr)',
               marginLeft: '179px',
+              width: '50%',
               maxHeight: '40px',
               overflow: 'auto',
               overflowX: 'hidden',
@@ -409,7 +446,7 @@ function ContactModalComponent(props) {
                   key={count}
                 >
                   <a
-                    href={item}
+                    href={item.link}
                     target='_blank'
                     rel='noreferrer noopener'
                     style={{
@@ -420,7 +457,16 @@ function ContactModalComponent(props) {
                   >
                     Link {count}
                   </a>
-                  <AiOutlineClose style={{ color: '#f54848' }} />
+                  <AiOutlineClose
+                    style={{ color: '#f54848', cursor: 'pointer' }}
+                    onClick={() => {
+                      let tempLinks = [...links]
+                      const newLinks = tempLinks.filter(
+                        (temp) => temp.id !== item.id
+                      )
+                      setLinks(newLinks)
+                    }}
+                  />
                 </div>
               )
             })}

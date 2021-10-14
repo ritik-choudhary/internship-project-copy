@@ -6,7 +6,7 @@ import { RiArrowGoBackFill } from 'react-icons/ri'
 import Sidebar from '../Components/Sidebar'
 import styled from 'styled-components'
 import { AiOutlinePlus } from 'react-icons/ai'
-import ResourceModal from '../Components/ResourceModal'
+import ResourceModal from '../Components/Club/ResourceModal'
 import { BiTask } from 'react-icons/bi'
 import { HiOutlineLightBulb } from 'react-icons/hi'
 import { CgNotes } from 'react-icons/cg'
@@ -157,6 +157,7 @@ function SingleClubPageComponent(props) {
                     type='text'
                     name='created-by'
                     id='created-by'
+                    maxLength='100'
                     value={createdBy}
                     onChange={(e) => setCreatedBy(e.target.value)}
                     onBlur={(e) => {

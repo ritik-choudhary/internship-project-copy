@@ -1,6 +1,6 @@
 import React from 'react'
-import Header from '../Components/Header'
-import Tiles from '../Components/Tiles'
+import Header from '../Components/Dashboard/Header'
+import Tiles from '../Components/Dashboard/Tiles'
 import Sidebar from '../Components/Sidebar'
 
 export default function Dashboard() {

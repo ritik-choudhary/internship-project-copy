@@ -6,8 +6,8 @@ import { RiArrowGoBackFill } from 'react-icons/ri'
 import Sidebar from '../Components/Sidebar'
 import styled from 'styled-components'
 import { RiDeleteBin6Line } from 'react-icons/ri'
-import JournalModal from '../Components/JournalModal'
-import JournalModalEntry from '../Components/JournalModalEntry'
+import JournalModal from '../Components/Journal/JournalModal'
+import JournalModalEntry from '../Components/Journal/JournalModalEntry'
 import { AiOutlinePlus } from 'react-icons/ai'
 
 export default function Journal() {

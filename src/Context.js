@@ -12,6 +12,7 @@ class WorkspaceProvider extends Component {
     journal: [],
     notes: [],
     internships: [],
+    taskManager: [[], [], [], []],
   }
 
   addNewWorkspace = (newItem) => {
@@ -1507,6 +1508,7 @@ class WorkspaceProvider extends Component {
   editJournal = (id, journal) => {
     const oldJournalList = [...this.state.journal]
     const journalElement = oldJournalList.find((item) => item.id === id)
+    journalElement.title = journal.title
     journalElement.createdBy = journal.createdBy
     journalElement.note = journal.note
     this.setState(() => {
@@ -1558,6 +1560,7 @@ class WorkspaceProvider extends Component {
   editNotes = (id, notes) => {
     const oldnotesList = [...this.state.notes]
     const notesElement = oldnotesList.find((item) => item.id === id)
+    notesElement.title = notes.title
     notesElement.createdBy = notes.createdBy
     notesElement.note = notes.note
     this.setState(() => {
@@ -1622,6 +1625,85 @@ class WorkspaceProvider extends Component {
     }
     this.setState(() => {
       return { internships: oldInternships }
+    })
+  }
+
+  createTask = (task) => {
+    const oldTaskManager = [...this.state.taskManager]
+    let newTaskManager = [...oldTaskManager]
+    newTaskManager[0] = [...newTaskManager[0], task]
+    this.setState(() => {
+      return { taskManager: newTaskManager }
+    })
+  }
+
+  handleStatusTaskManager = (taskId) => {
+    let oldTaskManager = [...this.state.taskManager]
+    let selectedTask = oldTaskManager[0]?.find((item) => item.id === taskId)
+    if (!selectedTask) {
+      selectedTask = oldTaskManager[1]?.find((item) => item.id === taskId)
+    }
+    if (!selectedTask) {
+      selectedTask = oldTaskManager[2]?.find((item) => item.id === taskId)
+    }
+    selectedTask.completed = true
+    oldTaskManager[3] = [...oldTaskManager[3], selectedTask]
+    let tempvar
+    tempvar = oldTaskManager[0]?.find((item) => item.id === taskId)
+    if (tempvar) {
+      let newTaskManager1 = oldTaskManager[0].filter(
+        (item) => item.id !== taskId
+      )
+      oldTaskManager[0] = newTaskManager1
+    } else {
+      tempvar = oldTaskManager[1]?.find((item) => item.id === taskId)
+      if (tempvar) {
+        let newTaskManager1 = oldTaskManager[1].filter(
+          (item) => item.id !== taskId
+        )
+        oldTaskManager[1] = newTaskManager1
+      } else {
+        tempvar = selectedTask = oldTaskManager[2]?.find(
+          (item) => item.id === taskId
+        )
+        if (tempvar) {
+          let newTaskManager1 = oldTaskManager[2].filter(
+            (item) => item.id !== taskId
+          )
+          oldTaskManager[2] = newTaskManager1
+        }
+      }
+    }
+    this.setState(() => {
+      return { taskManager: oldTaskManager }
+    })
+  }
+
+  switchTask = (subArray, taskId) => {
+    let oldTaskManager = [...this.state.taskManager]
+    let newTaskManager = [...oldTaskManager]
+    let selectedTask
+    let tempArray
+
+    for (let i = 0; i <= 3; i++) {
+      selectedTask = newTaskManager[i].find((item) => item.id === taskId)
+      if (selectedTask) {
+        tempArray = i
+        break
+      }
+    }
+    const newArray = newTaskManager[tempArray].filter(
+      (item) => item.id !== taskId
+    )
+    if (subArray === 3) {
+      selectedTask.completed = true
+    }
+    newTaskManager[tempArray] = newArray
+    newTaskManager[subArray] = [...newTaskManager[subArray], selectedTask]
+
+    oldTaskManager = newTaskManager
+    this.setState(() => {
+      return { taskManager: oldTaskManager }
     })
   }
 
@@ -1726,6 +1808,9 @@ class WorkspaceProvider extends Component {
           addNewInternshipTask: this.addNewInternshipTask,
           internshipTaskManipulation: this.internshipTaskManipulation,
           handleInternshipStatus: this.handleInternshipStatus,
+          createTask: this.createTask,
+          handleStatusTaskManager: this.handleStatusTaskManager,
+          switchTask: this.switchTask,
         }}
       >
         {this.props.children}

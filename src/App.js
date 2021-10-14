@@ -13,12 +13,13 @@ import BrainboardContentModal from './Pages/BrainboardContentModal'
 import HabitRecords from './Pages/HabitRecords'
 import SingleWorkshopPage from './Pages/SingleWorkshopPage'
 import WorkshopResourcePage from './Pages/WorkshopResourcePage'
-import ShareWorkshopResourceModal from './Components/ShareWorkshopResourceModal'
-import BucketListContent from './Components/BucketListContent'
+import ShareWorkshopResourceModal from './Components/Workshop/ShareWorkshopResourceModal'
+import BucketListContent from './Components/BucketList/BucketListContent'
 import Journal from './Pages/Journal'
-import ShareClubResourceModal from './Components/ShareClubResourceModal'
+import ShareClubResourceModal from './Components/Club/ShareClubResourceModal'
 import Notes from './Pages/Notes'
 import Internships from './Pages/Internships'
+import TaskManager from './Pages/TaskManager'
 
 Modal.setAppElement('#root')
 
@@ -74,6 +75,7 @@ function App() {
           <Route path='/internships'>
             <Internships />
           </Route>
+          <Route path='/taskmanager' component={TaskManager} />
           <Route exact path='/trash' component={Trash}></Route>
         </Switch>
       </Router>

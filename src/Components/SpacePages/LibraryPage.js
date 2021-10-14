@@ -2,10 +2,10 @@ import React from 'react'
 import styled from 'styled-components'
 import { AiOutlinePlus } from 'react-icons/ai'
 import { Switch, Route, Link, useParams } from 'react-router-dom'
-import LibraryModal from '../LibraryModal'
+import LibraryModal from '../Library/LibraryModal'
 import { WorkspaceConsumer } from '../../Context'
 import { RiDeleteBin6Line } from 'react-icons/ri'
-import PdfModal from '../PdfModal'
+import PdfModal from '../Library/PdfModal'
 
 export default function LibraryPage() {
   const param = useParams()

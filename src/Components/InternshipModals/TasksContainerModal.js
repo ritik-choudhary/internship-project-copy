@@ -54,43 +54,48 @@ function TasksContainerModalComponent(props) {
         },
       }}
     >
-      <header
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          padding: '12px 30px',
-          borderBottom: '1px solid #DEDEDE',
-        }}
-      >
-        <h3
+      <TasksContainerModalWrapper>
+        <header
           style={{
-            fontSize: '20px',
-            fontWeight: '700',
-            color: '#468AEF',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            padding: '12px 30px',
+            borderBottom: '1px solid #DEDEDE',
           }}
         >
-          Tasks
-        </h3>
-        <Link to='/internships'>
-          <AiOutlineClose
+          <h3
             style={{
               fontSize: '20px',
-              color: '#C4C4C4',
-              cursor: 'pointer',
+              fontWeight: '700',
+              color: '#468AEF',
             }}
-          />
-        </Link>
-      </header>
-      <section
-        style={{
-          padding: '22px 32px',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '30px',
-        }}
-      >
-        <TasksContainerModalWrapper>
+          >
+            Tasks
+          </h3>
+          <div style={{ display: 'flex', gap: '10px' }}>
+            <Link to={`/internships/addtask/${selectedInternship.id}`}>
+              <div className='add-task-btn'>Add task</div>
+            </Link>
+            <Link to='/internships'>
+              <AiOutlineClose
+                style={{
+                  fontSize: '20px',
+                  color: '#C4C4C4',
+                  cursor: 'pointer',
+                }}
+              />
+            </Link>
+          </div>
+        </header>
+        <section
+          style={{
+            padding: '22px 32px',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '30px',
+          }}
+        >
           {selectedInternship?.tasks?.length > 0 ? (
             <>
               <div className='tasks-container'>
@@ -133,8 +138,8 @@ function TasksContainerModalComponent(props) {
               </div>
             </>
           ) : null}
-        </TasksContainerModalWrapper>
-      </section>
+        </section>
+      </TasksContainerModalWrapper>
     </Modal>
   )
 }
@@ -180,5 +185,20 @@ const TasksContainerModalWrapper = styled.section`
   }
   .task-completed-bg {
     opacity: 0.5;
+  }
+  .add-task-btn {
+    padding: 5px 10px;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #468aef;
+    border: 1px solid #468aef;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  .add-task-btn:hover {
+    background: #468aef;
+    color: white;
   }
 `

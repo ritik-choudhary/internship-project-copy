@@ -1,37 +1,36 @@
 import React, { useState, useEffect } from 'react'
 import Modal from 'react-modal'
 import { AiOutlineClose } from 'react-icons/ai'
-import { WorkspaceConsumer } from '../Context'
-import { useParams, Link, useHistory } from 'react-router-dom'
 import { FaCheckCircle } from 'react-icons/fa'
-import { Images } from '../assets/DefaultImage'
+import { useParams, Link, useHistory } from 'react-router-dom'
+import { WorkspaceConsumer } from '../../Context'
 
-export default function ClubModal() {
-  const randomIndex = Math.floor(Math.random() * Images.length)
-
-  const [clubName, setClubName] = useState('')
-  const [thumbnail, setThumbnail] = useState()
-  const [preview, setPreview] = useState(Images[randomIndex])
-
+export default function LibraryModal(props) {
+  const { favourite } = props
   const param = useParams()
   const history = useHistory()
+  const [bookLink, setBookLink] = useState()
+  const [pdf, setPdf] = useState()
+  const [pdfPreview, setPdfPreview] = useState()
 
   useEffect(() => {
-    if (thumbnail) {
+    if (pdf) {
       const reader = new FileReader()
       reader.onloadend = () => {
-        setPreview(reader.result)
+        setPdfPreview(reader.result)
       }
-      reader.readAsDataURL(thumbnail)
+      reader.readAsDataURL(pdf)
+    } else {
+      setPdfPreview(null)
     }
-  }, [thumbnail])
+  }, [pdf])
 
   return (
     <Modal
       isOpen={true}
       style={{
         content: {
-          width: '520px',
+          width: '519px',
           top: '50%',
           left: '50%',
           right: 'auto',
@@ -63,7 +62,7 @@ export default function ClubModal() {
             fontWeight: '700',
           }}
         >
-          Add new club
+          Add new book
         </h3>
         <Link to={`/workspace/${param.id}/details/${param.spaceKey}`}>
           <AiOutlineClose
@@ -80,101 +79,156 @@ export default function ClubModal() {
           return (
             <form
               style={{
+                padding: '20px 32px',
                 width: '100%',
                 display: 'flex',
                 flexDirection: 'column',
-                gap: '30px',
-                padding: '22px 32px',
+                gap: '32px',
               }}
               onSubmit={(e) => {
                 e.preventDefault()
-                if (clubName) {
-                  const date = new Date()
-                  const day = date.getDate()
-                  const month = date.getMonth() + 1
-                  const year = date.getFullYear()
-                  value.addNewClub(param.id, param.spaceKey, {
-                    id: new Date().getTime().toString(),
-                    createdOn: `${day}/${month}/${year}`,
-                    title: clubName,
-                    image: preview,
-                  })
-                  setClubName('')
-
+                if (favourite) {
+                  if (bookLink) {
+                    value.addBook(
+                      {
+                        favourite: true,
+                        link: bookLink,
+                        id: new Date().getTime().toString(),
+                      },
+                      param.id,
+                      param.spaceKey
+                    )
+                  }
+                  if (pdf) {
+                    value.addBook(
+                      {
+                        favourite: true,
+                        pdf: pdf,
+                        preview: pdfPreview,
+                        id: new Date().getTime().toString(),
+                      },
+                      param.id,
+                      param.spaceKey
+                    )
+                  }
+                  history.push(
+                    `/workspace/${param.id}/details/${param.spaceKey}`
+                  )
+                } else {
+                  if (bookLink) {
+                    value.addBook(
+                      {
+                        favourite: false,
+                        link: bookLink,
+                        id: new Date().getTime().toString(),
+                      },
+                      param.id,
+                      param.spaceKey
+                    )
+                  }
+                  if (pdf) {
+                    value.addBook(
+                      {
+                        favourite: false,
+                        pdf: pdf,
+                        preview: pdfPreview,
+                        id: new Date().getTime().toString(),
+                      },
+                      param.id,
+                      param.spaceKey
+                    )
+                  }
                   history.push(
                     `/workspace/${param.id}/details/${param.spaceKey}`
                   )
                 }
               }}
             >
-              <div style={{ display: 'flex', flexDirection: 'column' }}>
+              <div
+                style={{ display: 'flex', flexDirection: 'column', gap: '7px' }}
+              >
                 <label
-                  htmlFor='name'
+                  htmlFor='book-link'
                   style={{
                     color: '#959595',
                     fontSize: '12px',
-                    marginBottom: '5px',
+                    fontWeight: '500',
                   }}
                 >
-                  Name of the club
+                  Embed ebook link
                 </label>
                 <input
-                  autoFocus
-                  required
-                  type='text'
-                  name='club'
-                  id='name'
+                  type='url'
+                  name='book-link'
+                  id='book-link'
+                  value={bookLink}
                   style={{
-                    borderRadius: '5px',
                     height: '32px',
-                    outline: 'none',
                     border: '1px solid #C4C4C4',
+                    borderRadius: '5px',
                     fontSize: '16px',
-                    padding: '3px 8px',
+                    padding: '5px 10px',
+                    outline: 'none',
                   }}
-                  value={clubName}
-                  onChange={(e) => setClubName(e.target.value)}
+                  onChange={(e) => {
+                    setBookLink(e.target.value)
+                  }}
+                  disabled={pdf ? true : false}
                 />
               </div>
-              <div style={{ display: 'flex', flexDirection: 'column' }}>
+              <p
+                style={{
+                  textAlign: 'center',
+                  margin: '-10px 0px',
+                  color: '#468AEF',
+                }}
+              >
+                OR
+              </p>
+              <div
+                style={{ display: 'flex', flexDirection: 'column', gap: '7px' }}
+              >
                 <label
-                  htmlFor='thumbnail'
+                  htmlFor='upload-pdf'
                   style={{
                     color: '#959595',
                     fontSize: '12px',
-                    marginBottom: '5px',
+                    fontWeight: '500',
                   }}
                 >
-                  Thumbnail image (optional)
+                  Upload pdf
                 </label>
-
                 <input
                   type='file'
-                  name='club'
-                  id='thumbnail'
-                  accept='image/*'
+                  name='upload-pdf'
+                  id='upload-pdf'
+                  accept='.pdf'
                   hidden
-                  onChange={(e) => setThumbnail(e.target.files[0])}
+                  onChange={(e) => setPdf(e.target.files[0])}
+                  disabled={bookLink ? true : false}
                 />
-                <label htmlFor='thumbnail'>
-                  <span
-                    className='custom-thumbnail-btn'
+                <label htmlFor='upload-pdf'>
+                  <div
                     style={{
-                      background: 'none',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
                       borderRadius: '5px',
                       border: '1px dashed #468AEF',
-                      color: '#468AEF',
-                      fontSize: '16px',
-                      fontWeight: '500',
+                      height: '32px',
                       cursor: 'pointer',
-                      outline: 'none',
-                      display: 'block',
-                      textAlign: 'center',
-                      padding: '5px',
                     }}
                   >
-                    Upload image
-                  </span>
+                    <p
+                      style={{
+                        color: '#468AEF',
+                        fontSize: '12px',
+                        fontWeight: '500',
+                      }}
+                    >
+                      Upload pdf
+                    </p>
+                  </div>
                 </label>
                 <div
                   style={{
@@ -185,8 +239,8 @@ export default function ClubModal() {
                     gap: '10px',
                   }}
                 >
-                  {thumbnail ? 'File selected' : ''}
-                  {thumbnail ? <FaCheckCircle /> : null}
+                  {pdf ? 'File selected' : ''}
+                  {pdf ? <FaCheckCircle /> : null}
                 </div>
               </div>
               <div
@@ -198,7 +252,7 @@ export default function ClubModal() {
                 }}
               >
                 <Link to={`/workspace/${param.id}/details/${param.spaceKey}`}>
-                  <div
+                  <button
                     style={{
                       color: '#FF0000',
                       border: 'none',
@@ -206,12 +260,10 @@ export default function ClubModal() {
                       padding: '10px 20px',
                       outline: 'none',
                       cursor: 'pointer',
-                      fontSize: '14px',
-                      fontWeight: '400',
                     }}
                   >
                     Cancel
-                  </div>
+                  </button>
                 </Link>
                 <button
                   type='submit'

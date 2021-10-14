@@ -3,22 +3,22 @@ import Modal from 'react-modal'
 import { WorkspaceConsumer } from '../../Context'
 import { Link, Route, useParams, Switch } from 'react-router-dom'
 import { AiOutlineClose } from 'react-icons/ai'
-import InternshipsPdfModal from './InternshipsPdfModal'
+import TaskPdfModal from './TaskPdfModal'
 
-export default function LinksAndPdfsModal() {
+export default function SingleTaskInfoModal() {
   return (
     <>
       <Switch>
-        <Route path='/internships/docs/:internshipID/readpdf'>
-          <InternshipsPdfModal />
+        <Route path='/taskmanager/info/:taskID/readpdf'>
+          <TaskPdfModal />
         </Route>
       </Switch>
       <WorkspaceConsumer>
         {(value) => {
           return (
-            <LinksAndPdfsModalComponent
+            <SingleTaskInfoModalComponent
               value={value}
-            ></LinksAndPdfsModalComponent>
+            ></SingleTaskInfoModalComponent>
           )
         }}
       </WorkspaceConsumer>
@@ -26,13 +26,23 @@ export default function LinksAndPdfsModal() {
   )
 }
 
-function LinksAndPdfsModalComponent(props) {
+function SingleTaskInfoModalComponent(props) {
   const { value } = props
   const param = useParams()
 
-  const selectedInternship = value.internships.find(
-    (item) => item.id === param.internshipID
+  let selectedTask = value.taskManager[0].find(
+    (item) => item.id === param.taskID
   )
+
+  if (!selectedTask) {
+    selectedTask = value.taskManager[1].find((item) => item.id === param.taskID)
+    if (!selectedTask) {
+      selectedTask = value.taskManager[2].find(
+        (item) => item.id === param.taskID
+      )
+    }
+  }
+
   return (
     <Modal
       isOpen={true}
@@ -71,9 +81,9 @@ function LinksAndPdfsModalComponent(props) {
             color: '#468AEF',
           }}
         >
-          Docs and other resources
+          {selectedTask.title}
         </h3>
-        <Link to='/internships'>
+        <Link to='/taskmanager'>
           <AiOutlineClose
             style={{
               fontSize: '20px',
@@ -92,6 +102,25 @@ function LinksAndPdfsModalComponent(props) {
         }}
       >
         <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
+          <p style={{ color: '#c4c4c4', fontSize: '12px' }}>Created By</p>
+          <h4 style={{ fontSize: '14px', fontWeight: '400' }}>
+            {selectedTask.createdBy}
+          </h4>
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
+          <p style={{ color: '#c4c4c4', fontSize: '12px' }}>Due Date</p>
+          <h4 style={{ fontSize: '14px', fontWeight: '400' }}>
+            {selectedTask.dueDate}
+          </h4>
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
+          <p style={{ color: '#c4c4c4', fontSize: '12px' }}>Description</p>
+          <h4 style={{ fontSize: '14px', fontWeight: '400' }}>
+            {selectedTask.description}
+          </h4>
+        </div>
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
           <p style={{ color: '#c4c4c4', fontSize: '12px' }}>Pdf</p>
           <div
             className='pdf-container'
@@ -104,15 +133,15 @@ function LinksAndPdfsModalComponent(props) {
               overflowX: 'hidden',
             }}
           >
-            {selectedInternship?.pdfList?.map((pdf) => {
-              const linkToPdf = selectedInternship.pdfPreview.find(
+            {selectedTask?.pdfList?.map((pdf) => {
+              const linkToPdf = selectedTask.pdfPreview.find(
                 (item) => item.previewId === pdf.pdfId
               )
               return (
                 <>
                   <Link
                     to={{
-                      pathname: `/internships/docs/${param.internshipID}/readpdf`,
+                      pathname: `/taskmanager/info/${param.taskID}/readpdf`,
                       state: { src: linkToPdf?.source },
                     }}
                     key={pdf.pdfId}
@@ -141,7 +170,7 @@ function LinksAndPdfsModalComponent(props) {
               overflowX: 'hidden',
             }}
           >
-            {selectedInternship?.links?.map((item) => {
+            {selectedTask?.links?.map((item) => {
               return (
                 <a
                   style={{ fontSize: '12px' }}

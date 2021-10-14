@@ -2,9 +2,9 @@ import React, { useState } from 'react'
 import Modal from 'react-modal'
 import { useParams, Link, useHistory } from 'react-router-dom'
 import { AiOutlineClose } from 'react-icons/ai'
-import { WorkspaceConsumer } from '../Context'
+import { WorkspaceConsumer } from '../../Context'
 
-export default function WorkshopResourceModal() {
+export default function ResourceModal() {
   const param = useParams()
   const history = useHistory()
 
@@ -55,7 +55,7 @@ export default function WorkshopResourceModal() {
           Add new resource
         </h3>
         <Link
-          to={`/workspace/${param.id}/details/${param.spaceKey}/insideworkshop/${param.workshopID}`}
+          to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}`}
         >
           <AiOutlineClose
             style={{
@@ -89,76 +89,66 @@ export default function WorkshopResourceModal() {
                   id: resourceID,
                   title: newResource.name,
                 }
-                value.addNewWorkshopResource(
+                value.addNewResource(
                   param.id,
                   param.spaceKey,
-                  param.workshopID,
+                  param.clubID,
                   resource
                 )
                 history.push(
-                  `/workspace/${param.id}/details/${param.spaceKey}/insideworkshop/${param.workshopID}`
+                  `/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}`
                 )
               }}
             >
               <div className='single-resource-option'>
-                <label htmlFor='topic information'>Topic Information</label>
+                <label htmlFor='tasks'>Tasks</label>
                 <input
                   type='radio'
                   name='new-resource'
-                  id='topic information'
-                  value='Topic Information'
+                  id='tasks'
+                  value='Tasks'
                   onChange={handleChange}
                 />
               </div>
               <div className='single-resource-option'>
-                <label htmlFor='participants list'>Participants List</label>
+                <label htmlFor='ideas'>Ideas</label>
                 <input
                   type='radio'
                   name='new-resource'
-                  id='participants list'
-                  value='Participants List'
+                  id='ideas'
+                  value='Ideas'
                   onChange={handleChange}
                 />
               </div>
               <div className='single-resource-option'>
-                <label htmlFor='list-of-activities'>List of Activities</label>
+                <label htmlFor='meeting-notes'>Meeting Notes</label>
                 <input
                   type='radio'
                   name='new-resource'
-                  id='list-of-activities'
-                  value='List of Activities'
+                  id='meeting-notes'
+                  value='Meeting Notes'
                   onChange={handleChange}
                 />
               </div>
               <div className='single-resource-option'>
-                <label htmlFor='itinerary'>Itinerary</label>
-                <input
-                  type='radio'
-                  name='new-resource'
-                  id='itinerary'
-                  value='Itinerary'
-                  onChange={handleChange}
-                />
-              </div>
-              <div className='single-resource-option'>
-                <label htmlFor='organising-committee-details'>
-                  Organising Committee Details
+                <label htmlFor='finance-and-sponsorships'>
+                  Finance and Sponsorships
                 </label>
                 <input
                   type='radio'
                   name='new-resource'
-                  id='organising-committee-details'
-                  value='Organising Committee Details'
+                  id='finance-and-sponsorships'
+                  value='Finance and Sponsorships'
                   onChange={handleChange}
                 />
               </div>
               <div className='single-resource-option'>
-                <label htmlFor='venue-details'>Venue Details</label>
+                <label htmlFor='external-contacts'>External contacts</label>
                 <input
                   type='radio'
                   name='new-resource'
-                  id='venue-details'
-                  value='Venue Details'
+                  id='external-contacts'
+                  value='External contacts'
                   onChange={handleChange}
                 />
               </div>
@@ -171,9 +161,9 @@ export default function WorkshopResourceModal() {
                 }}
               >
                 <Link
-                  to={`/workspace/${param.id}/details/${param.spaceKey}/insideworkshop/${param.workshopID}`}
+                  to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}`}
                 >
-                  <dic
+                  <button
                     style={{
                       color: '#FF0000',
                       border: 'none',
@@ -181,12 +171,10 @@ export default function WorkshopResourceModal() {
                       padding: '10px 20px',
                       outline: 'none',
                       cursor: 'pointer',
-                      fontSize: '16px',
-                      fontWeight: '400',
                     }}
                   >
                     Cancel
-                  </dic>
+                  </button>
                 </Link>
                 <button
                   type='submit'

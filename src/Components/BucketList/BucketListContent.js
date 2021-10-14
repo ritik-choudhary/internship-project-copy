@@ -1,9 +1,9 @@
 import React from 'react'
 import { Link, useParams } from 'react-router-dom'
-import { WorkspaceConsumer } from '../Context'
+import { WorkspaceConsumer } from '../../Context'
 import { FaBell, FaShareSquare, FaDownload } from 'react-icons/fa'
 import { RiArrowGoBackFill } from 'react-icons/ri'
-import Sidebar from '../Components/Sidebar'
+import Sidebar from '../../Components/Sidebar'
 import styled from 'styled-components'
 import { RiDeleteBin6Line } from 'react-icons/ri'
 

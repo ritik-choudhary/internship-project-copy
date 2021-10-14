@@ -1,12 +1,12 @@
 import React from 'react'
 import { AiOutlinePlus } from 'react-icons/ai'
 import './Tiles.css'
-import todo from '../assets/todo.jpg'
-import performance from '../assets/performance.jpg'
-import wallet from '../assets/wallet.jpg'
-import taskManager from '../assets/task-manager.jpg'
-import jobs from '../assets/jobs2.jpg'
-import guidance from '../assets/guidance.jpg'
+import todo from '../../assets/todo.jpg'
+import performance from '../../assets/performance.jpg'
+import wallet from '../../assets/wallet.jpg'
+import taskManager from '../../assets/task-manager.jpg'
+import jobs from '../../assets/jobs2.jpg'
+import guidance from '../../assets/guidance.jpg'
 import { Link } from 'react-router-dom'
 
 export default function Tiles() {

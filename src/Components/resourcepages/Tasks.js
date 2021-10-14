@@ -234,11 +234,23 @@ function TasksComponent(props) {
                       </p>
                     </div>
                     <div className='bottom'>
-                      <p className='description'>
-                        {item?.description.length > 600
-                          ? `${item.description.slice(0, 600)}...`
-                          : item.description}
-                      </p>
+                      {item?.description.length > 600 ? (
+                        <>
+                          <p className='description'>
+                            {item.description.slice(0, 600)}...{' '}
+                            <span className='read-more-btn'>
+                              <Link
+                                to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/edittask/${item.id}`}
+                              >
+                                read more
+                              </Link>
+                            </span>
+                          </p>
+                        </>
+                      ) : (
+                        <p className='description'>{item.description}</p>
+                      )}
+
                       <div className='links-container'>
                         {item.links.map((link) => {
                           count++
@@ -454,5 +466,10 @@ const TasksPageWrapper = styled.section`
     text-decoration: underline;
     font-weight: 400;
     font-size: 12px;
+  }
+  .read-more-btn a {
+    font-weight: 400;
+    font-size: 12px;
+    color: #468aef;
   }
 `

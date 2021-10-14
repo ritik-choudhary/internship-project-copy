@@ -36,12 +36,14 @@ export default function Sidebar() {
         <h3 className='username'>John Doe</h3>
       </div>
       <div className='sidebar-icons'>
-        <Option
-          Icon={AiOutlinePlus}
-          title={'Add Workspace'}
-          setIsSidebarOpen={setIsSidebarOpen}
-          isSidebarOpen={isSidebarOpen}
-        />
+        <Link to='/workspace' className='sidebar-icon-link'>
+          <Option
+            Icon={AiOutlinePlus}
+            title={'Add Workspace'}
+            setIsSidebarOpen={setIsSidebarOpen}
+            isSidebarOpen={isSidebarOpen}
+          />
+        </Link>
         <Option
           Icon={BiTimeFive}
           title={'Recents'}
@@ -78,12 +80,14 @@ export default function Sidebar() {
           setIsSidebarOpen={setIsSidebarOpen}
           isSidebarOpen={isSidebarOpen}
         />
-        <Option
-          Icon={BiTask}
-          title={'Task Manager'}
-          setIsSidebarOpen={setIsSidebarOpen}
-          isSidebarOpen={isSidebarOpen}
-        />
+        <Link to='/taskmanager' className='sidebar-icon-link'>
+          <Option
+            Icon={BiTask}
+            title={'Task Manager'}
+            setIsSidebarOpen={setIsSidebarOpen}
+            isSidebarOpen={isSidebarOpen}
+          />
+        </Link>
         <Option
           Icon={HiNewspaper}
           title={'Cover Letter Templates'}
@@ -115,12 +119,10 @@ const Option = (props) => {
   const [isHovering, setIsHovering] = useState(false)
   const onMouseOver = () => {
     if (!isHovering) setIsHovering(true)
-    // console.log('on')
   }
 
   const onMouseLeave = () => {
     setIsHovering(false)
-    // console.log('off')
   }
 
   return (

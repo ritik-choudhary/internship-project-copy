@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from 'react'
 import Modal from 'react-modal'
 import { AiOutlineClose } from 'react-icons/ai'
-import { WorkspaceConsumer } from '../Context'
-import { useParams, Link, useHistory } from 'react-router-dom'
+import { Link, useParams, useHistory, useLocation } from 'react-router-dom'
+import { WorkspaceConsumer } from '../../Context'
 import { FaCheckCircle } from 'react-icons/fa'
-import { Images } from '../assets/DefaultImage'
+import { Images } from '../../assets/DefaultImage'
 
-export default function MoodboardModal() {
+export default function SpaceUploadModal() {
   const randomIndex = Math.floor(Math.random() * Images.length)
 
-  const [moodboardName, setMoodboardName] = useState('')
+  const param = useParams()
+  const location = useLocation()
+  const history = useHistory()
   const [thumbnail, setThumbnail] = useState()
   const [preview, setPreview] = useState(Images[randomIndex])
-
-  const param = useParams()
-  const history = useHistory()
+  const [altName, setAltName] = useState()
 
   useEffect(() => {
     if (thumbnail) {
@@ -31,7 +31,7 @@ export default function MoodboardModal() {
       isOpen={true}
       style={{
         content: {
-          width: '520px',
+          width: '519px',
           top: '50%',
           left: '50%',
           right: 'auto',
@@ -63,9 +63,9 @@ export default function MoodboardModal() {
             fontWeight: '700',
           }}
         >
-          Add new Moodboard
+          Add new space
         </h3>
-        <Link to={`/workspace/${param.id}/details/${param.spaceKey}`}>
+        <Link to={`/workspace/${param.id}/details/createspace`}>
           <AiOutlineClose
             style={{
               fontSize: '20px',
@@ -88,56 +88,74 @@ export default function MoodboardModal() {
               }}
               onSubmit={(e) => {
                 e.preventDefault()
-                console.log('SUBMIT')
-                if (moodboardName) {
-                  const date = new Date()
-                  const day = date.getDate()
-                  const month = date.getMonth() + 1
-                  const year = date.getFullYear()
-                  value.addNewMoodboard(param.id, param.spaceKey, {
-                    id: new Date().getTime().toString(),
-                    createdOn: `${day}/${month}/${year}`,
-                    title: moodboardName,
-                    image: preview,
-                  })
-                  setMoodboardName('')
-
-                  history.push(
-                    `/workspace/${param.id}/details/${param.spaceKey}`
-                  )
+                if (location.state.space.version > 1) {
+                  let newSpaceObject = { ...location.state.space }
+                  if (altName) {
+                    newSpaceObject.altName = altName
+                  }
+                  value.addNewSpace({ ...newSpaceObject, image: preview })
+                  history.push(`/workspace/${param.id}/details`)
+                } else {
+                  value.addNewSpace({ ...location.state.space, image: preview })
+                  history.push(`/workspace/${param.id}/details`)
                 }
               }}
             >
-              <div style={{ display: 'flex', flexDirection: 'column' }}>
-                <label
-                  htmlFor='name'
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '5px',
+                }}
+              >
+                <p
                   style={{
                     color: '#959595',
                     fontSize: '12px',
-                    marginBottom: '5px',
+                    fontWeight: '500',
                   }}
                 >
-                  Name of the Moodboard
-                </label>
-                <input
-                  autoFocus
-                  required
-                  type='text'
-                  name='club'
-                  id='name'
-                  style={{
-                    borderRadius: '5px',
-                    height: '32px',
-                    outline: 'none',
-                    border: '1px solid #C4C4C4',
-                    fontSize: '16px',
-                    padding: '3px 8px',
-                  }}
-                  value={moodboardName}
-                  onChange={(e) => setMoodboardName(e.target.value)}
-                />
+                  Name of the new space
+                </p>
+                <div
+                  style={{ display: 'flex', gap: '10px', alignItems: 'center' }}
+                >
+                  <h4 style={{ fontSize: '16px', fontWeight: '500' }}>
+                    {location.state.space.title}{' '}
+                    {location.state.space.version > 1
+                      ? `(${location.state.space.version})`
+                      : null}
+                  </h4>
+                  {location.state.space.version > 1 ? (
+                    <p style={{ color: '#c4c4c4', fontSize: '40px' }}>/</p>
+                  ) : null}
+
+                  {location.state.space.version > 1 ? (
+                    <input
+                      type='text'
+                      name='alternative-name'
+                      id='alt-name'
+                      value={altName}
+                      onChange={(e) => setAltName(e.target.value)}
+                      style={{
+                        borderRadius: '6px',
+                        outline: 'none',
+                        border: '1px solid #c4c4c4',
+                        fontSize: '15px',
+                        padding: '0px 5px',
+                        height: '25px',
+                      }}
+                    />
+                  ) : null}
+                </div>
               </div>
-              <div style={{ display: 'flex', flexDirection: 'column' }}>
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '5px',
+                }}
+              >
                 <label
                   htmlFor='thumbnail'
                   style={{
@@ -151,7 +169,7 @@ export default function MoodboardModal() {
 
                 <input
                   type='file'
-                  name='club'
+                  name='workspace'
                   id='thumbnail'
                   accept='image/*'
                   hidden
@@ -164,6 +182,7 @@ export default function MoodboardModal() {
                       background: 'none',
                       borderRadius: '5px',
                       border: '1px dashed #468AEF',
+
                       color: '#468AEF',
                       fontSize: '16px',
                       fontWeight: '500',
@@ -190,16 +209,9 @@ export default function MoodboardModal() {
                   {thumbnail ? <FaCheckCircle /> : null}
                 </div>
               </div>
-              <div
-                style={{
-                  display: 'flex',
-                  gap: '20px',
-                  alignItems: 'center',
-                  justifyContent: 'flex-end',
-                }}
-              >
-                <Link to={`/workspace/${param.id}/details/${param.spaceKey}`}>
-                  <div
+              <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                <Link to={`/workspace/${param.id}/details/createspace`}>
+                  <button
                     style={{
                       color: '#FF0000',
                       border: 'none',
@@ -210,7 +222,7 @@ export default function MoodboardModal() {
                     }}
                   >
                     Cancel
-                  </div>
+                  </button>
                 </Link>
                 <button
                   type='submit'

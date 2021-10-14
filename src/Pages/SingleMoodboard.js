@@ -11,12 +11,12 @@ import {
   AiOutlineLeft,
   AiOutlineFullscreen,
 } from 'react-icons/ai'
-import MoodboardElementModal from '../Components/MoodboardElementModal'
+import MoodboardElementModal from '../Components/MoodboardComponents/MoodboardElementModal'
 import { RiDeleteBin6Line } from 'react-icons/ri'
 import { BsFillGridFill } from 'react-icons/bs'
 import ReactPlayer from 'react-player'
 import { CgArrowsExpandUpRight } from 'react-icons/cg'
-import ReadPdf from '../Components/ReadPdf'
+import ReadPdf from '../Components/MoodboardComponents/ReadPdf'
 
 export default function SingleMoodboard() {
   return (

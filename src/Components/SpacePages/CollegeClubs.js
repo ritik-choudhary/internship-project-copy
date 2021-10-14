@@ -3,13 +3,14 @@ import { AiOutlinePlus } from 'react-icons/ai'
 import styled from 'styled-components'
 import { Switch, Route, Link, useParams } from 'react-router-dom'
 import { WorkspaceConsumer } from '../../Context'
-import ClubModal from '../ClubModal'
+import ClubModal from '../Club/ClubModal'
 import { RiDeleteBin6Line } from 'react-icons/ri'
 
 export default function CollegeClubs() {
   const defaultImage =
     'https://1080motion.com/wp-content/uploads/2018/06/NoImageFound.jpg.png'
   const param = useParams()
+
   return (
     <CollegeClubsWrapper>
       <Switch>

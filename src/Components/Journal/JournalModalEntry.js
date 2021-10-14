@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react'
 import Modal from 'react-modal'
 import { useParams, Link, useHistory } from 'react-router-dom'
 import { AiFillCloseCircle } from 'react-icons/ai'
-import { WorkspaceConsumer } from '../Context'
-import TextEditor from './TextEditor'
+import { WorkspaceConsumer } from '../../Context'
+import TextEditor from '../TextEditor'
 import Styled from 'styled-components'
 
 export default function JournalEntryModal(props) {
@@ -154,6 +154,7 @@ function JournalEntryModalComponent(props) {
               name='name'
               id='name'
               value={title}
+              onChange={(e) => setTitle(e.target.value)}
               placeholder='Untitled Meeting Notes'
               style={{
                 width: '400px',
@@ -176,6 +177,7 @@ function JournalEntryModalComponent(props) {
                 type='text'
                 name='created-by'
                 id='created-by'
+                maxLength='100'
                 value={createdBy}
                 className={createdBy ? '' : 'skeleton'}
                 onChange={(e) => {

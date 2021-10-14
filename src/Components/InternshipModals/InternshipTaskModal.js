@@ -23,9 +23,19 @@ function InternshipTaskModalComponent(props) {
   const { value } = props
   const history = useHistory()
 
+  const defaultDate = new Date().toISOString().substring(0, 10)
+
   const [title, setTitle] = useState()
   const [description, setDescription] = useState()
-  const [dueDate, setDueDate] = useState()
+  const [dueDate, setDueDate] = useState(defaultDate)
+
+  const disablePastDate = () => {
+    const today = new Date()
+    const dd = String(today.getDate() + 1).padStart(2, '0')
+    const mm = String(today.getMonth() + 1).padStart(2, '0')
+    const yyyy = today.getFullYear()
+    return yyyy + '-' + mm + '-' + dd
+  }
 
   return (
     <Modal
@@ -114,7 +124,7 @@ function InternshipTaskModalComponent(props) {
             id='title'
             autoFocus
             required
-            maxLength='150'
+            maxLength='100'
             style={{
               borderRadius: '5px',
               height: '32px',
@@ -142,6 +152,8 @@ function InternshipTaskModalComponent(props) {
             type='date'
             name='dueDate'
             id='dueDate'
+            min={disablePastDate()}
+            format='dd-MM-yyyy'
             style={{
               borderRadius: '5px',
               height: '32px',
@@ -191,7 +203,7 @@ function InternshipTaskModalComponent(props) {
           }}
         >
           <Link to='/internships'>
-            <button
+            <div
               style={{
                 color: '#FF0000',
                 border: 'none',
@@ -199,10 +211,12 @@ function InternshipTaskModalComponent(props) {
                 padding: '10px 20px',
                 outline: 'none',
                 cursor: 'pointer',
+                fontSize: '14px',
+                fontWeight: '400',
               }}
             >
               Cancel
-            </button>
+            </div>
           </Link>
           <button
             type='submit'

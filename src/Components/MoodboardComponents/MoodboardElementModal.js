@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import Modal from 'react-modal'
 import { Link, useParams, useHistory } from 'react-router-dom'
 import { AiOutlineClose, AiOutlinePlus } from 'react-icons/ai'
-import { WorkspaceConsumer } from '../Context'
+import { WorkspaceConsumer } from '../../Context'
 import { FaCheckCircle, FaUpload } from 'react-icons/fa'
 
 export default function MoodboardElementModal() {

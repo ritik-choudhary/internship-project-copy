@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import Modal from 'react-modal'
 import { Link, useHistory } from 'react-router-dom'
 import { AiOutlineClose } from 'react-icons/ai'
-import { WorkspaceConsumer } from '../Context'
+import { WorkspaceConsumer } from '../../Context'
 
 export default function JournalModal(props) {
   return (
@@ -142,9 +142,12 @@ function JournalModalComponent(props) {
             {isNotes ? 'Title of the notes' : 'Title of the entry'}
           </label>
           <input
+            autoFocus
+            required
             type='text'
             name='journal-title'
             id='journal-title'
+            maxLength='100'
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             style={{
@@ -167,7 +170,7 @@ function JournalModalComponent(props) {
         >
           {isNotes ? (
             <Link to='/notes'>
-              <button
+              <div
                 style={{
                   color: '#FF0000',
                   border: 'none',
@@ -175,14 +178,16 @@ function JournalModalComponent(props) {
                   padding: '10px 20px',
                   outline: 'none',
                   cursor: 'pointer',
+                  fontSize: '14px',
+                  fontWeight: '400',
                 }}
               >
                 Cancel
-              </button>
+              </div>
             </Link>
           ) : (
             <Link to='/journal'>
-              <button
+              <div
                 style={{
                   color: '#FF0000',
                   border: 'none',
@@ -190,10 +195,12 @@ function JournalModalComponent(props) {
                   padding: '10px 20px',
                   outline: 'none',
                   cursor: 'pointer',
+                  fontSize: '14px',
+                  fontWeight: '400',
                 }}
               >
                 Cancel
-              </button>
+              </div>
             </Link>
           )}
 

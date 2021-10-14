@@ -306,6 +306,7 @@ function TaskModalComponent(props) {
             type='text'
             name='title'
             id='title'
+            maxLength='100'
             value={taskTitle}
             onChange={(e) => {
               if (!isSharing) setTaskTitle(e.target.value)

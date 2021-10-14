@@ -74,6 +74,7 @@ function InternshipsComponent(props) {
                 </h3>
                 <div className='new-openings-btn'>
                   <p>New Openings</p>
+                  <div className='new-notification'></div>
                 </div>
               </div>
             </div>
@@ -326,7 +327,6 @@ const InternshipsWrapper = styled.section`
     width: 100%;
     font-size: 20px;
     font-weight: 400;
-    overflow: hidden;
   }
   .internships-title-container .title div {
     display: flex;
@@ -339,6 +339,16 @@ const InternshipsWrapper = styled.section`
     background: #ffc263;
     border-radius: 5px;
     border: 1px solid #ffc263;
+    position: relative;
+  }
+  .new-openings-btn div {
+    position: absolute;
+    background: #468aef;
+    height: 6px;
+    width: 6px;
+    top: -3px;
+    border-radius: 100%;
+    right: 7px;
   }
   .new-openings-btn:hover {
     background: white;

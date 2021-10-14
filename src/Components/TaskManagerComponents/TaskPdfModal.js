@@ -1,5 +1,4 @@
 import React from 'react'
-import SubjectFullPagePdf from './SubjectFullPagePdf'
 import Modal from 'react-modal'
 import { Link, useParams, useLocation, Switch, Route } from 'react-router-dom'
 import { AiFillCloseCircle, AiOutlineFullscreen } from 'react-icons/ai'
@@ -7,23 +6,24 @@ import { Viewer } from '@react-pdf-viewer/core'
 import { Worker } from '@react-pdf-viewer/core'
 import '@react-pdf-viewer/core/lib/styles/index.css'
 import '@react-pdf-viewer/default-layout/lib/styles/index.css'
+import TaskFullPagePdf from './TaskFullPagePdf'
 
-export default function SubjectPdfModal() {
+export default function TaskPdfModal() {
   return (
     <>
       <Switch>
-        <Route path='/workspace/:id/details/:spaceKey/editsubject/:subjectID/readsubjectpdf/fullPage'>
-          <SubjectFullPagePdf />
+        <Route path='/taskmanager/info/:taskID/readpdf/readfullpage'>
+          <TaskFullPagePdf />
         </Route>
-        <Route path='/workspace/:id/details/:spaceKey/editsubject/:subjectID/readsubjectpdf'>
-          <SubjectPdfModalComponent />
+        <Route path='/taskmanager/info/:taskID/readpdf'>
+          <TaskPdfModalComponent />
         </Route>
       </Switch>
     </>
   )
 }
 
-const SubjectPdfModalComponent = () => {
+const TaskPdfModalComponent = () => {
   const param = useParams()
   const location = useLocation()
   return (
@@ -67,7 +67,7 @@ const SubjectPdfModalComponent = () => {
       >
         <Link
           to={{
-            pathname: `/workspace/${param.id}/details/${param.spaceKey}/editsubject/${param.subjectID}/readsubjectpdf/fullpage`,
+            pathname: `/taskmanager/info/${param.taskID}/readpdf/readfullpage`,
             state: { data: location.state.src },
           }}
         >
@@ -80,9 +80,7 @@ const SubjectPdfModalComponent = () => {
             }}
           />
         </Link>
-        <Link
-          to={`/workspace/${param.id}/details/${param.spaceKey}/editsubject/${param.subjectID}`}
-        >
+        <Link to={`/taskmanager/info/${param.taskID}`}>
           <AiFillCloseCircle
             style={{
               fontSize: '30px',

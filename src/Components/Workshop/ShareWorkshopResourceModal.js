@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import { WorkspaceConsumer } from '../Context'
+import { WorkspaceConsumer } from '../../Context'
 import styled from 'styled-components'
 import Modal from 'react-modal'
 import { RiArrowGoBackFill } from 'react-icons/ri'
