@@ -50,7 +50,6 @@ function TaskManagerComponent(props) {
     const card = document.getElementById(card_id)
     card.style.display = 'block'
     value.switchTask(subArray, card_id)
-    const target = e.target
   }
 
   const dragOverContainer = (e) => {
