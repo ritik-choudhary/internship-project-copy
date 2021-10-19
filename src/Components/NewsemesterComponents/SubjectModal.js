@@ -75,6 +75,18 @@ function SubjectModalComponent(props) {
     setTimetableList(oldTimeTable)
   }
 
+  function isValidHttpUrl(string) {
+    let url
+
+    try {
+      url = new URL(string)
+    } catch (_) {
+      return false
+    }
+
+    return url.protocol === 'http:' || url.protocol === 'https:'
+  }
+
   useEffect(() => {
     if (isEditing) {
       const selectedSpace = value.workspaceElements.find(
@@ -169,12 +181,19 @@ function SubjectModalComponent(props) {
       </header>
 
       <form
+        encType='multipart/form-data'
         style={{
           padding: '15px 32px',
           width: '100%',
           display: 'flex',
           flexDirection: 'column',
           gap: '35px',
+        }}
+        onKeyDown={(e) => {
+          if (e.keyCode === 27) {
+            e.preventDefault()
+            history.push(`/workspace/${param.id}/details/${param.spaceKey}`)
+          }
         }}
         onSubmit={(e) => {
           e.preventDefault()
@@ -358,15 +377,20 @@ function SubjectModalComponent(props) {
               name='pdf-upload'
               id='pdf-upload'
               hidden
+              multiple
               accept='.pdf'
               onChange={(e) => {
-                setPdfList([
-                  ...pdfList,
-                  {
-                    pdfId: new Date().getTime().toString(),
-                    pdfFile: e.target.files[0],
-                  },
-                ])
+                let tempPdfs = pdfList
+                for (let i = 0; i < e.target.files.length; i++) {
+                  tempPdfs = [
+                    ...tempPdfs,
+                    {
+                      pdfId: new Date().getTime().toString() + i,
+                      pdfFile: e.target.files[i],
+                    },
+                  ]
+                }
+                setPdfList(tempPdfs)
               }}
             />
             <label htmlFor='pdf-upload'>
@@ -396,18 +420,7 @@ function SubjectModalComponent(props) {
                 </div>
               </div>
             </label>
-            <div
-              style={{
-                color: 'green',
-                display: 'flex',
-                alignItems: 'center',
-                fontSize: '12px',
-                gap: '10px',
-              }}
-            >
-              {pdfList.length > 0 ? 'File selected' : ''}
-              {pdfList.length > 0 ? <FaCheckCircle /> : null}
-            </div>
+
             <div
               className='pdf-container'
               style={{
@@ -473,8 +486,10 @@ function SubjectModalComponent(props) {
                     fontWeight: '700',
                   }}
                   onClick={() => {
-                    setLinkList([...linkList, linkToAdd])
-                    setLinkToAdd('')
+                    if (linkToAdd && isValidHttpUrl(linkToAdd)) {
+                      setLinkList([...linkList, linkToAdd])
+                      setLinkToAdd('')
+                    }
                   }}
                 />
               </div>
@@ -494,6 +509,15 @@ function SubjectModalComponent(props) {
               value={linkToAdd}
               onChange={(e) => {
                 setLinkToAdd(e.target.value)
+              }}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault()
+                  if (linkToAdd && isValidHttpUrl(linkToAdd)) {
+                    setLinkList([...linkList, linkToAdd])
+                    setLinkToAdd('')
+                  }
+                }
               }}
             />
             <div
@@ -1011,7 +1035,7 @@ function SubjectModalComponent(props) {
           }}
         >
           <Link to={`/workspace/${param.id}/details/${param.spaceKey}`}>
-            <button
+            <div
               style={{
                 color: '#FF0000',
                 border: 'none',
@@ -1019,10 +1043,12 @@ function SubjectModalComponent(props) {
                 padding: '10px 20px',
                 outline: 'none',
                 cursor: 'pointer',
+                fontSize: '14px',
+                fontWeight: '400',
               }}
             >
               Cancel
-            </button>
+            </div>
           </Link>
           <button
             type='submit'

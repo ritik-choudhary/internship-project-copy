@@ -118,6 +118,12 @@ function OngoingModalComponent(props) {
           gap: '10px',
           padding: '22px 32px',
         }}
+        onKeyDown={(e) => {
+          if (e.keyCode === 27) {
+            e.preventDefault()
+            history.push('/internships')
+          }
+        }}
         onSubmit={(e) => {
           e.preventDefault()
           value.addNewOngoingInternship({
@@ -354,7 +360,7 @@ function OngoingModalComponent(props) {
                 alignItems: 'center',
               }}
             >
-              <p>Upload pdf</p>
+              <p>Upload Docs</p>
               <AiOutlinePlus
                 style={{
                   color: '#468AEF',
@@ -369,7 +375,7 @@ function OngoingModalComponent(props) {
             name='pdf'
             id='pdf'
             hidden
-            accept='.pdf'
+            accept='.docx,.pdf'
             onChange={(e) => {
               setPdfList([
                 ...pdfList,
@@ -403,7 +409,7 @@ function OngoingModalComponent(props) {
                 }}
               >
                 <FaUpload />
-                Upload pdf
+                Upload Docs
               </div>
             </div>
           </label>
@@ -423,12 +429,21 @@ function OngoingModalComponent(props) {
               const linkToPdf = pdfPreview.find(
                 (item) => item.previewId === pdf.pdfId
               )
+
+              const type =
+                pdf.pdfFile.name.split('.')[
+                  pdf.pdfFile.name.split('.').length - 1
+                ]
+              console.log('type 1', type)
               return (
                 <>
                   <Link
                     to={{
                       pathname: `/internships/addnewongoing/readpdf`,
-                      state: { src: linkToPdf?.source },
+                      state: {
+                        src: linkToPdf?.source,
+                        fileType: type,
+                      },
                     }}
                     key={pdf.pdfId}
                   >

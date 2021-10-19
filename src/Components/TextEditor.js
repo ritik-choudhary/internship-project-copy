@@ -42,7 +42,7 @@ const H2Img = () => {
 const LIST_TYPES = ['numbered-list', 'bulleted-list']
 
 const RichTextExample = (props) => {
-  const { textNote, setTextNote } = props
+  const { textNote, setTextNote, height } = props
   const renderElement = useCallback((props) => <Element {...props} />, [])
   const renderLeaf = useCallback((props) => <Leaf {...props} />, [])
   const editor = useMemo(() => withHistory(withReact(createEditor())), [])
@@ -51,6 +51,7 @@ const RichTextExample = (props) => {
     <Slate
       editor={editor}
       value={textNote}
+      height={height}
       onChange={(value) => {
         setTextNote(value)
       }}
@@ -82,7 +83,7 @@ const RichTextExample = (props) => {
           }
         }}
         style={{
-          height: '150px',
+          height: `${height}`,
           overflow: 'auto',
           overflowX: 'hidden',
           marginBottom: '10px',

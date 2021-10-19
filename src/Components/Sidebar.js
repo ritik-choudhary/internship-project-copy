@@ -74,12 +74,14 @@ export default function Sidebar() {
             isSidebarOpen={isSidebarOpen}
           />
         </Link>
-        <Option
-          Icon={BsFillBarChartFill}
-          title={'Insights'}
-          setIsSidebarOpen={setIsSidebarOpen}
-          isSidebarOpen={isSidebarOpen}
-        />
+        <Link to='/insights' className='sidebar-icon-link'>
+          <Option
+            Icon={BsFillBarChartFill}
+            title={'Insights'}
+            setIsSidebarOpen={setIsSidebarOpen}
+            isSidebarOpen={isSidebarOpen}
+          />
+        </Link>
         <Link to='/taskmanager' className='sidebar-icon-link'>
           <Option
             Icon={BiTask}

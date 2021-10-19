@@ -161,6 +161,18 @@ function HabitTrackerModalComponent(props) {
           flexDirection: 'column',
           gap: '20px',
         }}
+        onKeyDown={(e) => {
+          if (e.keyCode === 27) {
+            e.preventDefault()
+            if (isAddField) {
+              history.push(
+                `/workspace/${param.id}/details/${param.spaceKey}/insidehabit/${param.habitID}`
+              )
+            } else {
+              history.push(`/workspace/${param.id}/details/${param.spaceKey}`)
+            }
+          }
+        }}
         onSubmit={(e) => {
           e.preventDefault()
           if (!isAddField) {
@@ -260,6 +272,7 @@ function HabitTrackerModalComponent(props) {
             type='text'
             name='habit-name'
             id='habit-name'
+            maxLength='100'
             value={nameOfHabit}
             onChange={(e) => {
               if (!isAddField) setNameOfHabit(e.target.value)
@@ -292,6 +305,7 @@ function HabitTrackerModalComponent(props) {
             id='habit-image'
             hidden
             accept='image/*'
+            disabled={isAddField}
             onChange={(e) => {
               if (!isAddField) setHabitImage(e.target.files[0])
             }}
@@ -379,8 +393,56 @@ function HabitTrackerModalComponent(props) {
             type='text'
             name='sub-fields'
             id='sub-fields'
+            maxLength='100'
             value={fieldToAdd}
             onChange={(e) => setFieldToAdd(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                e.preventDefault()
+                if (fieldToAdd) {
+                  setTempFieldsList([
+                    ...tempFieldsList,
+                    {
+                      id: new Date().getTime().toString(),
+                      field: fieldToAdd,
+                      color:
+                        '#' +
+                        (0x1000000 + Math.random() * 0xffffff)
+                          .toString(16)
+                          .substr(1, 6),
+                    },
+                  ])
+                  setFieldsList([
+                    ...fieldsList,
+                    {
+                      id: new Date().getTime().toString(),
+                      field: fieldToAdd,
+                      color:
+                        '#' +
+                        (0x1000000 + Math.random() * 0xffffff)
+                          .toString(16)
+                          .substr(1, 6),
+                    },
+                  ])
+                  setFieldToAdd('')
+                }
+                // if (fieldToAdd) {
+                //   setTempFieldsList([
+                //     ...tempFieldsList,
+                //     {
+                //       id: new Date().getTime().toString(),
+                //       field: fieldToAdd,
+                //       color:
+                //         '#' +
+                //         (0x1000000 + Math.random() * 0xffffff)
+                //           .toString(16)
+                //           .substr(1, 6),
+                //     },
+                //   ])
+                //   setFieldToAdd('')
+                // }
+              }
+            }}
             style={{
               height: '32px',
               border: '1px solid #C4C4C4',
@@ -427,6 +489,7 @@ function HabitTrackerModalComponent(props) {
               calendarAriaLabel='Toggle calendar'
               calendarIcon={<AiFillCalendar style={{ fontSize: '16px' }} />}
               selectsStart
+              disabled={isAddField}
               format='dd-MM-y'
             />
           </div>
@@ -448,6 +511,7 @@ function HabitTrackerModalComponent(props) {
               calendarAriaLabel='Toggle calendar'
               calendarIcon={<AiFillCalendar style={{ fontSize: '16px' }} />}
               minDate={startDate}
+              disabled={isAddField}
               format='dd-MM-y'
               selectsEnd
             />

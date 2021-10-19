@@ -21,13 +21,14 @@ class WorkspaceProvider extends Component {
       workspaceList: [...oldList, newItem],
     })
   }
-  editWorkspace = (id, newTitle, newThumbnail) => {
+  editWorkspace = (id, newTitle, newThumbnail, version) => {
     const oldList = this.state.workspaceList
     const selectedItem = oldList.find((item) => item.id === id)
     const index = oldList.indexOf(selectedItem)
     const item = oldList[index]
     item.title = newTitle
     item.image = newThumbnail
+    item.version = version
     this.setState(() => {
       return {
         workspaceList: oldList,
@@ -122,6 +123,10 @@ class WorkspaceProvider extends Component {
       const newBookList = element.favouriteBooks.filter(
         (book) => book.id !== bookID
       )
+      const newShelfList = element.bookShelf.filter(
+        (book) => book.id !== bookID
+      )
+      element.bookShelf = newShelfList
       element.favouriteBooks = newBookList
     } else {
       const newBookList = element.bookShelf.filter((book) => book.id !== bookID)
@@ -259,6 +264,42 @@ class WorkspaceProvider extends Component {
       (item) => item.id !== taskId
     )
     resourceElement.tasks = newTaskList
+    this.setState(() => {
+      return { workspaceElements: oldList }
+    })
+  }
+
+  deleteLinkFromTasks = (id, key, clubId, resourceId, taskId, linkId) => {
+    const oldList = [...this.state.workspaceElements]
+    let element = oldList.find(
+      (item) => item.id === key && item.workspaceID === id
+    )
+    let clubElement = element.clubs.find((item) => item.id === clubId)
+    let resourceElement = clubElement.resources.find(
+      (item) => item.id === resourceId
+    )
+    let taskElement = resourceElement.tasks.find((item) => item.id === taskId)
+    const newLinkList = taskElement.links.filter((item) => item.id !== linkId)
+    taskElement.links = newLinkList
+    this.setState(() => {
+      return { workspaceElements: oldList }
+    })
+  }
+
+  deletePdfFromTasks = (id, key, clubId, resourceId, taskId, pdfId) => {
+    const oldList = [...this.state.workspaceElements]
+    let element = oldList.find(
+      (item) => item.id === key && item.workspaceID === id
+    )
+    let clubElement = element.clubs.find((item) => item.id === clubId)
+    let resourceElement = clubElement.resources.find(
+      (item) => item.id === resourceId
+    )
+    let taskElement = resourceElement.tasks.find((item) => item.id === taskId)
+    const newPdfList = taskElement.pdfList.filter(
+      (item) => item.pdfId !== pdfId
+    )
+    taskElement.pdfList = newPdfList
     this.setState(() => {
       return { workspaceElements: oldList }
     })
@@ -436,7 +477,8 @@ class WorkspaceProvider extends Component {
     financeElement.createdOn = newFinance.createdOn
     financeElement.createdBy = newFinance.createdBy
     financeElement.company = newFinance.company
-    financeElement.financer = newFinance.financer
+    financeElement.financersList = newFinance.financersList
+    financeElement.sponsorsList = newFinance.sponsorsList
     financeElement.personalDetails = newFinance.personalDetails
     financeElement.links = newFinance.links
 
@@ -495,7 +537,7 @@ class WorkspaceProvider extends Component {
     contactElement.createdOn = newContact.createdOn
     contactElement.createdBy = newContact.createdBy
     contactElement.company = newContact.company
-    contactElement.personName = newContact.personName
+    contactElement.personNamesList = newContact.personNamesList
     contactElement.personalDetails = newContact.personalDetails
     contactElement.links = newContact.links
 
@@ -1192,6 +1234,78 @@ class WorkspaceProvider extends Component {
     })
   }
 
+  addNewOtherOption = (id, key, workshopId, resourceId, otherOption) => {
+    const oldList = [...this.state.workspaceElements]
+    let element = oldList.find(
+      (item) => item.id === key && item.workspaceID === id
+    )
+    let workshopElement = element.workshops.find(
+      (item) => item.id === workshopId
+    )
+    let resourceElement = workshopElement.resources.find(
+      (item) => item.id === resourceId
+    )
+    resourceElement.otherOptionList = resourceElement.otherOptionList || []
+    resourceElement.otherOptionList = [
+      ...resourceElement.otherOptionList,
+      otherOption,
+    ]
+    this.setState(() => {
+      return { workspaceElements: oldList }
+    })
+  }
+
+  editOtherOption = (
+    id,
+    key,
+    workshopId,
+    resourceId,
+    otherOptionId,
+    newOtherOption
+  ) => {
+    const oldList = [...this.state.workspaceElements]
+    let element = oldList.find(
+      (item) => item.id === key && item.workspaceID === id
+    )
+    let workshopElement = element.workshops.find(
+      (item) => item.id === workshopId
+    )
+    let resourceElement = workshopElement.resources.find(
+      (item) => item.id === resourceId
+    )
+    let otherOptionElement = resourceElement.otherOptionList.find(
+      (item) => item.id === otherOptionId
+    )
+    otherOptionElement.title = newOtherOption.title
+    otherOptionElement.createdOn = newOtherOption.createdOn
+    otherOptionElement.createdBy = newOtherOption.createdBy
+    otherOptionElement.note = newOtherOption.note
+
+    this.setState(() => {
+      return { workspaceElements: oldList }
+    })
+  }
+
+  deleteOtherOption = (id, key, workshopId, resourceId, otherOptionId) => {
+    const oldList = [...this.state.workspaceElements]
+    let element = oldList.find(
+      (item) => item.id === key && item.workspaceID === id
+    )
+    let workshopElement = element.workshops.find(
+      (item) => item.id === workshopId
+    )
+    let resourceElement = workshopElement.resources.find(
+      (item) => item.id === resourceId
+    )
+    const newotherOptionList = resourceElement.otherOptionList.filter(
+      (item) => item.id !== otherOptionId
+    )
+    resourceElement.otherOptionList = newotherOptionList
+    this.setState(() => {
+      return { workspaceElements: oldList }
+    })
+  }
+
   addTodo = (id, key, todo) => {
     const oldList = [...this.state.workspaceElements]
     let element = oldList.find(
@@ -1235,6 +1349,36 @@ class WorkspaceProvider extends Component {
     })
   }
 
+  deletePdfFromTodo = (id, key, todoId, pdfId) => {
+    const oldList = [...this.state.workspaceElements]
+    let element = oldList.find(
+      (item) => item.id === key && item.workspaceID === id
+    )
+
+    let todoElement = element.todoList.find((item) => item.id === todoId)
+    const newPdfList = todoElement.pdfList.filter(
+      (item) => item.pdfId !== pdfId
+    )
+    todoElement.pdfList = newPdfList
+    this.setState(() => {
+      return { workspaceElements: oldList }
+    })
+  }
+
+  deleteLinkFromTodo = (id, key, todoId, linkId) => {
+    const oldList = [...this.state.workspaceElements]
+    let element = oldList.find(
+      (item) => item.id === key && item.workspaceID === id
+    )
+
+    let todoElement = element.todoList.find((item) => item.id === todoId)
+    const newLinks = todoElement.links.filter((item) => item.id !== linkId)
+    todoElement.links = newLinks
+    this.setState(() => {
+      return { workspaceElements: oldList }
+    })
+  }
+
   todoManipulation = (id, key, todoId) => {
     const oldList = [...this.state.workspaceElements]
     let element = oldList.find(
@@ -1272,6 +1416,20 @@ class WorkspaceProvider extends Component {
     bucketElement.images = bucket.images
     bucketElement.previews = bucket.previews
 
+    this.setState(() => {
+      return { workspaceElements: oldList }
+    })
+  }
+
+  deleteBucketList = (id, key, bucketId) => {
+    const oldList = [...this.state.workspaceElements]
+    let element = oldList.find(
+      (item) => item.id === key && item.workspaceID === id
+    )
+    let newBucketList = element.bucketList.filter(
+      (item) => item.id !== bucketId
+    )
+    element.bucketList = newBucketList
     this.setState(() => {
       return { workspaceElements: oldList }
     })
@@ -1640,40 +1798,32 @@ class WorkspaceProvider extends Component {
   handleStatusTaskManager = (taskId) => {
     let oldTaskManager = [...this.state.taskManager]
     let selectedTask = oldTaskManager[0]?.find((item) => item.id === taskId)
+    let tempArray = 0
     if (!selectedTask) {
       selectedTask = oldTaskManager[1]?.find((item) => item.id === taskId)
+      tempArray = 1
     }
     if (!selectedTask) {
       selectedTask = oldTaskManager[2]?.find((item) => item.id === taskId)
+      tempArray = 2
     }
-    selectedTask.completed = true
-    oldTaskManager[3] = [...oldTaskManager[3], selectedTask]
-    let tempvar
-    tempvar = oldTaskManager[0]?.find((item) => item.id === taskId)
-    if (tempvar) {
-      let newTaskManager1 = oldTaskManager[0].filter(
-        (item) => item.id !== taskId
-      )
-      oldTaskManager[0] = newTaskManager1
-    } else {
-      tempvar = oldTaskManager[1]?.find((item) => item.id === taskId)
-      if (tempvar) {
-        let newTaskManager1 = oldTaskManager[1].filter(
-          (item) => item.id !== taskId
-        )
-        oldTaskManager[1] = newTaskManager1
-      } else {
-        tempvar = selectedTask = oldTaskManager[2]?.find(
-          (item) => item.id === taskId
-        )
-        if (tempvar) {
-          let newTaskManager1 = oldTaskManager[2].filter(
-            (item) => item.id !== taskId
-          )
-          oldTaskManager[2] = newTaskManager1
-        }
-      }
+    if (!selectedTask) {
+      selectedTask = oldTaskManager[3]?.find((item) => item.id === taskId)
+      tempArray = 3
     }
+    if (tempArray !== 3) {
+      oldTaskManager[3] = [...oldTaskManager[3], selectedTask]
+      selectedTask.completed = true
+    }
+    if (tempArray == 3) {
+      selectedTask.completed = false
+      oldTaskManager[0] = [...oldTaskManager[0], selectedTask]
+    }
+
+    let newSubArray = oldTaskManager[tempArray].filter(
+      (item) => item.id !== taskId
+    )
+    oldTaskManager[tempArray] = newSubArray
     this.setState(() => {
       return { taskManager: oldTaskManager }
     })
@@ -1691,6 +1841,9 @@ class WorkspaceProvider extends Component {
         tempArray = i
         break
       }
+    }
+    if (tempArray === 3) {
+      selectedTask.completed = false
     }
     const newArray = newTaskManager[tempArray].filter(
       (item) => item.id !== taskId
@@ -1731,6 +1884,8 @@ class WorkspaceProvider extends Component {
           addTask: this.addTask,
           taskManipulation: this.taskManipulation,
           deleteTask: this.deleteTask,
+          deleteLinkFromTasks: this.deleteLinkFromTasks,
+          deletePdfFromTasks: this.deletePdfFromTasks,
           editTask: this.editTask,
           addNewMeeting: this.addNewMeeting,
           editMeeting: this.editMeeting,
@@ -1778,12 +1933,18 @@ class WorkspaceProvider extends Component {
           addNewVenueDetails: this.addNewVenueDetails,
           editVenueDetails: this.editVenueDetails,
           deleteVenueDetails: this.deleteVenueDetails,
+          addNewOtherOption: this.addNewOtherOption,
+          editOtherOption: this.editOtherOption,
+          deleteOtherOption: this.deleteOtherOption,
           addTodo: this.addTodo,
           deleteTodo: this.deleteTodo,
           editTodo: this.editTodo,
+          deletePdfFromTodo: this.deletePdfFromTodo,
+          deleteLinkFromTodo: this.deleteLinkFromTodo,
           todoManipulation: this.todoManipulation,
           addBucketList: this.addBucketList,
           editBucketList: this.editBucketList,
+          deleteBucketList: this.deleteBucketList,
           deleteBucketImage: this.deleteBucketImage,
           restoreBucketImage: this.restoreBucketImage,
           deleteBucketImagePermanently: this.deleteBucketImagePermanently,

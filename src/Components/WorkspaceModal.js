@@ -87,9 +87,22 @@ export default function WorkspaceModal(props) {
                 gap: '30px',
                 padding: '22px 32px',
               }}
+              onKeyDown={(e) => {
+                if (e.keyCode === 27) {
+                  history.push('/workspace/')
+                }
+              }}
               onSubmit={(e) => {
                 e.preventDefault()
-                if (workspaceName) {
+                if (
+                  value.workspaceList.find(
+                    (item) => item.title === workspaceName
+                  )
+                ) {
+                  let count = 0
+                  value.workspaceList.forEach((item) =>
+                    item.title === workspaceName ? count++ : null
+                  )
                   if (!isEditing) {
                     const date = new Date()
                     const day = date.getDate()
@@ -100,14 +113,43 @@ export default function WorkspaceModal(props) {
                       createdOn: `${day}/${month}/${year}`,
                       title: workspaceName,
                       image: imageAddress,
+                      version: count + 1,
                     })
                     setWorkspaceName('')
                   }
                   if (isEditing) {
-                    value.editWorkspace(param.id, workspaceName, imageAddress)
+                    value.editWorkspace(
+                      param.id,
+                      workspaceName,
+                      imageAddress,
+                      count + 1
+                    )
                   }
-                  history.push('/workspace/')
+                } else {
+                  if (!isEditing) {
+                    const date = new Date()
+                    const day = date.getDate()
+                    const month = date.getMonth() + 1
+                    const year = date.getFullYear()
+                    value.addNewWorkspace({
+                      id: new Date().getTime().toString(),
+                      createdOn: `${day}/${month}/${year}`,
+                      title: workspaceName,
+                      image: imageAddress,
+                      version: 1,
+                    })
+                    setWorkspaceName('')
+                  }
+                  if (isEditing) {
+                    value.editWorkspace(
+                      param.id,
+                      workspaceName,
+                      imageAddress,
+                      1
+                    )
+                  }
                 }
+                history.push('/workspace/')
               }}
             >
               <div style={{ display: 'flex', flexDirection: 'column' }}>

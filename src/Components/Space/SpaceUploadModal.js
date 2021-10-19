@@ -86,6 +86,12 @@ export default function SpaceUploadModal() {
                 gap: '30px',
                 padding: '22px 32px',
               }}
+              onKeyDown={(e) => {
+                if (e.keyCode === 27) {
+                  e.preventDefault()
+                  history.push(`/workspace/${param.id}/details/createspace`)
+                }
+              }}
               onSubmit={(e) => {
                 e.preventDefault()
                 if (location.state.space.version > 1) {
@@ -211,7 +217,7 @@ export default function SpaceUploadModal() {
               </div>
               <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
                 <Link to={`/workspace/${param.id}/details/createspace`}>
-                  <button
+                  <div
                     style={{
                       color: '#FF0000',
                       border: 'none',
@@ -219,10 +225,12 @@ export default function SpaceUploadModal() {
                       padding: '10px 20px',
                       outline: 'none',
                       cursor: 'pointer',
+                      fontSize: '12px',
+                      fontWeight: '400',
                     }}
                   >
                     Cancel
-                  </button>
+                  </div>
                 </Link>
                 <button
                   type='submit'

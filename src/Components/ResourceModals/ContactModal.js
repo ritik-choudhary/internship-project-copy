@@ -74,7 +74,7 @@ function ContactModalComponent(props) {
       setTitle(selectedContact.title)
       setCreatedOn(selectedContact.createdOn)
       setCreatedBy(selectedContact.createdBy)
-      setPersonName(selectedContact.personName)
+      setPersonNamesList(selectedContact.personNamesList)
       setCompany(selectedContact.company)
       setPersonalDetails(selectedContact.personalDetails)
       setLinks(selectedContact.links)
@@ -150,6 +150,19 @@ function ContactModalComponent(props) {
           display: 'flex',
           flexDirection: 'column',
           padding: '0 30px 30px',
+        }}
+        onKeyDown={(e) => {
+          if (e.keyCode === 27) {
+            if (!isSharing) {
+              history.push(
+                `/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}`
+              )
+            } else {
+              history.push(
+                `/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/share`
+              )
+            }
+          }
         }}
         onSubmit={(e) => {
           e.preventDefault()
@@ -236,6 +249,7 @@ function ContactModalComponent(props) {
               name='created-by'
               id='created-by'
               maxLength='100'
+              disabled={isSharing}
               value={createdBy}
               className={createdBy ? '' : 'skeleton'}
               onChange={(e) => {
@@ -263,6 +277,23 @@ function ContactModalComponent(props) {
                 className={personName ? '' : 'skeleton'}
                 onChange={(e) => {
                   setPersonName(e.target.value)
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault()
+                    if (!isSharing) {
+                      if (personName) {
+                        setPersonNamesList([
+                          ...personNamesList,
+                          {
+                            person: personName,
+                            id: new Date().getTime().toString(),
+                          },
+                        ])
+                        setPersonName('')
+                      }
+                    }
+                  }
                 }}
               />
 
@@ -338,11 +369,13 @@ function ContactModalComponent(props) {
                   <AiOutlineClose
                     style={{ cursor: 'pointer', color: '#ff0000' }}
                     onClick={() => {
-                      let tempPersonList = [...personNamesList]
-                      const newPersonList = tempPersonList.filter(
-                        (temp) => temp.id !== item.id
-                      )
-                      setPersonNamesList(newPersonList)
+                      if (!isSharing) {
+                        let tempPersonList = [...personNamesList]
+                        const newPersonList = tempPersonList.filter(
+                          (temp) => temp.id !== item.id
+                        )
+                        setPersonNamesList(newPersonList)
+                      }
                     }}
                   />
                 </div>
@@ -386,6 +419,23 @@ function ContactModalComponent(props) {
               disabled={isSharing}
               className={linkToAdd ? '' : 'skeleton'}
               onChange={(e) => setLinkToAdd(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault()
+                  if (!isSharing) {
+                    if (linkToAdd && isValidHttpUrl(linkToAdd)) {
+                      setLinks([
+                        ...links,
+                        {
+                          link: linkToAdd,
+                          id: new Date().getTime().toString(),
+                        },
+                      ])
+                      setLinkToAdd('')
+                    }
+                  }
+                }
+              }}
             />
             <div className='add-link-btn'>
               <AiOutlinePlus
@@ -402,12 +452,17 @@ function ContactModalComponent(props) {
                   cursor: 'pointer',
                 }}
                 onClick={(e) => {
-                  if (linkToAdd && isValidHttpUrl(linkToAdd)) {
-                    setLinks([
-                      ...links,
-                      { link: linkToAdd, id: new Date().getTime().toString() },
-                    ])
-                    setLinkToAdd('')
+                  if (!isSharing) {
+                    if (linkToAdd && isValidHttpUrl(linkToAdd)) {
+                      setLinks([
+                        ...links,
+                        {
+                          link: linkToAdd,
+                          id: new Date().getTime().toString(),
+                        },
+                      ])
+                      setLinkToAdd('')
+                    }
                   }
                 }}
               />
@@ -460,11 +515,13 @@ function ContactModalComponent(props) {
                   <AiOutlineClose
                     style={{ color: '#f54848', cursor: 'pointer' }}
                     onClick={() => {
-                      let tempLinks = [...links]
-                      const newLinks = tempLinks.filter(
-                        (temp) => temp.id !== item.id
-                      )
-                      setLinks(newLinks)
+                      if (!isSharing) {
+                        let tempLinks = [...links]
+                        const newLinks = tempLinks.filter(
+                          (temp) => temp.id !== item.id
+                        )
+                        setLinks(newLinks)
+                      }
                     }}
                   />
                 </div>

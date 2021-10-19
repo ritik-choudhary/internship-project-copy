@@ -4,6 +4,7 @@ import { Switch, Route, Link, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import { WorkspaceConsumer } from '../../Context'
 import BucketListModal from '../BucketList/BucketListModal'
+import { RiDeleteBin6Line } from 'react-icons/ri'
 
 export default function BucketList() {
   return (
@@ -57,6 +58,17 @@ function BucketListComponent(props) {
                   <div className='top'>
                     <h2 className='bucket-title'>{item.title}</h2>
                     <div className='right'>
+                      <RiDeleteBin6Line
+                        className='delete-bucket-list'
+                        onClick={(e) => {
+                          e.preventDefault()
+                          value.deleteBucketList(
+                            param.id,
+                            param.spaceKey,
+                            item.id
+                          )
+                        }}
+                      />
                       <p className='bucket-type'>{item.type}</p>
                       <p className='created-on'>{item.createdOn}</p>
                     </div>
@@ -190,5 +202,13 @@ const BucketListWrapper = styled.section`
   .bucket-type {
     color: #468aef;
     font-size: 12px;
+  }
+  .delete-bucket-list {
+    color: #c4c4c4;
+    font-size: 20px;
+  }
+  .delete-bucket-list:hover {
+    cursor: pointer;
+    color: #ff0000;
   }
 `

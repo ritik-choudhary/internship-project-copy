@@ -165,7 +165,6 @@
 
 .performance-tile {
   height: 220px;
-  width: 50%;
   position: relative;
   border-radius: 20px;
   overflow: hidden;
@@ -262,16 +261,22 @@ a {
 /* task manager tile */
 .task-manager-tile {
   height: 220px;
-  width: 50%;
   position: relative;
   border-radius: 20px;
   overflow: hidden;
   animation: slideup-2 0.6s ease-in-out;
 }
 
+.task-manager-tile .animation-tiles p {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  width: 180px;
+  white-space: nowrap;
+}
+
 .wallet-tile {
   height: 220px;
-  width: 50%;
+
   position: relative;
   border-radius: 20px;
   overflow: hidden;

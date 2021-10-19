@@ -7,6 +7,7 @@ import { Viewer } from '@react-pdf-viewer/core'
 import { Worker } from '@react-pdf-viewer/core'
 import '@react-pdf-viewer/core/lib/styles/index.css'
 import '@react-pdf-viewer/default-layout/lib/styles/index.css'
+import FileViewer from 'react-file-viewer'
 
 export default function TaskPdfModal(props) {
   return (
@@ -39,6 +40,7 @@ const TaskPdfModalComponent = (props) => {
   const { isTodo, isSharing } = props
   const param = useParams()
   const location = useLocation()
+
   return (
     <Modal
       isOpen={true}
@@ -82,7 +84,10 @@ const TaskPdfModalComponent = (props) => {
           <Link
             to={{
               pathname: `/workspace/${param.id}/details/${param.spaceKey}/addtodo/readpdf/readfullpage`,
-              state: { data: location.state.src },
+              state: {
+                data: location.state.src,
+                fileType: location.state.fileType,
+              },
             }}
           >
             <AiOutlineFullscreen
@@ -98,7 +103,10 @@ const TaskPdfModalComponent = (props) => {
           <Link
             to={{
               pathname: `/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/share/sharetask/readpdf/readfullpage`,
-              state: { data: location.state.src },
+              state: {
+                data: location.state.src,
+                fileType: location.state.fileType,
+              },
             }}
           >
             <AiOutlineFullscreen
@@ -114,7 +122,10 @@ const TaskPdfModalComponent = (props) => {
           <Link
             to={{
               pathname: `/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/addtask/readpdf/readfullpage`,
-              state: { data: location.state.src },
+              state: {
+                data: location.state.src,
+                fileType: location.state.fileType,
+              },
             }}
           >
             <AiOutlineFullscreen
@@ -183,13 +194,20 @@ const TaskPdfModalComponent = (props) => {
             height: '100%',
           }}
         >
-          {location.state.src && (
-            <>
-              <Worker workerUrl='https://unpkg.com/pdfjs-dist@2.6.347/build/pdf.worker.min.js'>
-                <Viewer fileUrl={location.state.src} />
-              </Worker>
-            </>
-          )}
+          {location.state.fileType === 'pdf'
+            ? location.state.src && (
+                <>
+                  <Worker workerUrl='https://unpkg.com/pdfjs-dist@2.6.347/build/pdf.worker.min.js'>
+                    <Viewer fileUrl={location.state.src} />
+                  </Worker>
+                </>
+              )
+            : location.state.src && (
+                <FileViewer
+                  fileType={location.state.fileType}
+                  filePath={location.state.src}
+                />
+              )}
         </div>
       </div>
     </Modal>

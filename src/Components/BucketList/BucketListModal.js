@@ -114,7 +114,7 @@ function BucketListModalComponent(props) {
             fontWeight: '700',
           }}
         >
-          Add new bucket list
+          Add new item
         </h3>
         <Link to={`/workspace/${param.id}/details/${param.spaceKey}`}>
           <AiOutlineClose
@@ -135,6 +135,13 @@ function BucketListModalComponent(props) {
           flexDirection: 'column',
           gap: '20px',
           padding: '22px 32px',
+        }}
+        onKeyDown={(e) => {
+          if (e.keyCode === 27) {
+            e.preventDefault()
+
+            history.push(`/workspace/${param.id}/details/${param.spaceKey}`)
+          }
         }}
         onSubmit={(e) => {
           e.preventDefault()
@@ -191,6 +198,7 @@ function BucketListModalComponent(props) {
             type='text'
             name='title'
             id='title'
+            maxLength='100'
             value={bucketTitle}
             onChange={(e) => setBucketTitle(e.target.value)}
             style={{
@@ -219,6 +227,7 @@ function BucketListModalComponent(props) {
             type='text'
             name='type'
             id='type'
+            maxLength='100'
             style={{
               borderRadius: '5px',
               height: '32px',
@@ -248,7 +257,6 @@ function BucketListModalComponent(props) {
             name='image'
             id='image'
             hidden
-            // webkitdirectory='true'
             multiple
             accept='image/*'
             onChange={(e) => {

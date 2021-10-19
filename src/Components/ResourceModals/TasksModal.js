@@ -27,15 +27,25 @@ function TaskModalComponent(props) {
   const param = useParams()
   const history = useHistory()
 
+  const defaultDate = new Date().toISOString().substring(0, 10)
+
   const [selectedTask, setSelectedTask] = useState()
   const [taskTitle, setTaskTitle] = useState()
   const [createdOn, setCreatedOn] = useState(date)
-  const [duedate, setDuedate] = useState()
+  const [duedate, setDuedate] = useState(defaultDate)
   const [linkToAdd, setLinkToAdd] = useState()
   const [links, setLinks] = useState([])
   const [pdfList, setPdfList] = useState([])
   const [pdfPreview, setPdfPreview] = useState([])
   const [description, setDescription] = useState('')
+
+  const disablePastDate = () => {
+    const today = new Date()
+    const dd = String(today.getDate() + 1).padStart(2, '0')
+    const mm = String(today.getMonth() + 1).padStart(2, '0')
+    const yyyy = today.getFullYear()
+    return yyyy + '-' + mm + '-' + dd
+  }
 
   function isValidHttpUrl(string) {
     let url
@@ -127,6 +137,7 @@ function TaskModalComponent(props) {
         content: {
           width: '520px',
           minHeight: '90vh',
+          overflowY: 'auto',
           top: '50%',
           left: '50%',
           right: 'auto',
@@ -205,6 +216,23 @@ function TaskModalComponent(props) {
           gap: '20px',
           padding: '22px 32px',
         }}
+        onKeyDown={(e) => {
+          if (e.keyCode === 27) {
+            if (!isTodo) {
+              if (!isSharing) {
+                history.push(
+                  `/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}`
+                )
+              } else {
+                history.push(
+                  `/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/share`
+                )
+              }
+            } else {
+              history.push(`/workspace/${param.id}/details/${param.spaceKey}`)
+            }
+          }
+        }}
         onSubmit={(e) => {
           e.preventDefault()
           if (!isTodo) {
@@ -255,10 +283,6 @@ function TaskModalComponent(props) {
               `/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}`
             )
           } else {
-            if (isSharing)
-              history.push(
-                `/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/share`
-              )
             if (isEditing) {
               value.editTodo(param.id, param.spaceKey, param.todoID, {
                 id: selectedTask.id,
@@ -349,6 +373,8 @@ function TaskModalComponent(props) {
             type='date'
             name='due-date'
             id='due-date'
+            min={disablePastDate()}
+            format='dd-MM-yyyy'
             value={duedate}
             onChange={(e) => {
               if (!isSharing) setDuedate(e.target.value)
@@ -385,7 +411,13 @@ function TaskModalComponent(props) {
               onClick={() => {
                 if (!isSharing) {
                   if (linkToAdd && isValidHttpUrl(linkToAdd)) {
-                    setLinks([...links, linkToAdd])
+                    setLinks([
+                      ...links,
+                      {
+                        link: linkToAdd,
+                        id: new Date().getTime().toString(),
+                      },
+                    ])
                     setLinkToAdd('')
                   }
                 }
@@ -419,9 +451,18 @@ function TaskModalComponent(props) {
               }}
               onKeyDown={(e) => {
                 if (e.key === 'Enter') {
-                  if (linkToAdd && isValidHttpUrl(linkToAdd)) {
-                    setLinks([...links, linkToAdd])
-                    setLinkToAdd('')
+                  e.preventDefault()
+                  if (!isSharing) {
+                    if (linkToAdd && isValidHttpUrl(linkToAdd)) {
+                      setLinks([
+                        ...links,
+                        {
+                          link: linkToAdd,
+                          id: new Date().getTime().toString(),
+                        },
+                      ])
+                      setLinkToAdd('')
+                    }
                   }
                 }
               }}
@@ -442,11 +483,13 @@ function TaskModalComponent(props) {
               return (
                 <a
                   style={{ fontSize: '12px' }}
-                  href={item}
+                  href={item.link}
                   target='_blank'
                   rel='noreferrer noopener'
                 >
-                  {item.length > 40 ? `${item.slice(0, 60)}...` : item}
+                  {item.length > 40
+                    ? `${item.link.slice(0, 60)}...`
+                    : item.link}
                 </a>
               )
             })}
@@ -468,7 +511,7 @@ function TaskModalComponent(props) {
                 alignItems: 'center',
               }}
             >
-              <p>Upload pdf</p>
+              <p>Upload docs</p>
               <AiOutlinePlus
                 style={{
                   color: '#468AEF',
@@ -483,7 +526,8 @@ function TaskModalComponent(props) {
             name='pdf'
             id='pdf'
             hidden
-            accept='.pdf'
+            accept='.docx,.pdf'
+            disabled={isSharing}
             onChange={(e) => {
               if (!isSharing) {
                 setPdfList([
@@ -519,7 +563,7 @@ function TaskModalComponent(props) {
                 }}
               >
                 <FaUpload />
-                Upload pdf
+                Upload Docs
               </div>
             </div>
           </label>
@@ -545,7 +589,13 @@ function TaskModalComponent(props) {
                     <Link
                       to={{
                         pathname: `/workspace/${param.id}/details/${param.spaceKey}/addtodo/readpdf`,
-                        state: { src: linkToPdf?.source },
+                        state: {
+                          src: linkToPdf?.source,
+                          fileType:
+                            pdf.pdfFile.name.split('.')[
+                              pdf.pdfFile.name.split('.').length - 1
+                            ],
+                        },
                       }}
                       key={pdf.pdfId}
                       onClick={(e) => {
@@ -564,7 +614,13 @@ function TaskModalComponent(props) {
                     <Link
                       to={{
                         pathname: `/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/sharetask/readpdf`,
-                        state: { src: linkToPdf?.source },
+                        state: {
+                          src: linkToPdf?.source,
+                          fileType:
+                            pdf.pdfFile.name.split('.')[
+                              pdf.pdfFile.name.split('.').length - 1
+                            ],
+                        },
                       }}
                       key={pdf.pdfId}
                       onClick={(e) => {
@@ -583,7 +639,13 @@ function TaskModalComponent(props) {
                     <Link
                       to={{
                         pathname: `/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/addtask/readpdf`,
-                        state: { src: linkToPdf?.source },
+                        state: {
+                          src: linkToPdf?.source,
+                          fileType:
+                            pdf.pdfFile.name.split('.')[
+                              pdf.pdfFile.name.split('.').length - 1
+                            ],
+                        },
                       }}
                       key={pdf.pdfId}
                       onClick={(e) => {
@@ -632,6 +694,7 @@ function TaskModalComponent(props) {
               fontSize: '12px',
               padding: '5px 5px',
               fontFamily: 'Open Sans',
+              maxWidth: '100%',
             }}
           />
         </div>
@@ -645,7 +708,7 @@ function TaskModalComponent(props) {
         >
           {isTodo ? (
             <Link to={`/workspace/${param.id}/details/${param.spaceKey}`}>
-              <button
+              <div
                 style={{
                   color: '#FF0000',
                   border: 'none',
@@ -653,16 +716,18 @@ function TaskModalComponent(props) {
                   padding: '10px 20px',
                   outline: 'none',
                   cursor: 'pointer',
+                  fontSize: '12px',
+                  fontWeight: '400',
                 }}
               >
                 Cancel
-              </button>
+              </div>
             </Link>
           ) : isSharing ? (
             <Link
               to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/share`}
             >
-              <button
+              <div
                 style={{
                   color: '#FF0000',
                   border: 'none',
@@ -670,16 +735,18 @@ function TaskModalComponent(props) {
                   padding: '10px 20px',
                   outline: 'none',
                   cursor: 'pointer',
+                  fontSize: '12px',
+                  fontWeight: '400',
                 }}
               >
                 Cancel
-              </button>
+              </div>
             </Link>
           ) : (
             <Link
               to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}`}
             >
-              <button
+              <div
                 style={{
                   color: '#FF0000',
                   border: 'none',
@@ -687,10 +754,12 @@ function TaskModalComponent(props) {
                   padding: '10px 20px',
                   outline: 'none',
                   cursor: 'pointer',
+                  fontSize: '12px',
+                  fontWeight: '400',
                 }}
               >
                 Cancel
-              </button>
+              </div>
             </Link>
           )}
 

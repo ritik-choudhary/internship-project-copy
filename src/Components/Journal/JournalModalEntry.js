@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Modal from 'react-modal'
 import { useParams, Link, useHistory } from 'react-router-dom'
-import { AiFillCloseCircle } from 'react-icons/ai'
+import { AiFillCloseCircle, AiOutlineFullscreen } from 'react-icons/ai'
 import { WorkspaceConsumer } from '../../Context'
 import TextEditor from '../TextEditor'
 import Styled from 'styled-components'
@@ -29,6 +29,22 @@ function JournalEntryModalComponent(props) {
 
   const param = useParams()
   const history = useHistory()
+
+  const [modalSpecs, setModalSpecs] = useState({
+    width: '1199px',
+    top: '25%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -25%)',
+    boxShadow: '0px 4px 25px rgba(0, 0, 0, 0.08)',
+    borderRadius: '10px',
+    background: 'white',
+    padding: '-20px',
+  })
+
+  const [editorHeight, setEditorHeight] = useState('150px')
 
   const [title, setTitle] = useState()
   const [createdOn, setCreatedOn] = useState(date)
@@ -69,19 +85,7 @@ function JournalEntryModalComponent(props) {
     <Modal
       isOpen={true}
       style={{
-        content: {
-          width: '1000px',
-          top: '50%',
-          left: '50%',
-          right: 'auto',
-          bottom: 'auto',
-          marginRight: '-50%',
-          transform: 'translate(-50%, -50%)',
-          boxShadow: '0px 4px 25px rgba(0, 0, 0, 0.08)',
-          borderRadius: '10px',
-          background: 'white',
-          padding: '-20px',
-        },
+        content: modalSpecs,
         overlay: {
           background: 'rgba(0, 0, 0, 0.31)',
         },
@@ -96,25 +100,79 @@ function JournalEntryModalComponent(props) {
           }}
         >
           {isNotes ? (
-            <Link to={`/notes`}>
-              <AiFillCloseCircle
+            <div style={{ display: 'flex', gap: '10px' }}>
+              <AiOutlineFullscreen
                 style={{
-                  fontSize: '30px',
-                  color: '#FFC8C8',
+                  fontSize: '25px',
+                  fontWeight: '500',
+                  color: '#105eee',
                   cursor: 'pointer',
                 }}
+                onClick={() => {
+                  setModalSpecs({
+                    width: '100%',
+                    height: '100%',
+                    top: '0',
+                    left: '0',
+                    right: 'auto',
+                    bottom: 'auto',
+                    marginRight: '0',
+                    transform: 'translate(0,0)',
+                    boxShadow: '0px 4px 25px rgba(0, 0, 0, 0.08)',
+                    borderRadius: '0px',
+                    background: 'white',
+                    padding: '-20px',
+                  })
+                  setEditorHeight('380px')
+                }}
               />
-            </Link>
+              <Link to={`/notes`}>
+                <AiFillCloseCircle
+                  style={{
+                    fontSize: '30px',
+                    color: '#FFC8C8',
+                    cursor: 'pointer',
+                  }}
+                />
+              </Link>
+            </div>
           ) : (
-            <Link to={`/journal`}>
-              <AiFillCloseCircle
+            <div style={{ display: 'flex', gap: '10px' }}>
+              <AiOutlineFullscreen
                 style={{
-                  fontSize: '30px',
-                  color: '#FFC8C8',
+                  fontSize: '25px',
+                  fontWeight: '500',
+                  color: '#105eee',
                   cursor: 'pointer',
                 }}
+                onClick={() => {
+                  setModalSpecs({
+                    width: '100%',
+                    height: '100%',
+                    top: '0',
+                    left: '0',
+                    right: 'auto',
+                    bottom: 'auto',
+                    marginRight: '0',
+                    transform: 'translate(0,0)',
+                    boxShadow: '0px 4px 25px rgba(0, 0, 0, 0.08)',
+                    borderRadius: '0px',
+                    background: 'white',
+                    padding: '-20px',
+                  })
+                  setEditorHeight('380px')
+                }}
               />
-            </Link>
+              <Link to={`/journal`}>
+                <AiFillCloseCircle
+                  style={{
+                    fontSize: '30px',
+                    color: '#FFC8C8',
+                    cursor: 'pointer',
+                  }}
+                />
+              </Link>
+            </div>
           )}
         </header>
         <form
@@ -122,6 +180,16 @@ function JournalEntryModalComponent(props) {
             display: 'flex',
             flexDirection: 'column',
             padding: '0px 30px 30px',
+          }}
+          onKeyDown={(e) => {
+            if (e.keyCode === 27) {
+              e.preventDefault()
+              if (!isNotes) {
+                history.push('/journal')
+              } else {
+                history.push('/notes')
+              }
+            }
           }}
           onSubmit={(e) => {
             e.preventDefault()
@@ -186,7 +254,11 @@ function JournalEntryModalComponent(props) {
               />
             </div>
           </div>
-          <TextEditor textNote={textNote} setTextNote={setTextNote} />
+          <TextEditor
+            textNote={textNote}
+            setTextNote={setTextNote}
+            height={editorHeight}
+          />
           <div
             className='save-btn'
             style={{ display: 'flex', justifyContent: 'flex-end' }}

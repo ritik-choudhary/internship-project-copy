@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Modal from 'react-modal'
 import { useParams, Link, useHistory } from 'react-router-dom'
-import { AiFillCloseCircle } from 'react-icons/ai'
+import { AiFillCloseCircle, AiOutlineFullscreen } from 'react-icons/ai'
 import { WorkspaceConsumer } from '../../Context'
 import TextEditor from '../TextEditor'
 
@@ -28,6 +28,22 @@ function ActivitiesModalComponent(props) {
 
   const param = useParams()
   const history = useHistory()
+
+  const [modalSpecs, setModalSpecs] = useState({
+    width: '1000px',
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+    boxShadow: '0px 4px 25px rgba(0, 0, 0, 0.08)',
+    borderRadius: '10px',
+    background: 'white',
+    padding: '-20px',
+  })
+
+  const [editorHeight, setEditorHeight] = useState('150px')
 
   const [title, setTitle] = useState()
   const [createdOn, setCreatedOn] = useState(date)
@@ -76,19 +92,7 @@ function ActivitiesModalComponent(props) {
     <Modal
       isOpen={true}
       style={{
-        content: {
-          width: '1000px',
-          top: '50%',
-          left: '50%',
-          right: 'auto',
-          bottom: 'auto',
-          marginRight: '-50%',
-          transform: 'translate(-50%, -50%)',
-          boxShadow: '0px 4px 25px rgba(0, 0, 0, 0.08)',
-          borderRadius: '10px',
-          background: 'white',
-          padding: '-20px',
-        },
+        content: modalSpecs,
         overlay: {
           background: 'rgba(0, 0, 0, 0.31)',
         },
@@ -102,29 +106,83 @@ function ActivitiesModalComponent(props) {
         }}
       >
         {isSharing ? (
-          <Link
-            to={`/workspace/${param.id}/details/${param.spaceKey}/insideworkshop/${param.workshopID}/resourcedata/${param.resourceID}/share`}
-          >
-            <AiFillCloseCircle
+          <div style={{ display: 'flex', gap: '10px' }}>
+            <AiOutlineFullscreen
               style={{
-                fontSize: '30px',
-                color: '#FFC8C8',
+                fontSize: '25px',
+                fontWeight: '500',
+                color: '#105eee',
                 cursor: 'pointer',
               }}
+              onClick={() => {
+                setModalSpecs({
+                  width: '100%',
+                  height: '100%',
+                  top: '0',
+                  left: '0',
+                  right: 'auto',
+                  bottom: 'auto',
+                  marginRight: '0',
+                  transform: 'translate(0,0)',
+                  boxShadow: '0px 4px 25px rgba(0, 0, 0, 0.08)',
+                  borderRadius: '0px',
+                  background: 'white',
+                  padding: '-20px',
+                })
+                setEditorHeight('380px')
+              }}
             />
-          </Link>
+            <Link
+              to={`/workspace/${param.id}/details/${param.spaceKey}/insideworkshop/${param.workshopID}/resourcedata/${param.resourceID}/share`}
+            >
+              <AiFillCloseCircle
+                style={{
+                  fontSize: '30px',
+                  color: '#FFC8C8',
+                  cursor: 'pointer',
+                }}
+              />
+            </Link>
+          </div>
         ) : (
-          <Link
-            to={`/workspace/${param.id}/details/${param.spaceKey}/insideworkshop/${param.workshopID}/resourcedata/${param.resourceID}`}
-          >
-            <AiFillCloseCircle
+          <div style={{ display: 'flex', gap: '10px' }}>
+            <AiOutlineFullscreen
               style={{
-                fontSize: '30px',
-                color: '#FFC8C8',
+                fontSize: '25px',
+                fontWeight: '500',
+                color: '#105eee',
                 cursor: 'pointer',
               }}
+              onClick={() => {
+                setModalSpecs({
+                  width: '100%',
+                  height: '100%',
+                  top: '0',
+                  left: '0',
+                  right: 'auto',
+                  bottom: 'auto',
+                  marginRight: '0',
+                  transform: 'translate(0,0)',
+                  boxShadow: '0px 4px 25px rgba(0, 0, 0, 0.08)',
+                  borderRadius: '0px',
+                  background: 'white',
+                  padding: '-20px',
+                })
+                setEditorHeight('380px')
+              }}
             />
-          </Link>
+            <Link
+              to={`/workspace/${param.id}/details/${param.spaceKey}/insideworkshop/${param.workshopID}/resourcedata/${param.resourceID}`}
+            >
+              <AiFillCloseCircle
+                style={{
+                  fontSize: '30px',
+                  color: '#FFC8C8',
+                  cursor: 'pointer',
+                }}
+              />
+            </Link>
+          </div>
         )}
       </header>
       <form
@@ -132,6 +190,20 @@ function ActivitiesModalComponent(props) {
           display: 'flex',
           flexDirection: 'column',
           padding: '0px 30px 30px',
+        }}
+        onKeyDown={(e) => {
+          if (e.keyCode === 27) {
+            e.preventDefault()
+            if (!isSharing) {
+              history.push(
+                `/workspace/${param.id}/details/${param.spaceKey}/insideworkshop/${param.workshopID}/resourcedata/${param.resourceID}`
+              )
+            } else {
+              history.push(
+                `/workspace/${param.id}/details/${param.spaceKey}/insideworkshop/${param.workshopID}/resourcedata/${param.resourceID}/share`
+              )
+            }
+          }
         }}
         onSubmit={(e) => {
           e.preventDefault()
@@ -185,6 +257,7 @@ function ActivitiesModalComponent(props) {
             type='text'
             name='name'
             id='name'
+            maxLength='100'
             value={title}
             onChange={(e) => {
               if (!isSharing) setTitle(e.target.value)
@@ -211,6 +284,7 @@ function ActivitiesModalComponent(props) {
               type='text'
               name='created-by'
               id='created-by'
+              maxLength='100'
               value={createdBy}
               className={createdBy ? '' : 'skeleton'}
               onChange={(e) => {
@@ -225,6 +299,7 @@ function ActivitiesModalComponent(props) {
           textNote={textNote}
           isSharing={isSharing ? true : false}
           setTextNote={setTextNote}
+          height={editorHeight}
         />
         <div
           className='save-btn'

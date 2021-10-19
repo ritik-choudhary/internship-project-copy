@@ -6,7 +6,7 @@ import {
   AiOutlinePlus,
   AiOutlineClose,
 } from 'react-icons/ai'
-import { WorkspaceConsumer } from '../Context'
+import { WorkspaceConsumer } from '../../Context'
 
 export default function BrainboardContentModal(props) {
   return (
@@ -39,12 +39,11 @@ function BrainboardModalComponent(props) {
 
   const [createdBy, setCreatedBy] = useState()
   const [createdOn, setCreatedOn] = useState(date)
-  const [tags, setTags] = useState()
+  const [tagToAdd, setTagToAdd] = useState()
+  const [tags, setTags] = useState([])
   const [subject, setSubject] = useState()
   const [linkToAdd, setLinkToAdd] = useState()
   const [links, setLinks] = useState([])
-  //   const [pdfList, setPdfList] = useState([])
-  //   const [pdfPreview, setPdfPreview] = useState([])
 
   const [brainboardToEdit, setBrainboardToEdit] = useState()
 
@@ -69,16 +68,13 @@ function BrainboardModalComponent(props) {
         (item) => item.id === param.brainboardID
       )
 
-      console.log(selectedBrainboard)
-
       setBrainboardToEdit(selectedBrainboard)
       setTitle(selectedBrainboard.title)
       setCreatedOn(selectedBrainboard.createdOn)
       setCreatedBy(selectedBrainboard.createdBy)
-      setTags(selectedBrainboard.tags)
+      setTags(selectedBrainboard.tags || [])
       setSubject(selectedBrainboard.subject)
       setLinks(selectedBrainboard.links)
-      //   setPdfList(selectedBrainboard.pdfList)
     }
   }, [
     isEditing,
@@ -87,24 +83,6 @@ function BrainboardModalComponent(props) {
     value.workspaceElements,
     param.brainboardID,
   ])
-
-  //   useEffect(() => {
-  //     if (pdfList) {
-  //       setPdfPreview([])
-  //       pdfList.forEach((pdf) => {
-  //         const reader = new FileReader()
-  //         reader.onloadend = () => {
-  //           setPdfPreview((pdfPreview) => [
-  //             ...pdfPreview,
-  //             { previewId: pdf.pdfId, source: reader.result },
-  //           ])
-  //         }
-  //         reader.readAsDataURL(pdf.pdfFile)
-  //       })
-  //     } else {
-  //       setPdfPreview([])
-  //     }
-  //   }, [pdfList])
 
   return (
     <Modal
@@ -151,6 +129,12 @@ function BrainboardModalComponent(props) {
           flexDirection: 'column',
           padding: '0px 30px 30px',
         }}
+        onKeyDown={(e) => {
+          if (e.keyCode === 27) {
+            e.preventDefault()
+            history.push(`/workspace/${param.id}/details/${param.spaceKey}`)
+          }
+        }}
         onSubmit={(e) => {
           e.preventDefault()
           if (isEditing) {
@@ -179,6 +163,7 @@ function BrainboardModalComponent(props) {
             type='text'
             name='name'
             id='name'
+            maxLength='100'
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder='Untitled Idea Document'
@@ -192,7 +177,7 @@ function BrainboardModalComponent(props) {
             }}
           />
         </div>
-        <div className='idea-basic-info'>
+        <div className='idea-basic-info' style={{ overflow: 'auto' }}>
           <div className='single-option'>
             <label htmlFor='created-on'>Created on</label>
             <p style={{ fontSize: '14px', color: '#468AEF' }}>{createdOn}</p>
@@ -203,21 +188,80 @@ function BrainboardModalComponent(props) {
               type='text'
               name='created-by'
               id='created-by'
+              maxLength='100'
               value={createdBy}
               className={createdBy ? '' : 'skeleton'}
               onChange={(e) => setCreatedBy(e.target.value)}
             />
           </div>
           <div className='single-option'>
-            <label htmlFor='tags'>Tags</label>
+            <label htmlFor='tags' style={{ flexShrink: '0' }}>
+              Tags
+            </label>
             <input
+              style={{ flexShrink: '0' }}
               type='text'
               name='tags'
               id='tags'
-              value={tags}
-              className={tags ? '' : 'skeleton'}
-              onChange={(e) => setTags(e.target.value)}
+              value={tagToAdd}
+              className={tagToAdd ? '' : 'skeleton'}
+              onChange={(e) => setTagToAdd(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.keyCode === 188) {
+                  e.preventDefault()
+                  setTags([
+                    ...tags,
+                    {
+                      name: tagToAdd,
+                      id: new Date().getTime().toString(),
+                    },
+                  ])
+                  setTagToAdd('')
+                }
+              }}
             />
+            <div
+              className='tags-container'
+              style={{
+                display: 'flex',
+                height: '25px',
+                alignItems: 'center',
+                gap: '10px',
+              }}
+            >
+              {tags?.map((item) => {
+                return (
+                  <div
+                    className='tag'
+                    key={item.id}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '5px',
+                      borderRadius: '5px',
+                      padding: '3px 5px',
+                      background: '#e5e5e5',
+                    }}
+                  >
+                    <p style={{ fontSize: '14px' }}>{item.name}</p>
+                    <AiOutlineClose
+                      style={{
+                        fontSize: '14px',
+                        color: 'red',
+                        cursor: 'pointer',
+                      }}
+                      onClick={(e) => {
+                        let newtagsList = [...tags]
+                        newtagsList = newtagsList.filter(
+                          (temp) => temp.id !== item.id
+                        )
+                        setTags(newtagsList)
+                      }}
+                    />
+                  </div>
+                )
+              })}
+            </div>
           </div>
           <div className='single-option'>
             <label htmlFor='subject'>Subject</label>
@@ -241,6 +285,22 @@ function BrainboardModalComponent(props) {
               value={linkToAdd}
               className={linkToAdd ? '' : 'skeleton'}
               onChange={(e) => setLinkToAdd(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault()
+
+                  if (linkToAdd && isValidHttpUrl(linkToAdd)) {
+                    setLinks([
+                      ...links,
+                      {
+                        link: linkToAdd,
+                        id: new Date().getTime().toString(),
+                      },
+                    ])
+                    setLinkToAdd('')
+                  }
+                }
+              }}
             />
             <div className='add-link-btn'>
               <AiOutlinePlus
@@ -258,7 +318,10 @@ function BrainboardModalComponent(props) {
                 }}
                 onClick={(e) => {
                   if (linkToAdd && isValidHttpUrl(linkToAdd)) {
-                    setLinks([...links, linkToAdd])
+                    setLinks([
+                      ...links,
+                      { link: linkToAdd, id: new Date().getTime().toString() },
+                    ])
                     setLinkToAdd('')
                   }
                 }}
@@ -297,7 +360,7 @@ function BrainboardModalComponent(props) {
                   key={count}
                 >
                   <a
-                    href={item}
+                    href={item.link}
                     target='_blank'
                     rel='noreferrer noopener'
                     style={{
@@ -309,116 +372,22 @@ function BrainboardModalComponent(props) {
                   >
                     Link {count}
                   </a>
-                  <AiOutlineClose style={{ color: '#f54848' }} />
-                </div>
-              )
-            })}
-          </div>
-          {/* <div className='single-option'>
-            <label htmlFor='pdf'>Pdf</label>
-            <input
-              type='file'
-              name='pdf'
-              id='pdf'
-              hidden
-              accept='.pdf'
-              onChange={(e) => {
-                setPdfList([
-                  ...pdfList,
-                  {
-                    pdfId: new Date().getTime().toString(),
-                    pdfFile: e.target.files[0],
-                  },
-                ])
-              }}
-            />
-            <label htmlFor='pdf'>
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  borderRadius: '5px',
-                  border: '1px dashed #468AEF',
-                  height: '32px',
-                  cursor: 'pointer',
-                }}
-              >
-                <div
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '10px',
-                    color: '#468AEF',
-                    fontSize: '12px',
-                    fontWeight: '500',
-                  }}
-                >
-                  <FaUpload />
-                  Upload pdf
-                </div>
-              </div>
-            </label>
-          </div>
-          <div
-            className='pdf-container'
-            style={{
-              display: `${pdfList?.length > 0 ? 'grid' : 'none'}`,
-              gridTemplateColumns: 'repeat(15,1fr)',
-              maxHeight: '50px',
-              fontSize: '14px',
-              overflow: 'auto',
-              overflowX: 'hidden',
-              marginLeft: '132px',
-            }}
-          >
-            {pdfList?.map((pdf) => {
-              const linkToPdf = pdfPreview.find(
-                (item) => item.previewId === pdf.pdfId
-              )
-              pdfCount++
-              return (
-                <Link
-                  to={{
-                    pathname: `/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/addidea/readpdf`,
-                    state: { src: linkToPdf?.source },
-                  }}
-                  key={pdf.pdfId}
-                  onClick={(e) => {
-                    if (!isEditing) {
+                  <AiOutlineClose
+                    style={{ color: '#f54848', cursor: 'pointer' }}
+                    onClick={(e) => {
                       e.preventDefault()
-                    }
-                  }}
-                >
-                  <div
-                    className='pdf-file'
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'center',
-                      gap: '5px',
-                      alignItems: 'center',
-                      width: '60px',
-                      height: '20px',
-                      background: '#C8E1FF',
-                      borderRadius: '5px',
-                      fontSize: '12px',
-                    }}
-                  >
-                    <p
-                      style={{
-                        color: 'black',
 
-                        fontWeight: '400',
-                      }}
-                    >
-                      Pdf {pdfCount}
-                    </p>
-                    <AiOutlineClose style={{ color: '#f54848' }} />
-                  </div>
-                </Link>
+                      let tempLinkList = [...links]
+                      const newLinkList = tempLinkList.filter(
+                        (temp) => temp.id !== item.id
+                      )
+                      setLinks(newLinkList)
+                    }}
+                  />
+                </div>
               )
             })}
-          </div> */}
+          </div>
         </div>
 
         <div

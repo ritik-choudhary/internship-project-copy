@@ -68,6 +68,14 @@ export default function ResourceModal() {
       </header>
       <WorkspaceConsumer>
         {(value) => {
+          const selectedWorkspace = value.workspaceElements.find(
+            (item) =>
+              item.id === param.spaceKey && item.workspaceID === param.id
+          )
+          const selectedClub = selectedWorkspace.clubs.find(
+            (item) => item.id === param.clubID
+          )
+
           return (
             <form
               style={{
@@ -79,22 +87,59 @@ export default function ResourceModal() {
               }}
               onSubmit={(e) => {
                 e.preventDefault()
-                const resourceID = new Date().getTime().toString()
-                const date = new Date()
-                const day = date.getDate()
-                const month = date.toLocaleString('default', { month: 'short' })
-                const year = date.getFullYear()
-                const resource = {
-                  createdOn: `${day < 10 ? `0${day}` : day} ${month}, ${year}`,
-                  id: resourceID,
-                  title: newResource.name,
+                if (
+                  selectedClub?.resources?.find(
+                    (item) => item.title === newResource.name
+                  )
+                ) {
+                  let count = 0
+                  selectedClub.resources.forEach((item) =>
+                    item.title === newResource.name ? count++ : null
+                  )
+                  const resourceID = new Date().getTime().toString()
+                  const date = new Date()
+                  const day = date.getDate()
+                  const month = date.toLocaleString('default', {
+                    month: 'short',
+                  })
+                  const year = date.getFullYear()
+                  const resource = {
+                    createdOn: `${
+                      day < 10 ? `0${day}` : day
+                    } ${month}, ${year}`,
+                    id: resourceID,
+                    title: newResource.name,
+                    version: count + 1,
+                  }
+                  value.addNewResource(
+                    param.id,
+                    param.spaceKey,
+                    param.clubID,
+                    resource
+                  )
+                } else {
+                  const resourceID = new Date().getTime().toString()
+                  const date = new Date()
+                  const day = date.getDate()
+                  const month = date.toLocaleString('default', {
+                    month: 'short',
+                  })
+                  const year = date.getFullYear()
+                  const resource = {
+                    createdOn: `${
+                      day < 10 ? `0${day}` : day
+                    } ${month}, ${year}`,
+                    id: resourceID,
+                    title: newResource.name,
+                    version: 1,
+                  }
+                  value.addNewResource(
+                    param.id,
+                    param.spaceKey,
+                    param.clubID,
+                    resource
+                  )
                 }
-                value.addNewResource(
-                  param.id,
-                  param.spaceKey,
-                  param.clubID,
-                  resource
-                )
                 history.push(
                   `/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}`
                 )
@@ -163,7 +208,7 @@ export default function ResourceModal() {
                 <Link
                   to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}`}
                 >
-                  <button
+                  <div
                     style={{
                       color: '#FF0000',
                       border: 'none',
@@ -171,10 +216,12 @@ export default function ResourceModal() {
                       padding: '10px 20px',
                       outline: 'none',
                       cursor: 'pointer',
+                      fontSize: '12px',
+                      fontWeight: '400',
                     }}
                   >
                     Cancel
-                  </button>
+                  </div>
                 </Link>
                 <button
                   type='submit'

@@ -6,6 +6,7 @@ import {
   AiFillCloseCircle,
   AiOutlinePlus,
   AiOutlineClose,
+  AiOutlineFullscreen,
 } from 'react-icons/ai'
 import { WorkspaceConsumer } from '../../Context'
 import TextEditor from '../TextEditor'
@@ -38,11 +39,26 @@ function MeetingNotesModalComponent(props) {
   const param = useParams()
   const history = useHistory()
 
+  const [modalSpecs, setModalSpecs] = useState({
+    width: '1199px',
+    top: '25%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -25%)',
+    boxShadow: '0px 4px 25px rgba(0, 0, 0, 0.08)',
+    borderRadius: '10px',
+    background: 'white',
+    padding: '-20px',
+  })
+
   const [title, setTitle] = useState()
   const [createdOn, setCreatedOn] = useState(date)
   const [createdBy, setCreatedBy] = useState()
   const [type, setType] = useState()
-  const [participants, setParticipants] = useState()
+  const [participantToAdd, setParticipantToAdd] = useState()
+  const [participants, setParticipants] = useState([])
   const [links, setLinks] = useState([])
   const [linkToAdd, setLinkToAdd] = useState()
   const [pdfList, setPdfList] = useState([])
@@ -53,6 +69,8 @@ function MeetingNotesModalComponent(props) {
       children: [{ text: '' }],
     },
   ])
+
+  const [editorHeight, setEditorHeight] = useState('150px')
 
   const [meetingNotesToEdit, setMeetingNotesToEdit] = useState()
 
@@ -81,7 +99,7 @@ function MeetingNotesModalComponent(props) {
       setCreatedOn(selectedMeetingNotes.createdOn)
       setCreatedBy(selectedMeetingNotes.createdBy)
       setType(selectedMeetingNotes.type)
-      setParticipants(selectedMeetingNotes.participants)
+      setParticipants(selectedMeetingNotes.participants || [])
       setLinks(selectedMeetingNotes.links)
       setPdfList(selectedMeetingNotes.pdfList)
       setTextNote(selectedMeetingNotes.note)
@@ -116,19 +134,7 @@ function MeetingNotesModalComponent(props) {
     <Modal
       isOpen={true}
       style={{
-        content: {
-          width: '1000px',
-          top: '50%',
-          left: '50%',
-          right: 'auto',
-          bottom: 'auto',
-          marginRight: '-50%',
-          transform: 'translate(-50%, -50%)',
-          boxShadow: '0px 4px 25px rgba(0, 0, 0, 0.08)',
-          borderRadius: '10px',
-          background: 'white',
-          padding: '-20px',
-        },
+        content: modalSpecs,
         overlay: {
           background: 'rgba(0, 0, 0, 0.31)',
         },
@@ -142,21 +148,54 @@ function MeetingNotesModalComponent(props) {
             padding: '12px 30px',
           }}
         >
-          <Link to={`/workspace/${param.id}/details/${param.spaceKey}`}>
-            <AiFillCloseCircle
+          <div style={{ display: 'flex', gap: '10px' }}>
+            <AiOutlineFullscreen
               style={{
-                fontSize: '30px',
-                color: '#FFC8C8',
+                fontSize: '25px',
+                fontWeight: '500',
+                color: '#105eee',
                 cursor: 'pointer',
               }}
+              onClick={() => {
+                setModalSpecs({
+                  width: '100%',
+                  height: '100%',
+                  top: '0',
+                  left: '0',
+                  right: 'auto',
+                  bottom: 'auto',
+                  marginRight: '0',
+                  transform: 'translate(0,0)',
+                  boxShadow: '0px 4px 25px rgba(0, 0, 0, 0.08)',
+                  borderRadius: '0px',
+                  background: 'white',
+                  padding: '-20px',
+                })
+                setEditorHeight('260px')
+              }}
             />
-          </Link>
+            <Link to={`/workspace/${param.id}/details/${param.spaceKey}`}>
+              <AiFillCloseCircle
+                style={{
+                  fontSize: '30px',
+                  color: '#FFC8C8',
+                  cursor: 'pointer',
+                }}
+              />
+            </Link>
+          </div>
         </header>
         <form
           style={{
             display: 'flex',
             flexDirection: 'column',
             padding: '0px 30px 30px',
+          }}
+          onKeyDown={(e) => {
+            if (e.keyCode === 27) {
+              e.preventDefault()
+              history.push(`/workspace/${param.id}/details/${param.spaceKey}`)
+            }
           }}
           onSubmit={(e) => {
             e.preventDefault()
@@ -201,6 +240,7 @@ function MeetingNotesModalComponent(props) {
               type='text'
               name='name'
               id='name'
+              maxLength='100'
               value={title}
               onChange={(e) => {
                 setTitle(e.target.value)
@@ -227,6 +267,7 @@ function MeetingNotesModalComponent(props) {
                 type='text'
                 name='created-by'
                 id='created-by'
+                maxLength='100'
                 value={createdBy}
                 className={createdBy ? '' : 'skeleton'}
                 onChange={(e) => {
@@ -240,6 +281,7 @@ function MeetingNotesModalComponent(props) {
                 type='text'
                 name='type'
                 id='type'
+                maxLength='100'
                 value={type}
                 className={type ? '' : 'skeleton'}
                 onChange={(e) => {
@@ -253,10 +295,41 @@ function MeetingNotesModalComponent(props) {
                 type='text'
                 name='participants'
                 id='participants'
-                value={participants}
-                className={participants ? '' : 'skeleton'}
-                onChange={(e) => setParticipants(e.target.value)}
+                value={participantToAdd}
+                className={participantToAdd ? '' : 'skeleton'}
+                onChange={(e) => setParticipantToAdd(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.keyCode === 188) {
+                    e.preventDefault()
+                    setParticipants([
+                      ...participants,
+                      {
+                        name: participantToAdd,
+                        id: new Date().getTime().toString(),
+                      },
+                    ])
+                    setParticipantToAdd('')
+                  }
+                }}
               />
+              <div className='participants-container'>
+                {participants?.map((item) => {
+                  return (
+                    <div className='participant-tag' key={item.id}>
+                      <p>{item.name}</p>
+                      <AiOutlineClose
+                        onClick={(e) => {
+                          let newparticipantsList = [...participants]
+                          newparticipantsList = newparticipantsList.filter(
+                            (temp) => temp.id !== item.id
+                          )
+                          setParticipants(newparticipantsList)
+                        }}
+                      />
+                    </div>
+                  )
+                })}
+              </div>
             </div>
             <div className='single-option'>
               <label htmlFor='link'>Link</label>
@@ -268,6 +341,21 @@ function MeetingNotesModalComponent(props) {
                 value={linkToAdd}
                 className={linkToAdd ? '' : 'skeleton'}
                 onChange={(e) => setLinkToAdd(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault()
+                    if (linkToAdd && isValidHttpUrl(linkToAdd)) {
+                      setLinks([
+                        ...links,
+                        {
+                          link: linkToAdd,
+                          id: new Date().getTime().toString(),
+                        },
+                      ])
+                      setLinkToAdd('')
+                    }
+                  }
+                }}
               />
               <div className='add-link-btn'>
                 <AiOutlinePlus
@@ -285,7 +373,13 @@ function MeetingNotesModalComponent(props) {
                   }}
                   onClick={(e) => {
                     if (linkToAdd && isValidHttpUrl(linkToAdd)) {
-                      setLinks([...links, linkToAdd])
+                      setLinks([
+                        ...links,
+                        {
+                          link: linkToAdd,
+                          id: new Date().getTime().toString(),
+                        },
+                      ])
                       setLinkToAdd('')
                     }
                   }}
@@ -336,7 +430,16 @@ function MeetingNotesModalComponent(props) {
                     >
                       Link {count}
                     </a>
-                    <AiOutlineClose style={{ color: '#f54848' }} />
+                    <AiOutlineClose
+                      style={{ color: '#f54848', cursor: 'pointer' }}
+                      onClick={() => {
+                        let tempLinks = [...links]
+                        const newLinks = tempLinks.filter(
+                          (temp) => temp.id !== item.id
+                        )
+                        setLinks(newLinks)
+                      }}
+                    />
                   </div>
                 )
               })}
@@ -443,14 +546,29 @@ function MeetingNotesModalComponent(props) {
                       >
                         Pdf {pdfCount}
                       </p>
-                      <AiOutlineClose style={{ color: '#f54848' }} />
+                      <AiOutlineClose
+                        style={{ color: '#f54848', cursor: 'pointer' }}
+                        onClick={(e) => {
+                          e.preventDefault()
+
+                          let temppdfList = [...pdfList]
+                          const newpdfList = temppdfList.filter(
+                            (temp) => temp.pdfId !== pdf.pdfId
+                          )
+                          setPdfList(newpdfList)
+                        }}
+                      />
                     </div>
                   </Link>
                 )
               })}
             </div>
           </div>
-          <TextEditor textNote={textNote} setTextNote={setTextNote} />
+          <TextEditor
+            textNote={textNote}
+            setTextNote={setTextNote}
+            height={editorHeight}
+          />
           <div
             className='save-btn'
             style={{ display: 'flex', justifyContent: 'flex-end' }}
@@ -492,6 +610,7 @@ const MeetingNotesModalWrapper = Styled.section`
   width: 100%;
   padding: 10px 15px 15px;
   border: none;
+  overflow:auto;
 }
 .meeting-notes-basic-info .single-option{
     display: flex;
@@ -501,6 +620,7 @@ const MeetingNotesModalWrapper = Styled.section`
     width: 100px;
   color: #c4c4c4;
   font-size: 16px;
+  flex-shrink:0;
 }
 .meeting-notes-basic-info .single-option input {
     border: none;
@@ -508,9 +628,34 @@ const MeetingNotesModalWrapper = Styled.section`
   width: 200px;
   height: 20px;
   font-size: 16px;
+  flex-shrink:0;
 }
 .meeting-notes-basic-info .single-option .skeleton{
     background: #e4e4e4;
   border-radius: 2px;
 }
+.meeting-notes-basic-info .participants-container {
+    display: flex;
+    height: 25px;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+  }
+  
+  .meeting-notes-basic-info .participant-tag {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    border-radius: 5px;
+    padding: 3px 5px;
+    background: #e5e5e5;
+  }
+  .participant-tag p {
+    font-size: 14px;
+  }
+  .participant-tag svg {
+    font-size: 14px;
+    color: red;
+    cursor: pointer;
+  }
 `

@@ -272,7 +272,20 @@ function TasksComponent(props) {
                               >
                                 Link {count}
                               </a>
-                              <AiOutlineClose style={{ color: '#f54848' }} />
+                              <AiOutlineClose
+                                style={{ color: '#f54848', cursor: 'pointer' }}
+                                onClick={(e) => {
+                                  e.preventDefault()
+                                  value.deleteLinkFromTasks(
+                                    param.id,
+                                    param.spaceKey,
+                                    param.clubID,
+                                    param.resourceID,
+                                    item.id,
+                                    link.id
+                                  )
+                                }}
+                              />
                             </div>
                           )
                         })}
@@ -295,17 +308,40 @@ function TasksComponent(props) {
                           const linkToPdf = item.pdfPreview.find(
                             (item) => item.previewId === pdf.pdfId
                           )
+
                           return (
                             <Link
                               to={{
                                 pathname: `/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/addtask/readpdf`,
-                                state: { src: linkToPdf?.source },
+                                state: {
+                                  src: linkToPdf?.source,
+                                  fileType:
+                                    pdf.pdfFile.name.split('.')[
+                                      pdf.pdfFile.name.split('.').length - 1
+                                    ],
+                                },
                               }}
                               key={pdf.pdfId}
                             >
                               <div className='pdf'>
                                 <p style={{ width: '80%' }}>Pdf {pdfCount}</p>
-                                <AiOutlineClose style={{ color: '#f54848' }} />
+                                <AiOutlineClose
+                                  style={{
+                                    color: '#f54848',
+                                    cursor: 'pointer',
+                                  }}
+                                  onClick={(e) => {
+                                    e.preventDefault()
+                                    value.deletePdfFromTasks(
+                                      param.id,
+                                      param.spaceKey,
+                                      param.clubID,
+                                      param.resourceID,
+                                      item.id,
+                                      pdf.pdfId
+                                    )
+                                  }}
+                                />
                               </div>
                             </Link>
                           )

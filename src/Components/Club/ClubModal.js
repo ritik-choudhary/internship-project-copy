@@ -86,6 +86,14 @@ export default function ClubModal() {
                 gap: '30px',
                 padding: '22px 32px',
               }}
+              onKeyDown={(e) => {
+                if (e.keyCode === 27) {
+                  e.preventDefault()
+                  history.push(
+                    `/workspace/${param.id}/details/${param.spaceKey}`
+                  )
+                }
+              }}
               onSubmit={(e) => {
                 e.preventDefault()
                 if (clubName) {

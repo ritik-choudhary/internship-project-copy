@@ -7,8 +7,9 @@ import { Worker } from '@react-pdf-viewer/core'
 import '@react-pdf-viewer/core/lib/styles/index.css'
 import '@react-pdf-viewer/default-layout/lib/styles/index.css'
 import InternshipFullPagePdf from './InternshipFullPagePdf'
+import FileViewer from 'react-file-viewer'
 
-export default function InternshipPdfModal(props) {
+export default function InternshipPdfModal() {
   return (
     <>
       <Switch>
@@ -26,6 +27,7 @@ export default function InternshipPdfModal(props) {
 const InternshipPdfModalComponent = () => {
   const param = useParams()
   const location = useLocation()
+
   return (
     <Modal
       isOpen={true}
@@ -110,13 +112,20 @@ const InternshipPdfModalComponent = () => {
             height: '100%',
           }}
         >
-          {location.state.src && (
-            <>
-              <Worker workerUrl='https://unpkg.com/pdfjs-dist@2.6.347/build/pdf.worker.min.js'>
-                <Viewer fileUrl={location.state.src} />
-              </Worker>
-            </>
-          )}
+          {location.state.fileType === 'pdf'
+            ? location.state.src && (
+                <>
+                  <Worker workerUrl='https://unpkg.com/pdfjs-dist@2.6.347/build/pdf.worker.min.js'>
+                    <Viewer fileUrl={location.state.src} />
+                  </Worker>
+                </>
+              )
+            : location.state.src && (
+                <FileViewer
+                  fileType={location.state.fileType}
+                  filePath={location.state.src}
+                />
+              )}
         </div>
       </div>
     </Modal>

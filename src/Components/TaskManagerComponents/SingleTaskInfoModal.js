@@ -41,6 +41,11 @@ function SingleTaskInfoModalComponent(props) {
         (item) => item.id === param.taskID
       )
     }
+    if (!selectedTask) {
+      selectedTask = value.taskManager[3].find(
+        (item) => item.id === param.taskID
+      )
+    }
   }
 
   return (

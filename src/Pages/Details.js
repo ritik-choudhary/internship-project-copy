@@ -123,7 +123,6 @@ const DetailPageComponent = () => {
               const displayItemList = value.workspaceElements.filter(
                 (item) => item.workspaceID === param.id
               )
-              console.log(displayItemList)
               return displayItemList.map((item) => {
                 let num = 0
                 let alt = ''
@@ -145,23 +144,24 @@ const DetailPageComponent = () => {
                         <div className='card-image-container'>
                           <img src={item.image || defaultImage} alt='' />
                         </div>
+                        <div className='card-details'>
+                          <p className='space-title'>
+                            {item.title}
+                            {printable
+                              ? isAlt
+                                ? ` (${item.altName})`
+                                : `(${num})`
+                              : ''}
+                          </p>
 
-                        <p className='space-title'>
-                          {item.title}
-                          {printable
-                            ? isAlt
-                              ? ` (${item.altName})`
-                              : `(${num})`
-                            : ''}
-                        </p>
-
-                        <div className='space-delete-btn'>
-                          <RiDeleteBin6Line
-                            onClick={(e) => {
-                              e.preventDefault()
-                              value.deleteSpace(item.id)
-                            }}
-                          />
+                          <div className='space-delete-btn'>
+                            <RiDeleteBin6Line
+                              onClick={(e) => {
+                                e.preventDefault()
+                                value.deleteSpace(item.id)
+                              }}
+                            />
+                          </div>
                         </div>
                       </div>
                     </Link>
@@ -290,11 +290,15 @@ const WorkspaceContentWrapper = styled.section`
     object-fit: cover;
     opacity: 0.5;
   }
-  .space-title {
-    width: 100px;
+  .card-details {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     position: absolute;
     bottom: 20px;
-    left: 20px;
+  }
+  .space-title {
+    width: 100px;
     font-size: 14px;
     font-weight: 400;
     color: white;
@@ -304,9 +308,6 @@ const WorkspaceContentWrapper = styled.section`
     text-overflow: ellipsis;
   }
   .space-delete-btn {
-    position: absolute;
-    bottom: 20px;
-    right: 20px;
     color: white;
     font-size: 14px;
   }

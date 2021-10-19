@@ -111,6 +111,7 @@ function WorkspacePageComponent(props) {
                           {item.title.length > 14
                             ? `${item.title.slice(0, 13)}...`
                             : item.title}
+                          {item.version > 1 ? `(${item.version})` : null}
                         </h2>
                       </div>
 

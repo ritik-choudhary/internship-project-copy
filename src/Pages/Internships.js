@@ -72,10 +72,12 @@ function InternshipsComponent(props) {
                 >
                   Internships
                 </h3>
-                <div className='new-openings-btn'>
-                  <p>New Openings</p>
-                  <div className='new-notification'></div>
-                </div>
+                <a href='http://internship.thesocialcomment.com/search'>
+                  <div className='new-openings-btn'>
+                    <p>New Openings</p>
+                    <div className='new-notification'></div>
+                  </div>
+                </a>
               </div>
             </div>
             <div className='line'></div>
@@ -87,7 +89,9 @@ function InternshipsComponent(props) {
                 justifyContent: 'center',
                 paddingBottom: '10px',
                 cursor: 'pointer',
-                borderBottom: `${isOngoing ? '3px solid #468AEF' : ''}`,
+                borderBottom: `${
+                  isOngoing ? '3px solid #468AEF' : '3px solid #e5e5e5'
+                }`,
               }}
               onClick={() => {
                 setIsOngoing(true)
@@ -102,7 +106,9 @@ function InternshipsComponent(props) {
                 justifyContent: 'center',
                 paddingBottom: '10px',
                 cursor: 'pointer',
-                borderBottom: `${isApplied ? '3px solid #468AEF' : ''}`,
+                borderBottom: `${
+                  isApplied ? '3px solid #468AEF' : '3px solid #e5e5e5'
+                }`,
               }}
               onClick={() => {
                 setIsOngoing(false)
@@ -340,6 +346,7 @@ const InternshipsWrapper = styled.section`
     border-radius: 5px;
     border: 1px solid #ffc263;
     position: relative;
+    color: white;
   }
   .new-openings-btn div {
     position: absolute;

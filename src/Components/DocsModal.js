@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Modal from 'react-modal'
 import { useParams, Link, useHistory } from 'react-router-dom'
-import { AiFillCloseCircle } from 'react-icons/ai'
+import { AiFillCloseCircle, AiOutlineFullscreen } from 'react-icons/ai'
 import { WorkspaceConsumer } from '../Context'
 import TextEditor from './TextEditor'
 import Styled from 'styled-components'
@@ -26,6 +26,22 @@ function DocsModalComponent(props) {
 
   const param = useParams()
   const history = useHistory()
+
+  const [modalSpecs, setModalSpecs] = useState({
+    width: '1199px',
+    top: '25%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -25%)',
+    boxShadow: '0px 4px 25px rgba(0, 0, 0, 0.08)',
+    borderRadius: '10px',
+    background: 'white',
+    padding: '-20px',
+  })
+
+  const [editorHeight, setEditorHeight] = useState('150px')
 
   const [title, setTitle] = useState()
   const [createdOn, setCreatedOn] = useState(date)
@@ -67,19 +83,7 @@ function DocsModalComponent(props) {
     <Modal
       isOpen={true}
       style={{
-        content: {
-          width: '1000px',
-          top: '50%',
-          left: '50%',
-          right: 'auto',
-          bottom: 'auto',
-          marginRight: '-50%',
-          transform: 'translate(-50%, -50%)',
-          boxShadow: '0px 4px 25px rgba(0, 0, 0, 0.08)',
-          borderRadius: '10px',
-          background: 'white',
-          padding: '-20px',
-        },
+        content: modalSpecs,
         overlay: {
           background: 'rgba(0, 0, 0, 0.31)',
         },
@@ -93,21 +97,53 @@ function DocsModalComponent(props) {
             padding: '12px 30px',
           }}
         >
-          <Link to={`/workspace/${param.id}/details/${param.spaceKey}`}>
-            <AiFillCloseCircle
+          <div style={{ display: 'flex', gap: '10px' }}>
+            <AiOutlineFullscreen
               style={{
-                fontSize: '30px',
-                color: '#FFC8C8',
+                fontSize: '25px',
+                fontWeight: '500',
+                color: '#105eee',
                 cursor: 'pointer',
               }}
+              onClick={() => {
+                setModalSpecs({
+                  width: '100%',
+                  height: '100%',
+                  top: '0',
+                  left: '0',
+                  right: 'auto',
+                  bottom: 'auto',
+                  marginRight: '0',
+                  transform: 'translate(0,0)',
+                  boxShadow: '0px 4px 25px rgba(0, 0, 0, 0.08)',
+                  borderRadius: '0px',
+                  background: 'white',
+                  padding: '-20px',
+                })
+                setEditorHeight('380px')
+              }}
             />
-          </Link>
+            <Link to={`/workspace/${param.id}/details/${param.spaceKey}`}>
+              <AiFillCloseCircle
+                style={{
+                  fontSize: '30px',
+                  color: '#FFC8C8',
+                  cursor: 'pointer',
+                }}
+              />
+            </Link>
+          </div>
         </header>
         <form
           style={{
             display: 'flex',
             flexDirection: 'column',
             padding: '0px 30px 30px',
+          }}
+          onKeyDown={(e) => {
+            if (e.keyCode === 27) {
+              history.push(`/workspace/${param.id}/details/${param.spaceKey}`)
+            }
           }}
           onSubmit={(e) => {
             e.preventDefault()
@@ -141,6 +177,7 @@ function DocsModalComponent(props) {
               type='text'
               name='name'
               id='name'
+              maxLength='100'
               value={title}
               onChange={(e) => {
                 setTitle(e.target.value)
@@ -167,6 +204,7 @@ function DocsModalComponent(props) {
                 type='text'
                 name='created-by'
                 id='created-by'
+                maxLength='100'
                 value={createdBy}
                 className={createdBy ? '' : 'skeleton'}
                 onChange={(e) => {
@@ -180,6 +218,7 @@ function DocsModalComponent(props) {
                 type='text'
                 name='type'
                 id='type'
+                maxLength='100'
                 value={type}
                 className={type ? '' : 'skeleton'}
                 onChange={(e) => {
@@ -188,7 +227,11 @@ function DocsModalComponent(props) {
               />
             </div>
           </div>
-          <TextEditor textNote={textNote} setTextNote={setTextNote} />
+          <TextEditor
+            textNote={textNote}
+            setTextNote={setTextNote}
+            height={editorHeight}
+          />
           <div
             className='save-btn'
             style={{ display: 'flex', justifyContent: 'flex-end' }}

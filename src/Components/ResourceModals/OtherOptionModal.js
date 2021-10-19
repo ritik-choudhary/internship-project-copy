@@ -5,22 +5,22 @@ import { AiFillCloseCircle, AiOutlineFullscreen } from 'react-icons/ai'
 import { WorkspaceConsumer } from '../../Context'
 import TextEditor from '../TextEditor'
 
-export default function TopicInformtaionModal(props) {
+export default function OptherOptionModal(props) {
   return (
     <WorkspaceConsumer>
       {(value) => {
         return (
-          <ParticipantsModalComponent
+          <OtherOptionModalComponent
             value={value}
             {...props}
-          ></ParticipantsModalComponent>
+          ></OtherOptionModalComponent>
         )
       }}
     </WorkspaceConsumer>
   )
 }
 
-function ParticipantsModalComponent(props) {
+function OtherOptionModalComponent(props) {
   const { value, isEditing, isSharing } = props
   const date = `${new Date().getDate()}/${
     new Date().getMonth() + 1
@@ -55,7 +55,7 @@ function ParticipantsModalComponent(props) {
     },
   ])
 
-  const [participantsToEdit, setParticipantsToEdit] = useState()
+  const [otherOptionToEdit, setOtherOptionToEdit] = useState()
 
   useEffect(() => {
     if (isEditing || isSharing) {
@@ -68,14 +68,14 @@ function ParticipantsModalComponent(props) {
       const selectedResource = selectedWorkshop.resources.find(
         (item) => item.id === param.resourceID
       )
-      const selectedParticipants = selectedResource.participantsList.find(
-        (item) => item.id === param.participantsID
+      const selectedOtherOption = selectedResource.otherOptionList.find(
+        (item) => item.id === param.otherOptionID
       )
-      setParticipantsToEdit(selectedParticipants)
-      setTitle(selectedParticipants.title)
-      setCreatedOn(selectedParticipants.createdOn)
-      setCreatedBy(selectedParticipants.createdBy)
-      setTextNote(selectedParticipants.note)
+      setOtherOptionToEdit(selectedOtherOption)
+      setTitle(selectedOtherOption.title)
+      setCreatedOn(selectedOtherOption.createdOn)
+      setCreatedBy(selectedOtherOption.createdBy)
+      setTextNote(selectedOtherOption.note)
     }
   }, [
     isEditing,
@@ -84,7 +84,7 @@ function ParticipantsModalComponent(props) {
     param.spaceKey,
     param.workshopID,
     param.resourceID,
-    param.participantsID,
+    param.otherOptionID,
     value.workspaceElements,
   ])
 
@@ -209,48 +209,47 @@ function ParticipantsModalComponent(props) {
           e.preventDefault()
           if (!isSharing) {
             if (isEditing) {
-              const participant = {
+              const otherOption = {
                 title: title,
                 createdOn: createdOn,
                 createdBy: createdBy,
                 note: textNote,
               }
-              value.editParticipants(
+              value.editOtherOption(
                 param.id,
                 param.spaceKey,
                 param.workshopID,
                 param.resourceID,
-                participantsToEdit.id,
-                participant
+                otherOptionToEdit.id,
+                otherOption
               )
             } else {
-              const participant = {
+              const otherOption = {
                 id: new Date().getTime().toString(),
                 title: title,
                 createdOn: createdOn,
                 createdBy: createdBy,
                 note: textNote,
               }
-              value.addNewParticipants(
+              value.addNewOtherOption(
                 param.id,
                 param.spaceKey,
                 param.workshopID,
                 param.resourceID,
-                participant
+                otherOption
               )
             }
             history.push(
               `/workspace/${param.id}/details/${param.spaceKey}/insideworkshop/${param.workshopID}/resourcedata/${param.resourceID}`
             )
-          }
-          if (isSharing) {
+          } else {
             history.push(
               `/workspace/${param.id}/details/${param.spaceKey}/insideworkshop/${param.workshopID}/resourcedata/${param.resourceID}/share`
             )
           }
         }}
       >
-        <div className='participants-name' style={{ paddingBottom: '20px' }}>
+        <div className='otherOption-name' style={{ paddingBottom: '20px' }}>
           <input
             autoFocus
             required

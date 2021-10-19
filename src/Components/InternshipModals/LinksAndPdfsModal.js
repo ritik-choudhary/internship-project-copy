@@ -108,12 +108,16 @@ function LinksAndPdfsModalComponent(props) {
               const linkToPdf = selectedInternship.pdfPreview.find(
                 (item) => item.previewId === pdf.pdfId
               )
+              const type =
+                pdf.pdfFile.name.split('.')[
+                  pdf.pdfFile.name.split('.').length - 1
+                ]
               return (
                 <>
                   <Link
                     to={{
                       pathname: `/internships/docs/${param.internshipID}/readpdf`,
-                      state: { src: linkToPdf?.source },
+                      state: { src: linkToPdf?.source, fileType: type },
                     }}
                     key={pdf.pdfId}
                   >

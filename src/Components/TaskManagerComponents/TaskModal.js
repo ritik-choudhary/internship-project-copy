@@ -129,6 +129,12 @@ function TaskModalComponent(props) {
           gap: '20px',
           padding: '22px 32px',
         }}
+        onKeyDown={(e) => {
+          if (e.keyCode === 27) {
+            e.preventDefault()
+            history.push(`/taskmanager`)
+          }
+        }}
         onSubmit={(e) => {
           e.preventDefault()
           let tempDueDate = new Date(duedate)

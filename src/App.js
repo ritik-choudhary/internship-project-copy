@@ -9,7 +9,7 @@ import Details from './Pages/Details'
 import SingleClubPage from './Pages/SingleClubPage'
 import ResourcePage from './Pages/ResourcePage'
 import SingleMoodboard from './Pages/SingleMoodboard'
-import BrainboardContentModal from './Pages/BrainboardContentModal'
+import BrainboardContentModal from './Components/MoodboardComponents/BrainboardContentModal'
 import HabitRecords from './Pages/HabitRecords'
 import SingleWorkshopPage from './Pages/SingleWorkshopPage'
 import WorkshopResourcePage from './Pages/WorkshopResourcePage'
@@ -20,6 +20,7 @@ import ShareClubResourceModal from './Components/Club/ShareClubResourceModal'
 import Notes from './Pages/Notes'
 import Internships from './Pages/Internships'
 import TaskManager from './Pages/TaskManager'
+import Insights from './Pages/Insights'
 
 Modal.setAppElement('#root')
 
@@ -74,6 +75,9 @@ function App() {
           <Route path='/notes' component={Notes} />
           <Route path='/internships'>
             <Internships />
+          </Route>
+          <Route path='/insights'>
+            <Insights />
           </Route>
           <Route path='/taskmanager' component={TaskManager} />
           <Route exact path='/trash' component={Trash}></Route>

@@ -86,6 +86,14 @@ export default function DigitalBrainboardModal() {
                 gap: '30px',
                 padding: '22px 32px',
               }}
+              onKeyDown={(e) => {
+                if (e.keyCode === 27) {
+                  e.preventDefault()
+                  history.push(
+                    `/workspace/${param.id}/details/${param.spaceKey}`
+                  )
+                }
+              }}
               onSubmit={(e) => {
                 e.preventDefault()
                 if (digitalBrainboardName) {
@@ -126,8 +134,9 @@ export default function DigitalBrainboardModal() {
                   autoFocus
                   required
                   type='text'
-                  name='club'
+                  name='name'
                   id='name'
+                  maxLength='100'
                   style={{
                     borderRadius: '5px',
                     height: '32px',

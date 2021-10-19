@@ -6,6 +6,7 @@ import {
   AiFillCloseCircle,
   AiOutlinePlus,
   AiOutlineClose,
+  AiOutlineFullscreen,
 } from 'react-icons/ai'
 import { WorkspaceConsumer } from '../../Context'
 import TextEditor from '../TextEditor'
@@ -34,6 +35,22 @@ function IdeaModalComponent(props) {
 
   const param = useParams()
   const history = useHistory()
+
+  const [modalSpecs, setModalSpecs] = useState({
+    width: '1199px',
+    top: '25%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -25%)',
+    boxShadow: '0px 4px 25px rgba(0, 0, 0, 0.08)',
+    borderRadius: '10px',
+    background: 'white',
+    padding: '-20px',
+  })
+
+  const [editorHeight, setEditorHeight] = useState('150px')
 
   const [title, setTitle] = useState()
   const [createdOn, setCreatedOn] = useState(date)
@@ -121,19 +138,7 @@ function IdeaModalComponent(props) {
     <Modal
       isOpen={true}
       style={{
-        content: {
-          width: '1199px',
-          top: '25%',
-          left: '50%',
-          right: 'auto',
-          bottom: 'auto',
-          marginRight: '-50%',
-          transform: 'translate(-50%, -25%)',
-          boxShadow: '0px 4px 25px rgba(0, 0, 0, 0.08)',
-          borderRadius: '10px',
-          background: 'white',
-          padding: '-20px',
-        },
+        content: modalSpecs,
         overlay: {
           background: 'rgba(0, 0, 0, 0.31)',
         },
@@ -147,29 +152,83 @@ function IdeaModalComponent(props) {
         }}
       >
         {isSharing ? (
-          <Link
-            to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/share`}
-          >
-            <AiFillCloseCircle
+          <div style={{ display: 'flex', gap: '10px' }}>
+            <AiOutlineFullscreen
               style={{
-                fontSize: '30px',
-                color: '#FFC8C8',
+                fontSize: '25px',
+                fontWeight: '500',
+                color: '#105eee',
                 cursor: 'pointer',
               }}
+              onClick={() => {
+                setModalSpecs({
+                  width: '100%',
+                  height: '100%',
+                  top: '0',
+                  left: '0',
+                  right: 'auto',
+                  bottom: 'auto',
+                  marginRight: '0',
+                  transform: 'translate(0,0)',
+                  boxShadow: '0px 4px 25px rgba(0, 0, 0, 0.08)',
+                  borderRadius: '0px',
+                  background: 'white',
+                  padding: '-20px',
+                })
+                setEditorHeight('280px')
+              }}
             />
-          </Link>
+            <Link
+              to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/share`}
+            >
+              <AiFillCloseCircle
+                style={{
+                  fontSize: '30px',
+                  color: '#FFC8C8',
+                  cursor: 'pointer',
+                }}
+              />
+            </Link>
+          </div>
         ) : (
-          <Link
-            to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}`}
-          >
-            <AiFillCloseCircle
+          <div style={{ display: 'flex', gap: '10px' }}>
+            <AiOutlineFullscreen
               style={{
-                fontSize: '30px',
-                color: '#FFC8C8',
+                fontSize: '25px',
+                fontWeight: '500',
+                color: '#105eee',
                 cursor: 'pointer',
               }}
+              onClick={() => {
+                setModalSpecs({
+                  width: '100%',
+                  height: '100%',
+                  top: '0',
+                  left: '0',
+                  right: 'auto',
+                  bottom: 'auto',
+                  marginRight: '0',
+                  transform: 'translate(0,0)',
+                  boxShadow: '0px 4px 25px rgba(0, 0, 0, 0.08)',
+                  borderRadius: '0px',
+                  background: 'white',
+                  padding: '-20px',
+                })
+                setEditorHeight('280px')
+              }}
             />
-          </Link>
+            <Link
+              to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}`}
+            >
+              <AiFillCloseCircle
+                style={{
+                  fontSize: '30px',
+                  color: '#FFC8C8',
+                  cursor: 'pointer',
+                }}
+              />
+            </Link>
+          </div>
         )}
       </header>
       <form
@@ -177,6 +236,19 @@ function IdeaModalComponent(props) {
           display: 'flex',
           flexDirection: 'column',
           padding: '0px 30px 30px',
+        }}
+        onKeyDown={(e) => {
+          if (e.keyCode === 27) {
+            if (!isSharing) {
+              history.push(
+                `/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}`
+              )
+            } else {
+              history.push(
+                `/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/share`
+              )
+            }
+          }
         }}
         onSubmit={(e) => {
           e.preventDefault()
@@ -292,9 +364,27 @@ function IdeaModalComponent(props) {
               name='link'
               id='link'
               value={linkToAdd}
+              disabled={isSharing}
               className={linkToAdd ? '' : 'skeleton'}
               onChange={(e) => {
                 if (!isSharing) setLinkToAdd(e.target.value)
+              }}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault()
+                  if (!isSharing) {
+                    if (linkToAdd && isValidHttpUrl(linkToAdd)) {
+                      setLinks([
+                        ...links,
+                        {
+                          link: linkToAdd,
+                          id: new Date().getTime().toString(),
+                        },
+                      ])
+                      setLinkToAdd('')
+                    }
+                  }
+                }
               }}
             />
             <div className='add-link-btn'>
@@ -311,10 +401,16 @@ function IdeaModalComponent(props) {
                   marginLeft: '-20px',
                   cursor: 'pointer',
                 }}
-                onClick={(e) => {
+                onClick={() => {
                   if (!isSharing) {
                     if (linkToAdd && isValidHttpUrl(linkToAdd)) {
-                      setLinks([...links, linkToAdd])
+                      setLinks([
+                        ...links,
+                        {
+                          link: linkToAdd,
+                          id: new Date().getTime().toString(),
+                        },
+                      ])
                       setLinkToAdd('')
                     }
                   }
@@ -367,7 +463,18 @@ function IdeaModalComponent(props) {
                   >
                     Link {count}
                   </a>
-                  <AiOutlineClose style={{ color: '#f54848' }} />
+                  <AiOutlineClose
+                    style={{ color: '#f54848', cursor: 'pointer' }}
+                    onClick={() => {
+                      if (!isSharing) {
+                        let tempLinks = [...links]
+                        const newLinks = tempLinks.filter(
+                          (temp) => temp.id !== item.id
+                        )
+                        setLinks(newLinks)
+                      }
+                    }}
+                  />
                 </div>
               )
             })}
@@ -519,7 +626,19 @@ function IdeaModalComponent(props) {
                         >
                           Pdf {pdfCount}
                         </p>
-                        <AiOutlineClose style={{ color: '#f54848' }} />
+                        <AiOutlineClose
+                          style={{ color: '#f54848', cursor: 'pointer' }}
+                          onClick={(e) => {
+                            e.preventDefault()
+                            if (!isSharing) {
+                              let temppdfList = [...pdfList]
+                              const newpdfList = temppdfList.filter(
+                                (temp) => temp.pdfId !== pdf.pdfId
+                              )
+                              setPdfList(newpdfList)
+                            }
+                          }}
+                        />
                       </div>
                     </Link>
                   )}
@@ -528,7 +647,11 @@ function IdeaModalComponent(props) {
             })}
           </div>
         </div>
-        <TextEditor textNote={textNote} setTextNote={setTextNote} />
+        <TextEditor
+          textNote={textNote}
+          setTextNote={setTextNote}
+          height={editorHeight}
+        />
         <div
           className='save-btn'
           style={{ display: 'flex', justifyContent: 'flex-end' }}

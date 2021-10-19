@@ -5,6 +5,7 @@ import { Viewer } from '@react-pdf-viewer/core'
 import { Worker } from '@react-pdf-viewer/core'
 import '@react-pdf-viewer/core/lib/styles/index.css'
 import '@react-pdf-viewer/default-layout/lib/styles/index.css'
+import FileViewer from 'react-file-viewer'
 import { AiFillCloseCircle } from 'react-icons/ai'
 
 export default function TaskFullPagePdf(props) {
@@ -78,13 +79,20 @@ export default function TaskFullPagePdf(props) {
           height: '100%',
         }}
       >
-        {location.state.data && (
-          <>
-            <Worker workerUrl='https://unpkg.com/pdfjs-dist@2.6.347/build/pdf.worker.min.js'>
-              <Viewer fileUrl={location.state.data} />
-            </Worker>
-          </>
-        )}
+        {location.state.fileType === 'pdf'
+          ? location.state.src && (
+              <>
+                <Worker workerUrl='https://unpkg.com/pdfjs-dist@2.6.347/build/pdf.worker.min.js'>
+                  <Viewer fileUrl={location.state.src} />
+                </Worker>
+              </>
+            )
+          : location.state.src && (
+              <FileViewer
+                fileType={location.state.fileType}
+                filePath={location.state.src}
+              />
+            )}
       </div>
     </Modal>
   )

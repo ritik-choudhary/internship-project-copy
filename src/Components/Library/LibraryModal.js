@@ -9,6 +9,8 @@ export default function LibraryModal(props) {
   const { favourite } = props
   const param = useParams()
   const history = useHistory()
+
+  const [name, setName] = useState()
   const [bookLink, setBookLink] = useState()
   const [pdf, setPdf] = useState()
   const [pdfPreview, setPdfPreview] = useState()
@@ -85,12 +87,21 @@ export default function LibraryModal(props) {
                 flexDirection: 'column',
                 gap: '32px',
               }}
+              onKeyDown={(e) => {
+                if (e.keyCode === 27) {
+                  e.preventDefault()
+                  history.push(
+                    `/workspace/${param.id}/details/${param.spaceKey}`
+                  )
+                }
+              }}
               onSubmit={(e) => {
                 e.preventDefault()
                 if (favourite) {
                   if (bookLink) {
                     value.addBook(
                       {
+                        title: name,
                         favourite: true,
                         link: bookLink,
                         id: new Date().getTime().toString(),
@@ -103,6 +114,7 @@ export default function LibraryModal(props) {
                     value.addBook(
                       {
                         favourite: true,
+                        title: name,
                         pdf: pdf,
                         preview: pdfPreview,
                         id: new Date().getTime().toString(),
@@ -120,6 +132,7 @@ export default function LibraryModal(props) {
                       {
                         favourite: false,
                         link: bookLink,
+                        title: name,
                         id: new Date().getTime().toString(),
                       },
                       param.id,
@@ -131,6 +144,7 @@ export default function LibraryModal(props) {
                       {
                         favourite: false,
                         pdf: pdf,
+                        title: name,
                         preview: pdfPreview,
                         id: new Date().getTime().toString(),
                       },
@@ -144,6 +158,35 @@ export default function LibraryModal(props) {
                 }
               }}
             >
+              <div
+                style={{ display: 'flex', flexDirection: 'column', gap: '7px' }}
+              >
+                <label
+                  htmlFor='name'
+                  style={{
+                    color: '#959595',
+                    fontSize: '12px',
+                    fontWeight: '500',
+                  }}
+                >
+                  Name of Book (optional)
+                </label>
+                <input
+                  type='text'
+                  name='name'
+                  id='name'
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  style={{
+                    height: '32px',
+                    border: '1px solid #C4C4C4',
+                    borderRadius: '5px',
+                    fontSize: '16px',
+                    padding: '5px 10px',
+                    outline: 'none',
+                  }}
+                />
+              </div>
               <div
                 style={{ display: 'flex', flexDirection: 'column', gap: '7px' }}
               >
@@ -242,6 +285,15 @@ export default function LibraryModal(props) {
                   {pdf ? 'File selected' : ''}
                   {pdf ? <FaCheckCircle /> : null}
                 </div>
+                <p
+                  style={{
+                    color: 'black',
+                    fontWeight: '400',
+                    fontSize: '12px',
+                  }}
+                >
+                  {pdf?.name}
+                </p>
               </div>
               <div
                 style={{
@@ -252,7 +304,7 @@ export default function LibraryModal(props) {
                 }}
               >
                 <Link to={`/workspace/${param.id}/details/${param.spaceKey}`}>
-                  <button
+                  <div
                     style={{
                       color: '#FF0000',
                       border: 'none',
@@ -260,13 +312,16 @@ export default function LibraryModal(props) {
                       padding: '10px 20px',
                       outline: 'none',
                       cursor: 'pointer',
+                      fontSize: '14px',
+                      fontWeight: '400',
                     }}
                   >
                     Cancel
-                  </button>
+                  </div>
                 </Link>
                 <button
                   type='submit'
+                  disabled={!bookLink && !pdf ? true : false}
                   style={{
                     color: 'white',
                     background: '#0063FF',

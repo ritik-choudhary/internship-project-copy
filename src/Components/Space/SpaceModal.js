@@ -88,6 +88,12 @@ export default function SpaceModal() {
                 gap: '30px',
                 padding: '22px 32px',
               }}
+              onKeyDown={(e) => {
+                if (e.keyCode === 27) {
+                  e.preventDefault()
+                  history.push(`/workspace/${param.id}/details`)
+                }
+              }}
               onSubmit={(e) => {
                 e.preventDefault()
                 if (newSpace) {

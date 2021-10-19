@@ -99,7 +99,23 @@ function TodoListComponent(props) {
                 </p>
               </div>
               <div className='bottom'>
-                <p className='description'>{item?.description}</p>
+                {item?.description.length > 600 ? (
+                  <>
+                    <p className='description'>
+                      {item.description.slice(0, 600)}...{' '}
+                      <span className='read-more-btn'>
+                        <Link
+                          to={`/workspace/${param.id}/details/${param.spaceKey}/edittodo/${item.id}`}
+                        >
+                          read more
+                        </Link>
+                      </span>
+                    </p>
+                  </>
+                ) : (
+                  <p className='description'>{item.description}</p>
+                )}
+
                 <div className='links-container'>
                   {item.links.map((link) => {
                     count++
@@ -109,7 +125,7 @@ function TodoListComponent(props) {
                     return (
                       <div className='link' key={count}>
                         <a
-                          href={link}
+                          href={link.link}
                           target='_blank'
                           rel='noreferrer noopener'
                           style={{
@@ -121,7 +137,18 @@ function TodoListComponent(props) {
                         >
                           Link {count}
                         </a>
-                        <AiOutlineClose style={{ color: '#f54848' }} />
+                        <AiOutlineClose
+                          style={{ color: '#f54848', cursor: 'pointer' }}
+                          onClick={(e) => {
+                            e.preventDefault()
+                            value.deleteLinkFromTodo(
+                              param.id,
+                              param.spaceKey,
+                              item.id,
+                              link.id
+                            )
+                          }}
+                        />
                       </div>
                     )
                   })}
@@ -144,17 +171,35 @@ function TodoListComponent(props) {
                     const linkToPdf = item.pdfPreview.find(
                       (item) => item.previewId === pdf.pdfId
                     )
+                    const type =
+                      pdf?.pdfFile?.name.split('.')[
+                        pdf?.pdfFile?.name.split('.').length - 1
+                      ]
                     return (
                       <Link
                         to={{
                           pathname: `/workspace/${param.id}/details/${param.spaceKey}/addtodo/readpdf`,
-                          state: { src: linkToPdf?.source },
+                          state: {
+                            src: linkToPdf?.source,
+                            fileType: type,
+                          },
                         }}
                         key={pdf.pdfId}
                       >
                         <div className='pdf'>
                           <p style={{ width: '80%' }}>Pdf {pdfCount}</p>
-                          <AiOutlineClose style={{ color: '#f54848' }} />
+                          <AiOutlineClose
+                            style={{ color: '#f54848', cursor: 'pointer' }}
+                            onClick={(e) => {
+                              e.preventDefault()
+                              value.deletePdfFromTodo(
+                                param.id,
+                                param.spaceKey,
+                                item.id,
+                                pdf.pdfId
+                              )
+                            }}
+                          />
                         </div>
                       </Link>
                     )
@@ -311,5 +356,13 @@ const TodoListPageWrapper = styled.section`
     text-decoration: underline;
     font-weight: 400;
     font-size: 12px;
+  }
+  .read-more-btn a {
+    font-weight: 400;
+    font-size: 12px;
+    color: #468aef;
+  }
+  .read-more-btn:hover {
+    text-decoration: underline;
   }
 `

@@ -97,6 +97,16 @@ function JournalModalComponent(props) {
           gap: '30px',
           padding: '22px 32px',
         }}
+        onKeyDown={(e) => {
+          if (e.keyCode === 27) {
+            e.preventDefault()
+            if (!isNotes) {
+              history.push('/journal')
+            } else {
+              history.push('/notes')
+            }
+          }
+        }}
         onSubmit={(e) => {
           e.preventDefault()
           if (!isNotes) {

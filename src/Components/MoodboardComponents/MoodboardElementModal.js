@@ -129,6 +129,14 @@ export default function MoodboardElementModal() {
                 gap: '20px',
                 padding: '22px 32px',
               }}
+              onKeyDown={(e) => {
+                if (e.keyCode === 27) {
+                  e.preventDefault()
+                  history.push(
+                    `/workspace/${param.id}/details/${param.spaceKey}/insidemoodboard/${param.moodboardID}`
+                  )
+                }
+              }}
               onSubmit={(e) => {
                 e.preventDefault()
                 if (imagePreview || pdf || link || videoPreview) {
@@ -361,6 +369,16 @@ export default function MoodboardElementModal() {
                   disabled={pdf ? true : image ? true : video ? true : false}
                   onChange={(e) => {
                     setLinkToAdd(e.target.value)
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault()
+
+                      if (linkToAdd && isValidHttpUrl(linkToAdd)) {
+                        setLink(linkToAdd)
+                        setLinkToAdd('')
+                      }
+                    }
                   }}
                 />
                 <div

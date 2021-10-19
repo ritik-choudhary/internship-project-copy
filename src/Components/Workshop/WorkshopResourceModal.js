@@ -68,6 +68,13 @@ export default function WorkshopResourceModal() {
       </header>
       <WorkspaceConsumer>
         {(value) => {
+          const selectedWorkspace = value.workspaceElements.find(
+            (item) =>
+              item.id === param.spaceKey && item.workspaceID === param.id
+          )
+          const selectedWorkshop = selectedWorkspace.workshops.find(
+            (item) => item.id === param.workshopID
+          )
           return (
             <form
               style={{
@@ -77,24 +84,69 @@ export default function WorkshopResourceModal() {
                 gap: '30px',
                 padding: '22px 32px',
               }}
+              onKeyDown={(e) => {
+                if (e.keyCode === 27) {
+                  e.preventDefault()
+                  history.push(
+                    `/workspace/${param.id}/details/${param.spaceKey}/insideworkshop/${param.workshopID}`
+                  )
+                }
+              }}
               onSubmit={(e) => {
                 e.preventDefault()
-                const resourceID = new Date().getTime().toString()
-                const date = new Date()
-                const day = date.getDate()
-                const month = date.toLocaleString('default', { month: 'short' })
-                const year = date.getFullYear()
-                const resource = {
-                  createdOn: `${day < 10 ? `0${day}` : day} ${month}, ${year}`,
-                  id: resourceID,
-                  title: newResource.name,
+                if (
+                  selectedWorkshop?.resources?.find(
+                    (item) => item.title === newResource.name
+                  )
+                ) {
+                  let count = 0
+                  selectedWorkshop.resources.forEach((item) =>
+                    item.title === newResource.name ? count++ : null
+                  )
+                  const resourceID = new Date().getTime().toString()
+                  const date = new Date()
+                  const day = date.getDate()
+                  const month = date.toLocaleString('default', {
+                    month: 'short',
+                  })
+                  const year = date.getFullYear()
+                  const resource = {
+                    createdOn: `${
+                      day < 10 ? `0${day}` : day
+                    } ${month}, ${year}`,
+                    id: resourceID,
+                    title: newResource.name,
+                    version: count + 1,
+                  }
+                  value.addNewWorkshopResource(
+                    param.id,
+                    param.spaceKey,
+                    param.workshopID,
+                    resource
+                  )
+                } else {
+                  const resourceID = new Date().getTime().toString()
+                  const date = new Date()
+                  const day = date.getDate()
+                  const month = date.toLocaleString('default', {
+                    month: 'short',
+                  })
+                  const year = date.getFullYear()
+                  const resource = {
+                    createdOn: `${
+                      day < 10 ? `0${day}` : day
+                    } ${month}, ${year}`,
+                    id: resourceID,
+                    title: newResource.name,
+                    version: 1,
+                  }
+                  value.addNewWorkshopResource(
+                    param.id,
+                    param.spaceKey,
+                    param.workshopID,
+                    resource
+                  )
                 }
-                value.addNewWorkshopResource(
-                  param.id,
-                  param.spaceKey,
-                  param.workshopID,
-                  resource
-                )
                 history.push(
                   `/workspace/${param.id}/details/${param.spaceKey}/insideworkshop/${param.workshopID}`
                 )
@@ -162,6 +214,16 @@ export default function WorkshopResourceModal() {
                   onChange={handleChange}
                 />
               </div>
+              <div className='single-resource-option'>
+                <label htmlFor='other-option'>Other Option</label>
+                <input
+                  type='radio'
+                  name='new-resource'
+                  id='other-option'
+                  value='Other Option'
+                  onChange={handleChange}
+                />
+              </div>
               <div
                 style={{
                   display: 'flex',
@@ -173,7 +235,7 @@ export default function WorkshopResourceModal() {
                 <Link
                   to={`/workspace/${param.id}/details/${param.spaceKey}/insideworkshop/${param.workshopID}`}
                 >
-                  <dic
+                  <div
                     style={{
                       color: '#FF0000',
                       border: 'none',
@@ -181,12 +243,12 @@ export default function WorkshopResourceModal() {
                       padding: '10px 20px',
                       outline: 'none',
                       cursor: 'pointer',
-                      fontSize: '16px',
+                      fontSize: '14px',
                       fontWeight: '400',
                     }}
                   >
                     Cancel
-                  </dic>
+                  </div>
                 </Link>
                 <button
                   type='submit'

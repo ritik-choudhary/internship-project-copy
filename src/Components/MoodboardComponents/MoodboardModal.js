@@ -86,6 +86,14 @@ export default function MoodboardModal() {
                 gap: '30px',
                 padding: '22px 32px',
               }}
+              onKeyDown={(e) => {
+                if (e.keyCode === 27) {
+                  e.preventDefault()
+                  history.push(
+                    `/workspace/${param.id}/details/${param.spaceKey}`
+                  )
+                }
+              }}
               onSubmit={(e) => {
                 e.preventDefault()
                 console.log('SUBMIT')
@@ -125,6 +133,7 @@ export default function MoodboardModal() {
                   type='text'
                   name='club'
                   id='name'
+                  maxLength='100'
                   style={{
                     borderRadius: '5px',
                     height: '32px',

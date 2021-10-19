@@ -75,7 +75,14 @@ export default function SpaceContent() {
                           className='animation-title'
                           style={{ fontSize: '20px', fontWeight: '400' }}
                         >
-                          {subheading}
+                          {subheading} <span>&nbsp;</span>
+                          <span>
+                            {value.detailSpace.version > 1
+                              ? value.detailSpace.altName
+                                ? `(${value.detailSpace.altName})`
+                                : `(${value.detailSpace.version})`
+                              : null}
+                          </span>
                         </h3>
                       </div>
                     )

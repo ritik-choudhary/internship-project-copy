@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { WorkspaceConsumer } from '../Context'
 import Sidebar from '../Components/Sidebar'
 import styled from 'styled-components'
@@ -8,6 +8,7 @@ import { Link, Switch, Route } from 'react-router-dom'
 import { AiOutlinePlus } from 'react-icons/ai'
 import TaskModal from '../Components/TaskManagerComponents/TaskModal'
 import SingleTaskInfoModal from '../Components/TaskManagerComponents/SingleTaskInfoModal'
+import { ReactHeight } from 'react-height'
 
 export default function TaskManager() {
   return (
@@ -46,6 +47,7 @@ function TaskManagerComponent(props) {
 
   const drop = (e, subArray) => {
     e.preventDefault()
+    e.stopPropagation()
     const card_id = e.dataTransfer.getData('card_id')
     const card = document.getElementById(card_id)
     card.style.display = 'block'
@@ -115,13 +117,13 @@ function TaskManagerComponent(props) {
             <div className='manager-headers-line'></div>
           </div>
           <div className='storage'>
-            <div className='storage-container'>
-              <div
-                className='new-tasks-storage'
-                onDrop={(e) => drop(e, 0)}
-                onDragOver={dragOverContainer}
-                id='new-tasks-storage'
-              >
+            <div
+              className='new-tasks-storage-container'
+              onDrop={(e) => drop(e, 0)}
+              onDragOver={dragOverContainer}
+              id='new-tasks-storage'
+            >
+              <div className='new-tasks-storage'>
                 <Link to='/taskmanager/addnew'>
                   <div className='create-task-btn'>
                     <AiOutlinePlus />
@@ -164,127 +166,166 @@ function TaskManagerComponent(props) {
                   )
                 })}
               </div>
+              <p className='drag-and-drop-msg'>
+                DRAG AND <br /> DROP HERE
+              </p>
             </div>
             <div
-              className={` ${
-                value.taskManager[1].length > 0 ? 'todo-storage' : 'empty-div'
-              }`}
+              className='todo-storage-container'
               onDrop={(e) => drop(e, 1)}
               onDragOver={dragOverContainer}
               id='todo-storage'
             >
-              {value.taskManager[1].map((task) => {
-                return (
-                  <div
-                    className='task-card'
-                    draggable={true}
-                    onDragStart={dragStart}
-                    onDragOver={dragOver}
-                    id={task.id}
-                  >
-                    <div className='status-manipulation'>
-                      <input
-                        type='checkbox'
-                        name={task.id}
+              <div
+                className={` ${
+                  value.taskManager[1].length > 0 ? 'todo-storage' : 'empty-div'
+                }`}
+              >
+                {value.taskManager[1].map((task) => {
+                  return (
+                    <Link to={`/taskmanager/info/${task.id}`}>
+                      <div
+                        className='task-card'
+                        draggable={true}
+                        onDragStart={dragStart}
+                        onDragOver={dragOver}
                         id={task.id}
-                        checked={task.completed}
-                        onChange={() => value.handleStatusTaskManager(task.id)}
-                        onClick={(e) => e.preventDefault()}
-                      />
-                      <div className='title'>{task.title}</div>
-                    </div>
-                    <div className='group'>
-                      <p className='label'>Created by</p>
-                      <h3 className='created-by'>{task.createdBy}</h3>
-                    </div>
-                    <div className='group'>
-                      <p className='label'>Due Date</p>
-                      <h3 className='due-date'>{task.dueDate}</h3>
-                    </div>
-                  </div>
-                )
-              })}
+                      >
+                        <div className='status-manipulation'>
+                          <input
+                            type='checkbox'
+                            name={task.id}
+                            id={task.id}
+                            checked={task.completed}
+                            onChange={() =>
+                              value.handleStatusTaskManager(task.id)
+                            }
+                            onClick={(e) => e.preventDefault()}
+                          />
+                          <div className='title'>{task.title}</div>
+                        </div>
+                        <div className='group'>
+                          <p className='label'>Created by</p>
+                          <h3 className='created-by'>{task.createdBy}</h3>
+                        </div>
+                        <div className='group'>
+                          <p className='label'>Due Date</p>
+                          <h3 className='due-date'>{task.dueDate}</h3>
+                        </div>
+                      </div>
+                    </Link>
+                  )
+                })}
+              </div>
+              <p className='drag-and-drop-msg'>
+                DRAG AND <br /> DROP HERE
+              </p>
             </div>
             <div
-              className={` ${
-                value.taskManager[2].length > 0
-                  ? 'in-progress-storage'
-                  : 'empty-div'
-              }`}
+              className='in-progress-storage-container'
               onDrop={(e) => drop(e, 2)}
               onDragOver={dragOverContainer}
               id='in-progress-storage'
             >
-              {value.taskManager[2].map((task) => {
-                return (
-                  <div
-                    className='task-card'
-                    draggable={true}
-                    onDragStart={dragStart}
-                    onDragOver={dragOver}
-                    id={task.id}
-                  >
-                    <div className='status-manipulation'>
-                      <input
-                        type='checkbox'
-                        name={task.id}
+              <div
+                className={` ${
+                  value.taskManager[2].length > 0
+                    ? 'in-progress-storage'
+                    : 'empty-div'
+                }`}
+              >
+                {value.taskManager[2].map((task) => {
+                  return (
+                    <Link to={`/taskmanager/info/${task.id}`}>
+                      <div
+                        className='task-card'
+                        draggable={true}
+                        onDragStart={dragStart}
+                        onDragOver={dragOver}
                         id={task.id}
-                        checked={task.completed}
-                        onChange={() => value.handleStatusTaskManager(task.id)}
-                        onClick={(e) => e.preventDefault()}
-                      />
-                      <div className='title'>{task.title}</div>
-                    </div>
-                    <div className='group'>
-                      <p className='label'>Created by</p>
-                      <h3 className='created-by'>{task.createdBy}</h3>
-                    </div>
-                    <div className='group'>
-                      <p className='label'>Due Date</p>
-                      <h3 className='due-date'>{task.dueDate}</h3>
-                    </div>
-                  </div>
-                )
-              })}
+                      >
+                        <div className='status-manipulation'>
+                          <input
+                            type='checkbox'
+                            name={task.id}
+                            id={task.id}
+                            checked={task.completed}
+                            onChange={() =>
+                              value.handleStatusTaskManager(task.id)
+                            }
+                            onClick={(e) => e.preventDefault()}
+                          />
+                          <div className='title'>{task.title}</div>
+                        </div>
+                        <div className='group'>
+                          <p className='label'>Created by</p>
+                          <h3 className='created-by'>{task.createdBy}</h3>
+                        </div>
+                        <div className='group'>
+                          <p className='label'>Due Date</p>
+                          <h3 className='due-date'>{task.dueDate}</h3>
+                        </div>
+                      </div>
+                    </Link>
+                  )
+                })}
+              </div>
+              <p className='drag-and-drop-msg'>
+                DRAG AND <br /> DROP HERE
+              </p>
             </div>
             <div
-              className={` ${
-                value.taskManager[3].length > 0
-                  ? 'completed-storage'
-                  : 'empty-div'
-              }`}
+              className='completed-storage-container'
               onDrop={(e) => drop(e, 3)}
               onDragOver={dragOverContainer}
               id='completed-storage'
             >
-              {value.taskManager[3].map((task) => {
-                return (
-                  <div
-                    className='task-card completed'
-                    onDragStart={dragStart}
-                    onDragOver={dragOver}
-                    id={task.id}
-                  >
-                    <div className='status-manipulation'>
-                      <input
-                        type='checkbox'
-                        name={task.id}
+              <div
+                className={` ${
+                  value.taskManager[3].length > 0
+                    ? 'completed-storage'
+                    : 'empty-div'
+                }`}
+              >
+                {value.taskManager[3].map((task) => {
+                  return (
+                    <Link to={`/taskmanager/info/${task.id}`}>
+                      <div
+                        className='task-card completed'
+                        draggable={true}
+                        onDragStart={dragStart}
+                        onDragOver={dragOver}
                         id={task.id}
-                        checked={task.completed}
-                      />
-                      <div className='title'>{task.title}</div>
-                    </div>
-                    <div className='group'>
-                      <p className='label'>Created by</p>
-                      <h3 className='created-by'>{task.createdBy}</h3>
-                    </div>
-                    <div className='group'>
-                      <p className='label'>Due Date</p>
-                      <h3 className='due-date'>{task.dueDate}</h3>
-                    </div>
-                  </div>
-                )
-              })}
+                      >
+                        <div className='status-manipulation'>
+                          <input
+                            type='checkbox'
+                            name={task.id}
+                            id={task.id}
+                            checked={task.completed}
+                            onChange={() =>
+                              value.handleStatusTaskManager(task.id)
+                            }
+                            onClick={(e) => e.preventDefault()}
+                          />
+                          <div className='title'>{task.title}</div>
+                        </div>
+                        <div className='group'>
+                          <p className='label'>Created by</p>
+                          <h3 className='created-by'>{task.createdBy}</h3>
+                        </div>
+                        <div className='group'>
+                          <p className='label'>Due Date</p>
+                          <h3 className='due-date'>{task.dueDate}</h3>
+                        </div>
+                      </div>
+                    </Link>
+                  )
+                })}
+              </div>
+              <p className='drag-and-drop-msg'>
+                DRAG AND <br /> DROP HERE
+              </p>
             </div>
           </div>
         </div>
@@ -419,7 +460,7 @@ const TaskManagerWrapper = styled.section`
     font-size: 14px;
   }
   .new-tasks-header .header-text {
-    color: #fb10ec;
+    color: #468aef;
     font-size: 14px;
   }
   .number-container {
@@ -430,12 +471,13 @@ const TaskManagerWrapper = styled.section`
     align-items: center;
     justify-content: center;
     background: #c8e1ff;
+    border-radius: 5px;
   }
   .storage {
     padding: 0px 150px;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
+    gap: 10px;
     align-items: flex-start;
   }
   .completed-storage,
@@ -448,7 +490,16 @@ const TaskManagerWrapper = styled.section`
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
     border-radius: 6px;
     padding: 10px;
-    height: auto;
+  }
+  .completed-storage-container,
+  .in-progress-storage-container,
+  .todo-storage-container,
+  .new-tasks-storage-container {
+    border: 1px dotted #468aef;
+    border-radius: 6px;
+    padding: 5px;
+    min-height: 70vh;
+    // padding-bottom: 150px;
   }
   .empty-div {
     display: flex;
@@ -456,7 +507,6 @@ const TaskManagerWrapper = styled.section`
     gap: 5px;
     border-radius: 6px;
     padding: 10px;
-    height: 70vh;
   }
   .create-task-btn {
     display: flex;
@@ -513,5 +563,13 @@ const TaskManagerWrapper = styled.section`
   }
   .completed {
     opacity: 0.5;
+  }
+  .drag-and-drop-msg {
+    font-size: 25px;
+    color: #468aef;
+    opacity: 0.3;
+    text-align: center;
+    padding: 20px;
+    height: 110px;
   }
 `

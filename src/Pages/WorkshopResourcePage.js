@@ -12,6 +12,7 @@ import Itinerary from '../Components/resourcepages/Itinerary'
 import VenueDetails from '../Components/resourcepages/VenueDetails'
 import TopicInformation from '../Components/resourcepages/TopicInformation'
 import Modal from 'react-modal'
+import OtherOption from '../Components/resourcepages/OtherOption'
 
 export default function WorkshopResourcePage(props) {
   return (
@@ -101,6 +102,8 @@ function WorkshopResourcePageComponent(props) {
                   <Committee isSharing />
                 ) : resource.title === 'Venue Details' ? (
                   <VenueDetails isSharing />
+                ) : resource.title === 'Other Option' ? (
+                  <OtherOption isSharing />
                 ) : null}
               </div>
             </div>
@@ -206,6 +209,8 @@ function WorkshopResourcePageComponent(props) {
                 <Committee />
               ) : resource.title === 'Venue Details' ? (
                 <VenueDetails />
+              ) : resource.title === 'Other Option' ? (
+                <OtherOption />
               ) : null}
             </div>
           </div>

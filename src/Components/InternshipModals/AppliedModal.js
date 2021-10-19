@@ -79,6 +79,12 @@ function AppliedModalComponent(props) {
           gap: '10px',
           padding: '22px 32px',
         }}
+        onKeyDown={(e) => {
+          if (e.keyCode === 27) {
+            e.preventDefault()
+            history.push('/internships')
+          }
+        }}
         onSubmit={(e) => {
           e.preventDefault()
           if (status) {
@@ -194,7 +200,7 @@ function AppliedModalComponent(props) {
           }}
         >
           <Link to='/internships'>
-            <button
+            <div
               style={{
                 color: '#FF0000',
                 border: 'none',
@@ -202,10 +208,12 @@ function AppliedModalComponent(props) {
                 padding: '10px 20px',
                 outline: 'none',
                 cursor: 'pointer',
+                fontSize: '14px',
+                fontWeight: '400',
               }}
             >
               Cancel
-            </button>
+            </div>
           </Link>
           <button
             type='submit'

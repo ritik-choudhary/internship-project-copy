@@ -8,6 +8,7 @@ import taskManager from '../../assets/task-manager.jpg'
 import jobs from '../../assets/jobs2.jpg'
 import guidance from '../../assets/guidance.jpg'
 import { Link } from 'react-router-dom'
+import { WorkspaceConsumer } from '../../Context'
 
 export default function Tiles() {
   return (
@@ -92,112 +93,175 @@ export default function Tiles() {
                 </div>
               </div>
             </div>
-            <div className='performance-tile tile-hover'>
-              <div className='background-image'>
-                <img src={performance} alt='performance' />
-              </div>
-              <div className='tile-content'>
-                <h2 className='title'>Performance</h2>
-                <div className='animation-tiles'>
-                  <div className='tile-1'>
-                    <h4>95</h4>
-                    <p>Posts this month</p>
-                    <h4>780</h4>
-                    <p>Views this month</p>
-                  </div>
-                  <div className='tile-2'>
-                    <h4>100</h4>
-                    <p>New Recruitments</p>
-                    <h4>300</h4>
-                    <p>Reviews</p>
+            <Link to='/insights'>
+              <div className='performance-tile tile-hover'>
+                <div className='background-image'>
+                  <img src={performance} alt='performance' />
+                </div>
+                <div className='tile-content'>
+                  <h2 className='title'>Performance</h2>
+                  <div className='animation-tiles'>
+                    <div className='tile-1'>
+                      <h4>95</h4>
+                      <p>Posts this month</p>
+                      <h4>780</h4>
+                      <p>Views this month</p>
+                    </div>
+                    <div className='tile-2'>
+                      <h4>100</h4>
+                      <p>New Recruitments</p>
+                      <h4>300</h4>
+                      <p>Reviews</p>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
+            </Link>
           </div>
           <div className='left-bottom'>
-            <div className='career-tile tile-hover'>
-              <div className='background-image'>
-                <img src={guidance} alt='career-guidance' />
+            <Link to='/notes'>
+              <div className='career-tile tile-hover'>
+                <div className='background-image'>
+                  <img src={guidance} alt='career-guidance' />
+                </div>
+                <div className='tile-content'>
+                  <h3 className='title'>Notes</h3>
+                  <WorkspaceConsumer>
+                    {(value) => {
+                      let count = -1
+                      let count2 = -1
+                      return (
+                        <div className='animation-tiles'>
+                          <div className='tile-1'>
+                            {value.notes.map((item) => {
+                              count++
+                              if (count < 3) {
+                                return <p className='note'>{item.title}</p>
+                              }
+                              return <></>
+                            })}
+                          </div>
+                          <div className='tile-2'>
+                            {value.notes.map((item) => {
+                              count2++
+                              if (count2 < 6 && count2 > 2) {
+                                return <p className='note'>{item.title}</p>
+                              }
+                              return <></>
+                            })}
+                          </div>
+                        </div>
+                      )
+                    }}
+                  </WorkspaceConsumer>
+                </div>
               </div>
-              <div className='tile-content'>
-                <h3 className='title'>Career Guidance</h3>
-              </div>
-            </div>
+            </Link>
           </div>
         </div>
 
         <div className='right-tile'>
           <div className='right-top'>
-            <div className='jobs-tile tile-hover'>
-              <div className='background-image'>
-                <img src={jobs} alt='jobs' />
-              </div>
-              <div className='tile-content'>
-                <h2 className='title'>Jobs and Internships</h2>
-                <div className='animation-tiles'>
-                  <div className='tile-1'>
-                    <div className='single-option'>
-                      <div className='job'>
-                        <h3>UX Designer</h3>
-                        <p>Apple</p>
-                      </div>
-                      <a href='/'>Apply</a>
-                    </div>
-                    <div className='line'></div>
-                    <div className='single-option'>
-                      <div className='job'>
-                        <h3>Product Designer</h3>
-                        <p>Google</p>
-                      </div>
-                      <a href='/'>Apply</a>
-                    </div>
-                  </div>
-                  <div className='tile-2'>
-                    <div className='single-option'>
-                      <div className='job'>
-                        <h3>UX Designer</h3>
-                        <p>Apple</p>
-                      </div>
-                      <a href='/'>Apply</a>
-                    </div>
-                    <div className='line'></div>
-                    <div className='single-option'>
-                      <div className='job'>
-                        <h3>Product Designer</h3>
-                        <p>Google</p>
-                      </div>
-                      <a href='/'>Apply</a>
-                    </div>
-                  </div>
+            <Link to='/internships'>
+              <div className='jobs-tile tile-hover'>
+                <div className='background-image'>
+                  <img src={jobs} alt='jobs' />
+                </div>
+                <div className='tile-content'>
+                  <h2 className='title'>Jobs and Internships</h2>
+                  <WorkspaceConsumer>
+                    {(value) => {
+                      let count = -1
+                      let count2 = -1
+                      return (
+                        <div className='animation-tiles'>
+                          <div className='tile-1'>
+                            {value.internships.map((item) => {
+                              count++
+                              if (count < 2)
+                                return (
+                                  <>
+                                    <div className='single-option'>
+                                      <div className='job'>
+                                        <h3>{item.title}</h3>
+                                        <p>{item.company}</p>
+                                      </div>
+                                    </div>
+                                    {count > 0 ? null : (
+                                      <div className='line'></div>
+                                    )}
+                                  </>
+                                )
+                            })}
+                          </div>
+                          <div className='tile-2'>
+                            {value.internships.map((item) => {
+                              count2++
+                              if (count2 < 4 && count2 > 1)
+                                return (
+                                  <>
+                                    <div className='single-option'>
+                                      <div className='job'>
+                                        <h3>{item.title}</h3>
+                                        <p>{item.company}</p>
+                                      </div>
+                                    </div>
+                                    {count2 > 2 ? null : (
+                                      <div className='line'></div>
+                                    )}
+                                  </>
+                                )
+                            })}
+                          </div>
+                        </div>
+                      )
+                    }}
+                  </WorkspaceConsumer>
                 </div>
               </div>
-              <a href='/' className='see-all'>
-                See all Openings
-              </a>
-            </div>
+            </Link>
           </div>
           <div className='right-bottom'>
-            <div className='task-manager-tile tile-hover'>
-              <div className='background-image'>
-                <img src={taskManager} alt='Task Manager' />
-              </div>
-              <div className='tile-content'>
-                <h3 className='title'>Task Manager</h3>
-                <div className='animation-tiles'>
-                  <div className='tile-1'>
-                    <p>Due Today</p>
-                    <p>Website Design</p>
-                    <p>App Prototyping</p>
-                  </div>
-                  <div className='tile-2'>
-                    <p>Due Today</p>
-                    <p>Website Design</p>
-                    <p>App Prototyping</p>
-                  </div>
+            <Link to='/taskmanager'>
+              <div className='task-manager-tile tile-hover'>
+                <div className='background-image'>
+                  <img src={taskManager} alt='Task Manager' />
+                </div>
+                <div className='tile-content'>
+                  <h3 className='title'>Task Manager</h3>
+                  <WorkspaceConsumer>
+                    {(value) => {
+                      const newTaskManager = [
+                        ...value.taskManager[0],
+                        ...value.taskManager[1],
+                        ...value.taskManager[2],
+                      ]
+                      let count = -1
+                      let count2 = -1
+                      return (
+                        <div className='animation-tiles'>
+                          <div className='tile-1'>
+                            {newTaskManager.map((item) => {
+                              count++
+                              if (count < 3) return <p>{item.title}</p>
+                              else return <></>
+                            })}
+                          </div>
+                          <div className='tile-2'>
+                            {newTaskManager.map((item) => {
+                              count2++
+                              if (count2 < 6 && count2 > 2)
+                                return <p>{item.title}</p>
+                              else return <></>
+                            })}
+                          </div>
+                        </div>
+                      )
+                    }}
+                  </WorkspaceConsumer>
                 </div>
               </div>
-            </div>
+            </Link>
             <div className='wallet-tile tile-hover'>
               <div className='background-image'>
                 <img src={wallet} alt='Wallet' />

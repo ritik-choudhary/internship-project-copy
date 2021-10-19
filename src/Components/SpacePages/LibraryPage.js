@@ -64,6 +64,7 @@ export default function LibraryPage() {
                   (item) =>
                     item.id === param.spaceKey && item.workspaceID === param.id
                 )
+
                 return displayItems.map((item) => {
                   if (item.favouriteBooks) {
                     return item.favouriteBooks.map((singleBook) => {
@@ -94,7 +95,11 @@ export default function LibraryPage() {
                                     fontWeight: '400',
                                   }}
                                 >
-                                  {name.length > 15
+                                  {singleBook.title
+                                    ? singleBook.title.length > 15
+                                      ? `${singleBook.title.slice(0, 15)}...`
+                                      : singleBook.title
+                                    : name.length > 15
                                     ? `${name.slice(0, 15)}...`
                                     : name}
                                 </h4>
@@ -134,7 +139,11 @@ export default function LibraryPage() {
                                 <h4
                                   style={{ color: 'white', fontWeight: '400' }}
                                 >
-                                  {singleBook.link.length > 15
+                                  {singleBook.title
+                                    ? singleBook.title.length > 15
+                                      ? `${singleBook.title.slice(0, 15)}...`
+                                      : singleBook.title
+                                    : singleBook.link.length > 15
                                     ? `${singleBook.link.slice(8, 22)}...`
                                     : singleBook.link}
                                 </h4>
@@ -189,7 +198,6 @@ export default function LibraryPage() {
                     let randomIndex = Math.floor(
                       Math.random() * backgroundImages.length
                     )
-                    const favourite = singleBook.favourite
                     if (singleBook.pdf) {
                       name = singleBook.pdf.name
                       return (
@@ -208,7 +216,13 @@ export default function LibraryPage() {
                             </div>
                             <div className='book-card-btns'>
                               <h4 style={{ color: 'white', fontWeight: '400' }}>
-                                {name.slice(0, 15)}
+                                {singleBook.title
+                                  ? singleBook.title.length > 15
+                                    ? `${singleBook.title.slice(0, 15)}...`
+                                    : singleBook.title
+                                  : name.length > 15
+                                  ? `${name.slice(0, 15)}...`
+                                  : name}
                               </h4>
 
                               <RiDeleteBin6Line
@@ -216,7 +230,7 @@ export default function LibraryPage() {
                                 onClick={(e) => {
                                   e.preventDefault()
                                   value.deleteBook(
-                                    favourite,
+                                    singleBook.favourite,
                                     singleBook.id,
                                     param.id,
                                     param.spaceKey
@@ -243,16 +257,21 @@ export default function LibraryPage() {
                             </div>
                             <div className='book-card-btns'>
                               <h4 style={{ color: 'white', fontWeight: '400' }}>
-                                {singleBook.link.slice(8, 22)}
+                                {singleBook.title
+                                  ? singleBook.title.length > 15
+                                    ? `${singleBook.title.slice(0, 15)}...`
+                                    : singleBook.title
+                                  : singleBook.link.length > 15
+                                  ? `${singleBook.link.slice(8, 22)}...`
+                                  : singleBook.link}
                               </h4>
 
                               <RiDeleteBin6Line
                                 className='book-delete-btn'
                                 onClick={(e) => {
                                   e.preventDefault()
-                                  const favourite = false
                                   value.deleteBook(
-                                    favourite,
+                                    singleBook.favourite,
                                     singleBook.id,
                                     param.id,
                                     param.spaceKey

@@ -5,7 +5,7 @@ import { FaBell, FaShareSquare } from 'react-icons/fa'
 import { RiArrowGoBackFill } from 'react-icons/ri'
 import Sidebar from '../Components/Sidebar'
 import styled from 'styled-components'
-import { AiOutlinePlus } from 'react-icons/ai'
+import { AiOutlineClose, AiOutlinePlus } from 'react-icons/ai'
 import ResourceModal from '../Components/Club/ResourceModal'
 import { BiTask } from 'react-icons/bi'
 import { HiOutlineLightBulb } from 'react-icons/hi'
@@ -36,7 +36,8 @@ function SingleClubPageComponent(props) {
   const param = useParams()
 
   const [createdBy, setCreatedBy] = useState()
-  const [members, setMembers] = useState()
+  const [memberToAdd, setMemberToAdd] = useState('')
+  const [members, setMembers] = useState([])
   const [mission, setMission] = useState()
 
   const workspaceName = value.workspaceList.find(
@@ -52,7 +53,7 @@ function SingleClubPageComponent(props) {
   useEffect(() => {
     if (club) {
       setCreatedBy(club?.basicInfo?.createdBy)
-      setMembers(club?.basicInfo?.members)
+      setMembers(club?.basicInfo?.members || [])
       setMission(club?.basicInfo?.mission)
     }
   }, [club])
@@ -181,8 +182,21 @@ function SingleClubPageComponent(props) {
                     type='text'
                     name='members'
                     id='members'
-                    value={members}
-                    onChange={(e) => setMembers(e.target.value)}
+                    value={memberToAdd}
+                    onChange={(e) => setMemberToAdd(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.keyCode === 188) {
+                        e.preventDefault()
+                        setMembers([
+                          ...members,
+                          {
+                            name: memberToAdd,
+                            id: new Date().getTime().toString(),
+                          },
+                        ])
+                        setMemberToAdd('')
+                      }
+                    }}
                     onBlur={(e) => {
                       e.preventDefault()
                       value.handleClubInfo(
@@ -197,6 +211,24 @@ function SingleClubPageComponent(props) {
                       )
                     }}
                   />
+                  <div className='members-container'>
+                    {members?.map((item) => {
+                      return (
+                        <div className='member-tag' key={item.id}>
+                          <p>{item.name}</p>
+                          <AiOutlineClose
+                            onClick={(e) => {
+                              let newMembersList = [...members]
+                              newMembersList = newMembersList.filter(
+                                (temp) => temp.id !== item.id
+                              )
+                              setMembers(newMembersList)
+                            }}
+                          />
+                        </div>
+                      )
+                    })}
+                  </div>
                 </div>
                 <div className='field'>
                   <label htmlFor='mission'>Mission</label>
@@ -254,7 +286,10 @@ function SingleClubPageComponent(props) {
                       ) : item.title === 'External contacts' ? (
                         <FaPhone />
                       ) : null}
-                      <p>{item.title}</p>
+                      <p>
+                        {item.title}
+                        {item.version > 1 ? `(${item.version})` : null}
+                      </p>
                     </div>
                   </Link>
                 )
@@ -370,6 +405,7 @@ const SingleClubPageWrapper = styled.section`
     border: 1px solid #c4c4c4;
     border-radius: 10px;
     padding: 15px 15px;
+    overflow: auto;
   }
   .basic-info form {
     display: flex;
@@ -394,6 +430,29 @@ const SingleClubPageWrapper = styled.section`
   }
   .basic-info form div input:hover {
     border-bottom: 1px solid #468aef;
+  }
+  .basic-info form .members-container {
+    display: flex;
+    height: 25px;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+  }
+  .basic-info form .member-tag {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    border-radius: 5px;
+    padding: 3px 5px;
+    background: #e5e5e5;
+  }
+  .member-tag p {
+    font-size: 14px;
+  }
+  .member-tag svg {
+    font-size: 14px;
+    color: red;
+    cursor: pointer;
   }
   .resources {
     display: flex;

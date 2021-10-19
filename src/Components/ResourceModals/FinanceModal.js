@@ -152,6 +152,19 @@ function FinanceModalComponent(props) {
           flexDirection: 'column',
           padding: '0 30px 30px',
         }}
+        onKeyDown={(e) => {
+          if (e.keyCode === 27) {
+            if (!isSharing) {
+              history.push(
+                `/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}`
+              )
+            } else {
+              history.push(
+                `/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/share`
+              )
+            }
+          }
+        }}
         onSubmit={(e) => {
           e.preventDefault()
           if (!isSharing) {
@@ -211,6 +224,7 @@ function FinanceModalComponent(props) {
             type='text'
             name='name'
             id='name'
+            maxLength='100'
             value={title}
             onChange={(e) => {
               if (!isSharing) setTitle(e.target.value)
@@ -237,6 +251,7 @@ function FinanceModalComponent(props) {
               type='text'
               name='created-by'
               id='created-by'
+              maxLength='100'
               value={createdBy}
               className={createdBy ? '' : 'skeleton'}
               onChange={(e) => {
@@ -259,10 +274,28 @@ function FinanceModalComponent(props) {
                 name='financer'
                 id='financer'
                 maxLength='30'
+                disabled={isSharing}
                 value={financerToAdd}
                 className={financerToAdd ? '' : 'skeleton'}
                 onChange={(e) => {
                   if (!isSharing) setFinancerToAdd(e.target.value)
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault()
+                    if (!isSharing) {
+                      if (financerToAdd) {
+                        setFinancersList([
+                          ...financersList,
+                          {
+                            financer: financerToAdd,
+                            id: new Date().getTime().toString(),
+                          },
+                        ])
+                        setFinancerToAdd('')
+                      }
+                    }
+                  }
                 }}
               />
 
@@ -339,11 +372,13 @@ function FinanceModalComponent(props) {
                   <AiOutlineClose
                     style={{ cursor: 'pointer', color: '#ff0000' }}
                     onClick={() => {
-                      let tempFinancers = [...financersList]
-                      const newFinancers = tempFinancers.filter(
-                        (temp) => temp.id !== item.id
-                      )
-                      setFinancersList(newFinancers)
+                      if (!isSharing) {
+                        let tempFinancers = [...financersList]
+                        const newFinancers = tempFinancers.filter(
+                          (temp) => temp.id !== item.id
+                        )
+                        setFinancersList(newFinancers)
+                      }
                     }}
                   />
                 </div>
@@ -364,10 +399,29 @@ function FinanceModalComponent(props) {
                 type='text'
                 name='sponsor'
                 id='sponsor'
+                maxLength='50'
                 value={sponsorToAdd}
+                disabled={isSharing}
                 className={sponsorToAdd ? '' : 'skeleton'}
                 onChange={(e) => {
                   if (!isSharing) setSponsorToAdd(e.target.value)
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault()
+                    if (!isSharing) {
+                      if (sponsorToAdd) {
+                        setSponsorsList([
+                          ...sponsorsList,
+                          {
+                            sponsor: sponsorToAdd,
+                            id: new Date().getTime().toString(),
+                          },
+                        ])
+                        setSponsorToAdd('')
+                      }
+                    }
+                  }
                 }}
               />
 
@@ -444,11 +498,13 @@ function FinanceModalComponent(props) {
                   <AiOutlineClose
                     style={{ cursor: 'pointer', color: '#ff0000' }}
                     onClick={() => {
-                      let tempSponsors = [...sponsorsList]
-                      const newSponsors = tempSponsors.filter(
-                        (temp) => temp.id !== item.id
-                      )
-                      setSponsorsList(newSponsors)
+                      if (!isSharing) {
+                        let tempSponsors = [...sponsorsList]
+                        const newSponsors = tempSponsors.filter(
+                          (temp) => temp.id !== item.id
+                        )
+                        setSponsorsList(newSponsors)
+                      }
                     }}
                   />
                 </div>
@@ -461,6 +517,7 @@ function FinanceModalComponent(props) {
               type='text'
               name='company'
               id='company'
+              maxLength='100'
               value={company}
               className={company ? '' : 'skeleton'}
               onChange={(e) => {
@@ -474,6 +531,7 @@ function FinanceModalComponent(props) {
               type='text'
               name='personalDetails'
               id='personalDetails'
+              maxLength='100'
               value={personalDetails}
               className={personalDetails ? '' : 'skeleton'}
               onChange={(e) => {
@@ -488,10 +546,28 @@ function FinanceModalComponent(props) {
               type='url'
               name='link'
               id='link'
+              disabled={isSharing}
               value={linkToAdd}
               className={linkToAdd ? '' : 'skeleton'}
               onChange={(e) => {
                 if (!isSharing) setLinkToAdd(e.target.value)
+              }}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault()
+                  if (!isSharing) {
+                    if (linkToAdd && isValidHttpUrl(linkToAdd)) {
+                      setLinks([
+                        ...links,
+                        {
+                          link: linkToAdd,
+                          id: new Date().getTime().toString(),
+                        },
+                      ])
+                      setLinkToAdd('')
+                    }
+                  }
+                }
               }}
             />
             <div className='add-link-btn'>
@@ -574,11 +650,13 @@ function FinanceModalComponent(props) {
                   <AiOutlineClose
                     style={{ color: '#f54848', cursor: 'pointer' }}
                     onClick={() => {
-                      let tempLinks = [...links]
-                      const newLinks = tempLinks.filter(
-                        (temp) => temp.id !== item.id
-                      )
-                      setLinks(newLinks)
+                      if (!isSharing) {
+                        let tempLinks = [...links]
+                        const newLinks = tempLinks.filter(
+                          (temp) => temp.id !== item.id
+                        )
+                        setLinks(newLinks)
+                      }
                     }}
                   />
                 </div>

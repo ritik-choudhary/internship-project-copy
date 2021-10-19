@@ -472,6 +472,7 @@ const SingleMoodboardWrapper = styled.section`
     display: flex;
     gap: 5px;
     align-items: center;
+    z-index: 99;
   }
   .field-image-container:hover .link-option {
     color: #0063ff;

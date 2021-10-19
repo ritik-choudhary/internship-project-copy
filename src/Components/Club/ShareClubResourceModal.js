@@ -4,7 +4,7 @@ import { WorkspaceConsumer } from '../../Context'
 import styled from 'styled-components'
 import Modal from 'react-modal'
 import { RiArrowGoBackFill } from 'react-icons/ri'
-import { AiFillCloseCircle } from 'react-icons/ai'
+import { AiFillCloseCircle, AiOutlineClose } from 'react-icons/ai'
 
 export default function ShareClubPage() {
   return (
@@ -117,12 +117,17 @@ function SingleClubPageComponent(props) {
                     </div>
                     <div className='field'>
                       <label htmlFor='members'>Members</label>
-                      <input
-                        type='text'
-                        name='members'
-                        id='members'
-                        value={members}
-                      />
+                      <input type='text' name='members' id='members' />
+                      <div className='members-container'>
+                        {members?.map((item) => {
+                          return (
+                            <div className='member-tag' key={item.id}>
+                              <p>{item.name}</p>
+                              <AiOutlineClose />
+                            </div>
+                          )
+                        })}
+                      </div>
                     </div>
                     <div className='field'>
                       <label htmlFor='mission'>Mission</label>
@@ -248,6 +253,7 @@ const SingleClubPageWrapper = styled.section`
     border: 1px solid #c4c4c4;
     border-radius: 10px;
     padding: 15px 15px;
+    overflow: auto;
   }
   .basic-info form {
     display: flex;
@@ -272,6 +278,29 @@ const SingleClubPageWrapper = styled.section`
   }
   .basic-info form div input:hover {
     border-bottom: 1px solid #468aef;
+  }
+  .basic-info form .members-container {
+    display: flex;
+    height: 25px;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+  }
+  .basic-info form .member-tag {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    border-radius: 5px;
+    padding: 3px 5px;
+    background: #e5e5e5;
+  }
+  .member-tag p {
+    font-size: 14px;
+  }
+  .member-tag svg {
+    font-size: 14px;
+    color: red;
+    cursor: pointer;
   }
   .resources {
     display: flex;

@@ -6,6 +6,7 @@ import {
   AiFillCloseCircle,
   AiOutlinePlus,
   AiOutlineClose,
+  AiOutlineFullscreen,
 } from 'react-icons/ai'
 import { WorkspaceConsumer } from '../../Context'
 import TextEditor from '../TextEditor'
@@ -37,11 +38,28 @@ function MeetingModalComponent(props) {
   const param = useParams()
   const history = useHistory()
 
+  const [modalSpecs, setModalSpecs] = useState({
+    width: '1199px',
+    top: '25%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -25%)',
+    boxShadow: '0px 4px 25px rgba(0, 0, 0, 0.08)',
+    borderRadius: '10px',
+    background: 'white',
+    padding: '-20px',
+  })
+
+  const [editorHeight, setEditorHeight] = useState('150px')
+
   const [title, setTitle] = useState()
   const [createdOn, setCreatedOn] = useState(date)
   const [createdBy, setCreatedBy] = useState()
   const [type, setType] = useState()
-  const [participants, setParticipants] = useState()
+  const [participantToAdd, setParticipantToAdd] = useState()
+  const [participants, setParticipants] = useState([])
   const [linkToAdd, setLinkToAdd] = useState()
   const [links, setLinks] = useState([])
   const [pdfList, setPdfList] = useState([])
@@ -124,19 +142,7 @@ function MeetingModalComponent(props) {
     <Modal
       isOpen={true}
       style={{
-        content: {
-          width: '1199px',
-          top: '25%',
-          left: '50%',
-          right: 'auto',
-          bottom: 'auto',
-          marginRight: '-50%',
-          transform: 'translate(-50%, -25%)',
-          boxShadow: '0px 4px 25px rgba(0, 0, 0, 0.08)',
-          borderRadius: '10px',
-          background: 'white',
-          padding: '-20px',
-        },
+        content: modalSpecs,
         overlay: {
           background: 'rgba(0, 0, 0, 0.31)',
         },
@@ -150,29 +156,87 @@ function MeetingModalComponent(props) {
         }}
       >
         {isSharing ? (
-          <Link
-            to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/share`}
-          >
-            <AiFillCloseCircle
-              style={{
-                fontSize: '30px',
-                color: '#FFC8C8',
-                cursor: 'pointer',
-              }}
-            />
-          </Link>
+          <>
+            <div style={{ display: 'flex', gap: '10px' }}>
+              <AiOutlineFullscreen
+                style={{
+                  fontSize: '25px',
+                  fontWeight: '500',
+                  color: '#105eee',
+                  cursor: 'pointer',
+                }}
+                onClick={() => {
+                  setModalSpecs({
+                    width: '100%',
+                    height: '100%',
+                    top: '0',
+                    left: '0',
+                    right: 'auto',
+                    bottom: 'auto',
+                    marginRight: '0',
+                    transform: 'translate(0,0)',
+                    boxShadow: '0px 4px 25px rgba(0, 0, 0, 0.08)',
+                    borderRadius: '0px',
+                    background: 'white',
+                    padding: '-20px',
+                  })
+                  setEditorHeight('240px')
+                }}
+              />
+              <Link
+                to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/share`}
+              >
+                <AiFillCloseCircle
+                  style={{
+                    fontSize: '30px',
+                    color: '#FFC8C8',
+                    cursor: 'pointer',
+                  }}
+                />
+              </Link>
+            </div>
+          </>
         ) : (
-          <Link
-            to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}`}
-          >
-            <AiFillCloseCircle
-              style={{
-                fontSize: '30px',
-                color: '#FFC8C8',
-                cursor: 'pointer',
-              }}
-            />
-          </Link>
+          <>
+            <div style={{ display: 'flex', gap: '10px' }}>
+              <AiOutlineFullscreen
+                style={{
+                  fontSize: '25px',
+                  fontWeight: '500',
+                  color: '#105eee',
+                  cursor: 'pointer',
+                }}
+                onClick={() => {
+                  setModalSpecs({
+                    width: '100%',
+                    height: '100%',
+                    top: '0',
+                    left: '0',
+                    right: 'auto',
+                    bottom: 'auto',
+                    marginRight: '0',
+                    transform: 'translate(0,0)',
+                    boxShadow: '0px 4px 25px rgba(0, 0, 0, 0.08)',
+                    borderRadius: '0px',
+                    background: 'white',
+                    padding: '-20px',
+                  })
+                  setEditorHeight('240px')
+                }}
+              />
+              <Link
+                to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}`}
+              >
+                <AiFillCloseCircle
+                  style={{
+                    fontSize: '30px',
+                    color: '#FFC8C8',
+                    cursor: 'pointer',
+                  }}
+                />
+              </Link>
+            </div>
+          </>
         )}
       </header>
       <form
@@ -180,6 +244,19 @@ function MeetingModalComponent(props) {
           display: 'flex',
           flexDirection: 'column',
           padding: '0px 30px 30px',
+        }}
+        onKeyDown={(e) => {
+          if (e.keyCode === 27) {
+            if (!isSharing) {
+              history.push(
+                `/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}`
+              )
+            } else {
+              history.push(
+                `/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/share`
+              )
+            }
+          }
         }}
         onSubmit={(e) => {
           e.preventDefault()
@@ -257,7 +334,7 @@ function MeetingModalComponent(props) {
             }}
           />
         </div>
-        <div className='meeting-basic-info'>
+        <div className='meeting-basic-info' style={{ overflow: 'auto' }}>
           <div className='single-option'>
             <label htmlFor='created-on'>Created on</label>
             <p style={{ fontSize: '14px', color: '#468AEF' }}>{createdOn}</p>
@@ -291,17 +368,51 @@ function MeetingModalComponent(props) {
             />
           </div>
           <div className='single-option'>
-            <label htmlFor='participants'>Participants</label>
+            <label htmlFor='participants' style={{ flexShrink: '0' }}>
+              Participants
+            </label>
             <input
               type='text'
               name='participants'
               id='participants'
-              value={participants}
-              className={participants ? '' : 'skeleton'}
+              value={participantToAdd}
+              style={{ flexShrink: '0' }}
+              className={participantToAdd ? '' : 'skeleton'}
               onChange={(e) => {
-                if (!isSharing) setParticipants(e.target.value)
+                if (!isSharing) setParticipantToAdd(e.target.value)
+              }}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.keyCode === 188) {
+                  e.preventDefault()
+                  setParticipants([
+                    ...participants,
+                    {
+                      name: participantToAdd,
+                      id: new Date().getTime().toString(),
+                    },
+                  ])
+                  setParticipantToAdd('')
+                }
               }}
             />
+            <div className='participants-container'>
+              {participants?.map((item) => {
+                return (
+                  <div className='participant-tag' key={item.id}>
+                    <p>{item.name}</p>
+                    <AiOutlineClose
+                      onClick={(e) => {
+                        let newparticipantsList = [...participants]
+                        newparticipantsList = newparticipantsList.filter(
+                          (temp) => temp.id !== item.id
+                        )
+                        setParticipants(newparticipantsList)
+                      }}
+                    />
+                  </div>
+                )
+              })}
+            </div>
           </div>
           <div className='single-option'>
             <label htmlFor='link'>Link</label>
@@ -311,9 +422,27 @@ function MeetingModalComponent(props) {
               name='link'
               id='link'
               value={linkToAdd}
+              disabled={isSharing}
               className={linkToAdd ? '' : 'skeleton'}
               onChange={(e) => {
                 if (!isSharing) setLinkToAdd(e.target.value)
+              }}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault()
+                  if (!isSharing) {
+                    if (linkToAdd && isValidHttpUrl(linkToAdd)) {
+                      setLinks([
+                        ...links,
+                        {
+                          link: linkToAdd,
+                          id: new Date().getTime().toString(),
+                        },
+                      ])
+                      setLinkToAdd('')
+                    }
+                  }
+                }
               }}
             />
             <div className='add-link-btn'>
@@ -333,7 +462,13 @@ function MeetingModalComponent(props) {
                 onClick={(e) => {
                   if (!isSharing) {
                     if (linkToAdd && isValidHttpUrl(linkToAdd)) {
-                      setLinks([...links, linkToAdd])
+                      setLinks([
+                        ...links,
+                        {
+                          link: linkToAdd,
+                          id: new Date().getTime().toString(),
+                        },
+                      ])
                       setLinkToAdd('')
                     }
                   }
@@ -374,7 +509,7 @@ function MeetingModalComponent(props) {
                   key={count}
                 >
                   <a
-                    href={item}
+                    href={item.link}
                     target='_blank'
                     rel='noreferrer noopener'
                     style={{
@@ -386,7 +521,18 @@ function MeetingModalComponent(props) {
                   >
                     Link {count}
                   </a>
-                  <AiOutlineClose style={{ color: '#f54848' }} />
+                  <AiOutlineClose
+                    style={{ color: '#f54848', cursor: 'pointer' }}
+                    onClick={() => {
+                      if (!isSharing) {
+                        let tempLinks = [...links]
+                        const newLinks = tempLinks.filter(
+                          (temp) => temp.id !== item.id
+                        )
+                        setLinks(newLinks)
+                      }
+                    }}
+                  />
                 </div>
               )
             })}
@@ -497,7 +643,9 @@ function MeetingModalComponent(props) {
                         >
                           Pdf {pdfCount}
                         </p>
-                        <AiOutlineClose style={{ color: '#f54848' }} />
+                        <AiOutlineClose
+                          style={{ color: '#f54848', cursor: 'pointer' }}
+                        />
                       </div>
                     </Link>
                   ) : (
@@ -539,7 +687,19 @@ function MeetingModalComponent(props) {
                         >
                           Pdf {pdfCount}
                         </p>
-                        <AiOutlineClose style={{ color: '#f54848' }} />
+                        <AiOutlineClose
+                          style={{ color: '#f54848', cursor: 'pointer' }}
+                          onClick={(e) => {
+                            e.preventDefault()
+                            if (!isSharing) {
+                              let temppdfList = [...pdfList]
+                              const newpdfList = temppdfList.filter(
+                                (temp) => temp.pdfId !== pdf.pdfId
+                              )
+                              setPdfList(newpdfList)
+                            }
+                          }}
+                        />
                       </div>
                     </Link>
                   )}
@@ -548,7 +708,11 @@ function MeetingModalComponent(props) {
             })}
           </div>
         </div>
-        <TextEditor textNote={textNote} setTextNote={setTextNote} />
+        <TextEditor
+          textNote={textNote}
+          setTextNote={setTextNote}
+          height={editorHeight}
+        />
         <div
           className='save-btn'
           style={{ display: 'flex', justifyContent: 'flex-end' }}
