@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { WorkspaceConsumer } from '../Context'
 import Sidebar from '../Components/Sidebar'
 import styled from 'styled-components'
@@ -8,7 +8,6 @@ import { Link, Switch, Route } from 'react-router-dom'
 import { AiOutlinePlus } from 'react-icons/ai'
 import TaskModal from '../Components/TaskManagerComponents/TaskModal'
 import SingleTaskInfoModal from '../Components/TaskManagerComponents/SingleTaskInfoModal'
-import { ReactHeight } from 'react-height'
 
 export default function TaskManager() {
   return (

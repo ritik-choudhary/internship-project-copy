@@ -1815,7 +1815,7 @@ class WorkspaceProvider extends Component {
       oldTaskManager[3] = [...oldTaskManager[3], selectedTask]
       selectedTask.completed = true
     }
-    if (tempArray == 3) {
+    if (tempArray === 3) {
       selectedTask.completed = false
       oldTaskManager[0] = [...oldTaskManager[0], selectedTask]
     }

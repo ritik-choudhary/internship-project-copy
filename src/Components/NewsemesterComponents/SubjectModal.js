@@ -3,7 +3,7 @@ import Modal from 'react-modal'
 import { Link, useParams, useHistory } from 'react-router-dom'
 import { AiOutlineClose, AiOutlinePlus } from 'react-icons/ai'
 import { WorkspaceConsumer } from '../../Context'
-import { FaCheckCircle, FaUpload } from 'react-icons/fa'
+import { FaUpload } from 'react-icons/fa'
 
 export default function SubjectModal(props) {
   return (

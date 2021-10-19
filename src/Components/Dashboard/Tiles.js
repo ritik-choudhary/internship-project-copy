@@ -192,6 +192,7 @@ export default function Tiles() {
                                     )}
                                   </>
                                 )
+                              return <></>
                             })}
                           </div>
                           <div className='tile-2'>
@@ -211,6 +212,7 @@ export default function Tiles() {
                                     )}
                                   </>
                                 )
+                              return <></>
                             })}
                           </div>
                         </div>
