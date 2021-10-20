@@ -496,7 +496,7 @@ const TaskManagerWrapper = styled.section`
   .in-progress-storage-container,
   .todo-storage-container,
   .new-tasks-storage-container {
-    border: 1px dotted #468aef;
+    border: 1px dashed #468aef;
     border-radius: 6px;
     padding: 5px;
     min-height: 70vh;
