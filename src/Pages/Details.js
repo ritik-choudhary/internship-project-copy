@@ -135,7 +135,6 @@ const DetailPageComponent = () => {
                   num = item.version
                 }
 
-                const printable = num ? true : false
                 const isAlt = alt ? true : false
                 return (
                   <div key={item.id}>

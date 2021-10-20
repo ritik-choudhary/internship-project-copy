@@ -45,16 +45,6 @@ function HabitTrackerModalComponent(props) {
     return arr
   }
 
-  const defaultDate = new Date().toISOString().substring(0, 10)
-
-  const disablePastDate = () => {
-    const today = new Date()
-    const dd = String(today.getDate() + 1).padStart(2, '0')
-    const mm = String(today.getMonth() + 1).padStart(2, '0')
-    const yyyy = today.getFullYear()
-    return yyyy + '-' + mm + '-' + dd
-  }
-
   const [habitImage, setHabitImage] = useState()
   const [preview, setPreview] = useState(Images[randomIndex])
   const [nameOfHabit, setNameOfHabit] = useState()
