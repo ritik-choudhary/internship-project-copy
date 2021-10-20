@@ -135,6 +135,7 @@ export default function SpaceUploadModal() {
                     type='text'
                     name='alternative-name'
                     id='alt-name'
+                    maxLength='100'
                     value={altName}
                     onChange={(e) => setAltName(e.target.value)}
                     style={{
