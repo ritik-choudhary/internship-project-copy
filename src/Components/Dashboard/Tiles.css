@@ -163,6 +163,10 @@
 
 /* performance  tile*/
 
+.insights-link {
+  width: 50%;
+}
+
 .performance-tile {
   height: 220px;
   position: relative;
@@ -259,6 +263,11 @@ a {
 }
 
 /* task manager tile */
+
+.taskmanager-link {
+  width: 50%;
+}
+
 .task-manager-tile {
   height: 220px;
   position: relative;
@@ -276,7 +285,7 @@ a {
 
 .wallet-tile {
   height: 220px;
-
+  width: 50%;
   position: relative;
   border-radius: 20px;
   overflow: hidden;

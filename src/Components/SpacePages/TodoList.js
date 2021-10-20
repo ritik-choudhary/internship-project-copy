@@ -12,7 +12,7 @@ export default function TodoList() {
   return (
     <TodoListPageWrapper>
       <Switch>
-        <Route path='/workspace/:id/details/:spaceKey/addtodo/readpdf'>
+        <Route path='/workspace/:id/details/:spaceKey/addtodo/readdoc'>
           <TaskPdfModal isTodo />
         </Route>
         <Route path='/workspace/:id/details/:spaceKey/edittodo/:todoID'>
@@ -50,7 +50,7 @@ function TodoListComponent(props) {
         </Link>
         {space?.todoList?.map((item) => {
           let count = 0
-          let pdfCount = 0
+          let docCount = 0
           return (
             <div
               className={
@@ -162,41 +162,41 @@ function TodoListComponent(props) {
                     </div>
                   ) : null}
                 </div>
-                <div className='pdf-container'>
-                  {item.pdfList.map((pdf) => {
-                    pdfCount++
-                    if (pdfCount > 3) {
+                <div className='doc-container'>
+                  {item.docsList.map((doc) => {
+                    docCount++
+                    if (docCount > 3) {
                       return <></>
                     }
-                    const linkToPdf = item.pdfPreview.find(
-                      (item) => item.previewId === pdf.pdfId
+                    const linkTodoc = item.docPreview.find(
+                      (item) => item.previewId === doc.docId
                     )
                     const type =
-                      pdf?.pdfFile?.name.split('.')[
-                        pdf?.pdfFile?.name.split('.').length - 1
+                      doc?.docFile?.name.split('.')[
+                        doc?.docFile?.name.split('.').length - 1
                       ]
                     return (
                       <Link
                         to={{
-                          pathname: `/workspace/${param.id}/details/${param.spaceKey}/addtodo/readpdf`,
+                          pathname: `/workspace/${param.id}/details/${param.spaceKey}/addtodo/readdoc`,
                           state: {
-                            src: linkToPdf?.source,
+                            src: linkTodoc?.source,
                             fileType: type,
                           },
                         }}
-                        key={pdf.pdfId}
+                        key={doc.docId}
                       >
-                        <div className='pdf'>
-                          <p style={{ width: '80%' }}>Pdf {pdfCount}</p>
+                        <div className='doc'>
+                          <p style={{ width: '80%' }}>doc {docCount}</p>
                           <AiOutlineClose
                             style={{ color: '#f54848', cursor: 'pointer' }}
                             onClick={(e) => {
                               e.preventDefault()
-                              value.deletePdfFromTodo(
+                              value.deleteDocFromTodo(
                                 param.id,
                                 param.spaceKey,
                                 item.id,
-                                pdf.pdfId
+                                doc.docId
                               )
                             }}
                           />
@@ -204,7 +204,7 @@ function TodoListComponent(props) {
                       </Link>
                     )
                   })}
-                  {item.pdfList.length > 3 ? (
+                  {item.docsList.length > 3 ? (
                     <div className='see-more-btn'>
                       <Link
                         to={`/workspace/${param.id}/details/${param.spaceKey}/edittodo/${item.id}`}
@@ -327,14 +327,14 @@ const TodoListPageWrapper = styled.section`
     opacity: 0.5;
   }
   .links-container,
-  .pdf-container {
+  .doc-container {
     display: flex;
     gap: 5px;
     justify-content: flex-end;
     padding-bottom: 5px;
   }
   .single-task .link,
-  .single-task .pdf {
+  .single-task .doc {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -349,7 +349,7 @@ const TodoListPageWrapper = styled.section`
     font-weight: 400;
   }
   .single-task .link:hover,
-  .single-task .pdf:hover {
+  .single-task .doc:hover {
     transform: scale(1.05);
   }
   .see-more-btn a {

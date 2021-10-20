@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Modal from 'react-modal'
 import { Link, useParams, useLocation, Switch, Route } from 'react-router-dom'
 import { AiFillCloseCircle, AiOutlineFullscreen } from 'react-icons/ai'
@@ -6,16 +6,14 @@ import { Viewer } from '@react-pdf-viewer/core'
 import { Worker } from '@react-pdf-viewer/core'
 import '@react-pdf-viewer/core/lib/styles/index.css'
 import '@react-pdf-viewer/default-layout/lib/styles/index.css'
-import TaskFullPagePdf from './TaskFullPagePdf'
+
+import FileViewer from 'react-file-viewer'
 
 export default function TaskPdfModal() {
   return (
     <>
       <Switch>
-        <Route path='/taskmanager/info/:taskID/readpdf/readfullpage'>
-          <TaskFullPagePdf />
-        </Route>
-        <Route path='/taskmanager/info/:taskID/readpdf'>
+        <Route path='/taskmanager/info/:taskID/readdoc'>
           <TaskPdfModalComponent />
         </Route>
       </Switch>
@@ -26,25 +24,28 @@ export default function TaskPdfModal() {
 const TaskPdfModalComponent = () => {
   const param = useParams()
   const location = useLocation()
+
+  const [size, setSize] = useState({
+    minHeight: '80vh',
+    width: '493px',
+    top: '23%',
+    left: '50%',
+    right: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -10%)',
+    boxShadow: '0px 4px 25px rgba(0, 0, 0, 0.08)',
+    borderRadius: '10px',
+    background: 'transparent',
+    padding: '-20px',
+    border: 'none',
+    overflow: 'visible !important',
+  })
+
   return (
     <Modal
       isOpen={true}
       style={{
-        content: {
-          minHeight: '80vh',
-          width: '493px',
-          top: '23%',
-          left: '50%',
-          right: 'auto',
-          marginRight: '-50%',
-          transform: 'translate(-50%, -10%)',
-          boxShadow: '0px 4px 25px rgba(0, 0, 0, 0.08)',
-          borderRadius: '10px',
-          background: 'transparent',
-          padding: '-20px',
-          border: 'none',
-          overflow: 'visible !important',
-        },
+        content: size,
         overlay: {
           background: 'rgba(0, 0, 0, 0.31)',
         },
@@ -65,21 +66,31 @@ const TaskPdfModalComponent = () => {
           zIndex: '1',
         }}
       >
-        <Link
-          to={{
-            pathname: `/taskmanager/info/${param.taskID}/readpdf/readfullpage`,
-            state: { data: location.state.src },
+        <AiOutlineFullscreen
+          style={{
+            fontSize: '25px',
+            fontWeight: '500',
+            color: '#105eee',
+            cursor: 'pointer',
           }}
-        >
-          <AiOutlineFullscreen
-            style={{
-              fontSize: '25px',
-              fontWeight: '500',
-              color: '#105eee',
-              cursor: 'pointer',
-            }}
-          />
-        </Link>
+          onClick={() =>
+            setSize({
+              width: '100%',
+              height: '100%',
+              left: '0',
+              right: '0',
+              marginRight: '0',
+              transform: 'translate(0,0)',
+              boxShadow: '0px 4px 25px rgba(0, 0, 0, 0.08)',
+              borderRadius: '10px',
+              background: 'transparent',
+              padding: '-20px',
+              border: 'none',
+              overflow: 'visible !important',
+            })
+          }
+        />
+
         <Link to={`/taskmanager/info/${param.taskID}`}>
           <AiFillCloseCircle
             style={{
@@ -110,13 +121,20 @@ const TaskPdfModalComponent = () => {
             height: '100%',
           }}
         >
-          {location.state.src && (
-            <>
-              <Worker workerUrl='https://unpkg.com/pdfjs-dist@2.6.347/build/pdf.worker.min.js'>
-                <Viewer fileUrl={location.state.src} />
-              </Worker>
-            </>
-          )}
+          {location.state.fileType === 'pdf'
+            ? location.state.src && (
+                <>
+                  <Worker workerUrl='https://unpkg.com/pdfjs-dist@2.6.347/build/pdf.worker.min.js'>
+                    <Viewer fileUrl={location.state.src} />
+                  </Worker>
+                </>
+              )
+            : location.state.src && (
+                <FileViewer
+                  fileType={location.state.fileType}
+                  filePath={location.state.src}
+                />
+              )}
         </div>
       </div>
     </Modal>

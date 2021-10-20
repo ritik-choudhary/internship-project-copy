@@ -38,7 +38,9 @@ function JournalComponent(props) {
         <Sidebar />
         <div className='page-container'>
           <div className='journal-header'>
-            <h3>thesocialcomment</h3>
+            <Link to='/'>
+              <h3>thesocialcomment</h3>
+            </Link>
             <div className='right-header'>
               <FaBell className='bell-icon' />
               <Link to='/'>

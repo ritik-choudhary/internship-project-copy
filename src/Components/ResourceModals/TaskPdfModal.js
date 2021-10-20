@@ -1,5 +1,4 @@
-import React from 'react'
-import TaskFullPagePdf from './TaskFullPagePdf'
+import React, { useState } from 'react'
 import Modal from 'react-modal'
 import { Link, useParams, useLocation, Switch, Route } from 'react-router-dom'
 import { AiFillCloseCircle, AiOutlineFullscreen } from 'react-icons/ai'
@@ -13,22 +12,13 @@ export default function TaskPdfModal(props) {
   return (
     <>
       <Switch>
-        <Route path='/workspace/:id/details/:spaceKey/addtodo/readpdf/readfullpage'>
-          <TaskFullPagePdf isTodo />
-        </Route>
-        <Route path='/workspace/:id/details/:spaceKey/insideclub/:clubID/resourcedata/:resourceID/share/sharetask/readpdf/readfullpage'>
-          <TaskFullPagePdf isSharing />
-        </Route>
-        <Route path='/workspace/:id/details/:spaceKey/insideclub/:clubID/resourcedata/:resourceID/addtask/readpdf/readfullpage'>
-          <TaskFullPagePdf />
-        </Route>
-        <Route path='/workspace/:id/details/:spaceKey/addtodo/readpdf'>
+        <Route path='/workspace/:id/details/:spaceKey/addtodo/readdoc'>
           <TaskPdfModalComponent {...props} />
         </Route>
-        <Route path='/workspace/:id/details/:spaceKey/insideclub/:clubID/resourcedata/:resourceID/share/sharetask/readpdf'>
+        <Route path='/workspace/:id/details/:spaceKey/insideclub/:clubID/resourcedata/:resourceID/share/sharetask/readdoc'>
           <TaskPdfModalComponent {...props} />
         </Route>
-        <Route path='/workspace/:id/details/:spaceKey/insideclub/:clubID/resourcedata/:resourceID/addtask/readpdf'>
+        <Route path='/workspace/:id/details/:spaceKey/insideclub/:clubID/resourcedata/:resourceID/addtask/readdoc'>
           <TaskPdfModalComponent {...props} />
         </Route>
       </Switch>
@@ -41,25 +31,27 @@ const TaskPdfModalComponent = (props) => {
   const param = useParams()
   const location = useLocation()
 
+  const [size, setSize] = useState({
+    minHeight: '80vh',
+    width: '493px',
+    top: '23%',
+    left: '50%',
+    right: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -10%)',
+    boxShadow: '0px 4px 25px rgba(0, 0, 0, 0.08)',
+    borderRadius: '10px',
+    background: 'transparent',
+    padding: '-20px',
+    border: 'none',
+    overflow: 'visible !important',
+  })
+
   return (
     <Modal
       isOpen={true}
       style={{
-        content: {
-          minHeight: '80vh',
-          width: '493px',
-          top: '23%',
-          left: '50%',
-          right: 'auto',
-          marginRight: '-50%',
-          transform: 'translate(-50%, -10%)',
-          boxShadow: '0px 4px 25px rgba(0, 0, 0, 0.08)',
-          borderRadius: '10px',
-          background: 'transparent',
-          padding: '-20px',
-          border: 'none',
-          overflow: 'visible !important',
-        },
+        content: size,
         overlay: {
           background: 'rgba(0, 0, 0, 0.31)',
         },
@@ -80,64 +72,31 @@ const TaskPdfModalComponent = (props) => {
           zIndex: '1',
         }}
       >
-        {isTodo ? (
-          <Link
-            to={{
-              pathname: `/workspace/${param.id}/details/${param.spaceKey}/addtodo/readpdf/readfullpage`,
-              state: {
-                data: location.state.src,
-                fileType: location.state.fileType,
-              },
-            }}
-          >
-            <AiOutlineFullscreen
-              style={{
-                fontSize: '25px',
-                fontWeight: '500',
-                color: '#105eee',
-                cursor: 'pointer',
-              }}
-            />
-          </Link>
-        ) : isSharing ? (
-          <Link
-            to={{
-              pathname: `/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/share/sharetask/readpdf/readfullpage`,
-              state: {
-                data: location.state.src,
-                fileType: location.state.fileType,
-              },
-            }}
-          >
-            <AiOutlineFullscreen
-              style={{
-                fontSize: '25px',
-                fontWeight: '500',
-                color: '#105eee',
-                cursor: 'pointer',
-              }}
-            />
-          </Link>
-        ) : (
-          <Link
-            to={{
-              pathname: `/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/addtask/readpdf/readfullpage`,
-              state: {
-                data: location.state.src,
-                fileType: location.state.fileType,
-              },
-            }}
-          >
-            <AiOutlineFullscreen
-              style={{
-                fontSize: '25px',
-                fontWeight: '500',
-                color: '#105eee',
-                cursor: 'pointer',
-              }}
-            />
-          </Link>
-        )}
+        <AiOutlineFullscreen
+          style={{
+            fontSize: '25px',
+            fontWeight: '500',
+            color: '#105eee',
+            cursor: 'pointer',
+          }}
+          onClick={() =>
+            setSize({
+              width: '100%',
+              height: '100%',
+              left: '0',
+              right: '0',
+              marginRight: '0',
+              transform: 'translate(0,0)',
+              boxShadow: '0px 4px 25px rgba(0, 0, 0, 0.08)',
+              borderRadius: '10px',
+              background: 'transparent',
+              padding: '-20px',
+              border: 'none',
+              overflow: 'visible !important',
+            })
+          }
+        />
+
         {isTodo ? (
           <Link to={`/workspace/${param.id}/details/${param.spaceKey}`}>
             <AiFillCloseCircle

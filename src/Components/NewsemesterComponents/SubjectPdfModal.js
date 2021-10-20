@@ -1,5 +1,4 @@
-import React from 'react'
-import SubjectFullPagePdf from './SubjectFullPagePdf'
+import React, { useState } from 'react'
 import Modal from 'react-modal'
 import { Link, useParams, useLocation, Switch, Route } from 'react-router-dom'
 import { AiFillCloseCircle, AiOutlineFullscreen } from 'react-icons/ai'
@@ -7,15 +6,13 @@ import { Viewer } from '@react-pdf-viewer/core'
 import { Worker } from '@react-pdf-viewer/core'
 import '@react-pdf-viewer/core/lib/styles/index.css'
 import '@react-pdf-viewer/default-layout/lib/styles/index.css'
+import FileViewer from 'react-file-viewer'
 
 export default function SubjectPdfModal() {
   return (
     <>
       <Switch>
-        <Route path='/workspace/:id/details/:spaceKey/editsubject/:subjectID/readsubjectpdf/fullPage'>
-          <SubjectFullPagePdf />
-        </Route>
-        <Route path='/workspace/:id/details/:spaceKey/editsubject/:subjectID/readsubjectpdf'>
+        <Route path='/workspace/:id/details/:spaceKey/editsubject/:subjectID/readsubjectdoc'>
           <SubjectPdfModalComponent />
         </Route>
       </Switch>
@@ -24,27 +21,29 @@ export default function SubjectPdfModal() {
 }
 
 const SubjectPdfModalComponent = () => {
+  const [fullPage, setFullPage] = useState({
+    minHeight: '80vh',
+    width: '493px',
+    top: '23%',
+    left: '50%',
+    right: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -10%)',
+    boxShadow: '0px 4px 25px rgba(0, 0, 0, 0.08)',
+    borderRadius: '10px',
+    background: 'transparent',
+    padding: '-20px',
+    border: 'none',
+    overflow: 'visible !important',
+  })
+
   const param = useParams()
   const location = useLocation()
   return (
     <Modal
       isOpen={true}
       style={{
-        content: {
-          minHeight: '80vh',
-          width: '493px',
-          top: '23%',
-          left: '50%',
-          right: 'auto',
-          marginRight: '-50%',
-          transform: 'translate(-50%, -10%)',
-          boxShadow: '0px 4px 25px rgba(0, 0, 0, 0.08)',
-          borderRadius: '10px',
-          background: 'transparent',
-          padding: '-20px',
-          border: 'none',
-          overflow: 'visible !important',
-        },
+        content: fullPage,
         overlay: {
           background: 'rgba(0, 0, 0, 0.31)',
         },
@@ -65,21 +64,31 @@ const SubjectPdfModalComponent = () => {
           zIndex: '1',
         }}
       >
-        <Link
-          to={{
-            pathname: `/workspace/${param.id}/details/${param.spaceKey}/editsubject/${param.subjectID}/readsubjectpdf/fullpage`,
-            state: { data: location.state.src },
+        <AiOutlineFullscreen
+          style={{
+            fontSize: '25px',
+            fontWeight: '500',
+            color: '#105eee',
+            cursor: 'pointer',
           }}
-        >
-          <AiOutlineFullscreen
-            style={{
-              fontSize: '25px',
-              fontWeight: '500',
-              color: '#105eee',
-              cursor: 'pointer',
-            }}
-          />
-        </Link>
+          onClick={() =>
+            setFullPage({
+              width: '100%',
+              height: '100%',
+              left: '0',
+              right: '0',
+              marginRight: '0',
+              transform: 'translate(0,0)',
+              boxShadow: '0px 4px 25px rgba(0, 0, 0, 0.08)',
+              borderRadius: '10px',
+              background: 'transparent',
+              padding: '-20px',
+              border: 'none',
+              overflow: 'visible !important',
+            })
+          }
+        />
+
         <Link to={`/workspace/${param.id}/details/${param.spaceKey}`}>
           <AiFillCloseCircle
             style={{
@@ -110,13 +119,20 @@ const SubjectPdfModalComponent = () => {
             height: '100%',
           }}
         >
-          {location.state.src && (
-            <>
-              <Worker workerUrl='https://unpkg.com/pdfjs-dist@2.6.347/build/pdf.worker.min.js'>
-                <Viewer fileUrl={location.state.src} />
-              </Worker>
-            </>
-          )}
+          {location.state.fileType === 'pdf'
+            ? location.state.src && (
+                <>
+                  <Worker workerUrl='https://unpkg.com/pdfjs-dist@2.6.347/build/pdf.worker.min.js'>
+                    <Viewer fileUrl={location.state.src} />
+                  </Worker>
+                </>
+              )
+            : location.state.src && (
+                <FileViewer
+                  fileType={location.state.fileType}
+                  filePath={location.state.src}
+                />
+              )}
         </div>
       </div>
     </Modal>

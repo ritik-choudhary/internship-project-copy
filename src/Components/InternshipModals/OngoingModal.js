@@ -4,7 +4,7 @@ import { AiOutlineClose } from 'react-icons/ai'
 import { WorkspaceConsumer } from '../../Context'
 import { Link, useHistory } from 'react-router-dom'
 import { AiOutlinePlus } from 'react-icons/ai'
-import { FaUpload } from 'react-icons/fa'
+import DocsInput from '../Tools/DocsInput'
 
 export default function OngoingModal() {
   return (
@@ -28,8 +28,8 @@ function OngoingModalComponent(props) {
   const [description, setDescription] = useState()
   const [linkToAdd, setLinkToAdd] = useState()
   const [links, setLinks] = useState([])
-  const [pdfList, setPdfList] = useState([])
-  const [pdfPreview, setPdfPreview] = useState([])
+  const [docsList, setDocsList] = useState([])
+  const [docPreview, setDocPreview] = useState([])
 
   function isValidHttpUrl(string) {
     let url
@@ -44,22 +44,22 @@ function OngoingModalComponent(props) {
   }
 
   useEffect(() => {
-    if (pdfList) {
-      setPdfPreview([])
-      pdfList.forEach((pdf) => {
+    if (docsList) {
+      setDocPreview([])
+      docsList.forEach((doc) => {
         const reader = new FileReader()
         reader.onloadend = () => {
-          setPdfPreview((pdfPreview) => [
-            ...pdfPreview,
-            { previewId: pdf.pdfId, source: reader.result },
+          setDocPreview((docPreview) => [
+            ...docPreview,
+            { previewId: doc.docId, source: reader.result },
           ])
         }
-        reader.readAsDataURL(pdf.pdfFile)
+        reader.readAsDataURL(doc.docFile)
       })
     } else {
-      setPdfPreview([])
+      setDocPreview([])
     }
-  }, [pdfList])
+  }, [docsList])
 
   return (
     <Modal
@@ -111,6 +111,7 @@ function OngoingModalComponent(props) {
         </Link>
       </header>
       <form
+        encType='multipart/form-data'
         style={{
           width: '100%',
           display: 'flex',
@@ -133,8 +134,8 @@ function OngoingModalComponent(props) {
             startDate: startDate,
             description: description,
             links: links,
-            pdfPreview: pdfPreview,
-            pdfList: pdfList,
+            docPreview: docPreview,
+            docsList: docsList,
           })
           history.push('/internships')
         }}
@@ -345,77 +346,10 @@ function OngoingModalComponent(props) {
           </div>
         </div>
         <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <label
-            htmlFor='pdf'
-            style={{
-              color: '#959595',
-              fontSize: '12px',
-              marginBottom: '5px',
-            }}
-          >
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-              }}
-            >
-              <p>Upload Docs</p>
-              <AiOutlinePlus
-                style={{
-                  color: '#468AEF',
-                  cursor: 'pointer',
-                  fontSize: '16px',
-                }}
-              />
-            </div>
-          </label>
-          <input
-            type='file'
-            name='pdf'
-            id='pdf'
-            hidden
-            accept='.docx,.pdf'
-            onChange={(e) => {
-              setPdfList([
-                ...pdfList,
-                {
-                  pdfId: new Date().getTime().toString(),
-                  pdfFile: e.target.files[0],
-                },
-              ])
-            }}
-          />
-          <label htmlFor='pdf'>
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                borderRadius: '5px',
-                border: '1px dashed #468AEF',
-                height: '32px',
-                cursor: 'pointer',
-              }}
-            >
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '10px',
-                  color: '#468AEF',
-                  fontSize: '12px',
-                  fontWeight: '500',
-                }}
-              >
-                <FaUpload />
-                Upload Docs
-              </div>
-            </div>
-          </label>
+          <DocsInput setDocsList={setDocsList} docsList={docsList} />
 
           <div
-            className='pdf-container'
+            className='doc-container'
             style={{
               display: 'flex',
               flexDirection: 'column',
@@ -425,32 +359,32 @@ function OngoingModalComponent(props) {
               overflowX: 'hidden',
             }}
           >
-            {pdfList.map((pdf) => {
-              const linkToPdf = pdfPreview.find(
-                (item) => item.previewId === pdf.pdfId
+            {docsList.map((doc) => {
+              const linkToDoc = docPreview.find(
+                (item) => item.previewId === doc.docId
               )
 
               const type =
-                pdf.pdfFile.name.split('.')[
-                  pdf.pdfFile.name.split('.').length - 1
+                doc.docFile.name.split('.')[
+                  doc.docFile.name.split('.').length - 1
                 ]
-              console.log('type 1', type)
+
               return (
                 <>
                   <Link
                     to={{
-                      pathname: `/internships/addnewongoing/readpdf`,
+                      pathname: `/internships/addnewongoing/readdoc`,
                       state: {
-                        src: linkToPdf?.source,
+                        src: linkToDoc?.source,
                         fileType: type,
                       },
                     }}
-                    key={pdf.pdfId}
+                    key={doc.docId}
                   >
-                    <div className='pdf-file' style={{ fontSize: '12px' }}>
-                      {pdf.pdfFile.name.length > 15
-                        ? `${pdf.pdfFile.name.slice(0, 15)}...`
-                        : pdf.pdfFile.name}
+                    <div className='doc-file' style={{ fontSize: '12px' }}>
+                      {doc.docFile.name.length > 50
+                        ? `${doc.docFile.name.slice(0, 50)}...`
+                        : doc.docFile.name}
                     </div>
                   </Link>
                 </>

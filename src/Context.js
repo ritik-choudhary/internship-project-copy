@@ -144,6 +144,7 @@ class WorkspaceProvider extends Component {
     )
     element.subjects = element.subjects || []
     element.subjects = [...element.subjects, subject]
+
     this.setState(() => {
       return { workspaceElements: oldList }
     })
@@ -157,6 +158,7 @@ class WorkspaceProvider extends Component {
     const subjectToEdit = element.subjects.find(
       (item) => item.subjectID === subject.subjectID
     )
+
     const index = element.subjects.indexOf(subjectToEdit)
     element.subjects[index] = { ...subject }
 
@@ -286,7 +288,7 @@ class WorkspaceProvider extends Component {
     })
   }
 
-  deletePdfFromTasks = (id, key, clubId, resourceId, taskId, pdfId) => {
+  deleteDocFromTasks = (id, key, clubId, resourceId, taskId, docId) => {
     const oldList = [...this.state.workspaceElements]
     let element = oldList.find(
       (item) => item.id === key && item.workspaceID === id
@@ -296,10 +298,10 @@ class WorkspaceProvider extends Component {
       (item) => item.id === resourceId
     )
     let taskElement = resourceElement.tasks.find((item) => item.id === taskId)
-    const newPdfList = taskElement.pdfList.filter(
-      (item) => item.pdfId !== pdfId
+    const newDocsList = taskElement.docsList.filter(
+      (item) => item.docId !== docId
     )
-    taskElement.pdfList = newPdfList
+    taskElement.docsList = newDocsList
     this.setState(() => {
       return { workspaceElements: oldList }
     })
@@ -1349,17 +1351,17 @@ class WorkspaceProvider extends Component {
     })
   }
 
-  deletePdfFromTodo = (id, key, todoId, pdfId) => {
+  deleteDocFromTodo = (id, key, todoId, docId) => {
     const oldList = [...this.state.workspaceElements]
     let element = oldList.find(
       (item) => item.id === key && item.workspaceID === id
     )
 
     let todoElement = element.todoList.find((item) => item.id === todoId)
-    const newPdfList = todoElement.pdfList.filter(
-      (item) => item.pdfId !== pdfId
+    const newDocsList = todoElement.docsList.filter(
+      (item) => item.docId !== docId
     )
-    todoElement.pdfList = newPdfList
+    todoElement.docsList = newDocsList
     this.setState(() => {
       return { workspaceElements: oldList }
     })
@@ -1885,7 +1887,7 @@ class WorkspaceProvider extends Component {
           taskManipulation: this.taskManipulation,
           deleteTask: this.deleteTask,
           deleteLinkFromTasks: this.deleteLinkFromTasks,
-          deletePdfFromTasks: this.deletePdfFromTasks,
+          deleteDocFromTasks: this.deleteDocFromTasks,
           editTask: this.editTask,
           addNewMeeting: this.addNewMeeting,
           editMeeting: this.editMeeting,
@@ -1939,7 +1941,7 @@ class WorkspaceProvider extends Component {
           addTodo: this.addTodo,
           deleteTodo: this.deleteTodo,
           editTodo: this.editTodo,
-          deletePdfFromTodo: this.deletePdfFromTodo,
+          deleteDocFromTodo: this.deleteDocFromTodo,
           deleteLinkFromTodo: this.deleteLinkFromTodo,
           todoManipulation: this.todoManipulation,
           addBucketList: this.addBucketList,

@@ -9,7 +9,7 @@ export default function LinksAndPdfsModal() {
   return (
     <>
       <Switch>
-        <Route path='/internships/docs/:internshipID/readpdf'>
+        <Route path='/internships/docs/:internshipID/readdoc'>
           <InternshipsPdfModal />
         </Route>
       </Switch>
@@ -104,27 +104,27 @@ function LinksAndPdfsModalComponent(props) {
               overflowX: 'hidden',
             }}
           >
-            {selectedInternship?.pdfList?.map((pdf) => {
-              const linkToPdf = selectedInternship.pdfPreview.find(
-                (item) => item.previewId === pdf.pdfId
+            {selectedInternship?.docsList?.map((doc) => {
+              const linkTodoc = selectedInternship.docPreview.find(
+                (item) => item.previewId === doc.docId
               )
               const type =
-                pdf.pdfFile.name.split('.')[
-                  pdf.pdfFile.name.split('.').length - 1
+                doc.docFile.name.split('.')[
+                  doc.docFile.name.split('.').length - 1
                 ]
               return (
                 <>
                   <Link
                     to={{
-                      pathname: `/internships/docs/${param.internshipID}/readpdf`,
-                      state: { src: linkToPdf?.source, fileType: type },
+                      pathname: `/internships/docs/${param.internshipID}/readdoc`,
+                      state: { src: linkTodoc?.source, fileType: type },
                     }}
-                    key={pdf.pdfId}
+                    key={doc.docId}
                   >
-                    <div className='pdf' style={{ fontSize: '12px' }}>
-                      {pdf.pdfFile.name.length > 30
-                        ? `${pdf.pdfFile.name.slice(0, 30)}...`
-                        : pdf.pdfFile.name}
+                    <div className='doc' style={{ fontSize: '12px' }}>
+                      {doc.docFile.name.length > 30
+                        ? `${doc.docFile.name.slice(0, 30)}...`
+                        : doc.docFile.name}
                     </div>
                   </Link>
                 </>

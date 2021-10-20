@@ -12,10 +12,10 @@ export default function Tasks(props) {
   return (
     <>
       <Switch>
-        <Route path='/workspace/:id/details/:spaceKey/insideclub/:clubID/resourcedata/:resourceID/share/sharetask/readpdf'>
+        <Route path='/workspace/:id/details/:spaceKey/insideclub/:clubID/resourcedata/:resourceID/share/sharetask/readdoc'>
           <TaskPdfModal isSharing />
         </Route>
-        <Route path='/workspace/:id/details/:spaceKey/insideclub/:clubID/resourcedata/:resourceID/addtask/readpdf'>
+        <Route path='/workspace/:id/details/:spaceKey/insideclub/:clubID/resourcedata/:resourceID/addtask/readdoc'>
           <TaskPdfModal />
         </Route>
         <Route path='/workspace/:id/details/:spaceKey/insideclub/:clubID/resourcedata/:resourceID/share/sharetask/:taskID'>
@@ -58,7 +58,7 @@ function TasksComponent(props) {
             <div className='tasks-container'>
               {resource?.tasks?.map((item) => {
                 let count = 0
-                let pdfCount = 0
+                let docCount = 0
                 return (
                   <div
                     className={
@@ -124,25 +124,32 @@ function TasksComponent(props) {
                           )
                         })}
                       </div>
-                      <div className='pdf-container'>
-                        {item.pdfList.map((pdf) => {
-                          pdfCount++
-                          if (pdfCount > 3) {
+                      <div className='doc-container'>
+                        {item.docsList.map((doc) => {
+                          docCount++
+                          if (docCount > 3) {
                             return <></>
                           }
-                          const linkToPdf = item.pdfPreview.find(
-                            (item) => item.previewId === pdf.pdfId
+                          const linkTodoc = item.docPreview.find(
+                            (item) => item.previewId === doc.docId
                           )
+                          const type =
+                            doc.docFile.name.split('.')[
+                              doc.docFile.name.split('.').length - 1
+                            ]
                           return (
                             <Link
                               to={{
-                                pathname: `/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/share/sharetask/readpdf`,
-                                state: { src: linkToPdf?.source },
+                                pathname: `/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/share/sharetask/readdoc`,
+                                state: {
+                                  src: linkTodoc?.source,
+                                  fileType: type,
+                                },
                               }}
-                              key={pdf.pdfId}
+                              key={doc.docId}
                             >
-                              <div className='pdf'>
-                                <p style={{ width: '80%' }}>Pdf {pdfCount}</p>
+                              <div className='doc'>
+                                <p style={{ width: '80%' }}>Doc {docCount}</p>
                                 <AiOutlineClose style={{ color: '#f54848' }} />
                               </div>
                             </Link>
@@ -171,7 +178,7 @@ function TasksComponent(props) {
               </Link>
               {resource?.tasks?.map((item) => {
                 let count = 0
-                let pdfCount = 0
+                let docCount = 0
                 return (
                   <div
                     className={
@@ -299,32 +306,32 @@ function TasksComponent(props) {
                           </div>
                         ) : null}
                       </div>
-                      <div className='pdf-container'>
-                        {item.pdfList.map((pdf) => {
-                          pdfCount++
-                          if (pdfCount > 3) {
+                      <div className='doc-container'>
+                        {item.docsList.map((doc) => {
+                          docCount++
+                          if (docCount > 3) {
                             return <></>
                           }
-                          const linkToPdf = item.pdfPreview.find(
-                            (item) => item.previewId === pdf.pdfId
+                          const linkTodoc = item.docPreview.find(
+                            (item) => item.previewId === doc.docId
                           )
 
                           return (
                             <Link
                               to={{
-                                pathname: `/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/addtask/readpdf`,
+                                pathname: `/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/addtask/readdoc`,
                                 state: {
-                                  src: linkToPdf?.source,
+                                  src: linkTodoc?.source,
                                   fileType:
-                                    pdf.pdfFile.name.split('.')[
-                                      pdf.pdfFile.name.split('.').length - 1
+                                    doc.docFile.name.split('.')[
+                                      doc.docFile.name.split('.').length - 1
                                     ],
                                 },
                               }}
-                              key={pdf.pdfId}
+                              key={doc.docId}
                             >
-                              <div className='pdf'>
-                                <p style={{ width: '80%' }}>Pdf {pdfCount}</p>
+                              <div className='doc'>
+                                <p style={{ width: '80%' }}>Doc {docCount}</p>
                                 <AiOutlineClose
                                   style={{
                                     color: '#f54848',
@@ -332,13 +339,13 @@ function TasksComponent(props) {
                                   }}
                                   onClick={(e) => {
                                     e.preventDefault()
-                                    value.deletePdfFromTasks(
+                                    value.deleteDocFromTasks(
                                       param.id,
                                       param.spaceKey,
                                       param.clubID,
                                       param.resourceID,
                                       item.id,
-                                      pdf.pdfId
+                                      doc.docId
                                     )
                                   }}
                                 />
@@ -346,7 +353,7 @@ function TasksComponent(props) {
                             </Link>
                           )
                         })}
-                        {item.pdfList.length > 3 ? (
+                        {item.docsList.length > 3 ? (
                           <div className='see-more-btn'>
                             <Link
                               to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/edittask/${item.id}`}
@@ -472,14 +479,14 @@ const TasksPageWrapper = styled.section`
     opacity: 0.5;
   }
   .links-container,
-  .pdf-container {
+  .doc-container {
     display: flex;
     justify-content: flex-end;
     gap: 5px;
     padding-bottom: 5px;
   }
   .single-task .link,
-  .single-task .pdf {
+  .single-task .doc {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -495,7 +502,7 @@ const TasksPageWrapper = styled.section`
     white-space: nowrap;
   }
   .single-task .link:hover,
-  .single-task .pdf:hover {
+  .single-task .doc:hover {
     transform: scale(1.05);
   }
   .see-more-btn a {

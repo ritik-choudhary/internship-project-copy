@@ -46,7 +46,9 @@ const DetailPageComponent = () => {
       <Sidebar />
       <div className='page-container'>
         <div className='details-header'>
-          <h3>thesocialcomment</h3>
+          <Link to='/'>
+            <h3>thesocialcomment</h3>
+          </Link>
           <div className='right-header'>
             <FaBell className='bell-icon' />
             <Link to='/workspace'>
@@ -126,12 +128,13 @@ const DetailPageComponent = () => {
               return displayItemList.map((item) => {
                 let num = 0
                 let alt = ''
-                if (item.version > 1) {
-                  if (item?.altName) {
-                    alt = item.altName
-                  }
+
+                if (item?.altName) {
+                  alt = item.altName
+                } else {
                   num = item.version
                 }
+
                 const printable = num ? true : false
                 const isAlt = alt ? true : false
                 return (
@@ -147,11 +150,16 @@ const DetailPageComponent = () => {
                         <div className='card-details'>
                           <p className='space-title'>
                             {item.title}
-                            {printable
+                            {isAlt
+                              ? `(${item.altName})`
+                              : num > 1
+                              ? `(${num})`
+                              : null}
+                            {/* {printable
                               ? isAlt
                                 ? ` (${item.altName})`
                                 : `(${num})`
-                              : ''}
+                              : ''} */}
                           </p>
 
                           <div className='space-delete-btn'>

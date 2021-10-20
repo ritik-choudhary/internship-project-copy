@@ -9,7 +9,7 @@ export default function SingleTaskInfoModal() {
   return (
     <>
       <Switch>
-        <Route path='/taskmanager/info/:taskID/readpdf'>
+        <Route path='/taskmanager/info/:taskID/readdoc'>
           <TaskPdfModal />
         </Route>
       </Switch>
@@ -126,9 +126,9 @@ function SingleTaskInfoModalComponent(props) {
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
-          <p style={{ color: '#c4c4c4', fontSize: '12px' }}>Pdf</p>
+          <p style={{ color: '#c4c4c4', fontSize: '12px' }}>Docs</p>
           <div
-            className='pdf-container'
+            className='doc-container'
             style={{
               display: 'flex',
               flexDirection: 'column',
@@ -138,23 +138,27 @@ function SingleTaskInfoModalComponent(props) {
               overflowX: 'hidden',
             }}
           >
-            {selectedTask?.pdfList?.map((pdf) => {
-              const linkToPdf = selectedTask.pdfPreview.find(
-                (item) => item.previewId === pdf.pdfId
+            {selectedTask?.docsList?.map((doc) => {
+              const linkTodoc = selectedTask.docPreview.find(
+                (item) => item.previewId === doc.docId
               )
+              const type =
+                doc.docFile.name.split('.')[
+                  doc.docFile.name.split('.').length - 1
+                ]
               return (
                 <>
                   <Link
                     to={{
-                      pathname: `/taskmanager/info/${param.taskID}/readpdf`,
-                      state: { src: linkToPdf?.source },
+                      pathname: `/taskmanager/info/${param.taskID}/readdoc`,
+                      state: { src: linkTodoc?.source, fileType: type },
                     }}
-                    key={pdf.pdfId}
+                    key={doc.docId}
                   >
-                    <div className='pdf' style={{ fontSize: '12px' }}>
-                      {pdf.pdfFile.name.length > 30
-                        ? `${pdf.pdfFile.name.slice(0, 30)}...`
-                        : pdf.pdfFile.name}
+                    <div className='doc' style={{ fontSize: '12px' }}>
+                      {doc.docFile.name.length > 60
+                        ? `${doc.docFile.name.slice(0, 60)}...`
+                        : doc.docFile.name}
                     </div>
                   </Link>
                 </>

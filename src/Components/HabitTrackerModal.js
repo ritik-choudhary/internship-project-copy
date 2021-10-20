@@ -45,6 +45,16 @@ function HabitTrackerModalComponent(props) {
     return arr
   }
 
+  const defaultDate = new Date().toISOString().substring(0, 10)
+
+  const disablePastDate = () => {
+    const today = new Date()
+    const dd = String(today.getDate() + 1).padStart(2, '0')
+    const mm = String(today.getMonth() + 1).padStart(2, '0')
+    const yyyy = today.getFullYear()
+    return yyyy + '-' + mm + '-' + dd
+  }
+
   const [habitImage, setHabitImage] = useState()
   const [preview, setPreview] = useState(Images[randomIndex])
   const [nameOfHabit, setNameOfHabit] = useState()
@@ -426,21 +436,6 @@ function HabitTrackerModalComponent(props) {
                   ])
                   setFieldToAdd('')
                 }
-                // if (fieldToAdd) {
-                //   setTempFieldsList([
-                //     ...tempFieldsList,
-                //     {
-                //       id: new Date().getTime().toString(),
-                //       field: fieldToAdd,
-                //       color:
-                //         '#' +
-                //         (0x1000000 + Math.random() * 0xffffff)
-                //           .toString(16)
-                //           .substr(1, 6),
-                //     },
-                //   ])
-                //   setFieldToAdd('')
-                // }
               }
             }}
             style={{
@@ -510,7 +505,7 @@ function HabitTrackerModalComponent(props) {
               onChange={setEndDate}
               calendarAriaLabel='Toggle calendar'
               calendarIcon={<AiFillCalendar style={{ fontSize: '16px' }} />}
-              minDate={startDate}
+              minDate={startDate > new Date() ? startDate : new Date()}
               disabled={isAddField}
               format='dd-MM-y'
               selectsEnd

@@ -93,7 +93,9 @@ export default function Insights() {
         <Sidebar />
         <div className='page-container'>
           <div className='insights-header'>
-            <h3>thesocialcomment</h3>
+            <Link to='/'>
+              <h3>thesocialcomment</h3>
+            </Link>
             <div className='right-header'>
               <FaBell className='bell-icon' />
               <Link to='/'>
@@ -231,7 +233,6 @@ export default function Insights() {
                         labels: labels,
                         datasets: [
                           {
-                            label: 'Views',
                             data: [],
                             fill: false,
                             borderColor: '#468aef',
@@ -242,6 +243,11 @@ export default function Insights() {
                       options={{
                         responsive: true,
                         maintainAspectRatio: false,
+                        plugins: {
+                          legend: {
+                            display: false,
+                          },
+                        },
                       }}
                     />
                   </div>
@@ -259,7 +265,6 @@ export default function Insights() {
                           datasets: [
                             {
                               axis: 'Y',
-                              label: 'Post Types',
                               data: [],
                               fill: false,
                               borderColor: '#468aef',
@@ -270,6 +275,11 @@ export default function Insights() {
                         options={{
                           responsive: true,
                           maintainAspectRatio: false,
+                          plugins: {
+                            legend: {
+                              display: false,
+                            },
+                          },
                         }}
                       />
                     </div>
@@ -309,6 +319,11 @@ export default function Insights() {
                         options={{
                           responsive: true,
                           maintainAspectRatio: false,
+                          plugins: {
+                            legend: {
+                              display: false,
+                            },
+                          },
                         }}
                       />
                     </div>
@@ -512,6 +527,7 @@ const InsightsWrapper = styled.section`
   .chart-description {
     font-size: 12px;
     color: #c4c4c4;
+    padding-bottom: 20px;
   }
   .post-charts-container {
     display: flex;

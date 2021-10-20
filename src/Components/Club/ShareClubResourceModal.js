@@ -152,7 +152,10 @@ function SingleClubPageComponent(props) {
                         to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${item.id}/share`}
                       >
                         <div className='resource-card'>
-                          <p>{item.title}</p>
+                          <p>
+                            {item.title}{' '}
+                            {item.version > 1 ? `(${item.version})` : null}
+                          </p>
                         </div>
                       </Link>
                     )

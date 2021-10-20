@@ -4,7 +4,7 @@ import { Link, useHistory } from 'react-router-dom'
 import { AiOutlineClose } from 'react-icons/ai'
 import { WorkspaceConsumer } from '../../Context'
 import { AiOutlinePlus } from 'react-icons/ai'
-import { FaUpload } from 'react-icons/fa'
+import DocsInput from '../Tools/DocsInput'
 
 export default function TasksModal() {
   return (
@@ -27,8 +27,8 @@ function TaskModalComponent(props) {
   const [duedate, setDuedate] = useState(defaultDate)
   const [linkToAdd, setLinkToAdd] = useState()
   const [links, setLinks] = useState([])
-  const [pdfList, setPdfList] = useState([])
-  const [pdfPreview, setPdfPreview] = useState([])
+  const [docsList, setDocsList] = useState([])
+  const [docPreview, setDocPreview] = useState([])
   const [description, setDescription] = useState('')
 
   const disablePastDate = () => {
@@ -52,22 +52,22 @@ function TaskModalComponent(props) {
   }
 
   useEffect(() => {
-    if (pdfList) {
-      setPdfPreview([])
-      pdfList.forEach((pdf) => {
+    if (docsList) {
+      setDocPreview([])
+      docsList.forEach((doc) => {
         const reader = new FileReader()
         reader.onloadend = () => {
-          setPdfPreview((pdfPreview) => [
-            ...pdfPreview,
-            { previewId: pdf.pdfId, source: reader.result },
+          setDocPreview((docPreview) => [
+            ...docPreview,
+            { previewId: doc.docId, source: reader.result },
           ])
         }
-        reader.readAsDataURL(pdf.pdfFile)
+        reader.readAsDataURL(doc.docFile)
       })
     } else {
-      setPdfPreview([])
+      setDocPreview([])
     }
-  }, [pdfList])
+  }, [docsList])
 
   return (
     <Modal
@@ -122,6 +122,7 @@ function TaskModalComponent(props) {
       </header>
 
       <form
+        encType='multipart/form-data'
         style={{
           width: '100%',
           display: 'flex',
@@ -147,8 +148,8 @@ function TaskModalComponent(props) {
             createdBy: createdBy,
             dueDate: tempDueDate,
             links: links,
-            pdfList: pdfList,
-            pdfPreview: pdfPreview,
+            docsList: docsList,
+            docPreview: docPreview,
             description: description,
             completed: false,
           }
@@ -337,77 +338,10 @@ function TaskModalComponent(props) {
           </div>
         </div>
         <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <label
-            htmlFor='pdf'
-            style={{
-              color: '#959595',
-              fontSize: '12px',
-              marginBottom: '5px',
-            }}
-          >
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-              }}
-            >
-              <p>Upload pdf</p>
-              <AiOutlinePlus
-                style={{
-                  color: '#468AEF',
-                  cursor: 'pointer',
-                  fontSize: '16px',
-                }}
-              />
-            </div>
-          </label>
-          <input
-            type='file'
-            name='pdf'
-            id='pdf'
-            hidden
-            accept='.pdf'
-            onChange={(e) => {
-              setPdfList([
-                ...pdfList,
-                {
-                  pdfId: new Date().getTime().toString(),
-                  pdfFile: e.target.files[0],
-                },
-              ])
-            }}
-          />
-          <label htmlFor='pdf'>
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                borderRadius: '5px',
-                border: '1px dashed #468AEF',
-                height: '32px',
-                cursor: 'pointer',
-              }}
-            >
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '10px',
-                  color: '#468AEF',
-                  fontSize: '12px',
-                  fontWeight: '500',
-                }}
-              >
-                <FaUpload />
-                Upload pdf
-              </div>
-            </div>
-          </label>
+          <DocsInput setDocsList={setDocsList} docsList={docsList} />
 
           <div
-            className='pdf-container'
+            className='doc-container'
             style={{
               display: 'flex',
               flexDirection: 'column',
@@ -417,12 +351,17 @@ function TaskModalComponent(props) {
               overflowX: 'hidden',
             }}
           >
-            {pdfList.map((pdf) => {
+            {docsList.map((doc) => {
               return (
-                <div className='pdf-file' style={{ fontSize: '12px' }}>
-                  {pdf.pdfFile.name.length > 15
-                    ? `${pdf.pdfFile.name.slice(0, 15)}...`
-                    : pdf.pdfFile.name}
+                <div
+                  className='doc-file'
+                  style={{
+                    fontSize: '12px',
+                  }}
+                >
+                  {doc.docFile.name.length > 60
+                    ? `${doc.docFile.name.slice(0, 60)}...`
+                    : doc.docFile.name}
                 </div>
               )
             })}

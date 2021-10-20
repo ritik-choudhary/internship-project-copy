@@ -25,7 +25,9 @@ export default function SpaceContent() {
           <Sidebar />
           <div className='page-container'>
             <div className='space-content-header'>
-              <h3>thesocialcomment</h3>
+              <Link to='/'>
+                <h3>thesocialcomment</h3>
+              </Link>
               <div className='right-header'>
                 <FaBell className='bell-icon' />
                 <Link to={`/workspace/${param.id}/details`}>
@@ -77,10 +79,10 @@ export default function SpaceContent() {
                         >
                           {subheading} <span>&nbsp;</span>
                           <span>
-                            {value.detailSpace.version > 1
-                              ? value.detailSpace.altName
-                                ? `(${value.detailSpace.altName})`
-                                : `(${value.detailSpace.version})`
+                            {value.detailSpace.altName
+                              ? `(${value.detailSpace.altName})`
+                              : value.detailSpace.version > 1
+                              ? `(${value.detailSpace.version})`
                               : null}
                           </span>
                         </h3>

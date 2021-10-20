@@ -3,7 +3,8 @@ import Modal from 'react-modal'
 import { Link, useParams, useHistory } from 'react-router-dom'
 import { AiOutlineClose, AiOutlinePlus } from 'react-icons/ai'
 import { WorkspaceConsumer } from '../../Context'
-import { FaUpload } from 'react-icons/fa'
+
+import DocsInput from '../Tools/DocsInput'
 
 export default function SubjectModal(props) {
   return (
@@ -30,12 +31,12 @@ function SubjectModalComponent(props) {
   const [courseName, setCourseName] = useState('')
   const [courseCode, setCourseCode] = useState('')
   const [teacher, setTeacher] = useState('')
-  const [pdfList, setPdfList] = useState([])
+  const [docsList, setDocsList] = useState([])
   const [linkList, setLinkList] = useState([])
 
   const [linkToAdd, setLinkToAdd] = useState()
 
-  const [pdfPreview, setPdfPreview] = useState([])
+  const [docPreview, setDocPreview] = useState([])
 
   const [timetableList, setTimetableList] = useState([
     { Monday: false, startTime: undefined, endTime: undefined },
@@ -101,7 +102,7 @@ function SubjectModalComponent(props) {
       setCourseCode(editSelectedSubject?.code)
       setTeacher(editSelectedSubject?.teacher)
       setLinkList(editSelectedSubject?.linklist)
-      setPdfList(editSelectedSubject?.pdflist)
+      setDocsList(editSelectedSubject?.docsList)
       setTimetableList(editSelectedSubject?.timetable)
     }
   }, [
@@ -113,22 +114,23 @@ function SubjectModalComponent(props) {
   ])
 
   useEffect(() => {
-    if (pdfList) {
-      setPdfPreview([])
-      pdfList.forEach((pdf) => {
+    if (docsList) {
+      setDocPreview([])
+      docsList.forEach((doc) => {
         const reader = new FileReader()
         reader.onloadend = () => {
-          setPdfPreview((pdfPreview) => [
-            ...pdfPreview,
-            { previewId: pdf.pdfId, source: reader.result },
+          setDocPreview((docPreview) => [
+            ...docPreview,
+            { previewId: doc.docId, source: reader.result },
           ])
         }
-        reader.readAsDataURL(pdf.pdfFile)
+        reader.readAsDataURL(doc.docFile)
+        console.log('use effect')
       })
     } else {
-      setPdfPreview([])
+      setDocPreview([])
     }
-  }, [pdfList])
+  }, [docsList])
 
   return (
     <Modal
@@ -203,8 +205,8 @@ function SubjectModalComponent(props) {
               name: courseName,
               code: courseCode,
               teacher: teacher,
-              pdflist: pdfList,
-              pdfPreviews: pdfPreview,
+              docsList: docsList,
+              docPreviews: docPreview,
               linklist: linkList,
               timetable: timetableList,
             })
@@ -214,8 +216,8 @@ function SubjectModalComponent(props) {
               name: courseName,
               code: courseCode,
               teacher: teacher,
-              pdflist: pdfList,
-              pdfPreviews: pdfPreview,
+              docsList: docsList,
+              docPreviews: docPreview,
               linklist: linkList,
               timetable: timetableList,
             })
@@ -346,7 +348,8 @@ function SubjectModalComponent(props) {
               gap: '7px',
             }}
           >
-            <label
+            <DocsInput setDocsList={setDocsList} docsList={docsList} />
+            {/* <label
               htmlFor='pdf-upload'
               style={{
                 color: '#959595',
@@ -419,12 +422,12 @@ function SubjectModalComponent(props) {
                   Upload pdf
                 </div>
               </div>
-            </label>
+            </label> */}
 
             <div
-              className='pdf-container'
+              className='doc-container'
               style={{
-                display: `${pdfList.length > 0 ? 'flex' : 'none'}`,
+                display: `${docsList.length > 0 ? 'flex' : 'none'}`,
                 flexDirection: 'column',
                 maxHeight: '100px',
                 fontSize: '14px',
@@ -432,23 +435,27 @@ function SubjectModalComponent(props) {
                 overflowX: 'hidden',
               }}
             >
-              {pdfList.map((pdf) => {
-                const linkToPdf = pdfPreview.find(
-                  (item) => item.previewId === pdf.pdfId
+              {docsList.map((doc) => {
+                const linkTodoc = docPreview.find(
+                  (item) => item.previewId === doc.docId
                 )
+                const type =
+                  doc.docFile.name.split('.')[
+                    doc.docFile.name.split('.').length - 1
+                  ]
                 return (
-                  <div className='pdf-file'>
+                  <div className='doc-file'>
                     <Link
                       to={{
-                        pathname: `/workspace/${param.id}/details/${param.spaceKey}/editsubject/${param.subjectID}/readsubjectpdf`,
-                        state: { src: linkToPdf?.source },
+                        pathname: `/workspace/${param.id}/details/${param.spaceKey}/editsubject/${param.subjectID}/readsubjectdoc`,
+                        state: { src: linkTodoc?.source, fileType: type },
                       }}
-                      key={pdf.pdfId}
+                      key={doc.docId}
                       style={{ fontSize: '12px', fontWeight: '400' }}
                     >
-                      {pdf.pdfFile.name.length > 15
-                        ? `${pdf.pdfFile.name.slice(0, 15)}...`
-                        : pdf.pdfFile.name}
+                      {doc.docFile.name.length > 15
+                        ? `${doc.docFile.name.slice(0, 15)}...`
+                        : doc.docFile.name}
                     </Link>
                   </div>
                 )

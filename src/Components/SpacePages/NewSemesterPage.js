@@ -11,7 +11,7 @@ export default function NewSemesterPage() {
   return (
     <NewSemesterPageWrapper>
       <Switch>
-        <Route path='/workspace/:id/details/:spaceKey/editsubject/:subjectID/readsubjectpdf'>
+        <Route path='/workspace/:id/details/:spaceKey/editsubject/:subjectID/readsubjectdoc'>
           <SubjectPdfModal />
         </Route>
         <Route path='/workspace/:id/details/:spaceKey/editsubject/:subjectID'>

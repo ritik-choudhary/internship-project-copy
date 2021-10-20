@@ -93,7 +93,7 @@ export default function Tiles() {
                 </div>
               </div>
             </div>
-            <Link to='/insights'>
+            <Link to='/insights' className='insights-link'>
               <div className='performance-tile tile-hover'>
                 <div className='background-image'>
                   <img src={performance} alt='performance' />
@@ -224,7 +224,7 @@ export default function Tiles() {
             </Link>
           </div>
           <div className='right-bottom'>
-            <Link to='/taskmanager'>
+            <Link to='/taskmanager' className='taskmanager-link'>
               <div className='task-manager-tile tile-hover'>
                 <div className='background-image'>
                   <img src={taskManager} alt='Task Manager' />

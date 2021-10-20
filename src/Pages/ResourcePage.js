@@ -73,6 +73,7 @@ function ResourcePageComponent(props) {
               <div className='page-container'>
                 <div className='share-content-header'>
                   <h3>thesocialcomment</h3>
+
                   <div className='share-right-header'>
                     <Link
                       to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/share`}
@@ -114,7 +115,9 @@ function ResourcePageComponent(props) {
             <Sidebar />
             <div className='page-container'>
               <div className='resource-content-header'>
-                <h3>thesocialcomment</h3>
+                <Link to='/'>
+                  <h3>thesocialcomment</h3>
+                </Link>
                 <div className='right-header'>
                   <FaBell className='bell-icon' />
                   <Link

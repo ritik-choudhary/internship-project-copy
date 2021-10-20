@@ -4,7 +4,7 @@ import { useParams, Link, useHistory } from 'react-router-dom'
 import { AiOutlineClose } from 'react-icons/ai'
 import { WorkspaceConsumer } from '../../Context'
 import { AiOutlinePlus } from 'react-icons/ai'
-import { FaUpload } from 'react-icons/fa'
+import DocsInput from '../Tools/DocsInput'
 
 export default function TasksModal(props) {
   return (
@@ -35,8 +35,8 @@ function TaskModalComponent(props) {
   const [duedate, setDuedate] = useState(defaultDate)
   const [linkToAdd, setLinkToAdd] = useState()
   const [links, setLinks] = useState([])
-  const [pdfList, setPdfList] = useState([])
-  const [pdfPreview, setPdfPreview] = useState([])
+  const [docsList, setDocsList] = useState([])
+  const [docPreview, setDocPreview] = useState([])
   const [description, setDescription] = useState('')
 
   const disablePastDate = () => {
@@ -79,7 +79,7 @@ function TaskModalComponent(props) {
         setCreatedOn(selectedTask.createdOn)
         setDuedate(selectedTask.dueDate)
         setLinks(selectedTask.links)
-        setPdfList(selectedTask.pdfList)
+        setDocsList(selectedTask.docsList)
         setDescription(selectedTask.description)
       }
     } else {
@@ -95,7 +95,7 @@ function TaskModalComponent(props) {
         setCreatedOn(selectedTodo.createdOn)
         setDuedate(selectedTodo.dueDate)
         setLinks(selectedTodo.links)
-        setPdfList(selectedTodo.pdfList)
+        setDocsList(selectedTodo.docsList)
         setDescription(selectedTodo.description)
       }
     }
@@ -113,22 +113,22 @@ function TaskModalComponent(props) {
   ])
 
   useEffect(() => {
-    if (pdfList) {
-      setPdfPreview([])
-      pdfList.forEach((pdf) => {
+    if (docsList) {
+      setDocPreview([])
+      docsList.forEach((doc) => {
         const reader = new FileReader()
         reader.onloadend = () => {
-          setPdfPreview((pdfPreview) => [
-            ...pdfPreview,
-            { previewId: pdf.pdfId, source: reader.result },
+          setDocPreview((docPreview) => [
+            ...docPreview,
+            { previewId: doc.docId, source: reader.result },
           ])
         }
-        reader.readAsDataURL(pdf.pdfFile)
+        reader.readAsDataURL(doc.docFile)
       })
     } else {
-      setPdfPreview([])
+      setDocPreview([])
     }
-  }, [pdfList])
+  }, [docsList])
 
   return (
     <Modal
@@ -209,6 +209,7 @@ function TaskModalComponent(props) {
       </header>
 
       <form
+        encType='multipart/form-data'
         style={{
           width: '100%',
           display: 'flex',
@@ -253,8 +254,8 @@ function TaskModalComponent(props) {
                   createdOn: createdOn,
                   dueDate: duedate,
                   links: links,
-                  pdfList: pdfList,
-                  pdfPreview: pdfPreview,
+                  docsList: docsList,
+                  docPreview: docPreview,
                   description: description,
                   completed: false,
                 }
@@ -266,8 +267,8 @@ function TaskModalComponent(props) {
                 createdOn: createdOn,
                 dueDate: duedate,
                 links: links,
-                pdfList: pdfList,
-                pdfPreview: pdfPreview,
+                docsList: docsList,
+                docPreview: docPreview,
                 description: description,
                 completed: false,
               }
@@ -290,8 +291,8 @@ function TaskModalComponent(props) {
                 createdOn: createdOn,
                 dueDate: duedate,
                 links: links,
-                pdfList: pdfList,
-                pdfPreview: pdfPreview,
+                docsList: docsList,
+                docPreview: docPreview,
                 description: description,
                 completed: false,
               })
@@ -302,8 +303,8 @@ function TaskModalComponent(props) {
                 createdOn: createdOn,
                 dueDate: duedate,
                 links: links,
-                pdfList: pdfList,
-                pdfPreview: pdfPreview,
+                docsList: docsList,
+                docPreview: docPreview,
                 description: description,
                 completed: false,
               }
@@ -496,80 +497,10 @@ function TaskModalComponent(props) {
           </div>
         </div>
         <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <label
-            htmlFor='pdf'
-            style={{
-              color: '#959595',
-              fontSize: '12px',
-              marginBottom: '5px',
-            }}
-          >
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-              }}
-            >
-              <p>Upload docs</p>
-              <AiOutlinePlus
-                style={{
-                  color: '#468AEF',
-                  cursor: 'pointer',
-                  fontSize: '16px',
-                }}
-              />
-            </div>
-          </label>
-          <input
-            type='file'
-            name='pdf'
-            id='pdf'
-            hidden
-            accept='.docx,.pdf'
-            disabled={isSharing}
-            onChange={(e) => {
-              if (!isSharing) {
-                setPdfList([
-                  ...pdfList,
-                  {
-                    pdfId: new Date().getTime().toString(),
-                    pdfFile: e.target.files[0],
-                  },
-                ])
-              }
-            }}
-          />
-          <label htmlFor='pdf'>
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                borderRadius: '5px',
-                border: '1px dashed #468AEF',
-                height: '32px',
-                cursor: 'pointer',
-              }}
-            >
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '10px',
-                  color: '#468AEF',
-                  fontSize: '12px',
-                  fontWeight: '500',
-                }}
-              >
-                <FaUpload />
-                Upload Docs
-              </div>
-            </div>
-          </label>
+          <DocsInput setDocsList={setDocsList} docsList={docsList} />
 
           <div
-            className='pdf-container'
+            className='doc-container'
             style={{
               display: 'flex',
               flexDirection: 'column',
@@ -579,85 +510,83 @@ function TaskModalComponent(props) {
               overflowX: 'hidden',
             }}
           >
-            {pdfList.map((pdf) => {
-              const linkToPdf = pdfPreview.find(
-                (item) => item.previewId === pdf.pdfId
+            {docsList.map((doc) => {
+              const linkTodoc = docPreview.find(
+                (item) => item.previewId === doc.docId
               )
+              const type =
+                doc.docFile.name.split('.')[
+                  doc.docFile.name.split('.').length - 1
+                ]
               return (
                 <>
                   {isTodo ? (
                     <Link
                       to={{
-                        pathname: `/workspace/${param.id}/details/${param.spaceKey}/addtodo/readpdf`,
+                        pathname: `/workspace/${param.id}/details/${param.spaceKey}/addtodo/readdoc`,
                         state: {
-                          src: linkToPdf?.source,
-                          fileType:
-                            pdf.pdfFile.name.split('.')[
-                              pdf.pdfFile.name.split('.').length - 1
-                            ],
+                          src: linkTodoc?.source,
+                          fileType: type,
                         },
                       }}
-                      key={pdf.pdfId}
+                      key={doc.docId}
                       onClick={(e) => {
                         if (!isEditing) {
                           e.preventDefault()
                         }
                       }}
                     >
-                      <div className='pdf-file' style={{ fontSize: '12px' }}>
-                        {pdf.pdfFile.name.length > 15
-                          ? `${pdf.pdfFile.name.slice(0, 15)}...`
-                          : pdf.pdfFile.name}
+                      <div className='doc-file' style={{ fontSize: '12px' }}>
+                        {doc.docFile.name.length > 15
+                          ? `${doc.docFile.name.slice(0, 15)}...`
+                          : doc.docFile.name}
                       </div>
                     </Link>
                   ) : isSharing ? (
                     <Link
                       to={{
-                        pathname: `/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/sharetask/readpdf`,
+                        pathname: `/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/sharetask/readdoc`,
                         state: {
-                          src: linkToPdf?.source,
-                          fileType:
-                            pdf.pdfFile.name.split('.')[
-                              pdf.pdfFile.name.split('.').length - 1
-                            ],
+                          src: linkTodoc?.source,
+                          fileType: type,
                         },
                       }}
-                      key={pdf.pdfId}
+                      key={doc.docId}
                       onClick={(e) => {
                         if (!isEditing) {
                           e.preventDefault()
                         }
                       }}
                     >
-                      <div className='pdf-file' style={{ fontSize: '12px' }}>
-                        {pdf.pdfFile.name.length > 15
-                          ? `${pdf.pdfFile.name.slice(0, 15)}...`
-                          : pdf.pdfFile.name}
+                      <div className='doc-file' style={{ fontSize: '12px' }}>
+                        {doc.docFile.name.length > 15
+                          ? `${doc.docFile.name.slice(0, 15)}...`
+                          : doc.docFile.name}
                       </div>
                     </Link>
                   ) : (
                     <Link
                       to={{
-                        pathname: `/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/addtask/readpdf`,
+                        pathname: `/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/addtask/readdoc`,
                         state: {
-                          src: linkToPdf?.source,
+                          src: linkTodoc?.source,
                           fileType:
-                            pdf.pdfFile.name.split('.')[
-                              pdf.pdfFile.name.split('.').length - 1
+                            doc.docFile.name.split('.')[
+                              doc.docFile.name.split('.').length - 1
                             ],
                         },
                       }}
-                      key={pdf.pdfId}
+                      key={doc.docId}
                       onClick={(e) => {
                         if (!isEditing) {
                           e.preventDefault()
                         }
                       }}
                     >
-                      <div className='pdf-file' style={{ fontSize: '12px' }}>
-                        {pdf.pdfFile.name.length > 15
-                          ? `${pdf.pdfFile.name.slice(0, 15)}...`
-                          : pdf.pdfFile.name}
+                      <div className='doc-file' style={{ fontSize: '12px' }}>
+                        {doc.docFile.name.length > 15
+                          ? `${doc.docFile.name.slice(0, 15)}...`
+                          : doc.docFile.name}
                       </div>
                     </Link>
                   )}
