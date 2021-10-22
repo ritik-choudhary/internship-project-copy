@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import Modal from 'react-modal'
-import { Link, useParams, useLocation, Switch, Route } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { AiFillCloseCircle, AiOutlineFullscreen } from 'react-icons/ai'
 import { Viewer } from '@react-pdf-viewer/core'
 import { Worker } from '@react-pdf-viewer/core'
@@ -9,7 +9,6 @@ import '@react-pdf-viewer/default-layout/lib/styles/index.css'
 import FileViewer from 'react-file-viewer'
 
 export default function DocumentShelfDocModal() {
-  const param = useParams()
   const location = useLocation()
 
   const [size, setSize] = useState({
