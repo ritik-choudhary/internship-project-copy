@@ -2,15 +2,23 @@ import React from 'react'
 import { WorkspaceConsumer } from '../../Context'
 import styled from 'styled-components'
 import { AiOutlinePlus } from 'react-icons/ai'
+import { FaShareSquare } from 'react-icons/fa'
 import { Switch, Route, Link, useParams } from 'react-router-dom'
 import MeetingNotesModal from '../MeetingNotesComponents/MeetingNotesModal'
 import { RiDeleteBin6Line } from 'react-icons/ri'
 import MeetingPdfModal from '../MeetingNotesComponents/MeetingPdfModal'
+import ShareModal from '../MeetingNotesComponents/ShareModal'
 
 export default function MeetingNotes() {
   return (
     <>
       <Switch>
+        <Route path='/workspace/:id/details/:spaceKey/sharemeetingnotes/:meetingNotesID'>
+          <MeetingNotesModal isSharing />
+        </Route>
+        <Route path='/workspace/:id/details/:spaceKey/sharemeetingnotes'>
+          <ShareModal />
+        </Route>
         <Route path='/workspace/:id/details/:spaceKey/addmeetingnotes/readpdf'>
           <MeetingPdfModal />
         </Route>
@@ -41,7 +49,16 @@ function MeetingNotesComponent(props) {
   return (
     <MeetingNotesWrapper>
       <div className='meeting-notes-page'>
-        <h3>All</h3>
+        <header>
+          <h3>All</h3>
+          <Link
+            to={`/workspace/${param.id}/details/${param.spaceKey}/sharemeetingnotes`}
+          >
+            <div className='share-btn'>
+              <FaShareSquare />
+            </div>
+          </Link>
+        </header>
         <div className='storage'>
           <Link
             to={`/workspace/${param.id}/details/${param.spaceKey}/addmeetingnotes`}
@@ -94,10 +111,19 @@ const MeetingNotesWrapper = styled.section`
     padding-top: 0;
     width: 100%;
   }
-  .meeting-notes-page h3 {
+  .meeting-notes-page header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     font-size: 20px;
+  }
+  .meeting-notes-page h3 {
     font-weight: 400;
     padding-bottom: 10px;
+  }
+  .meeting-notes-page header .share-btn {
+    color: #468aef;
+    cursor: pointer;
   }
   .add-new {
     display: flex;

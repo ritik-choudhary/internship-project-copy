@@ -173,7 +173,6 @@ function SingleClubPageComponent(props) {
 const SingleClubPageWrapper = styled.section`
   .single-club-page {
     font-family: 'Open Sans', sans-serif;
-    // min-height: 100vh;
     display: flex;
   }
   .page-container {

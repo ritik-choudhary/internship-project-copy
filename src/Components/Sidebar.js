@@ -8,6 +8,7 @@ import { RiDeleteBin5Fill } from 'react-icons/ri'
 import { RiArrowGoBackFill } from 'react-icons/ri'
 import { AiOutlineClose } from 'react-icons/ai'
 import { CSSTransition } from 'react-transition-group'
+import { HiDocumentAdd } from 'react-icons/hi'
 import { Link } from 'react-router-dom'
 import Profile from '../assets/profile.jpeg'
 import './Sidebar.css'
@@ -96,6 +97,14 @@ export default function Sidebar() {
           setIsSidebarOpen={setIsSidebarOpen}
           isSidebarOpen={isSidebarOpen}
         />
+        <Link to='/documentshelf' className='sidebar-icon-link'>
+          <Option
+            Icon={HiDocumentAdd}
+            title={'Document Shelf'}
+            setIsSidebarOpen={setIsSidebarOpen}
+            isSidebarOpen={isSidebarOpen}
+          />
+        </Link>
         <Link to='/trash' className='sidebar-icon-link'>
           <Option
             Icon={RiDeleteBin5Fill}

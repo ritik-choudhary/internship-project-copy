@@ -467,6 +467,7 @@ const InsightsWrapper = styled.section`
     height: 20px;
     position: relative;
     cursor: pointer;
+    border-radius: 5px;
   }
   .login-day {
     background: #93beff;
@@ -539,6 +540,7 @@ const InsightsWrapper = styled.section`
   }
   .posts-line-chart {
     height: 200px;
+    width: 499px;
   }
   .post,
   .post-types {

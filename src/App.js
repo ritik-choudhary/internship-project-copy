@@ -21,6 +21,7 @@ import Notes from './Pages/Notes'
 import Internships from './Pages/Internships'
 import TaskManager from './Pages/TaskManager'
 import Insights from './Pages/Insights'
+import DocumentShelf from './Pages/DocumentShelf'
 
 Modal.setAppElement('#root')
 
@@ -78,6 +79,9 @@ function App() {
           </Route>
           <Route path='/insights'>
             <Insights />
+          </Route>
+          <Route path='/documentshelf'>
+            <DocumentShelf />
           </Route>
           <Route path='/taskmanager' component={TaskManager} />
           <Route exact path='/trash' component={Trash}></Route>

@@ -28,7 +28,7 @@ export default function MeetingNotesModal(props) {
 }
 
 function MeetingNotesModalComponent(props) {
-  const { value, isEditing } = props
+  const { value, isEditing, isSharing } = props
   const date = `${new Date().getDate()}/${
     new Date().getMonth() + 1
   }/${new Date().getFullYear()}`
@@ -87,7 +87,7 @@ function MeetingNotesModalComponent(props) {
   }
 
   useEffect(() => {
-    if (isEditing) {
+    if (isEditing || isSharing) {
       const selectedSpace = value.workspaceElements.find(
         (item) => item.id === param.spaceKey && item.workspaceID === param.id
       )
@@ -105,6 +105,7 @@ function MeetingNotesModalComponent(props) {
       setTextNote(selectedMeetingNotes.note)
     }
   }, [
+    isSharing,
     isEditing,
     param.id,
     param.spaceKey,
@@ -174,15 +175,29 @@ function MeetingNotesModalComponent(props) {
                 setEditorHeight('260px')
               }}
             />
-            <Link to={`/workspace/${param.id}/details/${param.spaceKey}`}>
-              <AiFillCloseCircle
-                style={{
-                  fontSize: '30px',
-                  color: '#FFC8C8',
-                  cursor: 'pointer',
-                }}
-              />
-            </Link>
+            {isSharing ? (
+              <Link
+                to={`/workspace/${param.id}/details/${param.spaceKey}/sharemeetingnotes`}
+              >
+                <AiFillCloseCircle
+                  style={{
+                    fontSize: '30px',
+                    color: '#FFC8C8',
+                    cursor: 'pointer',
+                  }}
+                />
+              </Link>
+            ) : (
+              <Link to={`/workspace/${param.id}/details/${param.spaceKey}`}>
+                <AiFillCloseCircle
+                  style={{
+                    fontSize: '30px',
+                    color: '#FFC8C8',
+                    cursor: 'pointer',
+                  }}
+                />
+              </Link>
+            )}
           </div>
         </header>
         <form
@@ -194,43 +209,55 @@ function MeetingNotesModalComponent(props) {
           onKeyDown={(e) => {
             if (e.keyCode === 27) {
               e.preventDefault()
-              history.push(`/workspace/${param.id}/details/${param.spaceKey}`)
+              if (!isSharing) {
+                history.push(`/workspace/${param.id}/details/${param.spaceKey}`)
+              } else {
+                history.push(
+                  `/workspace/${param.id}/details/${param.spaceKey}/sharemeetingnotes`
+                )
+              }
             }
           }}
           onSubmit={(e) => {
             e.preventDefault()
-            if (isEditing) {
-              const meetingNotes = {
-                title: title,
-                createdOn: createdOn,
-                createdBy: createdBy,
-                type: type,
-                participants: participants,
-                pdfList: pdfList,
-                links: links,
-                note: textNote,
+            if (!isSharing) {
+              if (isEditing) {
+                const meetingNotes = {
+                  title: title,
+                  createdOn: createdOn,
+                  createdBy: createdBy,
+                  type: type,
+                  participants: participants,
+                  pdfList: pdfList,
+                  links: links,
+                  note: textNote,
+                }
+                value.editMeetingNotes(
+                  param.id,
+                  param.spaceKey,
+                  meetingNotesToEdit.id,
+                  meetingNotes
+                )
+              } else {
+                const meetingNotes = {
+                  id: new Date().getTime().toString(),
+                  title: title,
+                  createdOn: createdOn,
+                  createdBy: createdBy,
+                  type: type,
+                  participants: participants,
+                  pdfList: pdfList,
+                  links: links,
+                  note: textNote,
+                }
+                value.addNewMeetingNotes(param.id, param.spaceKey, meetingNotes)
               }
-              value.editMeetingNotes(
-                param.id,
-                param.spaceKey,
-                meetingNotesToEdit.id,
-                meetingNotes
-              )
+              history.push(`/workspace/${param.id}/details/${param.spaceKey}`)
             } else {
-              const meetingNotes = {
-                id: new Date().getTime().toString(),
-                title: title,
-                createdOn: createdOn,
-                createdBy: createdBy,
-                type: type,
-                participants: participants,
-                pdfList: pdfList,
-                links: links,
-                note: textNote,
-              }
-              value.addNewMeetingNotes(param.id, param.spaceKey, meetingNotes)
+              history.push(
+                `/workspace/${param.id}/details/${param.spaceKey}/sharemeetingnotes`
+              )
             }
-            history.push(`/workspace/${param.id}/details/${param.spaceKey}`)
           }}
         >
           <div className='meeting-notes-name' style={{ paddingBottom: '20px' }}>
@@ -241,6 +268,7 @@ function MeetingNotesModalComponent(props) {
               name='name'
               id='name'
               maxLength='100'
+              disabled={isSharing}
               value={title}
               onChange={(e) => {
                 setTitle(e.target.value)
@@ -268,6 +296,7 @@ function MeetingNotesModalComponent(props) {
                 name='created-by'
                 id='created-by'
                 maxLength='100'
+                disabled={isSharing}
                 value={createdBy}
                 className={createdBy ? '' : 'skeleton'}
                 onChange={(e) => {
@@ -282,6 +311,7 @@ function MeetingNotesModalComponent(props) {
                 name='type'
                 id='type'
                 maxLength='100'
+                disabled={isSharing}
                 value={type}
                 className={type ? '' : 'skeleton'}
                 onChange={(e) => {
@@ -295,6 +325,7 @@ function MeetingNotesModalComponent(props) {
                 type='text'
                 name='participants'
                 id='participants'
+                disabled={isSharing}
                 value={participantToAdd}
                 className={participantToAdd ? '' : 'skeleton'}
                 onChange={(e) => setParticipantToAdd(e.target.value)}
@@ -319,11 +350,13 @@ function MeetingNotesModalComponent(props) {
                       <p>{item.name}</p>
                       <AiOutlineClose
                         onClick={(e) => {
-                          let newparticipantsList = [...participants]
-                          newparticipantsList = newparticipantsList.filter(
-                            (temp) => temp.id !== item.id
-                          )
-                          setParticipants(newparticipantsList)
+                          if (!isSharing) {
+                            let newparticipantsList = [...participants]
+                            newparticipantsList = newparticipantsList.filter(
+                              (temp) => temp.id !== item.id
+                            )
+                            setParticipants(newparticipantsList)
+                          }
                         }}
                       />
                     </div>
@@ -338,6 +371,7 @@ function MeetingNotesModalComponent(props) {
                 type='url'
                 name='link'
                 id='link'
+                disabled={isSharing}
                 value={linkToAdd}
                 className={linkToAdd ? '' : 'skeleton'}
                 onChange={(e) => setLinkToAdd(e.target.value)}
@@ -433,11 +467,13 @@ function MeetingNotesModalComponent(props) {
                     <AiOutlineClose
                       style={{ color: '#f54848', cursor: 'pointer' }}
                       onClick={() => {
-                        let tempLinks = [...links]
-                        const newLinks = tempLinks.filter(
-                          (temp) => temp.id !== item.id
-                        )
-                        setLinks(newLinks)
+                        if (!isSharing) {
+                          let tempLinks = [...links]
+                          const newLinks = tempLinks.filter(
+                            (temp) => temp.id !== item.id
+                          )
+                          setLinks(newLinks)
+                        }
                       }}
                     />
                   </div>
@@ -452,6 +488,7 @@ function MeetingNotesModalComponent(props) {
                 id='pdf'
                 hidden
                 accept='.pdf'
+                disabled={isSharing}
                 onChange={(e) => {
                   setPdfList([
                     ...pdfList,
@@ -509,57 +546,107 @@ function MeetingNotesModalComponent(props) {
                 )
                 pdfCount++
                 return (
-                  <Link
-                    to={{
-                      pathname: `/workspace/${param.id}/details/${param.spaceKey}/addmeetingnotes/readpdf`,
-                      state: { src: linkToPdf?.source },
-                    }}
-                    key={pdf.pdfId}
-                    onClick={(e) => {
-                      if (!isEditing) {
-                        e.preventDefault()
-                      }
-                    }}
-                  >
-                    <div
-                      className='pdf-file'
-                      style={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        width: '60px',
-                        height: '20px',
-                        background: '#C8E1FF',
-                        borderRadius: '5px',
-                        fontSize: '12px',
-                        gap: '5px',
-                        padding: '0 5px',
-                      }}
-                    >
-                      <p
-                        style={{
-                          color: 'black',
-                          fontSize: '12px',
-                          fontWeight: '400',
-                          width: '80%',
+                  <>
+                    {isSharing ? (
+                      <Link
+                        to={{
+                          pathname: `/workspace/${param.id}/details/${param.spaceKey}/sharemeetingnotes/readpdf`,
+                          state: { src: linkToPdf?.source },
+                        }}
+                        key={pdf.pdfId}
+                        onClick={(e) => {
+                          if (!isEditing && !isSharing) {
+                            e.preventDefault()
+                          }
                         }}
                       >
-                        Pdf {pdfCount}
-                      </p>
-                      <AiOutlineClose
-                        style={{ color: '#f54848', cursor: 'pointer' }}
-                        onClick={(e) => {
-                          e.preventDefault()
-
-                          let temppdfList = [...pdfList]
-                          const newpdfList = temppdfList.filter(
-                            (temp) => temp.pdfId !== pdf.pdfId
-                          )
-                          setPdfList(newpdfList)
+                        <div
+                          className='pdf-file'
+                          style={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            width: '60px',
+                            height: '20px',
+                            background: '#C8E1FF',
+                            borderRadius: '5px',
+                            fontSize: '12px',
+                            gap: '5px',
+                            padding: '0 5px',
+                          }}
+                        >
+                          <p
+                            style={{
+                              color: 'black',
+                              fontSize: '12px',
+                              fontWeight: '400',
+                              width: '80%',
+                            }}
+                          >
+                            Pdf {pdfCount}
+                          </p>
+                          <AiOutlineClose
+                            style={{ color: '#f54848', cursor: 'pointer' }}
+                            onClick={(e) => {
+                              e.preventDefault()
+                            }}
+                          />
+                        </div>
+                      </Link>
+                    ) : (
+                      <Link
+                        to={{
+                          pathname: `/workspace/${param.id}/details/${param.spaceKey}/addmeetingnotes/readpdf`,
+                          state: { src: linkToPdf?.source },
                         }}
-                      />
-                    </div>
-                  </Link>
+                        key={pdf.pdfId}
+                        onClick={(e) => {
+                          if (!isEditing) {
+                            e.preventDefault()
+                          }
+                        }}
+                      >
+                        <div
+                          className='pdf-file'
+                          style={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            width: '60px',
+                            height: '20px',
+                            background: '#C8E1FF',
+                            borderRadius: '5px',
+                            fontSize: '12px',
+                            gap: '5px',
+                            padding: '0 5px',
+                          }}
+                        >
+                          <p
+                            style={{
+                              color: 'black',
+                              fontSize: '12px',
+                              fontWeight: '400',
+                              width: '80%',
+                            }}
+                          >
+                            Pdf {pdfCount}
+                          </p>
+                          <AiOutlineClose
+                            style={{ color: '#f54848', cursor: 'pointer' }}
+                            onClick={(e) => {
+                              e.preventDefault()
+
+                              let temppdfList = [...pdfList]
+                              const newpdfList = temppdfList.filter(
+                                (temp) => temp.pdfId !== pdf.pdfId
+                              )
+                              setPdfList(newpdfList)
+                            }}
+                          />
+                        </div>
+                      </Link>
+                    )}
+                  </>
                 )
               })}
             </div>

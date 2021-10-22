@@ -230,7 +230,6 @@ function SingleMoodboardComponent(props) {
         ) : (
           <div className='slider'>
             {moodboard?.moodboardFields?.map((item, index) => {
-              console.log('item hehe', item)
               return (
                 <div
                   className={index === current ? 'slide-active' : 'slide'}

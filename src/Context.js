@@ -13,6 +13,7 @@ class WorkspaceProvider extends Component {
     notes: [],
     internships: [],
     taskManager: [[], [], [], []],
+    documentShelf: [],
   }
 
   addNewWorkspace = (newItem) => {
@@ -1862,6 +1863,22 @@ class WorkspaceProvider extends Component {
     })
   }
 
+  addNewDocumentShelf = (doc) => {
+    const oldDocumentShelf = [...this.state.documentShelf]
+    const newDocumentShelf = [...oldDocumentShelf, doc]
+    this.setState(() => {
+      return { documentShelf: newDocumentShelf }
+    })
+  }
+
+  deleteDocumentShelf = (docId) => {
+    const oldDocumentShelf = [...this.state.documentShelf]
+    let newDocumentShelf = oldDocumentShelf.filter((item) => item.id !== docId)
+    this.setState(() => {
+      return { documentShelf: newDocumentShelf }
+    })
+  }
+
   render() {
     return (
       <WorkspaceContext.Provider
@@ -1974,6 +1991,8 @@ class WorkspaceProvider extends Component {
           createTask: this.createTask,
           handleStatusTaskManager: this.handleStatusTaskManager,
           switchTask: this.switchTask,
+          addNewDocumentShelf: this.addNewDocumentShelf,
+          deleteDocumentShelf: this.deleteDocumentShelf
         }}
       >
         {this.props.children}
