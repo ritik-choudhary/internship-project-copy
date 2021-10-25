@@ -249,14 +249,16 @@ export default function Tiles() {
                               else return <></>
                             })}
                           </div>
-                          <div className='tile-2'>
-                            {newTaskManager.map((item) => {
-                              count2++
-                              if (count2 < 6 && count2 > 2)
-                                return <p>{item.title}</p>
-                              else return <></>
-                            })}
-                          </div>
+                          {newTaskManager.length > 3 ? (
+                            <div className='tile-2'>
+                              {newTaskManager.map((item) => {
+                                count2++
+                                if (count2 < 6 && count2 > 2)
+                                  return <p>{item.title}</p>
+                                else return <></>
+                              })}
+                            </div>
+                          ) : null}
                         </div>
                       )
                     }}

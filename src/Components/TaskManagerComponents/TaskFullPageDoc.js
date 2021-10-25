@@ -1,6 +1,6 @@
 import React from 'react'
 import Modal from 'react-modal'
-import { useLocation, Link, useParams, useHistory } from 'react-router-dom'
+import { useLocation, Link, useHistory } from 'react-router-dom'
 import { Viewer } from '@react-pdf-viewer/core'
 import { Worker } from '@react-pdf-viewer/core'
 import '@react-pdf-viewer/core/lib/styles/index.css'
@@ -9,10 +9,9 @@ import { AiFillCloseCircle } from 'react-icons/ai'
 import FileViewer from 'react-file-viewer'
 import { FiMinimize } from 'react-icons/fi'
 
-export default function IdeaFullPagePdf(props) {
-  const { isSharing } = props
+export default function MeetingFullPagePdf() {
   const location = useLocation()
-  const param = useParams()
+
   const history = useHistory()
 
   return (
@@ -50,51 +49,23 @@ export default function IdeaFullPagePdf(props) {
           gap: '20px',
         }}
       >
-        {isSharing ? (
-          <>
-            <FiMinimize
-              style={{
-                fontSize: '30px',
-                color: 'rgb(16, 94, 238)',
-                cursor: 'pointer',
-              }}
-              onClick={history.goBack}
-            />
-            <Link
-              to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/share`}
-            >
-              <AiFillCloseCircle
-                style={{
-                  color: '#FFC8C8',
-                  fontSize: '30px',
-                  cursor: 'pointer',
-                }}
-              />
-            </Link>
-          </>
-        ) : (
-          <>
-            <FiMinimize
-              style={{
-                fontSize: '30px',
-                color: 'rgb(16, 94, 238)',
-                cursor: 'pointer',
-              }}
-              onClick={history.goBack}
-            />
-            <Link
-              to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}`}
-            >
-              <AiFillCloseCircle
-                style={{
-                  color: '#FFC8C8',
-                  fontSize: '30px',
-                  cursor: 'pointer',
-                }}
-              />
-            </Link>
-          </>
-        )}
+        <FiMinimize
+          style={{
+            fontSize: '30px',
+            color: 'rgb(16, 94, 238)',
+            cursor: 'pointer',
+          }}
+          onClick={history.goBack}
+        />
+        <Link to='/taskmanager'>
+          <AiFillCloseCircle
+            style={{
+              fontSize: '30px',
+              color: '#FFC8C8',
+              cursor: 'pointer',
+            }}
+          />
+        </Link>
       </header>
       <div
         className='pdf-container'

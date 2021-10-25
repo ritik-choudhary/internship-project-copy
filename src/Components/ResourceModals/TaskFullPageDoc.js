@@ -9,8 +9,8 @@ import { AiFillCloseCircle } from 'react-icons/ai'
 import FileViewer from 'react-file-viewer'
 import { FiMinimize } from 'react-icons/fi'
 
-export default function IdeaFullPagePdf(props) {
-  const { isSharing } = props
+export default function MeetingFullPagePdf(props) {
+  const { isSharing, isTodo } = props
   const location = useLocation()
   const param = useParams()
   const history = useHistory()
@@ -50,50 +50,48 @@ export default function IdeaFullPagePdf(props) {
           gap: '20px',
         }}
       >
-        {isSharing ? (
-          <>
-            <FiMinimize
+        <FiMinimize
+          style={{
+            fontSize: '30px',
+            color: 'rgb(16, 94, 238)',
+            cursor: 'pointer',
+          }}
+          onClick={history.goBack}
+        />
+        {isTodo ? (
+          <Link to={`/workspace/${param.id}/details/${param.spaceKey}`}>
+            <AiFillCloseCircle
               style={{
                 fontSize: '30px',
-                color: 'rgb(16, 94, 238)',
+                color: '#FFC8C8',
                 cursor: 'pointer',
               }}
-              onClick={history.goBack}
             />
-            <Link
-              to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/share`}
-            >
-              <AiFillCloseCircle
-                style={{
-                  color: '#FFC8C8',
-                  fontSize: '30px',
-                  cursor: 'pointer',
-                }}
-              />
-            </Link>
-          </>
+          </Link>
+        ) : isSharing ? (
+          <Link
+            to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/share`}
+          >
+            <AiFillCloseCircle
+              style={{
+                fontSize: '30px',
+                color: '#FFC8C8',
+                cursor: 'pointer',
+              }}
+            />
+          </Link>
         ) : (
-          <>
-            <FiMinimize
+          <Link
+            to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}`}
+          >
+            <AiFillCloseCircle
               style={{
                 fontSize: '30px',
-                color: 'rgb(16, 94, 238)',
+                color: '#FFC8C8',
                 cursor: 'pointer',
               }}
-              onClick={history.goBack}
             />
-            <Link
-              to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}`}
-            >
-              <AiFillCloseCircle
-                style={{
-                  color: '#FFC8C8',
-                  fontSize: '30px',
-                  cursor: 'pointer',
-                }}
-              />
-            </Link>
-          </>
+          </Link>
         )}
       </header>
       <div

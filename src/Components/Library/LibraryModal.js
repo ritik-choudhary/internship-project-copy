@@ -101,7 +101,7 @@ export default function LibraryModal(props) {
                   if (bookLink) {
                     value.addBook(
                       {
-                        title: name,
+                        title: name || bookLink,
                         favourite: true,
                         link: bookLink,
                         id: new Date().getTime().toString(),
@@ -114,7 +114,7 @@ export default function LibraryModal(props) {
                     value.addBook(
                       {
                         favourite: true,
-                        title: name,
+                        title: name || pdf.name,
                         pdf: pdf,
                         preview: pdfPreview,
                         id: new Date().getTime().toString(),
@@ -132,7 +132,7 @@ export default function LibraryModal(props) {
                       {
                         favourite: false,
                         link: bookLink,
-                        title: name,
+                        title: name || bookLink,
                         id: new Date().getTime().toString(),
                       },
                       param.id,
@@ -144,7 +144,7 @@ export default function LibraryModal(props) {
                       {
                         favourite: false,
                         pdf: pdf,
-                        title: name,
+                        title: name || pdf.name,
                         preview: pdfPreview,
                         id: new Date().getTime().toString(),
                       },

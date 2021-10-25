@@ -7,16 +7,27 @@ import { Worker } from '@react-pdf-viewer/core'
 import '@react-pdf-viewer/core/lib/styles/index.css'
 import '@react-pdf-viewer/default-layout/lib/styles/index.css'
 import FileViewer from 'react-file-viewer'
+import TaskFullPageDoc from './TaskFullPageDoc'
 
 export default function TaskPdfModal(props) {
   return (
     <>
       <Switch>
+        <Route path='/workspace/:id/details/:spaceKey/addtodo/readdoc/fullpage'>
+          <TaskFullPageDoc isTodo />
+        </Route>
         <Route path='/workspace/:id/details/:spaceKey/addtodo/readdoc'>
           <TaskPdfModalComponent {...props} />
         </Route>
+        <Route path='/workspace/:id/details/:spaceKey/insideclub/:clubID/resourcedata/:resourceID/share/sharetask/readdoc/fullpage'>
+          <TaskFullPageDoc isSharing />
+        </Route>
+
         <Route path='/workspace/:id/details/:spaceKey/insideclub/:clubID/resourcedata/:resourceID/share/sharetask/readdoc'>
           <TaskPdfModalComponent {...props} />
+        </Route>
+        <Route path='/workspace/:id/details/:spaceKey/insideclub/:clubID/resourcedata/:resourceID/addtask/readdoc/fullpage'>
+          <TaskFullPageDoc />
         </Route>
         <Route path='/workspace/:id/details/:spaceKey/insideclub/:clubID/resourcedata/:resourceID/addtask/readdoc'>
           <TaskPdfModalComponent {...props} />
@@ -31,27 +42,25 @@ const TaskPdfModalComponent = (props) => {
   const param = useParams()
   const location = useLocation()
 
-  const [size, setSize] = useState({
-    minHeight: '80vh',
-    width: '493px',
-    top: '23%',
-    left: '50%',
-    right: 'auto',
-    marginRight: '-50%',
-    transform: 'translate(-50%, -10%)',
-    boxShadow: '0px 4px 25px rgba(0, 0, 0, 0.08)',
-    borderRadius: '10px',
-    background: 'transparent',
-    padding: '-20px',
-    border: 'none',
-    overflow: 'visible !important',
-  })
-
   return (
     <Modal
       isOpen={true}
       style={{
-        content: size,
+        content: {
+          minHeight: '80vh',
+          width: '493px',
+          top: '23%',
+          left: '50%',
+          right: 'auto',
+          marginRight: '-50%',
+          transform: 'translate(-50%, -10%)',
+          boxShadow: '0px 4px 25px rgba(0, 0, 0, 0.08)',
+          borderRadius: '10px',
+          background: 'transparent',
+          padding: '-20px',
+          border: 'none',
+          overflow: 'visible !important',
+        },
         overlay: {
           background: 'rgba(0, 0, 0, 0.31)',
         },
@@ -72,30 +81,64 @@ const TaskPdfModalComponent = (props) => {
           zIndex: '1',
         }}
       >
-        <AiOutlineFullscreen
-          style={{
-            fontSize: '25px',
-            fontWeight: '500',
-            color: '#105eee',
-            cursor: 'pointer',
-          }}
-          onClick={() =>
-            setSize({
-              width: '100%',
-              height: '100%',
-              left: '0',
-              right: '0',
-              marginRight: '0',
-              transform: 'translate(0,0)',
-              boxShadow: '0px 4px 25px rgba(0, 0, 0, 0.08)',
-              borderRadius: '10px',
-              background: 'transparent',
-              padding: '-20px',
-              border: 'none',
-              overflow: 'visible !important',
-            })
-          }
-        />
+        {isTodo ? (
+          <Link
+            to={{
+              pathname: `/workspace/${param.id}/details/${param.spaceKey}/addtodo/readdoc/fullpage`,
+              state: {
+                src: location.state.src,
+                fileType: location.state.fileType,
+              },
+            }}
+          >
+            <AiOutlineFullscreen
+              style={{
+                fontSize: '25px',
+                fontWeight: '500',
+                color: '#105eee',
+                cursor: 'pointer',
+              }}
+            />
+          </Link>
+        ) : isSharing ? (
+          <Link
+            to={{
+              pathname: `/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/share/sharetask/readdoc/fullpage`,
+              state: {
+                src: location.state.src,
+                fileType: location.state.fileType,
+              },
+            }}
+          >
+            <AiOutlineFullscreen
+              style={{
+                fontSize: '25px',
+                fontWeight: '500',
+                color: '#105eee',
+                cursor: 'pointer',
+              }}
+            />
+          </Link>
+        ) : (
+          <Link
+            to={{
+              pathname: `/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/addtask/readdoc/fullpage`,
+              state: {
+                src: location.state.src,
+                fileType: location.state.fileType,
+              },
+            }}
+          >
+            <AiOutlineFullscreen
+              style={{
+                fontSize: '25px',
+                fontWeight: '500',
+                color: '#105eee',
+                cursor: 'pointer',
+              }}
+            />
+          </Link>
+        )}
 
         {isTodo ? (
           <Link to={`/workspace/${param.id}/details/${param.spaceKey}`}>

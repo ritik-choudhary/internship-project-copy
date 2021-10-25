@@ -2,23 +2,29 @@ import React, { useState, useEffect } from 'react'
 import Modal from 'react-modal'
 import { AiOutlineClose } from 'react-icons/ai'
 import { WorkspaceConsumer } from '../../Context'
-import { Link, useHistory } from 'react-router-dom'
+import { Link, useHistory, useParams } from 'react-router-dom'
 import { AiOutlinePlus } from 'react-icons/ai'
 import DocsInput from '../Tools/DocsInput'
 
-export default function OngoingModal() {
+export default function OngoingModal(props) {
   return (
     <WorkspaceConsumer>
       {(value) => {
-        return <OngoingModalComponent value={value}></OngoingModalComponent>
+        return (
+          <OngoingModalComponent
+            value={value}
+            {...props}
+          ></OngoingModalComponent>
+        )
       }}
     </WorkspaceConsumer>
   )
 }
 
 function OngoingModalComponent(props) {
-  const { value } = props
+  const { value, isEditing } = props
   const history = useHistory()
+  const param = useParams()
 
   const defaultDate = new Date().toISOString().substring(0, 10)
 
@@ -42,6 +48,20 @@ function OngoingModalComponent(props) {
 
     return url.protocol === 'http:' || url.protocol === 'https:'
   }
+
+  useEffect(() => {
+    if (isEditing) {
+      const selectedInternship = value.internships.find(
+        (item) => item.id === param.internshipID
+      )
+      setTitle(selectedInternship?.title)
+      setCompany(selectedInternship?.company)
+      setStartDate(selectedInternship?.startDate)
+      setDescription(selectedInternship?.description)
+      setLinks(selectedInternship?.links || [])
+      setDocsList(selectedInternship?.docsList || [])
+    }
+  }, [isEditing])
 
   useEffect(() => {
     if (docsList) {
@@ -127,16 +147,32 @@ function OngoingModalComponent(props) {
         }}
         onSubmit={(e) => {
           e.preventDefault()
-          value.addNewOngoingInternship({
-            id: new Date().getTime().toString(),
-            title: title,
-            company: company,
-            startDate: startDate,
-            description: description,
-            links: links,
-            docPreview: docPreview,
-            docsList: docsList,
-          })
+          if (!isEditing) {
+            value.addNewOngoingInternship({
+              id: new Date().getTime().toString(),
+              title: title,
+              company: company,
+              startDate: startDate,
+              description: description,
+              links: links,
+              docPreview: docPreview,
+              docsList: docsList,
+            })
+          } else {
+            const selectedInternship = value.internships.find(
+              (item) => item.id === param.internshipID
+            )
+            value.editOngoingInternship({
+              id: selectedInternship.id,
+              title: title,
+              company: company,
+              startDate: startDate,
+              description: description,
+              links: links,
+              docPreview: docPreview,
+              docsList: docsList,
+            })
+          }
           history.push('/internships')
         }}
       >
@@ -359,7 +395,7 @@ function OngoingModalComponent(props) {
               overflowX: 'hidden',
             }}
           >
-            {docsList.map((doc) => {
+            {docsList?.map((doc) => {
               const linkToDoc = docPreview.find(
                 (item) => item.previewId === doc.docId
               )

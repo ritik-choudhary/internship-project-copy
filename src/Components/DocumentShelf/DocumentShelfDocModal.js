@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React from 'react'
 import Modal from 'react-modal'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useParams } from 'react-router-dom'
 import { AiFillCloseCircle, AiOutlineFullscreen } from 'react-icons/ai'
 import { Viewer } from '@react-pdf-viewer/core'
 import { Worker } from '@react-pdf-viewer/core'
@@ -10,28 +10,27 @@ import FileViewer from 'react-file-viewer'
 
 export default function DocumentShelfDocModal() {
   const location = useLocation()
-
-  const [size, setSize] = useState({
-    minHeight: '80vh',
-    width: '493px',
-    top: '23%',
-    left: '50%',
-    right: 'auto',
-    marginRight: '-50%',
-    transform: 'translate(-50%, -10%)',
-    boxShadow: '0px 4px 25px rgba(0, 0, 0, 0.08)',
-    borderRadius: '10px',
-    background: 'transparent',
-    padding: '-20px',
-    border: 'none',
-    overflow: 'visible !important',
-  })
+  const param = useParams()
 
   return (
     <Modal
       isOpen={true}
       style={{
-        content: size,
+        content: {
+          minHeight: '80vh',
+          width: '493px',
+          top: '23%',
+          left: '50%',
+          right: 'auto',
+          marginRight: '-50%',
+          transform: 'translate(-50%, -10%)',
+          boxShadow: '0px 4px 25px rgba(0, 0, 0, 0.08)',
+          borderRadius: '10px',
+          background: 'transparent',
+          padding: '-20px',
+          border: 'none',
+          overflow: 'visible !important',
+        },
         overlay: {
           background: 'rgba(0, 0, 0, 0.31)',
         },
@@ -52,30 +51,24 @@ export default function DocumentShelfDocModal() {
           zIndex: '1',
         }}
       >
-        <AiOutlineFullscreen
-          style={{
-            fontSize: '25px',
-            fontWeight: '500',
-            color: '#105eee',
-            cursor: 'pointer',
+        <Link
+          to={{
+            pathname: `/documentshelf/${param.documentID}/readdoc/fullpage`,
+            state: {
+              src: location.state.src,
+              fileType: location.state.fileType,
+            },
           }}
-          onClick={() =>
-            setSize({
-              width: '100%',
-              height: '100%',
-              left: '0',
-              right: '0',
-              marginRight: '0',
-              transform: 'translate(0,0)',
-              boxShadow: '0px 4px 25px rgba(0, 0, 0, 0.08)',
-              borderRadius: '10px',
-              background: 'transparent',
-              padding: '-20px',
-              border: 'none',
-              overflow: 'visible !important',
-            })
-          }
-        />
+        >
+          <AiOutlineFullscreen
+            style={{
+              fontSize: '25px',
+              fontWeight: '500',
+              color: '#105eee',
+              cursor: 'pointer',
+            }}
+          />
+        </Link>
 
         <Link to='/documentshelf'>
           <AiFillCloseCircle

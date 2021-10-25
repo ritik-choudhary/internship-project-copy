@@ -1,15 +1,17 @@
 import React from 'react'
 import Modal from 'react-modal'
-import { useLocation, Link, useParams } from 'react-router-dom'
+import { useLocation, Link, useParams, useHistory } from 'react-router-dom'
 import { Viewer } from '@react-pdf-viewer/core'
 import { Worker } from '@react-pdf-viewer/core'
 import '@react-pdf-viewer/core/lib/styles/index.css'
 import '@react-pdf-viewer/default-layout/lib/styles/index.css'
 import { AiFillCloseCircle } from 'react-icons/ai'
+import { FiMinimize } from 'react-icons/fi'
 
 export default function FullPagePdf() {
   const location = useLocation()
   const param = useParams()
+  const history = useHistory()
   return (
     <Modal
       isOpen={true}
@@ -42,8 +44,17 @@ export default function FullPagePdf() {
           top: '0px',
           right: '0px',
           zIndex: '1',
+          gap: '20px',
         }}
       >
+        <FiMinimize
+          style={{
+            fontSize: '30px',
+            color: 'rgb(16, 94, 238)',
+            cursor: 'pointer',
+          }}
+          onClick={history.goBack}
+        />
         <Link to={`/workspace/${param.id}/details/${param.spaceKey}`}>
           <AiFillCloseCircle
             style={{ color: '#FFC8C8', fontSize: '30px', cursor: 'pointer' }}

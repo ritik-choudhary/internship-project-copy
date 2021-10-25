@@ -85,7 +85,7 @@ function DocumentShelfModalComponent(props) {
             : certificate
             ? 'Add new certificate'
             : important
-            ? 'Add new important'
+            ? 'Add new important document'
             : otherDocument
             ? 'Add new document'
             : null}
@@ -115,14 +115,21 @@ function DocumentShelfModalComponent(props) {
         }}
         onSubmit={(e) => {
           e.preventDefault()
-          value.addNewDocumentShelf({
-            id: new Date().getTime().toString(),
-            title: title,
-            doc: doc,
-            preview: docPreview,
-            category: category,
-          })
-          history.push('/documentshelf')
+          if (!doc) {
+            alert('Please select a document')
+          }
+          if (doc) {
+            const altTitle = doc.name
+            console.log(altTitle)
+            value.addNewDocumentShelf({
+              id: new Date().getTime().toString(),
+              title: title || altTitle,
+              doc: doc,
+              preview: docPreview,
+              category: category,
+            })
+            history.push('/documentshelf')
+          }
         }}
       >
         <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -138,7 +145,6 @@ function DocumentShelfModalComponent(props) {
           </label>
           <input
             autoFocus
-            required
             type='text'
             name='title'
             id='title'
@@ -166,7 +172,6 @@ function DocumentShelfModalComponent(props) {
             Select Document
           </label>
           <input
-            required
             type='file'
             name='documentshelf'
             id='doc'

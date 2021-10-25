@@ -8,11 +8,16 @@ import { Link, Route, Switch } from 'react-router-dom'
 import { WorkspaceConsumer } from '../Context'
 import DocumentShelfModal from '../Components/DocumentShelf/DocumentShelfModal'
 import DocumentShelfDocModal from '../Components/DocumentShelf/DocumentShelfDocModal'
+import DocumentShelfFullPage from '../Components/DocumentShelf/DocumentShelfFullPage'
 
 export default function DocumentShelf() {
   return (
     <>
       <Switch>
+        <Route path='/documentshelf/:documentID/readdoc/fullpage'>
+          <DocumentShelfFullPage />
+        </Route>
+
         <Route path='/documentshelf/:documentID/readdoc'>
           <DocumentShelfDocModal />
         </Route>
@@ -424,6 +429,11 @@ const DocumentShelfWrapper = styled.section`
   .other-documents .title {
     color: black;
     font-weight: 400;
+    width: 74px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: 10px;
   }
   .storage {
     display: grid;

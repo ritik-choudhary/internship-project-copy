@@ -122,6 +122,8 @@ function TrashPageComponent(props) {
               ? 'images-storage'
               : isNotes
               ? 'docs-storage'
+              : isRecents
+              ? 'recents-storage'
               : ''
           }`}
         >
@@ -261,6 +263,51 @@ function TrashPageComponent(props) {
                   )
                 }
                 return <></>
+              })
+            : isRecents
+            ? value.trash.map((item) => {
+                return (
+                  <div className='recents-card'>
+                    <div className='left'>
+                      {item.image ? (
+                        <div className='recents-card-image-container'>
+                          <img src={item.image}></img>
+                        </div>
+                      ) : null}
+                      {item.title ? (
+                        <p className='title'>{item.title}</p>
+                      ) : (
+                        <>
+                          <div className='recents-card-image-container'>
+                            <img src={item.source}></img>
+                          </div>
+                          <p className='title'>Image</p>
+                        </>
+                      )}
+                    </div>
+                    <div className='right'>
+                      <div className='recents-card-options'>
+                        <div className='restore-btn'>
+                          <VscDebugRestart
+                            onClick={() => value.restoreRecents(item.id)}
+                          />
+                        </div>
+                        <div className='delete-btn'>
+                          <RiDeleteBin6Line
+                            onClick={() => {
+                              value.deleteRecentsPermanently(item.id)
+                            }}
+                          />
+                        </div>
+                      </div>
+                      {item.createdOn ? (
+                        <p className='created-on'>
+                          Created on: {item.createdOn}
+                        </p>
+                      ) : null}
+                    </div>
+                  </div>
+                )
               })
             : null}
         </div>
@@ -556,5 +603,70 @@ const TrashWrapper = styled.section`
   }
   .docs-card .bottom .restore-btn:hover {
     color: #1ca806;
+  }
+  .recents-storage {
+    display: flex;
+    padding: 10px 150px;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .recents-card {
+    height: 75px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f2f4f8;
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px 40px 20px 15px;
+    border-radius: 10px;
+  }
+  .recents-card .left {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+  }
+  .recents-card-image-container {
+    height: 55px;
+    width: 100px;
+    background: #c4c4c4;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .recents-card-image-container img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+  }
+  .recents-card .title {
+    font-size: 16px;
+    font-weight: 400;
+  }
+  .recents-card .right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    font-size: 18px;
+    color: #c4c4c4;
+  }
+  .recents-card .recents-card-options {
+    display: flex;
+    gap: 10px;
+  }
+  .recents-card .created-on {
+    font-size: 12px;
+    color: #468aef;
+  }
+  .recents-card-options .restore-btn:hover {
+    color: #3e77f1;
+  }
+  .recents-card-options .delete-btn:hover {
+    color: #f54848;
+  }
+  .recents-card-options a {
+    color: #c4c4c4;
+  }
+  .recents-card-options svg {
+    cursor: pointer;
   }
 `

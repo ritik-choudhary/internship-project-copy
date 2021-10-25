@@ -67,7 +67,7 @@ export default function DocsInput(props) {
             }}
           >
             <FaUpload />
-            {docsList.length > 1 ? 'Add docs' : 'Upload Doc'}
+            {docsList?.length > 1 ? 'Add docs' : 'Upload Doc'}
           </div>
         </div>
       </label>

@@ -308,11 +308,11 @@ a {
 }
 
 .tile-1 {
-  animation: tile-1 10s linear infinite alternate-reverse;
+  animation: tile-1 10s linear infinite alternate;
 }
 
 .tile-2 {
-  animation: tile-2 10s linear infinite alternate-reverse;
+  animation: tile-2 10s linear infinite alternate;
 }
 
 .todo-list-tile {

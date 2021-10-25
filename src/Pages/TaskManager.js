@@ -500,7 +500,6 @@ const TaskManagerWrapper = styled.section`
     border-radius: 6px;
     padding: 5px;
     min-height: 70vh;
-    // padding-bottom: 150px;
   }
   .empty-div {
     display: flex;

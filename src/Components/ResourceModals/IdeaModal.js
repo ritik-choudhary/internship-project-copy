@@ -10,6 +10,7 @@ import {
 } from 'react-icons/ai'
 import { WorkspaceConsumer } from '../../Context'
 import TextEditor from '../TextEditor'
+import { FiMinimize } from 'react-icons/fi'
 
 export default function IdeaModal(props) {
   return (
@@ -31,7 +32,7 @@ function IdeaModalComponent(props) {
   }/${new Date().getFullYear()}`
 
   let count = 0
-  let pdfCount = 0
+  let docCount = 0
 
   const param = useParams()
   const history = useHistory()
@@ -52,14 +53,16 @@ function IdeaModalComponent(props) {
 
   const [editorHeight, setEditorHeight] = useState('150px')
 
+  const [isFullScreen, setIsFullScreen] = useState(false)
+
   const [title, setTitle] = useState()
   const [createdOn, setCreatedOn] = useState(date)
   const [createdBy, setCreatedBy] = useState()
   const [type, setType] = useState()
   const [linkToAdd, setLinkToAdd] = useState()
   const [links, setLinks] = useState([])
-  const [pdfList, setPdfList] = useState([])
-  const [pdfPreview, setPdfPreview] = useState([])
+  const [docsList, setDocsList] = useState([])
+  const [docsPreview, setDocsPreview] = useState([])
 
   const [ideaToEdit, setIdeaToEdit] = useState()
 
@@ -102,7 +105,7 @@ function IdeaModalComponent(props) {
       setCreatedBy(selectedIdea.createdBy)
       setType(selectedIdea.type)
       setLinks(selectedIdea.links)
-      setPdfList(selectedIdea.pdfList)
+      setDocsList(selectedIdea.docsList)
       setTextNote(selectedIdea.note)
     }
   }, [
@@ -117,22 +120,22 @@ function IdeaModalComponent(props) {
   ])
 
   useEffect(() => {
-    if (pdfList) {
-      setPdfPreview([])
-      pdfList.forEach((pdf) => {
+    if (docsList) {
+      setDocsPreview([])
+      docsList.forEach((doc) => {
         const reader = new FileReader()
         reader.onloadend = () => {
-          setPdfPreview((pdfPreview) => [
-            ...pdfPreview,
-            { previewId: pdf.pdfId, source: reader.result },
+          setDocsPreview((docsPreview) => [
+            ...docsPreview,
+            { previewId: doc.docId, source: reader.result },
           ])
         }
-        reader.readAsDataURL(pdf.pdfFile)
+        reader.readAsDataURL(doc.docFile)
       })
     } else {
-      setPdfPreview([])
+      setDocsPreview([])
     }
-  }, [pdfList])
+  }, [docsList])
 
   return (
     <Modal
@@ -153,31 +156,61 @@ function IdeaModalComponent(props) {
       >
         {isSharing ? (
           <div style={{ display: 'flex', gap: '10px' }}>
-            <AiOutlineFullscreen
-              style={{
-                fontSize: '25px',
-                fontWeight: '500',
-                color: '#105eee',
-                cursor: 'pointer',
-              }}
-              onClick={() => {
-                setModalSpecs({
-                  width: '100%',
-                  height: '100%',
-                  top: '0',
-                  left: '0',
-                  right: 'auto',
-                  bottom: 'auto',
-                  marginRight: '0',
-                  transform: 'translate(0,0)',
-                  boxShadow: '0px 4px 25px rgba(0, 0, 0, 0.08)',
-                  borderRadius: '0px',
-                  background: 'white',
-                  padding: '-20px',
-                })
-                setEditorHeight('280px')
-              }}
-            />
+            {isFullScreen ? (
+              <FiMinimize
+                style={{
+                  fontSize: '25px',
+                  fontWeight: '500',
+                  color: '#105eee',
+                  cursor: 'pointer',
+                }}
+                onClick={() => {
+                  setModalSpecs({
+                    width: '1199px',
+                    top: '25%',
+                    left: '50%',
+                    right: 'auto',
+                    bottom: 'auto',
+                    marginRight: '-50%',
+                    transform: 'translate(-50%, -25%)',
+                    boxShadow: '0px 4px 25px rgba(0, 0, 0, 0.08)',
+                    borderRadius: '10px',
+                    background: 'white',
+                    padding: '-20px',
+                  })
+                  setEditorHeight('150px')
+                  setIsFullScreen(false)
+                }}
+              />
+            ) : (
+              <AiOutlineFullscreen
+                style={{
+                  fontSize: '25px',
+                  fontWeight: '500',
+                  color: '#105eee',
+                  cursor: 'pointer',
+                }}
+                onClick={() => {
+                  setModalSpecs({
+                    width: '100%',
+                    height: '100%',
+                    top: '0',
+                    left: '0',
+                    right: 'auto',
+                    bottom: 'auto',
+                    marginRight: '0',
+                    transform: 'translate(0,0)',
+                    boxShadow: '0px 4px 25px rgba(0, 0, 0, 0.08)',
+                    borderRadius: '0px',
+                    background: 'white',
+                    padding: '-20px',
+                  })
+                  setEditorHeight('280px')
+                  setIsFullScreen(true)
+                }}
+              />
+            )}
+
             <Link
               to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/share`}
             >
@@ -192,31 +225,60 @@ function IdeaModalComponent(props) {
           </div>
         ) : (
           <div style={{ display: 'flex', gap: '10px' }}>
-            <AiOutlineFullscreen
-              style={{
-                fontSize: '25px',
-                fontWeight: '500',
-                color: '#105eee',
-                cursor: 'pointer',
-              }}
-              onClick={() => {
-                setModalSpecs({
-                  width: '100%',
-                  height: '100%',
-                  top: '0',
-                  left: '0',
-                  right: 'auto',
-                  bottom: 'auto',
-                  marginRight: '0',
-                  transform: 'translate(0,0)',
-                  boxShadow: '0px 4px 25px rgba(0, 0, 0, 0.08)',
-                  borderRadius: '0px',
-                  background: 'white',
-                  padding: '-20px',
-                })
-                setEditorHeight('280px')
-              }}
-            />
+            {isFullScreen ? (
+              <FiMinimize
+                style={{
+                  fontSize: '25px',
+                  fontWeight: '500',
+                  color: '#105eee',
+                  cursor: 'pointer',
+                }}
+                onClick={() => {
+                  setModalSpecs({
+                    width: '1199px',
+                    top: '25%',
+                    left: '50%',
+                    right: 'auto',
+                    bottom: 'auto',
+                    marginRight: '-50%',
+                    transform: 'translate(-50%, -25%)',
+                    boxShadow: '0px 4px 25px rgba(0, 0, 0, 0.08)',
+                    borderRadius: '10px',
+                    background: 'white',
+                    padding: '-20px',
+                  })
+                  setEditorHeight('150px')
+                  setIsFullScreen(false)
+                }}
+              />
+            ) : (
+              <AiOutlineFullscreen
+                style={{
+                  fontSize: '25px',
+                  fontWeight: '500',
+                  color: '#105eee',
+                  cursor: 'pointer',
+                }}
+                onClick={() => {
+                  setModalSpecs({
+                    width: '100%',
+                    height: '100%',
+                    top: '0',
+                    left: '0',
+                    right: 'auto',
+                    bottom: 'auto',
+                    marginRight: '0',
+                    transform: 'translate(0,0)',
+                    boxShadow: '0px 4px 25px rgba(0, 0, 0, 0.08)',
+                    borderRadius: '0px',
+                    background: 'white',
+                    padding: '-20px',
+                  })
+                  setEditorHeight('280px')
+                  setIsFullScreen(true)
+                }}
+              />
+            )}
             <Link
               to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}`}
             >
@@ -232,6 +294,7 @@ function IdeaModalComponent(props) {
         )}
       </header>
       <form
+        encType='multipart/form-data'
         style={{
           display: 'flex',
           flexDirection: 'column',
@@ -260,7 +323,7 @@ function IdeaModalComponent(props) {
                 createdBy: createdBy,
                 type: type,
                 links: links,
-                pdfList: pdfList,
+                docsList: docsList,
                 note: textNote,
               }
               value.editIdea(
@@ -280,7 +343,7 @@ function IdeaModalComponent(props) {
                 createdBy: createdBy,
                 type: type,
                 links: links,
-                pdfList: pdfList,
+                docsList: docsList,
                 note: textNote,
               }
               value.addNewIdea(
@@ -480,27 +543,30 @@ function IdeaModalComponent(props) {
             })}
           </div>
           <div className='single-option'>
-            <label htmlFor='pdf'>Pdf</label>
+            <label htmlFor='doc'>Doc</label>
             <input
               type='file'
-              name='pdf'
-              id='pdf'
+              name='doc'
+              id='doc'
               hidden
+              multiple
               disabled={isSharing}
-              accept='.pdf'
+              accept='.docx,.pdf'
               onChange={(e) => {
-                if (!isSharing) {
-                  setPdfList([
-                    ...pdfList,
+                let tempDocs = docsList
+                for (let i = 0; i < e.target.files.length; i++) {
+                  tempDocs = [
+                    ...tempDocs,
                     {
-                      pdfId: new Date().getTime().toString(),
-                      pdfFile: e.target.files[0],
+                      docId: new Date().getTime().toString() + i,
+                      docFile: e.target.files[i],
                     },
-                  ])
+                  ]
                 }
+                setDocsList(tempDocs)
               }}
             />
-            <label htmlFor='pdf'>
+            <label htmlFor='doc'>
               <div
                 style={{
                   display: 'flex',
@@ -523,37 +589,40 @@ function IdeaModalComponent(props) {
                   }}
                 >
                   <FaUpload />
-                  Upload pdf
+                  Upload Doc
                 </div>
               </div>
             </label>
           </div>
           <div
-            className='pdf-container'
+            className='doc-container'
             style={{
-              display: `${pdfList.length > 0 ? 'grid' : 'none'}`,
-              gridTemplateColumns: 'repeat(15,1fr)',
+              display: `${docsList.length > 0 ? 'flex' : 'none'}`,
+              gap: '5px',
               maxHeight: '50px',
               fontSize: '14px',
               overflow: 'auto',
-              overflowX: 'hidden',
               marginLeft: '132px',
             }}
           >
-            {pdfList.map((pdf) => {
-              const linkToPdf = pdfPreview.find(
-                (item) => item.previewId === pdf.pdfId
+            {docsList.map((doc) => {
+              const linkToDoc = docsPreview.find(
+                (item) => item.previewId === doc.docId
               )
-              pdfCount++
+              docCount++
+              const type =
+                doc.docFile.name.split('.')[
+                  doc.docFile.name.split('.').length - 1
+                ]
               return (
                 <>
                   {isSharing ? (
                     <Link
                       to={{
                         pathname: `/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/share/shareidea/readpdf`,
-                        state: { src: linkToPdf?.source },
+                        state: { src: linkToDoc?.source, fileType: type },
                       }}
-                      key={pdf.pdfId}
+                      key={doc.docId}
                       onClick={(e) => {
                         if (!isEditing && !isSharing) {
                           e.preventDefault()
@@ -561,7 +630,7 @@ function IdeaModalComponent(props) {
                       }}
                     >
                       <div
-                        className='pdf-file'
+                        className='doc-file'
                         style={{
                           display: 'flex',
                           justifyContent: 'center',
@@ -579,22 +648,24 @@ function IdeaModalComponent(props) {
                         <p
                           style={{
                             color: '#468AEF',
-                            width: '80%',
+                            width: '70%',
                             fontWeight: '400',
                           }}
                         >
-                          Pdf {pdfCount}
+                          Doc {docCount}
                         </p>
-                        <AiOutlineClose style={{ color: '#f54848' }} />
+                        <AiOutlineClose
+                          style={{ color: '#f54848', fontSize: '12px' }}
+                        />
                       </div>
                     </Link>
                   ) : (
                     <Link
                       to={{
                         pathname: `/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/addidea/readpdf`,
-                        state: { src: linkToPdf?.source },
+                        state: { src: linkToDoc?.source, fileType: type },
                       }}
-                      key={pdf.pdfId}
+                      key={doc.docId}
                       onClick={(e) => {
                         if (!isEditing) {
                           e.preventDefault()
@@ -602,13 +673,13 @@ function IdeaModalComponent(props) {
                       }}
                     >
                       <div
-                        className='pdf-file'
+                        className='doc-file'
                         style={{
                           display: 'flex',
                           justifyContent: 'center',
                           gap: '5px',
                           alignItems: 'center',
-                          width: '60px',
+                          // width: '70px',
                           height: '20px',
                           border: '1px solid #468AEF',
                           whiteSpace: 'nowrap',
@@ -620,22 +691,26 @@ function IdeaModalComponent(props) {
                         <p
                           style={{
                             color: '#468AEF',
-                            width: '80%',
+                            width: '70%',
                             fontWeight: '400',
                           }}
                         >
-                          Pdf {pdfCount}
+                          Doc {docCount}
                         </p>
                         <AiOutlineClose
-                          style={{ color: '#f54848', cursor: 'pointer' }}
+                          style={{
+                            color: '#f54848',
+                            cursor: 'pointer',
+                            fontSize: '12px',
+                          }}
                           onClick={(e) => {
                             e.preventDefault()
                             if (!isSharing) {
-                              let temppdfList = [...pdfList]
-                              const newpdfList = temppdfList.filter(
-                                (temp) => temp.pdfId !== pdf.pdfId
+                              let tempdocList = [...docsList]
+                              const newdocList = tempdocList.filter(
+                                (temp) => temp.docId !== doc.docId
                               )
-                              setPdfList(newpdfList)
+                              setDocsList(newdocList)
                             }
                           }}
                         />

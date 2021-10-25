@@ -9,7 +9,7 @@ import SpaceModal from '../Components/Space/SpaceModal'
 import SpaceUploadModal from '../Components/Space/SpaceUploadModal'
 import SpaceContent from './SpaceContent'
 import { BsFillGridFill } from 'react-icons/bs'
-import { FaList, FaBell } from 'react-icons/fa'
+import { FaList, FaBell, FaEdit } from 'react-icons/fa'
 import { RiDeleteBin6Line } from 'react-icons/ri'
 
 export default function Details() {
@@ -17,6 +17,10 @@ export default function Details() {
     <>
       <WorkspaceContentWrapper>
         <Switch>
+          <Route path='/workspace/:id/details/editspace/:spaceKey'>
+            <SpaceUploadModal isEditing />
+            <DetailPageComponent />
+          </Route>
           <Route path='/workspace/:id/details/createspace/imageupload'>
             <SpaceUploadModal />
             <DetailPageComponent />
@@ -177,14 +181,22 @@ const DetailPageComponent = () => {
                                 ? `(${num})`
                                 : null}
                             </p>
-
-                            <div className='space-delete-btn'>
-                              <RiDeleteBin6Line
-                                onClick={(e) => {
-                                  e.preventDefault()
-                                  value.deleteSpace(item.id)
-                                }}
-                              />
+                            <div className='btn-container'>
+                              <div className='space-delete-btn'>
+                                <RiDeleteBin6Line
+                                  onClick={(e) => {
+                                    e.preventDefault()
+                                    value.deleteSpace(item.id)
+                                  }}
+                                />
+                              </div>
+                              <Link
+                                to={`/workspace/${param.id}/details/editspace/${item.id}`}
+                              >
+                                <div className='space-edit-btn'>
+                                  <FaEdit />
+                                </div>
+                              </Link>
                             </div>
                           </div>
                         </div>
@@ -245,13 +257,22 @@ const DetailPageComponent = () => {
                             </p>
                           </div>
                           <div className='card-details'>
-                            <div className='space-delete-btn'>
-                              <RiDeleteBin6Line
-                                onClick={(e) => {
-                                  e.preventDefault()
-                                  value.deleteSpace(item.id)
-                                }}
-                              />
+                            <div className='btn-container'>
+                              <Link
+                                to={`/workspace/${param.id}/details/editspace/${item.id}`}
+                              >
+                                <div className='space-edit-btn'>
+                                  <FaEdit />
+                                </div>
+                              </Link>
+                              <div className='space-delete-btn'>
+                                <RiDeleteBin6Line
+                                  onClick={(e) => {
+                                    e.preventDefault()
+                                    value.deleteSpace(item.id)
+                                  }}
+                                />
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -473,8 +494,16 @@ const WorkspaceContentWrapper = styled.section`
     overflow: hidden;
     text-overflow: ellipsis;
   }
+  .list-card .btn-container {
+    gap: 20px;
+  }
   .list-card .space-delete-btn {
     color: #c4c4c4;
+    font-size: 20px;
+  }
+  .list-card .space-edit-btn {
+    color: #c4c4c4;
+    font-size: 20px;
   }
   .list-card:hover {
     cursor: pointer;
@@ -484,6 +513,19 @@ const WorkspaceContentWrapper = styled.section`
   .grid-card .space-delete-btn {
     color: white;
     font-size: 14px;
+  }
+  .btn-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .space-edit-btn {
+    color: white;
+    font-size: 14px;
+  }
+  .space-edit-btn:hover {
+    color: #3e77f1;
+    cursor: pointer;
   }
   .space-delete-btn:hover {
     color: #f54848;

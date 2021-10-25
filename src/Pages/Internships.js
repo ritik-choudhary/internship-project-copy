@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Link, Switch, Route } from 'react-router-dom'
 import { WorkspaceConsumer } from '../Context'
-import { FaBell } from 'react-icons/fa'
+import { FaBell, FaEdit } from 'react-icons/fa'
 import { RiArrowGoBackFill } from 'react-icons/ri'
 import Sidebar from '../Components/Sidebar'
 import styled from 'styled-components'
@@ -17,6 +17,9 @@ export default function Internships() {
   return (
     <>
       <Switch>
+        <Route path='/internships/edit/:internshipID'>
+          <OngoingModal isEditing />
+        </Route>
         <Route path='/internships/tasks/:internshipID'>
           <TasksContainerModal />
         </Route>
@@ -145,7 +148,14 @@ function InternshipsComponent(props) {
                     return (
                       <div className='internship-card'>
                         <div className='first'>
-                          <h1 className='title'>{item.title}</h1>
+                          <div className='top'>
+                            <h1 className='title'>{item.title}</h1>
+                            <Link to={`/internships/edit/${item.id}`}>
+                              <div className='internship-edit-btn'>
+                                <FaEdit />
+                              </div>
+                            </Link>
+                          </div>
                           <p className='company'>{item.company}</p>
                         </div>
                         <div className='second'>
@@ -419,6 +429,19 @@ const InternshipsWrapper = styled.section`
   .internship-card .first {
     display: flex;
     flex-direction: column;
+  }
+  .internship-card .first .top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .internship-edit-btn {
+    color: #c4c4c4;
+    font-size: 20px;
+    cursor: pointer;
+  }
+  .internship-edit-btn:hover {
+    color: #3e77f1;
   }
   .internship-card .first h1 {
     font-size: 20px;

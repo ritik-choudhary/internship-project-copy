@@ -537,12 +537,13 @@ const InsightsWrapper = styled.section`
 
   .post-types-line-chart {
     height: 200px;
+    width: 100%;
   }
   .posts-line-chart {
     height: 200px;
-    width: 499px;
+    width: 100%;
   }
-  .post,
+  .posts,
   .post-types {
     width: 50%;
   }

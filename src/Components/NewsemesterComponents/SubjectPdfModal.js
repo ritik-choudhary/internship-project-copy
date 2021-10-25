@@ -7,11 +7,15 @@ import { Worker } from '@react-pdf-viewer/core'
 import '@react-pdf-viewer/core/lib/styles/index.css'
 import '@react-pdf-viewer/default-layout/lib/styles/index.css'
 import FileViewer from 'react-file-viewer'
+import SubjectFullPageDoc from './SubjectFullPageDoc'
 
 export default function SubjectPdfModal() {
   return (
     <>
       <Switch>
+        <Route path='/workspace/:id/details/:spaceKey/editsubject/:subjectID/readsubjectdoc/fullpage'>
+          <SubjectFullPageDoc />
+        </Route>
         <Route path='/workspace/:id/details/:spaceKey/editsubject/:subjectID/readsubjectdoc'>
           <SubjectPdfModalComponent />
         </Route>
@@ -21,29 +25,27 @@ export default function SubjectPdfModal() {
 }
 
 const SubjectPdfModalComponent = () => {
-  const [fullPage, setFullPage] = useState({
-    minHeight: '80vh',
-    width: '493px',
-    top: '23%',
-    left: '50%',
-    right: 'auto',
-    marginRight: '-50%',
-    transform: 'translate(-50%, -10%)',
-    boxShadow: '0px 4px 25px rgba(0, 0, 0, 0.08)',
-    borderRadius: '10px',
-    background: 'transparent',
-    padding: '-20px',
-    border: 'none',
-    overflow: 'visible !important',
-  })
-
   const param = useParams()
   const location = useLocation()
   return (
     <Modal
       isOpen={true}
       style={{
-        content: fullPage,
+        content: {
+          minHeight: '80vh',
+          width: '493px',
+          top: '23%',
+          left: '50%',
+          right: 'auto',
+          marginRight: '-50%',
+          transform: 'translate(-50%, -10%)',
+          boxShadow: '0px 4px 25px rgba(0, 0, 0, 0.08)',
+          borderRadius: '10px',
+          background: 'transparent',
+          padding: '-20px',
+          border: 'none',
+          overflow: 'visible !important',
+        },
         overlay: {
           background: 'rgba(0, 0, 0, 0.31)',
         },
@@ -64,30 +66,24 @@ const SubjectPdfModalComponent = () => {
           zIndex: '1',
         }}
       >
-        <AiOutlineFullscreen
-          style={{
-            fontSize: '25px',
-            fontWeight: '500',
-            color: '#105eee',
-            cursor: 'pointer',
+        <Link
+          to={{
+            pathname: `/workspace/${param.id}/details/${param.spaceKey}/editsubject/${param.subjectID}/readsubjectdoc/fullpage`,
+            state: {
+              src: location.state.src,
+              fileType: location.state.fileType,
+            },
           }}
-          onClick={() =>
-            setFullPage({
-              width: '100%',
-              height: '100%',
-              left: '0',
-              right: '0',
-              marginRight: '0',
-              transform: 'translate(0,0)',
-              boxShadow: '0px 4px 25px rgba(0, 0, 0, 0.08)',
-              borderRadius: '10px',
-              background: 'transparent',
-              padding: '-20px',
-              border: 'none',
-              overflow: 'visible !important',
-            })
-          }
-        />
+        >
+          <AiOutlineFullscreen
+            style={{
+              fontSize: '25px',
+              fontWeight: '500',
+              color: '#105eee',
+              cursor: 'pointer',
+            }}
+          />
+        </Link>
 
         <Link to={`/workspace/${param.id}/details/${param.spaceKey}`}>
           <AiFillCloseCircle

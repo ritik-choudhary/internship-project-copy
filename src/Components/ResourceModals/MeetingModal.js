@@ -10,6 +10,7 @@ import {
 } from 'react-icons/ai'
 import { WorkspaceConsumer } from '../../Context'
 import TextEditor from '../TextEditor'
+import { FiMinimize } from 'react-icons/fi'
 
 export default function MeetingModal(props) {
   return (
@@ -53,6 +54,8 @@ function MeetingModalComponent(props) {
   })
 
   const [editorHeight, setEditorHeight] = useState('150px')
+
+  const [isFullScreen, setIsFullScreen] = useState(false)
 
   const [title, setTitle] = useState()
   const [createdOn, setCreatedOn] = useState(date)
@@ -158,31 +161,60 @@ function MeetingModalComponent(props) {
         {isSharing ? (
           <>
             <div style={{ display: 'flex', gap: '10px' }}>
-              <AiOutlineFullscreen
-                style={{
-                  fontSize: '25px',
-                  fontWeight: '500',
-                  color: '#105eee',
-                  cursor: 'pointer',
-                }}
-                onClick={() => {
-                  setModalSpecs({
-                    width: '100%',
-                    height: '100%',
-                    top: '0',
-                    left: '0',
-                    right: 'auto',
-                    bottom: 'auto',
-                    marginRight: '0',
-                    transform: 'translate(0,0)',
-                    boxShadow: '0px 4px 25px rgba(0, 0, 0, 0.08)',
-                    borderRadius: '0px',
-                    background: 'white',
-                    padding: '-20px',
-                  })
-                  setEditorHeight('240px')
-                }}
-              />
+              {isFullScreen ? (
+                <FiMinimize
+                  style={{
+                    fontSize: '25px',
+                    fontWeight: '500',
+                    color: '#105eee',
+                    cursor: 'pointer',
+                  }}
+                  onClick={() => {
+                    setModalSpecs({
+                      width: '1199px',
+                      top: '25%',
+                      left: '50%',
+                      right: 'auto',
+                      bottom: 'auto',
+                      marginRight: '-50%',
+                      transform: 'translate(-50%, -25%)',
+                      boxShadow: '0px 4px 25px rgba(0, 0, 0, 0.08)',
+                      borderRadius: '10px',
+                      background: 'white',
+                      padding: '-20px',
+                    })
+                    setEditorHeight('150px')
+                    setIsFullScreen(false)
+                  }}
+                />
+              ) : (
+                <AiOutlineFullscreen
+                  style={{
+                    fontSize: '25px',
+                    fontWeight: '500',
+                    color: '#105eee',
+                    cursor: 'pointer',
+                  }}
+                  onClick={() => {
+                    setModalSpecs({
+                      width: '100%',
+                      height: '100%',
+                      top: '0',
+                      left: '0',
+                      right: 'auto',
+                      bottom: 'auto',
+                      marginRight: '0',
+                      transform: 'translate(0,0)',
+                      boxShadow: '0px 4px 25px rgba(0, 0, 0, 0.08)',
+                      borderRadius: '0px',
+                      background: 'white',
+                      padding: '-20px',
+                    })
+                    setEditorHeight('280px')
+                    setIsFullScreen(true)
+                  }}
+                />
+              )}
               <Link
                 to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/share`}
               >
@@ -199,31 +231,60 @@ function MeetingModalComponent(props) {
         ) : (
           <>
             <div style={{ display: 'flex', gap: '10px' }}>
-              <AiOutlineFullscreen
-                style={{
-                  fontSize: '25px',
-                  fontWeight: '500',
-                  color: '#105eee',
-                  cursor: 'pointer',
-                }}
-                onClick={() => {
-                  setModalSpecs({
-                    width: '100%',
-                    height: '100%',
-                    top: '0',
-                    left: '0',
-                    right: 'auto',
-                    bottom: 'auto',
-                    marginRight: '0',
-                    transform: 'translate(0,0)',
-                    boxShadow: '0px 4px 25px rgba(0, 0, 0, 0.08)',
-                    borderRadius: '0px',
-                    background: 'white',
-                    padding: '-20px',
-                  })
-                  setEditorHeight('240px')
-                }}
-              />
+              {isFullScreen ? (
+                <FiMinimize
+                  style={{
+                    fontSize: '25px',
+                    fontWeight: '500',
+                    color: '#105eee',
+                    cursor: 'pointer',
+                  }}
+                  onClick={() => {
+                    setModalSpecs({
+                      width: '1199px',
+                      top: '25%',
+                      left: '50%',
+                      right: 'auto',
+                      bottom: 'auto',
+                      marginRight: '-50%',
+                      transform: 'translate(-50%, -25%)',
+                      boxShadow: '0px 4px 25px rgba(0, 0, 0, 0.08)',
+                      borderRadius: '10px',
+                      background: 'white',
+                      padding: '-20px',
+                    })
+                    setEditorHeight('150px')
+                    setIsFullScreen(false)
+                  }}
+                />
+              ) : (
+                <AiOutlineFullscreen
+                  style={{
+                    fontSize: '25px',
+                    fontWeight: '500',
+                    color: '#105eee',
+                    cursor: 'pointer',
+                  }}
+                  onClick={() => {
+                    setModalSpecs({
+                      width: '100%',
+                      height: '100%',
+                      top: '0',
+                      left: '0',
+                      right: 'auto',
+                      bottom: 'auto',
+                      marginRight: '0',
+                      transform: 'translate(0,0)',
+                      boxShadow: '0px 4px 25px rgba(0, 0, 0, 0.08)',
+                      borderRadius: '0px',
+                      background: 'white',
+                      padding: '-20px',
+                    })
+                    setEditorHeight('280px')
+                    setIsFullScreen(true)
+                  }}
+                />
+              )}
               <Link
                 to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}`}
               >
