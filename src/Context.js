@@ -1999,7 +1999,6 @@ class WorkspaceProvider extends Component {
     )
       ? true
       : false
-    let temp
     switch (itemToRestore.type) {
       case 'Workspace':
         this.restoreWorkspace(id)
@@ -2065,6 +2064,9 @@ class WorkspaceProvider extends Component {
           alert('Cannot restore')
         }
         break
+
+      default:
+        console.log('nothing to restore')
     }
   }
 

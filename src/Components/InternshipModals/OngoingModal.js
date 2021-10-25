@@ -61,7 +61,7 @@ function OngoingModalComponent(props) {
       setLinks(selectedInternship?.links || [])
       setDocsList(selectedInternship?.docsList || [])
     }
-  }, [isEditing])
+  }, [isEditing, param.internshipID, value.internships])
 
   useEffect(() => {
     if (docsList) {

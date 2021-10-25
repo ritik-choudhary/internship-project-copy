@@ -55,7 +55,7 @@ function SpaceUploadModalComponent(props) {
       setPreview(selectedSpace.image)
       setAltName(selectedSpace.altName)
     }
-  }, [isEditing])
+  }, [isEditing, param.id, value.workspaceElements, param.spaceKey])
 
   return (
     <Modal

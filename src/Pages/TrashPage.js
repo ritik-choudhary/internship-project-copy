@@ -271,7 +271,7 @@ function TrashPageComponent(props) {
                     <div className='left'>
                       {item.image ? (
                         <div className='recents-card-image-container'>
-                          <img src={item.image}></img>
+                          <img src={item.image} alt=''></img>
                         </div>
                       ) : null}
                       {item.title ? (
@@ -279,7 +279,7 @@ function TrashPageComponent(props) {
                       ) : (
                         <>
                           <div className='recents-card-image-container'>
-                            <img src={item.source}></img>
+                            <img src={item.source} alt=''></img>
                           </div>
                           <p className='title'>Image</p>
                         </>
