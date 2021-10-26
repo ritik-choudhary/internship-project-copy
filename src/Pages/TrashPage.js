@@ -166,7 +166,7 @@ function TrashPageComponent(props) {
               })
             : isImages
             ? value.trash.map((item) => {
-                if (item.type === 'Image') {
+                if (item.type === 'Bucket Image') {
                   return (
                     <div className='bucket-image-card' key={item.previewId}>
                       <div className='trash-image-container'>
@@ -185,8 +185,8 @@ function TrashPageComponent(props) {
                             onClick={() =>
                               value.restoreBucketImage(
                                 item.workspaceId,
-                                item.spaceKey,
-                                item.bucketId,
+                                item.spaceID,
+                                item.bucketID,
                                 item.previewId
                               )
                             }
@@ -211,13 +211,7 @@ function TrashPageComponent(props) {
                         <div className='docs-card-options'>
                           <div className='restore-btn'>
                             <VscDebugRestart
-                              onClick={() =>
-                                value.restoreDocs(
-                                  item.workspaceId,
-                                  item.spaceKey,
-                                  item.id
-                                )
-                              }
+                              onClick={() => value.restoreFromTrash(item.id)}
                             />
                           </div>
                           <div className='delete-btn'>
@@ -247,7 +241,7 @@ function TrashPageComponent(props) {
                         <div className='docs-card-options'>
                           <div className='restore-btn'>
                             <VscDebugRestart
-                              onClick={() => value.restoreNotes(item.id)}
+                              onClick={() => value.restoreFromTrash(item.id)}
                             />
                           </div>
                           <div className='delete-btn'>
@@ -289,7 +283,7 @@ function TrashPageComponent(props) {
                       <div className='recents-card-options'>
                         <div className='restore-btn'>
                           <VscDebugRestart
-                            onClick={() => value.restoreRecents(item.id)}
+                            onClick={() => value.restoreFromTrash(item.id)}
                           />
                         </div>
                         <div className='delete-btn'>
@@ -641,6 +635,10 @@ const TrashWrapper = styled.section`
   .recents-card .title {
     font-size: 16px;
     font-weight: 400;
+    width: 500px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
   .recents-card .right {
     display: flex;

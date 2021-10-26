@@ -215,6 +215,7 @@ class WorkspaceProvider extends Component {
     )
     let clubToDelete = element.clubs.find((item) => item.id === clubId)
     clubToDelete.type = 'College Club'
+    clubToDelete.spaceID = key
     newTrashList = [...newTrashList, clubToDelete]
     const newClubList = element.clubs.filter((item) => item.id !== clubId)
     element.clubs = newClubList
@@ -418,6 +419,9 @@ class WorkspaceProvider extends Component {
       (item) => item.id === meetingId
     )
     meetingToDelete.type = 'Club Meeting'
+    meetingToDelete.spaceID = key
+    meetingToDelete.resourceID = resourceId
+    meetingToDelete.clubID = clubId
     newTrashList = [...newTrashList, meetingToDelete]
     const newMeetingsList = resourceElement.meetings.filter(
       (item) => item.id !== meetingId
@@ -479,6 +483,10 @@ class WorkspaceProvider extends Component {
     )
     let ideaToDelete = resourceElement.ideas.find((item) => item.id === ideaId)
     ideaToDelete.type = 'Club Idea'
+    ideaToDelete.resourceID = resourceId
+    ideaToDelete.clubID = clubId
+    ideaToDelete.spaceID = key
+
     newTrashList = [...newTrashList, ideaToDelete]
     const newIdeasList = resourceElement.ideas.filter(
       (item) => item.id !== ideaId
@@ -545,6 +553,9 @@ class WorkspaceProvider extends Component {
       (item) => item.id === financeId
     )
     financeToDelete.type = 'Club Finance'
+    financeToDelete.resourceID = resourceId
+    financeToDelete.clubID = clubId
+    financeToDelete.spaceID = key
     newTrashList = [...newTrashList, financeToDelete]
     const newFinancesList = resourceElement.finances.filter(
       (item) => item.id !== financeId
@@ -610,6 +621,9 @@ class WorkspaceProvider extends Component {
       (item) => item.id === contactId
     )
     contactToDelete.type = 'Club Contact'
+    contactToDelete.resourceID = resourceId
+    contactToDelete.clubID = clubId
+    contactToDelete.spaceID = key
     newTrashList = [...newTrashList, contactToDelete]
     const newContactsList = resourceElement.contacts.filter(
       (item) => item.id !== contactId
@@ -657,6 +671,7 @@ class WorkspaceProvider extends Component {
       (item) => item.id === moodboardId
     )
     moodboardToDelete.type = 'Moodboard'
+    moodboardToDelete.spaceID = key
     newTrashList = [...newTrashList, moodboardToDelete]
     const newMoodboardList = element.moodboards.filter(
       (item) => item.id !== moodboardId
@@ -677,6 +692,7 @@ class WorkspaceProvider extends Component {
       (item) => item.id === digitalBrainboardId
     )
     brainboardToDelete.type = 'Digital Brainboard'
+    brainboardToDelete.spaceID = key
     newTrashList = [...newTrashList, brainboardToDelete]
     const newBrainboardList = element.digitalBrainboards.filter(
       (item) => item.id !== digitalBrainboardId
@@ -772,6 +788,7 @@ class WorkspaceProvider extends Component {
     )
     let habitToDelete = element.habits.find((item) => item.id === habitId)
     habitToDelete.type = 'Habit'
+    habitToDelete.spaceID = key
     newTrashList = [...newTrashList, habitToDelete]
     const newHabitList = element.habits.filter((item) => item.id !== habitId)
     element.habits = newHabitList
@@ -824,6 +841,7 @@ class WorkspaceProvider extends Component {
       (item) => item.id === workshopId
     )
     workshopTodelete.type = 'Workshop'
+    workshopTodelete.spaceID = key
     newTrashList = [...newTrashList, workshopTodelete]
     const newWorkshopList = element.workshops.filter(
       (item) => item.id !== workshopId
@@ -1509,6 +1527,7 @@ class WorkspaceProvider extends Component {
       (item) => item.id === bucketId
     )
     bucketListToDelete.type = 'Bucket List'
+    bucketListToDelete.spaceID = key
     newTrashList = [...newTrashList, bucketListToDelete]
     let newBucketList = element.bucketList.filter(
       (item) => item.id !== bucketId
@@ -1534,10 +1553,10 @@ class WorkspaceProvider extends Component {
       (item) => item.imageId === imageId
     )
 
-    previewToDelete.type = 'Image'
+    previewToDelete.type = 'Bucket Image'
     previewToDelete.workspaceId = id
-    previewToDelete.spaceKey = key
-    previewToDelete.bucketId = bucketId
+    previewToDelete.spaceID = key
+    previewToDelete.bucketID = bucketId
     previewToDelete.file = imageToDelete.imageFile
 
     let newPreviews = bucketElement.previews.filter(
@@ -1574,10 +1593,10 @@ class WorkspaceProvider extends Component {
     let newPreviews = bucketElement.previews
     let newImages = bucketElement.images
     newImages = [
-      ...newImages,
       { imageId: trashElement.previewId, imageFile: trashElement.file },
+      ...newImages,
     ]
-    newPreviews = [...newPreviews, trashElement]
+    newPreviews = [trashElement, ...newPreviews]
     bucketElement.previews = newPreviews
     bucketElement.images = newImages
     const newTrashList = oldTrashList.filter(
@@ -1638,8 +1657,7 @@ class WorkspaceProvider extends Component {
     )
     const docsToDelete = element.docsList.find((item) => item.id === docsId)
     docsToDelete.type = 'Docs'
-    docsToDelete.workspaceId = id
-    docsToDelete.spaceKey = key
+    docsToDelete.spaceID = key
     const newDocsList = element.docsList.filter((item) => item.id !== docsId)
     element.docsList = newDocsList
 
@@ -1656,26 +1674,6 @@ class WorkspaceProvider extends Component {
     const newTrashList = oldTrashList.filter((item) => item.id !== id)
     this.setState(() => {
       return {
-        trash: newTrashList,
-      }
-    })
-  }
-
-  restoreDocs = (id, key, docsId) => {
-    const oldTrashList = [...this.state.trash]
-    const trashElement = oldTrashList.find((item) => item.id === docsId)
-
-    const oldWorkspaceElements = [...this.state.workspaceElements]
-    let spaceElement = oldWorkspaceElements.find(
-      (item) => item.id === key && item.workspaceID === id
-    )
-    let newDocsElement = [...spaceElement.docsList]
-    newDocsElement = [...newDocsElement, trashElement]
-    spaceElement.docsList = newDocsElement
-    const newTrashList = oldTrashList.filter((item) => item.id !== docsId)
-    this.setState(() => {
-      return {
-        workspaceElements: oldWorkspaceElements,
         trash: newTrashList,
       }
     })
@@ -1726,6 +1724,7 @@ class WorkspaceProvider extends Component {
       (item) => item.id === meetingId
     )
     meetingToDelete.type = 'Meeting Notes'
+    meetingToDelete.spaceID = key
     newTrashList = [...newTrashList, meetingToDelete]
     const newMeetingNotes = element.meetingNotes.filter(
       (item) => item.id !== meetingId
@@ -1746,9 +1745,14 @@ class WorkspaceProvider extends Component {
 
   deleteJournal = (id) => {
     const oldJournalList = [...this.state.journal]
+    const oldTrashList = [...this.state.trash]
+    const journalToDelete = oldJournalList.find((item) => item.id === id)
+    journalToDelete.type = 'Journal'
+    let newTrashList = [...oldTrashList]
+    newTrashList = [...newTrashList, journalToDelete]
     const newJournalList = oldJournalList.filter((item) => item.id !== id)
     this.setState(() => {
-      return { journal: newJournalList }
+      return { journal: newJournalList, trash: newTrashList }
     })
   }
 
@@ -1790,17 +1794,6 @@ class WorkspaceProvider extends Component {
     const newtrashList = oldTrashList.filter((item) => item.id !== id)
     this.setState(() => {
       return { trash: newtrashList }
-    })
-  }
-
-  restoreNotes = (id) => {
-    const oldTrashList = [...this.state.trash]
-    const itemToRestore = oldTrashList.find((item) => item.id === id)
-    let oldNotesList = [...this.state.notes]
-    oldNotesList = [...oldNotesList, itemToRestore]
-    const newTrashList = oldTrashList.filter((item) => item.id !== id)
-    this.setState(() => {
-      return { trash: newTrashList, notes: oldNotesList }
     })
   }
 
@@ -1990,7 +1983,7 @@ class WorkspaceProvider extends Component {
     })
   }
 
-  restoreRecents = (id) => {
+  restoreFromTrash = (id) => {
     let newTrashList = [...this.state.trash]
     const itemToRestore = newTrashList.find((item) => item.id === id)
     const tempWorkspaceList = [...this.state.workspaceList]
@@ -2022,14 +2015,14 @@ class WorkspaceProvider extends Component {
         break
 
       case 'Book':
-        const isSpaceAvailable = this.state.workspaceElements.find(
+        const isBookSpaceAvailable = this.state.workspaceElements.find(
           (item) => item.id === itemToRestore.spaceID
         )
-        const isWorkspaceAvailable = this.state.workspaceList.find(
-          (item) => item.id === isSpaceAvailable.workspaceID
+        const isBookWorkspaceAvailable = this.state.workspaceList.find(
+          (item) => item.id === isBookSpaceAvailable.workspaceID
         )
-        if (isWorkspaceAvailable) {
-          if (isSpaceAvailable) {
+        if (isBookWorkspaceAvailable) {
+          if (isBookSpaceAvailable) {
             newTrashList = newTrashList.filter((element) => element.id !== id)
             let newWorkspaceElements = [...this.state.workspaceElements]
             let selectedSpace = newWorkspaceElements.find(
@@ -2051,6 +2044,531 @@ class WorkspaceProvider extends Component {
               ]
             }
 
+            this.setState(() => {
+              return {
+                trash: newTrashList,
+                workspaceElements: newWorkspaceElements,
+              }
+            })
+          } else {
+            alert('Cannot restore')
+          }
+        } else {
+          alert('Cannot restore')
+        }
+        break
+
+      case 'College Club':
+        const isClubSpaceAvailable = this.state.workspaceElements.find(
+          (item) => item.id === itemToRestore.spaceID
+        )
+        if (isClubSpaceAvailable) {
+          const isClubWorkspaceAvailable = this.state.workspaceList.find(
+            (item) => item.id === isClubSpaceAvailable.workspaceID
+          )
+          if (isClubWorkspaceAvailable) {
+            newTrashList = newTrashList.filter((element) => element.id !== id)
+            let newWorkspaceElements = [...this.state.workspaceElements]
+            let selectedSpace = newWorkspaceElements.find(
+              (item) => item.id === itemToRestore.spaceID
+            )
+
+            selectedSpace.clubs = [itemToRestore, ...selectedSpace.clubs]
+            this.setState(() => {
+              return {
+                trash: newTrashList,
+                workspaceElements: newWorkspaceElements,
+              }
+            })
+          } else {
+            alert('Cannot restore')
+          }
+        } else {
+          alert('Cannot restore')
+        }
+        break
+
+      case 'Club Idea':
+        const isIdeaSpaceAvailable = this.state.workspaceElements.find(
+          (item) => item.id === itemToRestore.spaceID
+        )
+        if (isIdeaSpaceAvailable) {
+          const isIdeaClubAvailable = isIdeaSpaceAvailable.clubs.find(
+            (item) => item.id === itemToRestore.clubID
+          )
+          if (isIdeaClubAvailable) {
+            const isIdeaResourceAvailable = isIdeaClubAvailable.resources.find(
+              (item) => item.id === itemToRestore.resourceID
+            )
+            if (isIdeaResourceAvailable) {
+              const isIdeaWorkspaceAvailable = this.state.workspaceList.find(
+                (item) => item.id === isIdeaSpaceAvailable.workspaceID
+              )
+              if (isIdeaWorkspaceAvailable) {
+                newTrashList = newTrashList.filter(
+                  (element) => element.id !== id
+                )
+                let newWorkspaceElements = [...this.state.workspaceElements]
+                const selectedSpace = newWorkspaceElements.find(
+                  (item) => item.id === itemToRestore.spaceID
+                )
+                const selectedClub = selectedSpace.clubs.find(
+                  (item) => item.id === itemToRestore.clubID
+                )
+                let selectedResource = selectedClub.resources.find(
+                  (item) => item.id === itemToRestore.resourceID
+                )
+                selectedResource.ideas = [
+                  itemToRestore,
+                  ...selectedResource.ideas,
+                ]
+                this.setState(() => {
+                  return {
+                    trash: newTrashList,
+                    workspaceElements: newWorkspaceElements,
+                  }
+                })
+              } else {
+                alert('Cannot restore')
+              }
+            } else {
+              alert('Cannot restore')
+            }
+          } else {
+            alert('Cannot restore')
+          }
+        } else {
+          alert('Cannot restore')
+        }
+        break
+
+      case 'Club Meeting':
+        const isMeetingSpaceAvailable = this.state.workspaceElements.find(
+          (item) => item.id === itemToRestore.spaceID
+        )
+        if (isMeetingSpaceAvailable) {
+          const isMeetingClubAvailable = isMeetingSpaceAvailable.clubs.find(
+            (item) => item.id === itemToRestore.clubID
+          )
+          if (isMeetingClubAvailable) {
+            const isMeetingResourceAvailable =
+              isMeetingClubAvailable.resources.find(
+                (item) => item.id === itemToRestore.resourceID
+              )
+            if (isMeetingResourceAvailable) {
+              const isMeetingWorkspaceAvailable = this.state.workspaceList.find(
+                (item) => item.id === isMeetingSpaceAvailable.workspaceID
+              )
+              if (isMeetingWorkspaceAvailable) {
+                newTrashList = newTrashList.filter(
+                  (element) => element.id !== id
+                )
+                let newWorkspaceElements = [...this.state.workspaceElements]
+                const selectedSpace = newWorkspaceElements.find(
+                  (item) => item.id === itemToRestore.spaceID
+                )
+                const selectedClub = selectedSpace.clubs.find(
+                  (item) => item.id === itemToRestore.clubID
+                )
+                let selectedResource = selectedClub.resources.find(
+                  (item) => item.id === itemToRestore.resourceID
+                )
+                selectedResource.meetings = [
+                  itemToRestore,
+                  ...selectedResource.meetings,
+                ]
+                this.setState(() => {
+                  return {
+                    trash: newTrashList,
+                    workspaceElements: newWorkspaceElements,
+                  }
+                })
+              } else {
+                alert('Cannot restore')
+              }
+            } else {
+              alert('Cannot restore')
+            }
+          } else {
+            alert('Cannot restore')
+          }
+        } else {
+          alert('Cannot restore')
+        }
+        break
+
+      case 'Club Finance':
+        const isFinanceSpaceAvailable = this.state.workspaceElements.find(
+          (item) => item.id === itemToRestore.spaceID
+        )
+        if (isFinanceSpaceAvailable) {
+          const isFinanceClubAvailable = isFinanceSpaceAvailable.clubs.find(
+            (item) => item.id === itemToRestore.clubID
+          )
+          if (isFinanceClubAvailable) {
+            const isFinanceResourceAvailable =
+              isFinanceClubAvailable.resources.find(
+                (item) => item.id === itemToRestore.resourceID
+              )
+            if (isFinanceResourceAvailable) {
+              const isFinanceWorkspaceAvailable = this.state.workspaceList.find(
+                (item) => item.id === isFinanceSpaceAvailable.workspaceID
+              )
+              if (isFinanceWorkspaceAvailable) {
+                newTrashList = newTrashList.filter(
+                  (element) => element.id !== id
+                )
+                let newWorkspaceElements = [...this.state.workspaceElements]
+                const selectedSpace = newWorkspaceElements.find(
+                  (item) => item.id === itemToRestore.spaceID
+                )
+                const selectedClub = selectedSpace.clubs.find(
+                  (item) => item.id === itemToRestore.clubID
+                )
+                let selectedResource = selectedClub.resources.find(
+                  (item) => item.id === itemToRestore.resourceID
+                )
+                selectedResource.finances = [
+                  itemToRestore,
+                  ...selectedResource.finances,
+                ]
+                this.setState(() => {
+                  return {
+                    trash: newTrashList,
+                    workspaceElements: newWorkspaceElements,
+                  }
+                })
+              } else {
+                alert('Cannot restore')
+              }
+            } else {
+              alert('Cannot restore')
+            }
+          } else {
+            alert('Cannot restore')
+          }
+        } else {
+          alert('Cannot restore')
+        }
+        break
+
+      case 'Club Contact':
+        const isContactSpaceAvailable = this.state.workspaceElements.find(
+          (item) => item.id === itemToRestore.spaceID
+        )
+        if (isContactSpaceAvailable) {
+          const isContactClubAvailable = isContactSpaceAvailable.clubs.find(
+            (item) => item.id === itemToRestore.clubID
+          )
+          if (isContactClubAvailable) {
+            const isContactResourceAvailable =
+              isContactClubAvailable.resources.find(
+                (item) => item.id === itemToRestore.resourceID
+              )
+            if (isContactResourceAvailable) {
+              const isContactWorkspaceAvailable = this.state.workspaceList.find(
+                (item) => item.id === isContactSpaceAvailable.workspaceID
+              )
+              if (isContactWorkspaceAvailable) {
+                newTrashList = newTrashList.filter(
+                  (element) => element.id !== id
+                )
+                let newWorkspaceElements = [...this.state.workspaceElements]
+                const selectedSpace = newWorkspaceElements.find(
+                  (item) => item.id === itemToRestore.spaceID
+                )
+                const selectedClub = selectedSpace.clubs.find(
+                  (item) => item.id === itemToRestore.clubID
+                )
+                let selectedResource = selectedClub.resources.find(
+                  (item) => item.id === itemToRestore.resourceID
+                )
+                selectedResource.contacts = [
+                  itemToRestore,
+                  ...selectedResource.contacts,
+                ]
+                this.setState(() => {
+                  return {
+                    trash: newTrashList,
+                    workspaceElements: newWorkspaceElements,
+                  }
+                })
+              } else {
+                alert('Cannot restore')
+              }
+            } else {
+              alert('Cannot restore')
+            }
+          } else {
+            alert('Cannot restore')
+          }
+        } else {
+          alert('Cannot restore')
+        }
+        break
+
+      case 'Moodboard':
+        const isMoodboardSpaceAvailable = this.state.workspaceElements.find(
+          (item) => item.id === itemToRestore.spaceID
+        )
+        if (isMoodboardSpaceAvailable) {
+          const isMoodboardWorkspaceAvailable = this.state.workspaceList.find(
+            (item) => item.id === isMoodboardSpaceAvailable.workspaceID
+          )
+          if (isMoodboardWorkspaceAvailable) {
+            newTrashList = newTrashList.filter((element) => element.id !== id)
+            let newWorkspaceElements = [...this.state.workspaceElements]
+            let selectedSpace = newWorkspaceElements.find(
+              (item) => item.id === itemToRestore.spaceID
+            )
+
+            selectedSpace.moodboards = [
+              itemToRestore,
+              ...selectedSpace.moodboards,
+            ]
+            this.setState(() => {
+              return {
+                trash: newTrashList,
+                workspaceElements: newWorkspaceElements,
+              }
+            })
+          } else {
+            alert('Cannot restore')
+          }
+        } else {
+          alert('Cannot restore')
+        }
+        break
+
+      case 'Digital Brainboard':
+        const isBrainboardSpaceAvailable = this.state.workspaceElements.find(
+          (item) => item.id === itemToRestore.spaceID
+        )
+        if (isBrainboardSpaceAvailable) {
+          const isBrainboardWorkspaceAvailable = this.state.workspaceList.find(
+            (item) => item.id === isBrainboardSpaceAvailable.workspaceID
+          )
+          if (isBrainboardWorkspaceAvailable) {
+            newTrashList = newTrashList.filter((element) => element.id !== id)
+            let newWorkspaceElements = [...this.state.workspaceElements]
+            let selectedSpace = newWorkspaceElements.find(
+              (item) => item.id === itemToRestore.spaceID
+            )
+
+            selectedSpace.digitalBrainboards = [
+              itemToRestore,
+              ...selectedSpace.digitalBrainboards,
+            ]
+            this.setState(() => {
+              return {
+                trash: newTrashList,
+                workspaceElements: newWorkspaceElements,
+              }
+            })
+          } else {
+            alert('Cannot restore')
+          }
+        } else {
+          alert('Cannot restore')
+        }
+        break
+
+      case 'Docs':
+        const isDocsSpaceAvailable = this.state.workspaceElements.find(
+          (item) => item.id === itemToRestore.spaceID
+        )
+        if (isDocsSpaceAvailable) {
+          const isDocsWorkspaceAvailable = this.state.workspaceList.find(
+            (item) => item.id === isDocsSpaceAvailable.workspaceID
+          )
+          if (isDocsWorkspaceAvailable) {
+            newTrashList = newTrashList.filter((element) => element.id !== id)
+            let newWorkspaceElements = [...this.state.workspaceElements]
+            let selectedSpace = newWorkspaceElements.find(
+              (item) => item.id === itemToRestore.spaceID
+            )
+
+            selectedSpace.docsList = [itemToRestore, ...selectedSpace.docsList]
+            this.setState(() => {
+              return {
+                trash: newTrashList,
+                workspaceElements: newWorkspaceElements,
+              }
+            })
+          } else {
+            alert('Cannot restore')
+          }
+        } else {
+          alert('Cannot restore')
+        }
+        break
+
+      case 'Notes':
+        newTrashList = newTrashList.filter((element) => element.id !== id)
+        let oldNotesList = [...this.state.notes]
+        oldNotesList = [...oldNotesList, itemToRestore]
+
+        this.setState(() => {
+          return { trash: newTrashList, notes: oldNotesList }
+        })
+        break
+
+      case 'Journal':
+        newTrashList = newTrashList.filter((element) => element.id !== id)
+        let oldJournalList = [...this.state.journal]
+        oldJournalList = [...oldJournalList, itemToRestore]
+        this.setState(() => {
+          return { trash: newTrashList, journal: oldJournalList }
+        })
+        break
+
+      case 'Meeting Notes':
+        const isMeetingNotesSpaceAvailable = this.state.workspaceElements.find(
+          (item) => item.id === itemToRestore.spaceID
+        )
+        if (isMeetingNotesSpaceAvailable) {
+          const isMeetingNotesWorkspaceAvailable =
+            this.state.workspaceList.find(
+              (item) => item.id === isMeetingNotesSpaceAvailable.workspaceID
+            )
+          if (isMeetingNotesWorkspaceAvailable) {
+            newTrashList = newTrashList.filter((element) => element.id !== id)
+            let newWorkspaceElements = [...this.state.workspaceElements]
+            let selectedSpace = newWorkspaceElements.find(
+              (item) => item.id === itemToRestore.spaceID
+            )
+
+            selectedSpace.meetingNotes = [
+              itemToRestore,
+              ...selectedSpace.meetingNotes,
+            ]
+            this.setState(() => {
+              return {
+                trash: newTrashList,
+                workspaceElements: newWorkspaceElements,
+              }
+            })
+          } else {
+            alert('Cannot restore')
+          }
+        } else {
+          alert('Cannot restore')
+        }
+        break
+
+      case 'Workshop':
+        const isWorkshopSpaceAvailable = this.state.workspaceElements.find(
+          (item) => item.id === itemToRestore.spaceID
+        )
+        if (isWorkshopSpaceAvailable) {
+          const isWorkshopWorkspaceAvailable = this.state.workspaceList.find(
+            (item) => item.id === isWorkshopSpaceAvailable.workspaceID
+          )
+          if (isWorkshopWorkspaceAvailable) {
+            newTrashList = newTrashList.filter((element) => element.id !== id)
+            let newWorkspaceElements = [...this.state.workspaceElements]
+            let selectedSpace = newWorkspaceElements.find(
+              (item) => item.id === itemToRestore.spaceID
+            )
+
+            selectedSpace.workshops = [
+              itemToRestore,
+              ...selectedSpace.workshops,
+            ]
+            this.setState(() => {
+              return {
+                trash: newTrashList,
+                workspaceElements: newWorkspaceElements,
+              }
+            })
+          } else {
+            alert('Cannot restore')
+          }
+        } else {
+          alert('Cannot restore')
+        }
+        break
+
+      case 'Bucket List':
+        const isBucketSpaceAvailable = this.state.workspaceElements.find(
+          (item) => item.id === itemToRestore.spaceID
+        )
+        if (isBucketSpaceAvailable) {
+          const isBucketWorkspaceAvailable = this.state.workspaceList.find(
+            (item) => item.id === isBucketSpaceAvailable.workspaceID
+          )
+          if (isBucketWorkspaceAvailable) {
+            newTrashList = newTrashList.filter((element) => element.id !== id)
+            let newWorkspaceElements = [...this.state.workspaceElements]
+            let selectedSpace = newWorkspaceElements.find(
+              (item) => item.id === itemToRestore.spaceID
+            )
+
+            selectedSpace.bucketList = [
+              itemToRestore,
+              ...selectedSpace.bucketList,
+            ]
+            this.setState(() => {
+              return {
+                trash: newTrashList,
+                workspaceElements: newWorkspaceElements,
+              }
+            })
+          } else {
+            alert('Cannot restore')
+          }
+        } else {
+          alert('Cannot restore')
+        }
+        break
+
+      case 'Bucket Image':
+        const isBucketImageSpaceAvailable = this.state.workspaceElements.find(
+          (item) => item.id === itemToRestore.spaceID
+        )
+        if (isBucketImageSpaceAvailable) {
+          const isBucketImageWorkspaceAvailable = this.state.workspaceList.find(
+            (item) => item.id === isBucketImageSpaceAvailable.workspaceID
+          )
+          if (isBucketImageWorkspaceAvailable) {
+            const isBucketImageBucketAvailable =
+              isBucketImageSpaceAvailable.bucketList.find(
+                (item) => item.id === itemToRestore.bucketID
+              )
+            if (isBucketImageBucketAvailable) {
+              this.restoreBucketImage(
+                isBucketImageSpaceAvailable.workspaceID,
+                itemToRestore.spaceID,
+                itemToRestore.bucketID,
+                itemToRestore.previewId
+              )
+            } else {
+              alert('Cannot restore')
+            }
+          } else {
+            alert('Cannot restore')
+          }
+        } else {
+          alert('Cannot restore')
+        }
+        break
+
+      case 'Habit':
+        const isHabitSpaceAvailable = this.state.workspaceElements.find(
+          (item) => item.id === itemToRestore.spaceID
+        )
+        if (isHabitSpaceAvailable) {
+          const isHabitWorkspaceAvailable = this.state.workspaceList.find(
+            (item) => item.id === isHabitSpaceAvailable.workspaceID
+          )
+          if (isHabitWorkspaceAvailable) {
+            newTrashList = newTrashList.filter((element) => element.id !== id)
+            let newWorkspaceElements = [...this.state.workspaceElements]
+            let selectedSpace = newWorkspaceElements.find(
+              (item) => item.id === itemToRestore.spaceID
+            )
+
+            selectedSpace.habits = [itemToRestore, ...selectedSpace.habits]
             this.setState(() => {
               return {
                 trash: newTrashList,
@@ -2163,7 +2681,6 @@ class WorkspaceProvider extends Component {
           editDocs: this.editDocs,
           deleteDocs: this.deleteDocs,
           deleteDocsPermanently: this.deleteDocsPermanently,
-          restoreDocs: this.restoreDocs,
           addNewMeetingNotes: this.addNewMeetingNotes,
           deleteMeetingNotes: this.deleteMeetingNotes,
           editMeetingNotes: this.editMeetingNotes,
@@ -2174,7 +2691,6 @@ class WorkspaceProvider extends Component {
           deleteNotes: this.deleteNotes,
           editNotes: this.editNotes,
           deleteNotesPermanently: this.deleteNotesPermanently,
-          restoreNotes: this.restoreNotes,
           addNewOngoingInternship: this.addNewOngoingInternship,
           editOngoingInternship: this.editOngoingInternship,
           addNewAppliedInternship: this.addNewAppliedInternship,
@@ -2187,7 +2703,7 @@ class WorkspaceProvider extends Component {
           addNewDocumentShelf: this.addNewDocumentShelf,
           deleteDocumentShelf: this.deleteDocumentShelf,
           deleteRecentsPermanently: this.deleteRecentsPermanently,
-          restoreRecents: this.restoreRecents,
+          restoreFromTrash: this.restoreFromTrash,
         }}
       >
         {this.props.children}
