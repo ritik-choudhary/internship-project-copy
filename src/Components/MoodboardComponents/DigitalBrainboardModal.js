@@ -49,7 +49,7 @@ function DigitalBrainboardModalComponent(props) {
     if (isEditing) {
       setDigitalBrainboardName(selectedDigitalBrainboard.title)
     }
-  }, [isEditing])
+  }, [isEditing, selectedDigitalBrainboard.title])
 
   return (
     <Modal

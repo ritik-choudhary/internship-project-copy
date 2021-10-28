@@ -48,7 +48,7 @@ function WorkshopModalComponent(props) {
     if (isEditing) {
       setWorkshopName(selectedWorkshop.title)
     }
-  }, [isEditing])
+  }, [isEditing, selectedWorkshop.title])
 
   return (
     <Modal

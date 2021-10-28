@@ -48,7 +48,7 @@ function ClubModalComponent(props) {
     if (isEditing) {
       setClubName(selectedClub.title)
     }
-  }, [isEditing])
+  }, [isEditing, selectedClub.title])
 
   return (
     <Modal

@@ -89,7 +89,16 @@ function TaskModalComponent(props) {
       setDocsList(selectedTask.docsList)
       setDescription(selectedTask.description)
     }
-  }, [isEditing, value.taskmanager])
+  }, [
+    isEditing,
+    value.taskmanager,
+    selectedTask.createdBy,
+    selectedTask.title,
+    selectedTask.dueDateEdit,
+    selectedTask.links,
+    selectedTask.description,
+    selectedTask.docsList,
+  ])
 
   return (
     <Modal

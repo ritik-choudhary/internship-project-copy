@@ -54,7 +54,7 @@ function MoodboardModalComponent(props) {
     if (isEditing) {
       setMoodboardName(selectedMoodboard.title)
     }
-  }, [isEditing])
+  }, [isEditing, selectedMoodboard.title])
 
   return (
     <Modal
