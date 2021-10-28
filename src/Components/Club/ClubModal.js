@@ -46,9 +46,16 @@ function ClubModalComponent(props) {
 
   useEffect(() => {
     if (isEditing) {
+      const selectedSpace = value.workspaceElements.find(
+        (item) => item.id === param.spaceKey && item.workspaceID === param.id
+      )
+      const selectedClub = selectedSpace?.clubs?.find(
+        (item) => item.id === param.clubID
+      )
+
       setClubName(selectedClub.title)
     }
-  }, [isEditing, selectedClub.title])
+  }, [isEditing, value.workspaceElements])
 
   return (
     <Modal

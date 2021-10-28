@@ -82,6 +82,15 @@ function TaskModalComponent(props) {
 
   useEffect(() => {
     if (isEditing) {
+      const tempTaskManager = [
+        ...value.taskManager[0],
+        ...value.taskManager[1],
+        ...value.taskManager[2],
+        ...value.taskManager[3],
+      ]
+      const selectedTask = tempTaskManager.find(
+        (item) => item.id === param.taskID
+      )
       setTaskTitle(selectedTask.title)
       setCreatedBy(selectedTask.createdBy)
       setDuedate(selectedTask.dueDateEdit)
@@ -89,16 +98,7 @@ function TaskModalComponent(props) {
       setDocsList(selectedTask.docsList)
       setDescription(selectedTask.description)
     }
-  }, [
-    isEditing,
-    value.taskmanager,
-    selectedTask.createdBy,
-    selectedTask.title,
-    selectedTask.dueDateEdit,
-    selectedTask.links,
-    selectedTask.description,
-    selectedTask.docsList,
-  ])
+  }, [isEditing, value.taskmanager, value.taskManager])
 
   return (
     <Modal

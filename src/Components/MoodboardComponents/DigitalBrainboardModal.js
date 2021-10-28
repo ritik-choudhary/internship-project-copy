@@ -47,9 +47,16 @@ function DigitalBrainboardModalComponent(props) {
 
   useEffect(() => {
     if (isEditing) {
+      const selectedSpace = value.workspaceElements.find(
+        (item) => item.id === param.spaceKey && item.workspaceID === param.id
+      )
+
+      const selectedDigitalBrainboard = selectedSpace?.digitalBrainboards?.find(
+        (item) => item.id === param.brainboardID
+      )
       setDigitalBrainboardName(selectedDigitalBrainboard.title)
     }
-  }, [isEditing, selectedDigitalBrainboard.title])
+  }, [isEditing, value.workspaceElements])
 
   return (
     <Modal

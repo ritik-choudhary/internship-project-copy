@@ -46,9 +46,15 @@ function WorkshopModalComponent(props) {
 
   useEffect(() => {
     if (isEditing) {
+      const selectedSpace = value.workspaceElements.find(
+        (item) => item.id === param.spaceKey && item.workspaceID === param.id
+      )
+      const selectedWorkshop = selectedSpace?.workshops?.find(
+        (item) => item.id === param.workshopID
+      )
       setWorkshopName(selectedWorkshop.title)
     }
-  }, [isEditing, selectedWorkshop.title])
+  }, [isEditing, value.workspaceElements])
 
   return (
     <Modal

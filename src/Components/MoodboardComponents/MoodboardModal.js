@@ -52,9 +52,16 @@ function MoodboardModalComponent(props) {
 
   useEffect(() => {
     if (isEditing) {
+      const selectedSpace = value.workspaceElements.find(
+        (item) => item.id === param.spaceKey && item.workspaceID === param.id
+      )
+
+      const selectedMoodboard = selectedSpace?.moodboards?.find(
+        (item) => item.id === param.moodboardID
+      )
       setMoodboardName(selectedMoodboard.title)
     }
-  }, [isEditing, selectedMoodboard.title])
+  }, [isEditing, value.workspaceElements])
 
   return (
     <Modal
