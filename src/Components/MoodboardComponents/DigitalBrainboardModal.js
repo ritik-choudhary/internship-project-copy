@@ -56,7 +56,13 @@ function DigitalBrainboardModalComponent(props) {
       )
       setDigitalBrainboardName(selectedDigitalBrainboard.title)
     }
-  }, [isEditing, value.workspaceElements])
+  }, [
+    isEditing,
+    value.workspaceElements,
+    param.id,
+    param.spaceKey,
+    param.brainboardID,
+  ])
 
   return (
     <Modal

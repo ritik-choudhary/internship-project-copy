@@ -61,7 +61,13 @@ function MoodboardModalComponent(props) {
       )
       setMoodboardName(selectedMoodboard.title)
     }
-  }, [isEditing, value.workspaceElements])
+  }, [
+    isEditing,
+    value.workspaceElements,
+    param.id,
+    param.spaceKey,
+    param.moodboardID,
+  ])
 
   return (
     <Modal

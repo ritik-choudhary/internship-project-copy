@@ -54,7 +54,13 @@ function WorkshopModalComponent(props) {
       )
       setWorkshopName(selectedWorkshop.title)
     }
-  }, [isEditing, value.workspaceElements])
+  }, [
+    isEditing,
+    value.workspaceElements,
+    param.id,
+    param.spaceKey,
+    param.workshopID,
+  ])
 
   return (
     <Modal

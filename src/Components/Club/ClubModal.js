@@ -55,7 +55,13 @@ function ClubModalComponent(props) {
 
       setClubName(selectedClub.title)
     }
-  }, [isEditing, value.workspaceElements])
+  }, [
+    isEditing,
+    value.workspaceElements,
+    param.clubID,
+    param.id,
+    param.spaceKey,
+  ])
 
   return (
     <Modal
