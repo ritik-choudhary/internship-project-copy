@@ -6,6 +6,7 @@ import { WorkspaceConsumer } from '../../Context'
 import { RiDeleteBin6Line } from 'react-icons/ri'
 import MoodboardModal from '../MoodboardComponents/MoodboardModal'
 import DigitalBrainboardModal from '../MoodboardComponents/DigitalBrainboardModal'
+import { FaEdit } from 'react-icons/fa'
 
 export default function Moodboards() {
   const defaultImage =
@@ -14,8 +15,15 @@ export default function Moodboards() {
   return (
     <MoodboardsWrapper>
       <Switch>
+        <Route path='/workspace/:id/details/:spaceKey/edit/:moodboardID'>
+          <MoodboardModal isEditing />
+        </Route>
+
         <Route path='/workspace/:id/details/:spaceKey/addmoodboard'>
           <MoodboardModal />
+        </Route>
+        <Route path='/workspace/:id/details/:spaceKey/editbrainboard/:brainboardID'>
+          <DigitalBrainboardModal isEditing />
         </Route>
         <Route path='/workspace/:id/details/:spaceKey/adddigitalbrainboard'>
           <DigitalBrainboardModal />
@@ -64,6 +72,13 @@ export default function Moodboards() {
                               </p>
                             </div>
                             <div className='right'>
+                              <Link
+                                to={`/workspace/${param.id}/details/${param.spaceKey}/edit/${moodboard.id}`}
+                              >
+                                <div className='edit-btn'>
+                                  <FaEdit />
+                                </div>
+                              </Link>
                               <div className='delete-btn'>
                                 <RiDeleteBin6Line
                                   onClick={(e) => {
@@ -137,6 +152,13 @@ export default function Moodboards() {
                               </p>
                             </div>
                             <div className='right'>
+                              <Link
+                                to={`/workspace/${param.id}/details/${param.spaceKey}/editbrainboard/${digitalBrainboard.id}`}
+                              >
+                                <div className='edit-btn'>
+                                  <FaEdit />
+                                </div>
+                              </Link>
                               <div className='delete-btn'>
                                 <RiDeleteBin6Line
                                   onClick={(e) => {
@@ -252,6 +274,11 @@ const MoodboardsWrapper = styled.section`
     flex-direction: column;
     gap: 3px;
   }
+  .card-footer .right {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
   .moodboard-name,
   .digitalBrainboard-name {
     font-size: 14px;
@@ -264,12 +291,16 @@ const MoodboardsWrapper = styled.section`
     font-weight: 400;
     color: #c4c4c4;
   }
-  .card-footer .delete-btn {
+  .card-footer .delete-btn,
+  .card-footer .edit-btn {
     font-size: 16px;
     color: #c4c4c4;
     cursor: pointer;
   }
   .card-footer .delete-btn:hover {
     color: #f54848;
+  }
+  .card-footer .edit-btn:hover {
+    color: #468aef;
   }
 `

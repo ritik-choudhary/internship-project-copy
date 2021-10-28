@@ -5,6 +5,7 @@ import { Switch, Route, Link, useParams } from 'react-router-dom'
 import { WorkspaceConsumer } from '../../Context'
 import ClubModal from '../Club/ClubModal'
 import { RiDeleteBin6Line } from 'react-icons/ri'
+import { FaEdit } from 'react-icons/fa'
 
 export default function CollegeClubs() {
   const defaultImage =
@@ -14,6 +15,9 @@ export default function CollegeClubs() {
   return (
     <CollegeClubsWrapper>
       <Switch>
+        <Route path='/workspace/:id/details/:spaceKey/editclub/:clubID'>
+          <ClubModal isEditing />
+        </Route>
         <Route path='/workspace/:id/details/:spaceKey/addclub'>
           <ClubModal />
         </Route>
@@ -46,17 +50,20 @@ export default function CollegeClubs() {
 
                           <div className='card-footer'>
                             <div className='left'>
-                              <h4 className='club-name'>
-                                {club.title.length > 10
-                                  ? `${club.title.slice(0, 10)}...`
-                                  : club.title}
-                              </h4>
+                              <h4 className='club-name'>{club.title}</h4>
 
                               <p style={{ fontSize: '10px', color: '#468AEF' }}>
                                 {club.createdOn}
                               </p>
                             </div>
                             <div className='right'>
+                              <Link
+                                to={`/workspace/${param.id}/details/${param.spaceKey}/editclub/${club.id}`}
+                              >
+                                <div className='edit-btn'>
+                                  <FaEdit />
+                                </div>
+                              </Link>
                               <div className='delete-btn'>
                                 <RiDeleteBin6Line
                                   onClick={(e) => {
@@ -160,23 +167,36 @@ const CollegeClubsWrapper = styled.section`
     flex-direction: column;
     gap: 3px;
   }
+  .card-footer .right {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
   .club-name {
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 400;
     color: #8d8a8a;
     text-transform: capitalize;
+    width: 95px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
   .card-footer p {
     font-size: 14px;
     font-weight: 400;
     color: #c4c4c4;
   }
-  .card-footer .delete-btn {
+  .card-footer .delete-btn,
+  .card-footer .edit-btn {
     font-size: 16px;
     color: #c4c4c4;
     cursor: pointer;
   }
   .card-footer .delete-btn:hover {
     color: #f54848;
+  }
+  .card-footer .edit-btn:hover {
+    color: #468aef;
   }
 `

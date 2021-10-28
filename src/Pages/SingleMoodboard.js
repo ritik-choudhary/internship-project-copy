@@ -17,6 +17,7 @@ import { BsFillGridFill } from 'react-icons/bs'
 import ReactPlayer from 'react-player'
 import { CgArrowsExpandUpRight } from 'react-icons/cg'
 import ReadPdf from '../Components/MoodboardComponents/ReadPdf'
+import companylogo from '../assets/companylogo.png'
 
 export default function SingleMoodboard() {
   return (
@@ -75,7 +76,9 @@ function SingleMoodboardComponent(props) {
       <div className='page-container'>
         <div className='single-moodboard-header'>
           <Link to='/'>
-            <h3>thesocialcomment</h3>
+            <div className='logo-container'>
+              <img src={companylogo} alt='logo' />
+            </div>
           </Link>
           <div className='right-header'>
             <FaBell className='bell-icon' />
@@ -340,9 +343,15 @@ const SingleMoodboardWrapper = styled.section`
     align-items: center;
     background: black;
   }
-  .single-moodboard-header h3 {
-    color: white;
+  .logo-container {
+    width: 180px;
+    height: 25px;
     margin-left: -130px;
+  }
+  .logo-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
   .right-header {
     display: flex;

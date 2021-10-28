@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { AiOutlinePlus } from 'react-icons/ai'
+import { AiOutlinePlus, AiOutlineHeart, AiFillHeart } from 'react-icons/ai'
 import { Switch, Route, Link, useParams } from 'react-router-dom'
 import LibraryModal from '../Library/LibraryModal'
 import { WorkspaceConsumer } from '../../Context'
@@ -103,20 +103,39 @@ export default function LibraryPage() {
                                     ? `${name.slice(0, 15)}...`
                                     : name}
                                 </h4>
-
-                                <RiDeleteBin6Line
-                                  className='book-delete-btn'
-                                  onClick={(e) => {
-                                    e.preventDefault()
-                                    const favourite = true
-                                    value.deleteBook(
-                                      favourite,
-                                      singleBook.id,
-                                      param.id,
-                                      param.spaceKey
-                                    )
+                                <div
+                                  style={{
+                                    display: 'flex',
+                                    gap: '10px',
+                                    alignItems: 'center',
                                   }}
-                                />
+                                >
+                                  <AiFillHeart
+                                    className='book-favourite-toggle'
+                                    onClick={(e) => {
+                                      e.preventDefault()
+                                      value.toggleFavourite(
+                                        param.id,
+                                        param.spaceKey,
+                                        singleBook.favourite,
+                                        singleBook.id
+                                      )
+                                    }}
+                                  />
+                                  <RiDeleteBin6Line
+                                    className='book-delete-btn'
+                                    onClick={(e) => {
+                                      e.preventDefault()
+                                      const favourite = true
+                                      value.deleteBook(
+                                        favourite,
+                                        singleBook.id,
+                                        param.id,
+                                        param.spaceKey
+                                      )
+                                    }}
+                                  />
+                                </div>
                               </div>
                             </div>
                           </Link>
@@ -147,20 +166,39 @@ export default function LibraryPage() {
                                     ? `${singleBook.link.slice(8, 22)}...`
                                     : singleBook.link}
                                 </h4>
-
-                                <RiDeleteBin6Line
-                                  className='book-delete-btn'
-                                  onClick={(e) => {
-                                    e.preventDefault()
-                                    const favourite = true
-                                    value.deleteBook(
-                                      favourite,
-                                      singleBook.id,
-                                      param.id,
-                                      param.spaceKey
-                                    )
+                                <div
+                                  style={{
+                                    display: 'flex',
+                                    gap: '10px',
+                                    alignItems: 'center',
                                   }}
-                                />
+                                >
+                                  <AiFillHeart
+                                    className='book-favourite-toggle'
+                                    onClick={(e) => {
+                                      e.preventDefault()
+                                      value.toggleFavourite(
+                                        param.id,
+                                        param.spaceKey,
+                                        singleBook.favourite,
+                                        singleBook.id
+                                      )
+                                    }}
+                                  />
+                                  <RiDeleteBin6Line
+                                    className='book-delete-btn'
+                                    onClick={(e) => {
+                                      e.preventDefault()
+                                      const favourite = true
+                                      value.deleteBook(
+                                        favourite,
+                                        singleBook.id,
+                                        param.id,
+                                        param.spaceKey
+                                      )
+                                    }}
+                                  />
+                                </div>
                               </div>
                             </div>
                           </a>
@@ -224,19 +262,53 @@ export default function LibraryPage() {
                                   ? `${name.slice(0, 15)}...`
                                   : name}
                               </h4>
-
-                              <RiDeleteBin6Line
-                                className='book-delete-btn'
-                                onClick={(e) => {
-                                  e.preventDefault()
-                                  value.deleteBook(
-                                    singleBook.favourite,
-                                    singleBook.id,
-                                    param.id,
-                                    param.spaceKey
-                                  )
+                              <div
+                                style={{
+                                  display: 'flex',
+                                  gap: '10px',
+                                  alignItems: 'center',
                                 }}
-                              />
+                              >
+                                {singleBook.favourite ? (
+                                  <AiFillHeart
+                                    className='book-favourite-toggle'
+                                    onClick={(e) => {
+                                      e.preventDefault()
+                                      value.toggleFavourite(
+                                        param.id,
+                                        param.spaceKey,
+                                        singleBook.favourite,
+                                        singleBook.id
+                                      )
+                                    }}
+                                  />
+                                ) : (
+                                  <AiOutlineHeart
+                                    className='book-favourite-toggle'
+                                    onClick={(e) => {
+                                      e.preventDefault()
+                                      value.toggleFavourite(
+                                        param.id,
+                                        param.spaceKey,
+                                        singleBook.favourite,
+                                        singleBook.id
+                                      )
+                                    }}
+                                  />
+                                )}
+                                <RiDeleteBin6Line
+                                  className='book-delete-btn'
+                                  onClick={(e) => {
+                                    e.preventDefault()
+                                    value.deleteBook(
+                                      singleBook.favourite,
+                                      singleBook.id,
+                                      param.id,
+                                      param.spaceKey
+                                    )
+                                  }}
+                                />
+                              </div>
                             </div>
                           </div>
                         </Link>
@@ -265,19 +337,53 @@ export default function LibraryPage() {
                                   ? `${singleBook.link.slice(8, 22)}...`
                                   : singleBook.link}
                               </h4>
-
-                              <RiDeleteBin6Line
-                                className='book-delete-btn'
-                                onClick={(e) => {
-                                  e.preventDefault()
-                                  value.deleteBook(
-                                    singleBook.favourite,
-                                    singleBook.id,
-                                    param.id,
-                                    param.spaceKey
-                                  )
+                              <div
+                                style={{
+                                  display: 'flex',
+                                  gap: '10px',
+                                  alignItems: 'center',
                                 }}
-                              />
+                              >
+                                {singleBook.favourite ? (
+                                  <AiFillHeart
+                                    className='book-favourite-toggle'
+                                    onClick={(e) => {
+                                      e.preventDefault()
+                                      value.toggleFavourite(
+                                        param.id,
+                                        param.spaceKey,
+                                        singleBook.favourite,
+                                        singleBook.id
+                                      )
+                                    }}
+                                  />
+                                ) : (
+                                  <AiOutlineHeart
+                                    className='book-favourite-toggle'
+                                    onClick={(e) => {
+                                      e.preventDefault()
+                                      value.toggleFavourite(
+                                        param.id,
+                                        param.spaceKey,
+                                        singleBook.favourite,
+                                        singleBook.id
+                                      )
+                                    }}
+                                  />
+                                )}
+                                <RiDeleteBin6Line
+                                  className='book-delete-btn'
+                                  onClick={(e) => {
+                                    e.preventDefault()
+                                    value.deleteBook(
+                                      singleBook.favourite,
+                                      singleBook.id,
+                                      param.id,
+                                      param.spaceKey
+                                    )
+                                  }}
+                                />
+                              </div>
                             </div>
                           </div>
                         </a>
@@ -376,8 +482,10 @@ const LibraryPageWrapper = styled.section`
     font-size: 15px;
     color: white;
   }
+  .book-favourite-toggle {
+    color: red;
+  }
   .book-delete-btn:hover {
     color: #f54848;
-    font-size: 20px;
   }
 `

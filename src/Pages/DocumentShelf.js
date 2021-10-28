@@ -9,6 +9,7 @@ import { WorkspaceConsumer } from '../Context'
 import DocumentShelfModal from '../Components/DocumentShelf/DocumentShelfModal'
 import DocumentShelfDocModal from '../Components/DocumentShelf/DocumentShelfDocModal'
 import DocumentShelfFullPage from '../Components/DocumentShelf/DocumentShelfFullPage'
+import companylogo from '../assets/companylogo.png'
 
 export default function DocumentShelf() {
   return (
@@ -52,7 +53,9 @@ function DocumentShelfComponent(props) {
         <div className='page-container'>
           <div className='document-shelf-header'>
             <Link to='/'>
-              <h3>thesocialcomment</h3>
+              <div className='logo-container'>
+                <img src={companylogo} alt='logo' />
+              </div>
             </Link>
             <div className='right-header'>
               <FaBell className='bell-icon' />
@@ -85,7 +88,7 @@ function DocumentShelfComponent(props) {
                   </div>
                 </Link>
                 {value.documentShelf.map((item) => {
-                  if (item.category === 'Marksheet') {
+                  if (item.type === 'Marksheet') {
                     const type =
                       item.doc.name.split('.')[
                         item.doc.name.split('.').length - 1
@@ -143,7 +146,7 @@ function DocumentShelfComponent(props) {
                   </div>
                 </Link>
                 {value.documentShelf.map((item) => {
-                  if (item.category === 'Certificate') {
+                  if (item.type === 'Certificate') {
                     const type =
                       item.doc.name.split('.')[
                         item.doc.name.split('.').length - 1
@@ -201,7 +204,7 @@ function DocumentShelfComponent(props) {
                   </div>
                 </Link>
                 {value.documentShelf.map((item) => {
-                  if (item.category === 'Important') {
+                  if (item.type === 'Important') {
                     const type =
                       item.doc.name.split('.')[
                         item.doc.name.split('.').length - 1
@@ -259,7 +262,7 @@ function DocumentShelfComponent(props) {
                   </div>
                 </Link>
                 {value.documentShelf.map((item) => {
-                  if (item.category === 'OtherDocument') {
+                  if (item.type === 'OtherDocument') {
                     const type =
                       item.doc.name.split('.')[
                         item.doc.name.split('.').length - 1
@@ -338,9 +341,15 @@ const DocumentShelfWrapper = styled.section`
     align-items: center;
     background: black;
   }
-  .document-shelf-header h3 {
-    color: white;
+  .logo-container {
+    width: 180px;
+    height: 25px;
     margin-left: -130px;
+  }
+  .logo-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
   .right-header {
     display: flex;
@@ -433,11 +442,11 @@ const DocumentShelfWrapper = styled.section`
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    font-size: 10px;
+    font-size: 14px;
   }
   .storage {
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     gap: 20px;
   }
   .add-new-btn {

@@ -11,6 +11,7 @@ import { BiTask } from 'react-icons/bi'
 import { HiOutlineLightBulb } from 'react-icons/hi'
 import { CgNotes } from 'react-icons/cg'
 import { FaMoneyCheck, FaPhone } from 'react-icons/fa'
+import companylogo from '../assets/companylogo.png'
 
 export default function SingleClubPage() {
   return (
@@ -64,7 +65,9 @@ function SingleClubPageComponent(props) {
       <div className='page-container'>
         <div className='single-club-header'>
           <Link to='/'>
-            <h3>thesocialcomment</h3>
+            <div className='logo-container'>
+              <img src={companylogo} alt='logo' />
+            </div>
           </Link>
           <div className='right-header'>
             <FaBell className='bell-icon' />
@@ -179,11 +182,15 @@ function SingleClubPageComponent(props) {
                   />
                 </div>
                 <div className='field'>
-                  <label htmlFor='members'>Members</label>
+                  <label htmlFor='members' style={{ flexShrink: '0' }}>
+                    Members
+                  </label>
                   <input
                     type='text'
                     name='members'
                     id='members'
+                    style={{ width: '329px' }}
+                    placeholder="Use ',' or enter after every member"
                     value={memberToAdd}
                     onChange={(e) => setMemberToAdd(e.target.value)}
                     onKeyDown={(e) => {
@@ -327,9 +334,15 @@ const SingleClubPageWrapper = styled.section`
     align-items: center;
     background: black;
   }
-  .single-club-header h3 {
-    color: white;
+  .logo-container {
+    width: 180px;
+    height: 25px;
     margin-left: -130px;
+  }
+  .logo-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
   .right-header {
     display: flex;

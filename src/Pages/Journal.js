@@ -9,6 +9,7 @@ import { RiDeleteBin6Line } from 'react-icons/ri'
 import JournalModal from '../Components/Journal/JournalModal'
 import JournalModalEntry from '../Components/Journal/JournalModalEntry'
 import { AiOutlinePlus } from 'react-icons/ai'
+import companylogo from '../assets/companylogo.png'
 
 export default function Journal() {
   return (
@@ -39,7 +40,9 @@ function JournalComponent(props) {
         <div className='page-container'>
           <div className='journal-header'>
             <Link to='/'>
-              <h3>thesocialcomment</h3>
+              <div className='logo-container'>
+                <img src={companylogo} alt='logo' />
+              </div>
             </Link>
             <div className='right-header'>
               <FaBell className='bell-icon' />
@@ -122,9 +125,15 @@ const JournalWrapper = styled.section`
     align-items: center;
     background: black;
   }
-  .journal-header h3 {
-    color: white;
+  .logo-container {
+    width: 180px;
+    height: 25px;
     margin-left: -130px;
+  }
+  .logo-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
   .right-header {
     display: flex;

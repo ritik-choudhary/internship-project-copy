@@ -15,6 +15,7 @@ import TodoList from '../Components/SpacePages/TodoList'
 import BucketList from '../Components/SpacePages/BucketList'
 import Docs from '../Components/SpacePages/Docs'
 import MeetingNotes from '../Components/SpacePages/MeetingNotes'
+import companylogo from '../assets/companylogo.png'
 
 export default function SpaceContent() {
   const param = useParams()
@@ -26,7 +27,9 @@ export default function SpaceContent() {
           <div className='page-container'>
             <div className='space-content-header'>
               <Link to='/'>
-                <h3>thesocialcomment</h3>
+                <div className='logo-container'>
+                  <img src={companylogo} alt='logo' />
+                </div>
               </Link>
               <div className='right-header'>
                 <FaBell className='bell-icon' />
@@ -158,9 +161,15 @@ const SpaceContentWrapper = styled.section`
     align-items: center;
     background: black;
   }
-  .space-content-header h3 {
-    color: white;
+  .logo-container {
+    width: 180px;
+    height: 25px;
     margin-left: -130px;
+  }
+  .logo-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
   .right-header {
     display: flex;

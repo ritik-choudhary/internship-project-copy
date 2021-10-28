@@ -1,23 +1,26 @@
 import React, { useState, useEffect } from 'react'
 import Modal from 'react-modal'
-import { Link, useHistory } from 'react-router-dom'
+import { Link, useHistory, useParams } from 'react-router-dom'
 import { AiOutlineClose } from 'react-icons/ai'
 import { WorkspaceConsumer } from '../../Context'
 import { AiOutlinePlus } from 'react-icons/ai'
 import DocsInput from '../Tools/DocsInput'
 
-export default function TasksModal() {
+export default function TasksModal(props) {
   return (
     <WorkspaceConsumer>
       {(value) => {
-        return <TaskModalComponent value={value}></TaskModalComponent>
+        return (
+          <TaskModalComponent value={value} {...props}></TaskModalComponent>
+        )
       }}
     </WorkspaceConsumer>
   )
 }
 
 function TaskModalComponent(props) {
-  const { value } = props
+  const { value, isEditing } = props
+  const param = useParams()
   const history = useHistory()
 
   const defaultDate = new Date().toISOString().substring(0, 10)
@@ -51,6 +54,14 @@ function TaskModalComponent(props) {
     return url.protocol === 'http:' || url.protocol === 'https:'
   }
 
+  const tempTaskManager = [
+    ...value.taskManager[0],
+    ...value.taskManager[1],
+    ...value.taskManager[2],
+    ...value.taskManager[3],
+  ]
+  const selectedTask = tempTaskManager.find((item) => item.id === param.taskID)
+
   useEffect(() => {
     if (docsList) {
       setDocPreview([])
@@ -69,6 +80,17 @@ function TaskModalComponent(props) {
     }
   }, [docsList])
 
+  useEffect(() => {
+    if (isEditing) {
+      setTaskTitle(selectedTask.title)
+      setCreatedBy(selectedTask.createdBy)
+      setDuedate(selectedTask.dueDateEdit)
+      setLinks(selectedTask.links)
+      setDocsList(selectedTask.docsList)
+      setDescription(selectedTask.description)
+    }
+  }, [isEditing, value.taskmanager])
+
   return (
     <Modal
       isOpen={true}
@@ -86,6 +108,7 @@ function TaskModalComponent(props) {
           borderRadius: '10px',
           background: 'white',
           padding: '-20px',
+          overflow: 'auto',
         },
         overlay: {
           background: 'rgba(0, 0, 0, 0.31)',
@@ -138,22 +161,41 @@ function TaskModalComponent(props) {
         }}
         onSubmit={(e) => {
           e.preventDefault()
+
           let tempDueDate = new Date(duedate)
           tempDueDate = `${tempDueDate.getDate()}-${
             tempDueDate.getMonth() + 1
           }-${tempDueDate.getFullYear()}`
-          const taskToAdd = {
-            id: new Date().getTime().toString(),
-            title: taskTitle,
-            createdBy: createdBy,
-            dueDate: tempDueDate,
-            links: links,
-            docsList: docsList,
-            docPreview: docPreview,
-            description: description,
-            completed: false,
+          if (!isEditing) {
+            const taskToAdd = {
+              id: new Date().getTime().toString(),
+              title: taskTitle,
+              createdBy: createdBy,
+              dueDateEdit: duedate,
+              dueDate: tempDueDate,
+              links: links,
+              docsList: docsList,
+              docPreview: docPreview,
+              description: description,
+              completed: false,
+            }
+
+            value.createTask(taskToAdd)
+          } else {
+            const taskToAdd = {
+              id: selectedTask.id,
+              title: taskTitle,
+              createdBy: createdBy,
+              dueDateEdit: duedate,
+              dueDate: tempDueDate,
+              links: links,
+              docsList: docsList,
+              docPreview: docPreview,
+              description: description,
+              completed: false,
+            }
+            value.editManagerTask(param.taskID, taskToAdd)
           }
-          value.createTask(taskToAdd)
 
           history.push(`/taskmanager`)
         }}
@@ -395,6 +437,7 @@ function TaskModalComponent(props) {
               fontSize: '12px',
               padding: '5px 5px',
               fontFamily: 'Open Sans',
+              maxWidth: '100%',
             }}
           />
         </div>

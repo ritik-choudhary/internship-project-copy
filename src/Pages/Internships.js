@@ -12,6 +12,7 @@ import AppliedModal from '../Components/InternshipModals/AppliedModal'
 import LinksAndPdfsModal from '../Components/InternshipModals/LinksAndPdfsModal'
 import InternshipTaskModal from '../Components/InternshipModals/InternshipTaskModal'
 import TasksContainerModal from '../Components/InternshipModals/TasksContainerModal'
+import companylogo from '../assets/companylogo.png'
 
 export default function Internships() {
   return (
@@ -57,7 +58,9 @@ function InternshipsComponent(props) {
         <div className='page-container'>
           <div className='internships-header'>
             <Link to='/'>
-              <h3>thesocialcomment</h3>
+              <div className='logo-container'>
+                <img src={companylogo} alt='logo' />
+              </div>
             </Link>
             <div className='right-header'>
               <FaBell className='bell-icon' />
@@ -304,9 +307,15 @@ const InternshipsWrapper = styled.section`
     align-items: center;
     background: black;
   }
-  .internships-header h3 {
-    color: white;
+  .logo-container {
+    width: 180px;
+    height: 25px;
     margin-left: -130px;
+  }
+  .logo-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
   .right-header {
     display: flex;

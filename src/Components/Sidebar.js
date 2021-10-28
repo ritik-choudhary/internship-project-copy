@@ -40,7 +40,7 @@ export default function Sidebar() {
         <Link to='/workspace' className='sidebar-icon-link'>
           <Option
             Icon={AiOutlinePlus}
-            title={'Add Workspace'}
+            title={'Workspaces'}
             setIsSidebarOpen={setIsSidebarOpen}
             isSidebarOpen={isSidebarOpen}
           />

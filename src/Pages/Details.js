@@ -11,6 +11,7 @@ import SpaceContent from './SpaceContent'
 import { BsFillGridFill } from 'react-icons/bs'
 import { FaList, FaBell, FaEdit } from 'react-icons/fa'
 import { RiDeleteBin6Line } from 'react-icons/ri'
+import companylogo from '../assets/companylogo.png'
 
 export default function Details() {
   return (
@@ -54,7 +55,9 @@ const DetailPageComponent = () => {
       <div className='page-container'>
         <div className='details-header'>
           <Link to='/'>
-            <h3>thesocialcomment</h3>
+            <div className='logo-container'>
+              <img src={companylogo} alt='logo' />
+            </div>
           </Link>
           <div className='right-header'>
             <FaBell className='bell-icon' />
@@ -310,9 +313,15 @@ const WorkspaceContentWrapper = styled.section`
     align-items: center;
     background: black;
   }
-  .details-header h3 {
-    color: white;
+  .logo-container {
+    width: 180px;
+    height: 25px;
     margin-left: -130px;
+  }
+  .logo-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
   .right-header {
     display: flex;
@@ -374,6 +383,8 @@ const WorkspaceContentWrapper = styled.section`
   .grid-style-active,
   .list-style-active {
     border: 1px solid #468aef;
+    align-items: center;
+    justify-content: center;
   }
   .grid-style-active svg,
   .list-style-active svg {

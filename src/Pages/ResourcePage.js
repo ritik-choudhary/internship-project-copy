@@ -12,6 +12,7 @@ import MeetingNotes from '../Components/resourcepages/MeetingNotes'
 import Contacts from '../Components/resourcepages/Contacts'
 import Modal from 'react-modal'
 import { AiFillCloseCircle } from 'react-icons/ai'
+import companylogo from '../assets/companylogo.png'
 
 export default function ResourcePage(props) {
   return (
@@ -72,7 +73,9 @@ function ResourcePageComponent(props) {
             <div className='resource-content-page'>
               <div className='page-container'>
                 <div className='share-content-header'>
-                  <h3>thesocialcomment</h3>
+                  <div className='logo-container'>
+                    <img src={companylogo} alt='logo' />
+                  </div>
 
                   <div className='share-right-header'>
                     <Link
@@ -116,7 +119,9 @@ function ResourcePageComponent(props) {
             <div className='page-container'>
               <div className='resource-content-header'>
                 <Link to='/'>
-                  <h3>thesocialcomment</h3>
+                  <div className='logo-container'>
+                    <img src={companylogo} alt='logo' />
+                  </div>
                 </Link>
                 <div className='right-header'>
                   <FaBell className='bell-icon' />
@@ -249,10 +254,15 @@ const ResourcePageWrapper = styled.section`
     align-items: center;
     background: black;
   }
-  .resource-content-header h3,
-  .share-content-header h3 {
-    color: white;
+  .logo-container {
+    width: 180px;
+    height: 25px;
     margin-left: -130px;
+  }
+  .logo-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
   .right-header {
     display: flex;

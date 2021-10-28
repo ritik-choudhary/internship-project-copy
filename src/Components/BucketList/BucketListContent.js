@@ -12,6 +12,7 @@ import { RiArrowGoBackFill } from 'react-icons/ri'
 import Sidebar from '../../Components/Sidebar'
 import styled from 'styled-components'
 import { RiDeleteBin6Line } from 'react-icons/ri'
+import companylogo from '../../assets/companylogo.png'
 
 export default function BucketListContent() {
   return (
@@ -61,7 +62,9 @@ function BucketListContentComponent(props) {
         <div className='page-container'>
           <div className='bucket-content-header'>
             <Link to='/'>
-              <h3>thesocialcomment</h3>
+              <div className='logo-container'>
+                <img src={companylogo} alt='logo' />
+              </div>
             </Link>
             <div className='right-header'>
               <FaBell className='bell-icon' />
@@ -246,9 +249,15 @@ const BucketListContentWrapper = styled.section`
     align-items: center;
     background: black;
   }
-  .bucket-content-header h3 {
-    color: white;
+  .logo-container {
+    width: 180px;
+    height: 25px;
     margin-left: -130px;
+  }
+  .logo-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
   .right-header {
     display: flex;

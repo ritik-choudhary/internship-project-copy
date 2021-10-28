@@ -5,11 +5,15 @@ import { Switch, Route, Link, useParams } from 'react-router-dom'
 import { WorkspaceConsumer } from '../../Context'
 import { RiDeleteBin6Line } from 'react-icons/ri'
 import WorkshopModal from '../Workshop/WorkshopModal'
+import { FaEdit } from 'react-icons/fa'
 
 export default function Workshop() {
   return (
     <WorkshopWrapper>
       <Switch>
+        <Route path='/workspace/:id/details/:spaceKey/edit/:workshopID'>
+          <WorkshopModal isEditing />
+        </Route>
         <Route path='/workspace/:id/details/:spaceKey/addworkshop'>
           <WorkshopModal />
         </Route>
@@ -68,6 +72,13 @@ function WorkshopComponent(props) {
                     </p>
                   </div>
                   <div className='right'>
+                    <Link
+                      to={`/workspace/${param.id}/details/${param.spaceKey}/edit/${workshop.id}`}
+                    >
+                      <div className='edit-btn'>
+                        <FaEdit />
+                      </div>
+                    </Link>
                     <div className='delete-btn'>
                       <RiDeleteBin6Line
                         onClick={(e) => {
@@ -168,6 +179,11 @@ const WorkshopWrapper = styled.section`
     flex-direction: column;
     gap: 3px;
   }
+  .card-footer .right {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
   .workshop-name {
     font-size: 14px;
     font-weight: 400;
@@ -179,12 +195,16 @@ const WorkshopWrapper = styled.section`
     font-weight: 400;
     color: #c4c4c4;
   }
-  .card-footer .delete-btn {
+  .card-footer .delete-btn,
+  .card-footer .edit-btn {
     font-size: 16px;
     color: #c4c4c4;
     cursor: pointer;
   }
   .card-footer .delete-btn:hover {
     color: #f54848;
+  }
+  .card-footer .edit-btn:hover {
+    color: #468aef;
   }
 `

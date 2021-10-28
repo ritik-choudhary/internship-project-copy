@@ -13,6 +13,7 @@ import VenueDetails from '../Components/resourcepages/VenueDetails'
 import TopicInformation from '../Components/resourcepages/TopicInformation'
 import Modal from 'react-modal'
 import OtherOption from '../Components/resourcepages/OtherOption'
+import companylogo from '../assets/companylogo.png'
 
 export default function WorkshopResourcePage(props) {
   return (
@@ -75,7 +76,9 @@ function WorkshopResourcePageComponent(props) {
             <div className='resource-content-page'>
               <div className='page-container'>
                 <div className='resource-content-header'>
-                  <h3>thesocialcomment</h3>
+                  <div className='logo-container'>
+                    <img src={companylogo} alt='logo' />
+                  </div>
                   <div className='right-header'>
                     <FaBell className='bell-icon' />
                     <Link
@@ -116,7 +119,9 @@ function WorkshopResourcePageComponent(props) {
             <div className='page-container'>
               <div className='resource-content-header'>
                 <Link to='/'>
-                  <h3>thesocialcomment</h3>
+                  <div className='logo-container'>
+                    <img src={companylogo} alt='logo' />
+                  </div>
                 </Link>
                 <div className='right-header'>
                   <FaBell className='bell-icon' />
@@ -245,9 +250,15 @@ const ResourcePageWrapper = styled.section`
     align-items: center;
     background: black;
   }
-  .resource-content-header h3 {
-    color: white;
+  .logo-container {
+    width: 180px;
+    height: 25px;
     margin-left: -130px;
+  }
+  .logo-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
   .right-header {
     display: flex;

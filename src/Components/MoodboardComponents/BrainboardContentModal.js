@@ -203,6 +203,7 @@ function BrainboardModalComponent(props) {
               type='text'
               name='tags'
               id='tags'
+              placeholder="Press ',' or Enter key to add "
               value={tagToAdd}
               className={tagToAdd ? '' : 'skeleton'}
               onChange={(e) => setTagToAdd(e.target.value)}

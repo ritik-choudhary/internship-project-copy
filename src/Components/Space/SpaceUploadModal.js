@@ -96,15 +96,27 @@ function SpaceUploadModalComponent(props) {
         >
           Add new space
         </h3>
-        <Link to={`/workspace/${param.id}/details/createspace`}>
-          <AiOutlineClose
-            style={{
-              fontSize: '20px',
-              color: '#C4C4C4',
-              cursor: 'pointer',
-            }}
-          />
-        </Link>
+        {isEditing ? (
+          <Link to={`/workspace/${param.id}/details`}>
+            <AiOutlineClose
+              style={{
+                fontSize: '20px',
+                color: '#C4C4C4',
+                cursor: 'pointer',
+              }}
+            />
+          </Link>
+        ) : (
+          <Link to={`/workspace/${param.id}/details/createspace`}>
+            <AiOutlineClose
+              style={{
+                fontSize: '20px',
+                color: '#C4C4C4',
+                cursor: 'pointer',
+              }}
+            />
+          </Link>
+        )}
       </header>
 
       <form

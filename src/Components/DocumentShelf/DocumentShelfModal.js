@@ -126,7 +126,7 @@ function DocumentShelfModalComponent(props) {
               title: title || altTitle,
               doc: doc,
               preview: docPreview,
-              category: category,
+              type: category,
             })
             history.push('/documentshelf')
           }

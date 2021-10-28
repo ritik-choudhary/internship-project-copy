@@ -165,6 +165,38 @@ class WorkspaceProvider extends Component {
     })
   }
 
+  toggleFavourite = (id, key, favourite, bookId) => {
+    const oldList = [...this.state.workspaceElements]
+    let selectedSpace = oldList.find(
+      (item) => item.id === key && item.workspaceID === id
+    )
+    if (favourite) {
+      let selectedBook = selectedSpace.favouriteBooks.find(
+        (item) => item.id === bookId
+      )
+      let newFavouriteList = [...selectedSpace.favouriteBooks]
+      newFavouriteList = newFavouriteList.filter((item) => item.id !== bookId)
+      selectedSpace.favouriteBooks = newFavouriteList
+      selectedBook.favourite = false
+    } else {
+      let selectedBook = selectedSpace.bookShelf.find(
+        (item) => item.id === bookId
+      )
+      selectedBook.favourite = !selectedBook.favourite
+      if (selectedBook.favourite) {
+        let newFavouriteList = [...selectedSpace.favouriteBooks]
+        const selectedBook = selectedSpace.bookShelf.find(
+          (item) => item.id === bookId
+        )
+        newFavouriteList = [...newFavouriteList, selectedBook]
+        selectedSpace.favouriteBooks = newFavouriteList
+      }
+    }
+    this.setState(() => {
+      return { workspaceElements: oldList }
+    })
+  }
+
   addNewSubject = (id, key, subject) => {
     const oldList = [...this.state.workspaceElements]
     let element = oldList.find(
@@ -202,6 +234,19 @@ class WorkspaceProvider extends Component {
     )
     element.clubs = element.clubs || []
     element.clubs = [...element.clubs, club]
+    this.setState(() => {
+      return { workspaceElements: oldList }
+    })
+  }
+
+  editClub = (id, key, clubId, club) => {
+    const oldList = [...this.state.workspaceElements]
+    const selectedSpace = oldList.find(
+      (item) => item.id === key && item.workspaceID === id
+    )
+    let selectedClub = selectedSpace.clubs.find((item) => item.id === clubId)
+    selectedClub.title = club.title
+    selectedClub.image = club.image
     this.setState(() => {
       return { workspaceElements: oldList }
     })
@@ -646,6 +691,21 @@ class WorkspaceProvider extends Component {
     })
   }
 
+  editMoodboard = (id, key, moodboardId, moodboard) => {
+    const oldList = [...this.state.workspaceElements]
+    const selectedSpace = oldList.find(
+      (item) => item.id === key && item.workspaceID === id
+    )
+    let selectedMoodboard = selectedSpace.moodboards.find(
+      (item) => item.id === moodboardId
+    )
+    selectedMoodboard.title = moodboard.title
+    selectedMoodboard.image = moodboard.image
+    this.setState(() => {
+      return { workspaceElements: oldList }
+    })
+  }
+
   addNewDigitalBrainboard = (id, key, digitalBrainboard) => {
     const oldList = [...this.state.workspaceElements]
     let element = oldList.find(
@@ -656,6 +716,21 @@ class WorkspaceProvider extends Component {
       ...element.digitalBrainboards,
       digitalBrainboard,
     ]
+    this.setState(() => {
+      return { workspaceElements: oldList }
+    })
+  }
+
+  editBasicsDigitalBrainboard = (id, key, brainboardId, brainboard) => {
+    const oldList = [...this.state.workspaceElements]
+    const selectedSpace = oldList.find(
+      (item) => item.id === key && item.workspaceID === id
+    )
+    let selecteddigitalBrainboard = selectedSpace.digitalBrainboards.find(
+      (item) => item.id === brainboardId
+    )
+    selecteddigitalBrainboard.title = brainboard.title
+    selecteddigitalBrainboard.image = brainboard.image
     this.setState(() => {
       return { workspaceElements: oldList }
     })
@@ -826,6 +901,21 @@ class WorkspaceProvider extends Component {
     )
     element.workshops = element.workshops || []
     element.workshops = [...element.workshops, workshop]
+    this.setState(() => {
+      return { workspaceElements: oldList }
+    })
+  }
+
+  editWorkshop = (id, key, workshopId, workshop) => {
+    const oldList = [...this.state.workspaceElements]
+    const selectedSpace = oldList.find(
+      (item) => item.id === key && item.workspaceID === id
+    )
+    let selectedWorkshop = selectedSpace.workshops.find(
+      (item) => item.id === workshopId
+    )
+    selectedWorkshop.title = workshop.title
+    selectedWorkshop.image = workshop.image
     this.setState(() => {
       return { workspaceElements: oldList }
     })
@@ -1894,6 +1984,30 @@ class WorkspaceProvider extends Component {
     })
   }
 
+  editManagerTask = (taskId, taskToEdit) => {
+    const newTaskManager = [...this.state.taskManager]
+    let selectedTask = newTaskManager[0].find((item) => item.id === taskId)
+    if (!selectedTask) {
+      selectedTask = newTaskManager[1].find((item) => item.id === taskId)
+      if (!selectedTask) {
+        selectedTask = newTaskManager[2].find((item) => item.id === taskId)
+        if (!selectedTask) {
+          selectedTask = newTaskManager[3].find((item) => item.id === taskId)
+        }
+      }
+    }
+    selectedTask.title = taskToEdit.title
+    selectedTask.createdBy = taskToEdit.createdBy
+    selectedTask.dueDate = taskToEdit.dueDate
+    selectedTask.description = taskToEdit.description
+    selectedTask.docsList = taskToEdit.docsList
+    selectedTask.links = taskToEdit.links
+
+    this.setState(() => {
+      return { taskManager: newTaskManager }
+    })
+  }
+
   handleStatusTaskManager = (taskId) => {
     let oldTaskManager = [...this.state.taskManager]
     let selectedTask = oldTaskManager[0]?.find((item) => item.id === taskId)
@@ -1969,9 +2083,12 @@ class WorkspaceProvider extends Component {
 
   deleteDocumentShelf = (docId) => {
     const oldDocumentShelf = [...this.state.documentShelf]
+    let newTrashList = [...this.state.trash]
+    const selectedDoc = oldDocumentShelf.find((item) => item.id === docId)
+    newTrashList = [...newTrashList, selectedDoc]
     let newDocumentShelf = oldDocumentShelf.filter((item) => item.id !== docId)
     this.setState(() => {
-      return { documentShelf: newDocumentShelf }
+      return { documentShelf: newDocumentShelf, trash: newTrashList }
     })
   }
 
@@ -1986,6 +2103,7 @@ class WorkspaceProvider extends Component {
   restoreFromTrash = (id) => {
     let newTrashList = [...this.state.trash]
     const itemToRestore = newTrashList.find((item) => item.id === id)
+    let oldDocumentShelf = [...this.state.documentShelf]
     const tempWorkspaceList = [...this.state.workspaceList]
     const isAvailable = tempWorkspaceList.find(
       (item) => item.id === itemToRestore.workspaceID
@@ -2583,6 +2701,42 @@ class WorkspaceProvider extends Component {
         }
         break
 
+      case 'Marksheet':
+        newTrashList = newTrashList.filter((element) => element.id !== id)
+
+        oldDocumentShelf = [...oldDocumentShelf, itemToRestore]
+        this.setState(() => {
+          return { trash: newTrashList, documentShelf: oldDocumentShelf }
+        })
+        break
+
+      case 'Certificate':
+        newTrashList = newTrashList.filter((element) => element.id !== id)
+
+        oldDocumentShelf = [...oldDocumentShelf, itemToRestore]
+        this.setState(() => {
+          return { trash: newTrashList, documentShelf: oldDocumentShelf }
+        })
+        break
+
+      case 'Important':
+        newTrashList = newTrashList.filter((element) => element.id !== id)
+
+        oldDocumentShelf = [...oldDocumentShelf, itemToRestore]
+        this.setState(() => {
+          return { trash: newTrashList, documentShelf: oldDocumentShelf }
+        })
+        break
+
+      case 'OtherDocument':
+        newTrashList = newTrashList.filter((element) => element.id !== id)
+
+        oldDocumentShelf = [...oldDocumentShelf, itemToRestore]
+        this.setState(() => {
+          return { trash: newTrashList, documentShelf: oldDocumentShelf }
+        })
+        break
+
       default:
         console.log('nothing to restore')
     }
@@ -2605,9 +2759,11 @@ class WorkspaceProvider extends Component {
           handleDetailSpace: this.handleDetailSpace,
           addBook: this.addBook,
           deleteBook: this.deleteBook,
+          toggleFavourite: this.toggleFavourite,
           addNewSubject: this.addNewSubject,
           editSubject: this.editSubject,
           addNewClub: this.addNewClub,
+          editClub: this.editClub,
           deleteClub: this.deleteClub,
           addNewResource: this.addNewResource,
           addTask: this.addTask,
@@ -2632,14 +2788,17 @@ class WorkspaceProvider extends Component {
           addNewDigitalBrainboard: this.addNewDigitalBrainboard,
           deleteMoodboard: this.deleteMoodboard,
           deleteDigitalBrainboard: this.deleteDigitalBrainboard,
+          editBasicsDigitalBrainboard: this.editBasicsDigitalBrainboard,
           editDigitalBrainboard: this.editDigitalBrainboard,
           addMoodboardField: this.addMoodboardField,
+          editMoodboard: this.editMoodboard,
           deleteMoodboardField: this.deleteMoodboardField,
           addNewHabit: this.addNewHabit,
           addNewHabitField: this.addNewHabitField,
           deleteHabit: this.deleteHabit,
           handleStatusOfHabit: this.handleStatusOfHabit,
           addNewWorkshop: this.addNewWorkshop,
+          editWorkshop: this.editWorkshop,
           deleteWorkshop: this.deleteWorkshop,
           handleWorkshopInfo: this.handleWorkshopInfo,
           handleClubInfo: this.handleClubInfo,
@@ -2698,6 +2857,7 @@ class WorkspaceProvider extends Component {
           internshipTaskManipulation: this.internshipTaskManipulation,
           handleInternshipStatus: this.handleInternshipStatus,
           createTask: this.createTask,
+          editManagerTask: this.editManagerTask,
           handleStatusTaskManager: this.handleStatusTaskManager,
           switchTask: this.switchTask,
           addNewDocumentShelf: this.addNewDocumentShelf,

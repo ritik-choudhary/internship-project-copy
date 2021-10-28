@@ -8,11 +8,16 @@ import { Link, Switch, Route } from 'react-router-dom'
 import { AiOutlinePlus } from 'react-icons/ai'
 import TaskModal from '../Components/TaskManagerComponents/TaskModal'
 import SingleTaskInfoModal from '../Components/TaskManagerComponents/SingleTaskInfoModal'
+import { FiEdit } from 'react-icons/fi'
+import companylogo from '../assets/companylogo.png'
 
 export default function TaskManager() {
   return (
     <>
       <Switch>
+        <Route path='/taskmanager/edit/:taskID'>
+          <TaskModal isEditing />
+        </Route>
         <Route path='/taskmanager/info/:taskID'>
           <SingleTaskInfoModal />
         </Route>
@@ -64,7 +69,9 @@ function TaskManagerComponent(props) {
         <div className='page-container'>
           <div className='task-manager-header'>
             <Link to='/'>
-              <h3>thesocialcomment</h3>
+              <div className='logo-container'>
+                <img src={companylogo} alt='logo' />
+              </div>
             </Link>
             <div className='right-header'>
               <FaBell className='bell-icon' />
@@ -160,7 +167,20 @@ function TaskManagerComponent(props) {
                         </div>
                         <div className='group'>
                           <p className='label'>Due Date</p>
-                          <h3 className='due-date'>{task.dueDate}</h3>
+                          <div
+                            style={{
+                              display: 'flex',
+                              justifyContent: 'space-between',
+                              alignItems: 'center',
+                            }}
+                          >
+                            <h3 className='due-date'>{task.dueDate}</h3>
+                            <Link to={`/taskmanager/edit/${task.id}`}>
+                              <div className='task-edit-btn'>
+                                <FiEdit />
+                              </div>
+                            </Link>
+                          </div>
                         </div>
                       </div>
                     </Link>
@@ -211,7 +231,20 @@ function TaskManagerComponent(props) {
                         </div>
                         <div className='group'>
                           <p className='label'>Due Date</p>
-                          <h3 className='due-date'>{task.dueDate}</h3>
+                          <div
+                            style={{
+                              display: 'flex',
+                              justifyContent: 'space-between',
+                              alignItems: 'center',
+                            }}
+                          >
+                            <h3 className='due-date'>{task.dueDate}</h3>
+                            <Link to={`/taskmanager/edit/${task.id}`}>
+                              <div className='task-edit-btn'>
+                                <FiEdit />
+                              </div>
+                            </Link>
+                          </div>
                         </div>
                       </div>
                     </Link>
@@ -264,7 +297,20 @@ function TaskManagerComponent(props) {
                         </div>
                         <div className='group'>
                           <p className='label'>Due Date</p>
-                          <h3 className='due-date'>{task.dueDate}</h3>
+                          <div
+                            style={{
+                              display: 'flex',
+                              justifyContent: 'space-between',
+                              alignItems: 'center',
+                            }}
+                          >
+                            <h3 className='due-date'>{task.dueDate}</h3>
+                            <Link to={`/taskmanager/edit/${task.id}`}>
+                              <div className='task-edit-btn'>
+                                <FiEdit />
+                              </div>
+                            </Link>
+                          </div>
                         </div>
                       </div>
                     </Link>
@@ -317,7 +363,20 @@ function TaskManagerComponent(props) {
                         </div>
                         <div className='group'>
                           <p className='label'>Due Date</p>
-                          <h3 className='due-date'>{task.dueDate}</h3>
+                          <div
+                            style={{
+                              display: 'flex',
+                              justifyContent: 'space-between',
+                              alignItems: 'center',
+                            }}
+                          >
+                            <h3 className='due-date'>{task.dueDate}</h3>
+                            <Link to={`/taskmanager/edit/${task.id}`}>
+                              <div className='task-edit-btn'>
+                                <FiEdit />
+                              </div>
+                            </Link>
+                          </div>
                         </div>
                       </div>
                     </Link>
@@ -358,9 +417,15 @@ const TaskManagerWrapper = styled.section`
     align-items: center;
     background: black;
   }
-  .task-manager-header h3 {
-    color: white;
+  .logo-container {
+    width: 180px;
+    height: 25px;
     margin-left: -130px;
+  }
+  .logo-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
   .right-header {
     display: flex;
@@ -496,7 +561,7 @@ const TaskManagerWrapper = styled.section`
   .in-progress-storage-container,
   .todo-storage-container,
   .new-tasks-storage-container {
-    border: 1px dashed #468aef;
+    box-shadow: 2px 2px 5px rgb(0 0 0 / 10%);
     border-radius: 6px;
     padding: 5px;
     min-height: 70vh;
@@ -541,6 +606,10 @@ const TaskManagerWrapper = styled.section`
   .status-manipulation .title {
     color: #468aef;
     font-size: 16px;
+    text-overflow: ellipsis;
+    width: 200px;
+    overflow: hidden;
+    white-space: nowrap;
   }
   .group {
     display: flex;
@@ -571,5 +640,12 @@ const TaskManagerWrapper = styled.section`
     text-align: center;
     padding: 20px;
     height: 110px;
+  }
+  .task-edit-btn {
+    color: #c4c4c4;
+    cursor: pointer;
+  }
+  .task-edit-btn:hover {
+    color: #468aef;
   }
 `

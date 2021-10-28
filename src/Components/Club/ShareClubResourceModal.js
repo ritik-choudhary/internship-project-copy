@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import Modal from 'react-modal'
 import { RiArrowGoBackFill } from 'react-icons/ri'
 import { AiFillCloseCircle, AiOutlineClose } from 'react-icons/ai'
+import companylogo from '../../assets/companylogo.png'
 
 export default function ShareClubPage() {
   return (
@@ -64,7 +65,9 @@ function SingleClubPageComponent(props) {
         <div className='single-club-page'>
           <div className='page-container'>
             <div className='single-club-header'>
-              <h3>thesocialcomment</h3>
+              <div className='logo-container'>
+                <img src={companylogo} alt='logo' />
+              </div>
               <div className='right-header'>
                 <Link
                   to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}`}
@@ -189,9 +192,15 @@ const SingleClubPageWrapper = styled.section`
     align-items: center;
     background: black;
   }
-  .single-club-header h3 {
-    color: white;
+  .logo-container {
+    width: 180px;
+    height: 25px;
     margin-left: -130px;
+  }
+  .logo-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
   .right-header {
     display: flex;

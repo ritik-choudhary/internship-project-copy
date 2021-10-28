@@ -7,6 +7,7 @@ import { FaBell } from 'react-icons/fa'
 import { RiArrowGoBackFill } from 'react-icons/ri'
 import moment from 'moment'
 import HabitTrackerModal from '../Components/HabitTrackerModal'
+import companylogo from '../assets/companylogo.png'
 
 export default function SingleMoodboard() {
   return (
@@ -94,7 +95,9 @@ function HabitRecordsComponent(props) {
         <div className='page-container'>
           <div className='single-habit-header'>
             <Link to='/'>
-              <h3>thesocialcomment</h3>
+              <div className='logo-container'>
+                <img src={companylogo} alt='logo' />
+              </div>
             </Link>
             <div className='right-header'>
               <FaBell className='bell-icon' />
@@ -211,6 +214,7 @@ function HabitRecordsComponent(props) {
                             height: '15px',
                             borderRadius: '100%',
                             backgroundColor: `${field.color}`,
+                            flexShrink: '0',
                           }}
                         ></div>
                         <p>{field.field}</p>
@@ -329,9 +333,15 @@ const HabitRecordsWrapper = styled.section`
     align-items: center;
     background: black;
   }
-  .single-habit-header h3 {
-    color: white;
+  .logo-container {
+    width: 180px;
+    height: 25px;
     margin-left: -130px;
+  }
+  .logo-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
   .right-header {
     display: flex;
@@ -482,6 +492,13 @@ const HabitRecordsWrapper = styled.section`
     font-size: 14px;
     font-weight: 600;
     height: 40px;
+  }
+
+  .col-1 p {
+    width: 50 px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .sec-dynamic-col {

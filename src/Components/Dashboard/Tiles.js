@@ -1,5 +1,5 @@
-import React from 'react'
-import { AiOutlinePlus } from 'react-icons/ai'
+import React, { useState } from 'react'
+import { AiOutlinePlus, AiOutlineDown, AiOutlineUp } from 'react-icons/ai'
 import './Tiles.css'
 import todo from '../../assets/todo.jpg'
 import performance from '../../assets/performance.jpg'
@@ -11,26 +11,48 @@ import { Link } from 'react-router-dom'
 import { WorkspaceConsumer } from '../../Context'
 
 export default function Tiles() {
+  const [maximize, setMaximize] = useState(true)
   return (
     <div className='tiles'>
-      <div className='add-workspace-tile'>
-        <div className='tile-text'>
-          <p>
-            Studying in college or doing internships?
-            <br /> Don’t worry, we got you.
-            <br />
-            Add workspaces to manage multiple tasks
-            <br /> from one place.
-          </p>
+      {maximize ? (
+        <div className='add-workspace-tile'>
+          <div className='tile-text'>
+            <p>
+              Studying in college or doing internships?
+              <br /> Don’t worry, we got you.
+              <br />
+              Add workspaces to manage multiple tasks
+              <br /> from one place.
+            </p>
+          </div>
+          <div>
+            <div className='minimize-btn' onClick={() => setMaximize(false)}>
+              <AiOutlineUp />
+            </div>
+            <div className='button-container'>
+              <Link to='/workspace' className='workspace-link'>
+                <button className='add-workspace-btn'>
+                  <AiOutlinePlus /> Add Workspace
+                </button>
+              </Link>
+            </div>
+          </div>
         </div>
-        <div className='button-container'>
-          <Link to='/workspace' className='workspace-link'>
-            <button className='add-workspace-btn'>
-              <AiOutlinePlus /> Add Workspace
-            </button>
-          </Link>
+      ) : (
+        <div className='minimized-container'>
+          <div className='maximize-btn' onClick={() => setMaximize(true)}>
+            <AiOutlineDown />
+          </div>
+          <div className='button-container'>
+            <Link to='/workspace' className='workspace-link'>
+              <button className='add-workspace-btn'>
+                <AiOutlinePlus /> Add Workspace
+              </button>
+            </Link>
+          </div>
         </div>
-      </div>
+      )}
+
       <div className='bottom-tiles'>
         <div className='left-tile'>
           <div className='left-top'>

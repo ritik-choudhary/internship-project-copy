@@ -5,8 +5,7 @@ import styled from 'styled-components'
 import Modal from 'react-modal'
 import { RiArrowGoBackFill } from 'react-icons/ri'
 import { AiOutlineClose } from 'react-icons/ai'
-
-// import WorkshopResourcePage from './WorkshopResourcePage'
+import companylogo from '../../assets/companylogo.png'
 
 export default function ShareWorkshopPage() {
   return (
@@ -70,7 +69,9 @@ function SingleWorkshopPageComponent(props) {
         <div className='single-workshop-page'>
           <div className='page-container'>
             <div className='single-workshop-header'>
-              <h3>thesocialcomment</h3>
+              <div className='logo-container'>
+                <img src={companylogo} alt='logo' />
+              </div>
               <div className='right-header'>
                 <Link
                   to={`/workspace/${param.id}/details/${param.spaceKey}/insideworkshop/${param.workshopID}`}
@@ -186,9 +187,15 @@ const SingleWorkshopPageWrapper = styled.section`
     align-items: center;
     background: black;
   }
-  .single-workshop-header h3 {
-    color: white;
+  .logo-container {
+    width: 180px;
+    height: 25px;
     margin-left: -130px;
+  }
+  .logo-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
   .right-header {
     display: flex;

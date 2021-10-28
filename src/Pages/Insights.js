@@ -5,6 +5,7 @@ import Sidebar from '../Components/Sidebar'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 import { Line } from 'react-chartjs-2'
+import companylogo from '../assets/companylogo.png'
 
 export default function Insights() {
   const [isProductivity, setIsProductivity] = useState(true)
@@ -94,7 +95,9 @@ export default function Insights() {
         <div className='page-container'>
           <div className='insights-header'>
             <Link to='/'>
-              <h3>thesocialcomment</h3>
+              <div className='logo-container'>
+                <img src={companylogo} alt='logo' />
+              </div>
             </Link>
             <div className='right-header'>
               <FaBell className='bell-icon' />
@@ -113,6 +116,7 @@ export default function Insights() {
               >
                 Insights
               </h3>
+              <h2 className='year-of-charts'>{new Date().getFullYear()}</h2>
             </div>
             <div className='line'></div>
           </header>
@@ -362,9 +366,15 @@ const InsightsWrapper = styled.section`
     align-items: center;
     background: black;
   }
-  .insights-header h3 {
-    color: white;
+  .logo-container {
+    width: 180px;
+    height: 25px;
     margin-left: -130px;
+  }
+  .logo-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
   .right-header {
     display: flex;
@@ -401,6 +411,13 @@ const InsightsWrapper = styled.section`
   .insights-title-container .title {
     padding-bottom: 10px;
     width: 100%;
+    font-size: 20px;
+    font-weight: 400;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .year-of-charts {
     font-size: 20px;
     font-weight: 400;
   }

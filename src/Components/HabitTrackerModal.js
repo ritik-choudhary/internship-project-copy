@@ -445,12 +445,28 @@ function HabitTrackerModalComponent(props) {
             maxHeight: '60px',
             overflow: 'auto',
             overflowX: 'hidden',
+            border: '1px solid #c4c4c4',
+            borderRadius: '6px',
+            padding: '5px',
+            paddingLeft: '10px',
+            paddingBottom: '10px',
           }}
         >
           {fieldsList.map((item) => {
             return (
               <div className='field-to-add'>
-                <p style={{ fontSize: '12px' }}>{item.field}</p>
+                <p
+                  style={{
+                    fontSize: '12px',
+                    color: '#468aef',
+                    width: '85%',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  {item.field}
+                </p>
               </div>
             )
           })}

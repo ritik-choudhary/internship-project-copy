@@ -7,8 +7,7 @@ import Sidebar from '../Components/Sidebar'
 import styled from 'styled-components'
 import { AiOutlinePlus, AiOutlineClose } from 'react-icons/ai'
 import WorkshopResourceModal from '../Components/Workshop/WorkshopResourceModal'
-
-// import WorkshopResourcePage from './WorkshopResourcePage'
+import companylogo from '../assets/companylogo.png'
 
 export default function SingleWorkshopPage() {
   return (
@@ -64,7 +63,9 @@ function SingleWorkshopPageComponent(props) {
       <div className='page-container'>
         <div className='single-workshop-header'>
           <Link to='/'>
-            <h3>thesocialcomment</h3>
+            <div className='logo-container'>
+              <img src={companylogo} alt='logo' />
+            </div>
           </Link>
           <div className='right-header'>
             <FaBell className='bell-icon' />
@@ -316,9 +317,15 @@ const SingleWorkshopPageWrapper = styled.section`
     align-items: center;
     background: black;
   }
-  .single-workshop-header h3 {
-    color: white;
+  .logo-container {
+    width: 180px;
+    height: 25px;
     margin-left: -130px;
+  }
+  .logo-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
   .right-header {
     display: flex;

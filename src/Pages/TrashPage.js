@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom'
 import { FaBell } from 'react-icons/fa'
 import { RiDeleteBin6Line } from 'react-icons/ri'
 import { VscDebugRestart } from 'react-icons/vsc'
+import companylogo from '../assets/companylogo.png'
 
 export default function TrashPage() {
   return (
@@ -35,7 +36,9 @@ function TrashPageComponent(props) {
       <div className='page-container'>
         <div className='trash-header'>
           <Link to='/'>
-            <h3>thesocialcomment</h3>
+            <div className='logo-container'>
+              <img src={companylogo} alt='logo' />
+            </div>
           </Link>
           <div className='right-header'>
             <FaBell className='bell-icon' />
@@ -330,11 +333,16 @@ const TrashWrapper = styled.section`
     justify-content: space-between;
     align-items: center;
     background: black;
-    border-radius: 0px 0px 6px 6px;
   }
-  .trash-header h3 {
-    color: white;
+  .logo-container {
+    width: 180px;
+    height: 25px;
     margin-left: -130px;
+  }
+  .logo-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
   .right-header {
     display: flex;
