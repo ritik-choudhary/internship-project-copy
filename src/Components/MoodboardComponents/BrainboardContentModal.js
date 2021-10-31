@@ -46,7 +46,7 @@ function BrainboardModalComponent(props) {
   const [linkToAdd, setLinkToAdd] = useState()
   const [links, setLinks] = useState([])
 
-  const [editorData, setEditorData] = useState()
+  // const [editorData, setEditorData] = useState()
 
   const [brainboardToEdit, setBrainboardToEdit] = useState()
 
