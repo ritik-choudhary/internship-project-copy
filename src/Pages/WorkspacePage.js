@@ -167,6 +167,15 @@ const WorkspaceWrapper = styled.section`
     display: flex;
     flex-direction: column;
     gap: 20px;
+    animation: page-animation 0.5s ease-out;
+  }
+  @keyframes page-animation {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
   }
   .empty-workspace {
     height: 100%;

@@ -64,7 +64,7 @@ export default function Tiles() {
               <div className='tile-content'>
                 <h2 className='title'>To-do List</h2>
                 <div className='animation-tiles'>
-                  <div className='tile-1'>
+                  <div className='animation-tile-1 tile-1'>
                     <div className='single-option'>
                       <input
                         type='checkbox'
@@ -123,7 +123,7 @@ export default function Tiles() {
                 <div className='tile-content'>
                   <h2 className='title'>Performance</h2>
                   <div className='animation-tiles'>
-                    <div className='tile-1'>
+                    <div className='animation-tile-1 tile-1'>
                       <h4>95</h4>
                       <p>Posts this month</p>
                       <h4>780</h4>
@@ -153,26 +153,57 @@ export default function Tiles() {
                       let count = -1
                       let count2 = -1
                       return (
-                        <div className='animation-tiles'>
-                          <div className='tile-1'>
-                            {value.notes.map((item) => {
-                              count++
-                              if (count < 3) {
-                                return <p className='note'>{item.title}</p>
-                              }
-                              return <></>
-                            })}
-                          </div>
-                          <div className='tile-2'>
-                            {value.notes.map((item) => {
-                              count2++
-                              if (count2 < 6 && count2 > 2) {
-                                return <p className='note'>{item.title}</p>
-                              }
-                              return <></>
-                            })}
-                          </div>
-                        </div>
+                        <>
+                          {value.notes.length > 0 ? (
+                            value.notes.length > 3 ? (
+                              <div className='animation-tiles'>
+                                <div className='animation-tile-1 tile-1'>
+                                  {value.notes.map((item) => {
+                                    count++
+                                    if (count < 3) {
+                                      return (
+                                        <p className='note'>{item.title}</p>
+                                      )
+                                    }
+                                    return <></>
+                                  })}
+                                </div>
+                                <div className='tile-2'>
+                                  {value.notes.map((item) => {
+                                    count2++
+                                    if (count2 < 6 && count2 > 2) {
+                                      return (
+                                        <p className='note'>{item.title}</p>
+                                      )
+                                    }
+                                    return <></>
+                                  })}
+                                </div>
+                              </div>
+                            ) : (
+                              <div className='animation-tiles'>
+                                <div className='animation-tile-1 tile-1'>
+                                  {value.notes.map((item) => {
+                                    count++
+                                    if (count < 3) {
+                                      return (
+                                        <p className='note'>{item.title}</p>
+                                      )
+                                    }
+                                    return <></>
+                                  })}
+                                </div>
+                                <div className='tile-2'>
+                                  <p>Add New Notes</p>
+                                </div>
+                              </div>
+                            )
+                          ) : (
+                            <div className='animation-tiles'>
+                              <div className='tile-1'>Add Notes</div>
+                            </div>
+                          )}
+                        </>
                       )
                     }}
                   </WorkspaceConsumer>
@@ -196,48 +227,84 @@ export default function Tiles() {
                       let count = -1
                       let count2 = -1
                       return (
-                        <div className='animation-tiles'>
-                          <div className='tile-1'>
-                            {value.internships.map((item) => {
-                              count++
-                              if (count < 2)
-                                return (
-                                  <>
-                                    <div className='single-option'>
-                                      <div className='job'>
-                                        <h3>{item.title}</h3>
-                                        <p>{item.company}</p>
-                                      </div>
-                                    </div>
-                                    {count > 0 ? null : (
-                                      <div className='line'></div>
-                                    )}
-                                  </>
-                                )
-                              return <></>
-                            })}
-                          </div>
-                          <div className='tile-2'>
-                            {value.internships.map((item) => {
-                              count2++
-                              if (count2 < 4 && count2 > 1)
-                                return (
-                                  <>
-                                    <div className='single-option'>
-                                      <div className='job'>
-                                        <h3>{item.title}</h3>
-                                        <p>{item.company}</p>
-                                      </div>
-                                    </div>
-                                    {count2 > 2 ? null : (
-                                      <div className='line'></div>
-                                    )}
-                                  </>
-                                )
-                              return <></>
-                            })}
-                          </div>
-                        </div>
+                        <>
+                          {value.internships.length > 0 ? (
+                            value.internships.length > 2 ? (
+                              <div className='animation-tiles'>
+                                <div className='animation-tile-1 tile-1'>
+                                  {value.internships.map((item) => {
+                                    count++
+                                    if (count < 2)
+                                      return (
+                                        <>
+                                          <div className='single-option'>
+                                            <div className='job'>
+                                              <h3>{item.title}</h3>
+                                              <p>{item.company}</p>
+                                            </div>
+                                          </div>
+                                          {count > 0 ? null : (
+                                            <div className='line'></div>
+                                          )}
+                                        </>
+                                      )
+                                    return <></>
+                                  })}
+                                </div>
+                                <div className='tile-2'>
+                                  {value.internships.map((item) => {
+                                    count2++
+                                    if (count2 < 4 && count2 > 1)
+                                      return (
+                                        <>
+                                          <div className='single-option'>
+                                            <div className='job'>
+                                              <h3>{item.title}</h3>
+                                              <p>{item.company}</p>
+                                            </div>
+                                          </div>
+                                          {count2 > 2 ? null : (
+                                            <div className='line'></div>
+                                          )}
+                                        </>
+                                      )
+                                    return <></>
+                                  })}
+                                </div>
+                              </div>
+                            ) : (
+                              <div className='animation-tiles'>
+                                <div className='animation-tile-1 tile-1'>
+                                  {value.internships.map((item) => {
+                                    count++
+                                    if (count < 2)
+                                      return (
+                                        <>
+                                          <div className='single-option'>
+                                            <div className='job'>
+                                              <h3>{item.title}</h3>
+                                              <p>{item.company}</p>
+                                            </div>
+                                          </div>
+                                          {count > 0 ? null : (
+                                            <div className='line'></div>
+                                          )}
+                                        </>
+                                      )
+                                    return <></>
+                                  })}
+                                </div>
+                                <div className='tile-2'>
+                                  <p>Add New Internships</p>
+                                </div>
+                              </div>
+                            )
+                          ) : (
+                            <div className='animation-tiles'>
+                              <div className='tile-1'>Add Internships</div>
+                            </div>
+                          )}
+                        </>
                       )
                     }}
                   </WorkspaceConsumer>
@@ -263,25 +330,48 @@ export default function Tiles() {
                       let count = -1
                       let count2 = -1
                       return (
-                        <div className='animation-tiles'>
-                          <div className='tile-1'>
-                            {newTaskManager.map((item) => {
-                              count++
-                              if (count < 3) return <p>{item.title}</p>
-                              else return <></>
-                            })}
-                          </div>
-                          {newTaskManager.length > 3 ? (
-                            <div className='tile-2'>
-                              {newTaskManager.map((item) => {
-                                count2++
-                                if (count2 < 6 && count2 > 2)
-                                  return <p>{item.title}</p>
-                                else return <></>
-                              })}
+                        <>
+                          {newTaskManager.length > 0 ? (
+                            newTaskManager.length > 3 ? (
+                              <div className='animation-tiles'>
+                                <div className='animation-tile-1 tile-1'>
+                                  {newTaskManager.map((item) => {
+                                    count++
+                                    if (count < 3) return <p>{item.title}</p>
+                                    else return <></>
+                                  })}
+                                </div>
+                                <div className='tile-2'>
+                                  {newTaskManager.map((item) => {
+                                    count2++
+                                    if (count2 < 6 && count2 > 2)
+                                      return <p>{item.title}</p>
+                                    else return <></>
+                                  })}
+                                </div>
+                              </div>
+                            ) : (
+                              <div className='animation-tiles'>
+                                <div className='animation-tile-1 tile-1'>
+                                  {newTaskManager.map((item) => {
+                                    count++
+                                    if (count < 3) return <p>{item.title}</p>
+                                    else return <></>
+                                  })}
+                                </div>
+                                <div className='tile-2'>
+                                  <p>Add New Task</p>
+                                </div>
+                              </div>
+                            )
+                          ) : (
+                            <div className='animation-tiles'>
+                              <div className='tile-1'>
+                                <p>Add Task</p>
+                              </div>
                             </div>
-                          ) : null}
-                        </div>
+                          )}
+                        </>
                       )
                     }}
                   </WorkspaceConsumer>

@@ -7,6 +7,7 @@ import {
   AiOutlineClose,
 } from 'react-icons/ai'
 import { WorkspaceConsumer } from '../../Context'
+// import RichEditor from '../Tools/RichEditor'
 
 export default function BrainboardContentModal(props) {
   return (
@@ -44,6 +45,8 @@ function BrainboardModalComponent(props) {
   const [subject, setSubject] = useState()
   const [linkToAdd, setLinkToAdd] = useState()
   const [links, setLinks] = useState([])
+
+  const [editorData, setEditorData] = useState()
 
   const [brainboardToEdit, setBrainboardToEdit] = useState()
 
@@ -89,6 +92,7 @@ function BrainboardModalComponent(props) {
       isOpen={true}
       style={{
         content: {
+          // minHeight: '700px',
           width: '1199px',
           top: '25%',
           left: '50%',
@@ -100,6 +104,7 @@ function BrainboardModalComponent(props) {
           borderRadius: '10px',
           background: 'white',
           padding: '-20px',
+          overflow: 'auto',
         },
         overlay: {
           background: 'rgba(0, 0, 0, 0.31)',
@@ -389,6 +394,9 @@ function BrainboardModalComponent(props) {
               )
             })}
           </div>
+          {/* <RichEditor holder='editor' data={editorData}>
+            <div id='editor'></div>
+          </RichEditor> */}
         </div>
 
         <div

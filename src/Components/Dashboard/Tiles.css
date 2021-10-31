@@ -46,6 +46,7 @@
   display: flex;
   justify-content: space-between;
   animation: slidedown 0.8s ease-in-out;
+  transition: transform 0.3s linear;
 }
 
 .minimize-btn,
@@ -59,10 +60,6 @@
   margin-top: -20px;
 }
 
-/* .maximize-btn {
-  justify-content: flex-start;
-} */
-
 .minimize-btn:hover,
 .maximize-btn:hover {
   color: white;
@@ -74,9 +71,9 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 20px;
   height: 100px;
   border-radius: 20px;
+  transition: transform 0.3s linear;
 }
 
 .add-workspace-tile .tile-text {
@@ -338,7 +335,7 @@ a {
   transform: translateY(200%);
 }
 
-.tile-1 {
+.animation-tile-1 {
   animation: tile-1 10s linear infinite alternate;
 }
 
