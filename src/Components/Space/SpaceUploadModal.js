@@ -3,7 +3,7 @@ import Modal from 'react-modal'
 import { AiOutlineClose } from 'react-icons/ai'
 import { Link, useParams, useHistory, useLocation } from 'react-router-dom'
 import { WorkspaceConsumer } from '../../Context'
-import { FaCheckCircle } from 'react-icons/fa'
+import { FaCheckCircle, FaUpload } from 'react-icons/fa'
 import { Images } from '../../assets/DefaultImage'
 
 export default function spaceModalupload(props) {
@@ -124,7 +124,7 @@ function SpaceUploadModalComponent(props) {
           width: '100%',
           display: 'flex',
           flexDirection: 'column',
-          gap: '30px',
+          gap: '20px',
           padding: '22px 32px',
         }}
         onKeyDown={(e) => {
@@ -178,7 +178,7 @@ function SpaceUploadModalComponent(props) {
                 : null}
             </h4>
 
-            <p style={{ color: '#c4c4c4', fontSize: '40px' }}>/</p>
+            <p style={{ color: '#c4c4c4', fontSize: '24px' }}>/</p>
 
             <input
               type='text'
@@ -191,9 +191,9 @@ function SpaceUploadModalComponent(props) {
                 borderRadius: '6px',
                 outline: 'none',
                 border: '1px solid #c4c4c4',
-                fontSize: '15px',
-                padding: '0px 5px',
-                height: '25px',
+                fontSize: '12px',
+                padding: '0px 7px',
+                height: '22px',
               }}
             />
           </div>
@@ -231,18 +231,20 @@ function SpaceUploadModalComponent(props) {
                 background: 'none',
                 borderRadius: '5px',
                 border: '1px dashed #468AEF',
-
                 color: '#468AEF',
-                fontSize: '16px',
+                fontSize: '14px',
                 fontWeight: '500',
                 cursor: 'pointer',
                 outline: 'none',
-                display: 'block',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                gap: '5px',
                 textAlign: 'center',
                 padding: '5px',
               }}
             >
-              Upload image
+              <FaUpload /> <p>Upload image</p>
             </span>
           </label>
           <div

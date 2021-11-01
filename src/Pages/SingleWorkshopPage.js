@@ -185,6 +185,8 @@ function SingleWorkshopPageComponent(props) {
                     type='text'
                     name='members'
                     id='members'
+                    style={{ width: '220px' }}
+                    placeholder="Use ',' or enter after every member"
                     value={memberToAdd}
                     onChange={(e) => setMemberToAdd(e.target.value)}
                     onKeyDown={(e) => {

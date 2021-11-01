@@ -3,7 +3,7 @@ import Modal from 'react-modal'
 import { AiOutlineClose } from 'react-icons/ai'
 import { WorkspaceConsumer } from '../../Context'
 import { useParams, Link, useHistory } from 'react-router-dom'
-import { FaCheckCircle } from 'react-icons/fa'
+import { FaCheckCircle, FaUpload } from 'react-icons/fa'
 import { Images } from '../../assets/DefaultImage'
 
 export default function WorkshopModal(props) {
@@ -117,7 +117,7 @@ function WorkshopModalComponent(props) {
           width: '100%',
           display: 'flex',
           flexDirection: 'column',
-          gap: '30px',
+          gap: '20px',
           padding: '22px 32px',
         }}
         onKeyDown={(e) => {
@@ -209,16 +209,20 @@ function WorkshopModalComponent(props) {
                 borderRadius: '5px',
                 border: '1px dashed #468AEF',
                 color: '#468AEF',
-                fontSize: '16px',
+                fontSize: '14px',
                 fontWeight: '500',
                 cursor: 'pointer',
                 outline: 'none',
-                display: 'block',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '5px',
                 textAlign: 'center',
                 padding: '5px',
               }}
             >
-              Upload image
+              <FaUpload />
+              <p>Upload image</p>
             </span>
           </label>
           <div

@@ -22,6 +22,7 @@ import Internships from './Pages/Internships'
 import TaskManager from './Pages/TaskManager'
 import Insights from './Pages/Insights'
 import DocumentShelf from './Pages/DocumentShelf'
+import CoverLetterTemplates from './Pages/CoverLetterTemplates'
 
 Modal.setAppElement('#root')
 
@@ -84,6 +85,10 @@ function App() {
             <DocumentShelf />
           </Route>
           <Route path='/taskmanager' component={TaskManager} />
+          <Route
+            path='/coverlettertemplates'
+            component={CoverLetterTemplates}
+          />
           <Route exact path='/trash' component={Trash}></Route>
         </Switch>
       </Router>

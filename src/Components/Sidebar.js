@@ -91,12 +91,14 @@ export default function Sidebar() {
             isSidebarOpen={isSidebarOpen}
           />
         </Link>
-        <Option
-          Icon={HiNewspaper}
-          title={'Cover Letter Templates'}
-          setIsSidebarOpen={setIsSidebarOpen}
-          isSidebarOpen={isSidebarOpen}
-        />
+        <Link to='/coverlettertemplates' className='sidebar-icon-link'>
+          <Option
+            Icon={HiNewspaper}
+            title={'Cover Letter Templates'}
+            setIsSidebarOpen={setIsSidebarOpen}
+            isSidebarOpen={isSidebarOpen}
+          />
+        </Link>
         <Link to='/documentshelf' className='sidebar-icon-link'>
           <Option
             Icon={HiDocumentAdd}

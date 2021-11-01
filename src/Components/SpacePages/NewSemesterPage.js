@@ -29,7 +29,7 @@ export default function NewSemesterPage() {
               to={`/workspace/${param.id}/details/${param.spaceKey}/addsubject`}
             >
               <div className='add-new'>
-                <AiOutlinePlus />
+                <AiOutlinePlus style={{ fontWeight: '400' }} />
                 <p>Add new</p>
               </div>
             </Link>
@@ -215,7 +215,7 @@ const NewSemesterPageWrapper = styled.section`
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 15px;
+    gap: 10px;
     padding: 20px 25px;
     color: #468aef;
     height: 143px;

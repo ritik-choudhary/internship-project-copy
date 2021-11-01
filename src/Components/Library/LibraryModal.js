@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Modal from 'react-modal'
 import { AiOutlineClose } from 'react-icons/ai'
-import { FaCheckCircle } from 'react-icons/fa'
+import { FaCheckCircle, FaUpload } from 'react-icons/fa'
 import { useParams, Link, useHistory } from 'react-router-dom'
 import { WorkspaceConsumer } from '../../Context'
 
@@ -85,7 +85,7 @@ export default function LibraryModal(props) {
                 width: '100%',
                 display: 'flex',
                 flexDirection: 'column',
-                gap: '32px',
+                gap: '10px',
               }}
               onKeyDown={(e) => {
                 if (e.keyCode === 27) {
@@ -222,7 +222,6 @@ export default function LibraryModal(props) {
               <p
                 style={{
                   textAlign: 'center',
-                  margin: '-10px 0px',
                   color: '#468AEF',
                 }}
               >
@@ -260,17 +259,14 @@ export default function LibraryModal(props) {
                       border: '1px dashed #468AEF',
                       height: '32px',
                       cursor: 'pointer',
+                      fontSize: '14px',
+                      fontWeight: '400',
+                      color: '#468aef',
+                      gap: '5px',
                     }}
                   >
-                    <p
-                      style={{
-                        color: '#468AEF',
-                        fontSize: '12px',
-                        fontWeight: '500',
-                      }}
-                    >
-                      Upload pdf
-                    </p>
+                    <FaUpload />
+                    <p>Upload pdf</p>
                   </div>
                 </label>
                 <div

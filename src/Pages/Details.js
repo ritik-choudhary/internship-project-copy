@@ -177,7 +177,7 @@ const DetailPageComponent = () => {
                           </div>
                           <div className='card-details'>
                             <p className='space-title'>
-                              {item.title}
+                              {item.title}{' '}
                               {isAlt
                                 ? `(${item.altName})`
                                 : num > 1

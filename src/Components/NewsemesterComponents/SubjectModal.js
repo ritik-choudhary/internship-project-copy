@@ -508,14 +508,14 @@ function SubjectModalComponent(props) {
           >
             <div
               className='time-table-heading'
-              style={{ display: 'flex', gap: '200px' }}
+              style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}
             >
-              <h3>Day</h3>
-              <h3>Timings</h3>
+              <h3 style={{ fontSize: '16px', fontWeight: '400' }}>Day</h3>
+              <h3 style={{ fontSize: '16px', fontWeight: '400' }}>Timings</h3>
             </div>
             <div
               className='single-day'
-              style={{ display: 'flex', gap: '88px' }}
+              style={{ display: 'grid', gridTemplateColumns: 'repeat(2,1fr)' }}
             >
               <div
                 style={{
@@ -589,7 +589,7 @@ function SubjectModalComponent(props) {
             </div>
             <div
               className='single-day'
-              style={{ display: 'flex', gap: '88px' }}
+              style={{ display: 'grid', gridTemplateColumns: 'repeat(2,1fr)' }}
             >
               <div
                 style={{
@@ -663,7 +663,7 @@ function SubjectModalComponent(props) {
             </div>
             <div
               className='single-day'
-              style={{ display: 'flex', gap: '88px' }}
+              style={{ display: 'grid', gridTemplateColumns: 'repeat(2,1fr)' }}
             >
               <div
                 style={{
@@ -737,7 +737,7 @@ function SubjectModalComponent(props) {
             </div>
             <div
               className='single-day'
-              style={{ display: 'flex', gap: '88px' }}
+              style={{ display: 'grid', gridTemplateColumns: 'repeat(2,1fr)' }}
             >
               <div
                 style={{
@@ -811,7 +811,7 @@ function SubjectModalComponent(props) {
             </div>
             <div
               className='single-day'
-              style={{ display: 'flex', gap: '88px' }}
+              style={{ display: 'grid', gridTemplateColumns: 'repeat(2,1fr)' }}
             >
               <div
                 style={{
@@ -885,7 +885,7 @@ function SubjectModalComponent(props) {
             </div>
             <div
               className='single-day'
-              style={{ display: 'flex', gap: '88px' }}
+              style={{ display: 'grid', gridTemplateColumns: 'repeat(2,1fr)' }}
             >
               <div
                 style={{

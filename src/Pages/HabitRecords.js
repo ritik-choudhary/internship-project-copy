@@ -167,7 +167,7 @@ function HabitRecordsComponent(props) {
             <div className='line'></div>
           </header>
           <section className='habit-intro'>
-            <h1 className='greeting'>Hey there, Hailey</h1>
+            <h1 className='greeting'>Hey there, Username</h1>
             <div className='status'>
               <h3 className='time-period'>{headingDateString}</h3>
               <div className='status-bar'>
@@ -316,6 +316,14 @@ const HabitRecordsWrapper = styled.section`
     display: flex;
     overflow-x: hidden;
   }
+  @keyframes page-animation {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
   .single-habit-page .sidebar {
     z-index: 0;
   }
@@ -324,6 +332,7 @@ const HabitRecordsWrapper = styled.section`
     display: flex;
     flex-direction: column;
     gap: 10px;
+    animation: page-animation 0.5s ease-out;
   }
   .single-habit-header {
     padding: 10px 150px;
@@ -429,7 +438,7 @@ const HabitRecordsWrapper = styled.section`
   }
   .greeting {
     font-size: 20px;
-    font-weight: 400;
+    font-weight: 700;
   }
   .status {
     display: flex;
@@ -511,7 +520,21 @@ const HabitRecordsWrapper = styled.section`
   .storage-container {
     padding: 0px 0px 10px 0px;
     margin: 0px 150px;
+    overflow: hidden;
+  }
+  .storage-container:hover {
     overflow: auto;
+  }
+  .storage-container::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+  .storage-container::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  }
+  .storage-container::-webkit-scrollbar-thumb {
+    background-color: #c4c4c4;
+    outline: 1px solid slategrey;
   }
   .single-habit-status {
     display: flex;
