@@ -1,4 +1,3 @@
-import React from 'react'
 import AcademicAdvisor from '../../assets/coverletters/Academic Advisor.txt'
 import AcademicCoach from '../../assets/coverletters/Academic Coach.txt'
 import AcademicTutor from '../../assets/coverletters/Academic Tutor.txt'
