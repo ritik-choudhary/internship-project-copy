@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link, Switch, Route } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { FaBell } from 'react-icons/fa'
 import { RiArrowGoBackFill } from 'react-icons/ri'
 import Sidebar from '../Components/Sidebar'
