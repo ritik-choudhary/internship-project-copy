@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Modal from 'react-modal'
 import { AiOutlineClose } from 'react-icons/ai'
 import { Link, useParams, useHistory } from 'react-router-dom'
@@ -20,6 +20,17 @@ export default function SpaceModal() {
   const [newSpace, setNewSpace] = useState()
 
   let space
+
+  const [showMsg, setShowMsg] = useState(false)
+
+  useEffect(() => {
+    if (showMsg) {
+      const timer = setTimeout(() => {
+        setShowMsg(false)
+      }, 3000)
+      return () => clearTimeout(timer)
+    }
+  }, [showMsg])
 
   const handleChange = (e) => {
     const { value } = e.target
@@ -132,6 +143,8 @@ export default function SpaceModal() {
                     pathname: `/workspace/${param.id}/details/createspace/imageupload`,
                     state: { space: space },
                   })
+                } else {
+                  setShowMsg(true)
                 }
               }}
             >
@@ -356,6 +369,12 @@ export default function SpaceModal() {
                   justifyContent: 'flex-end',
                 }}
               >
+                {showMsg ? (
+                  <p style={{ fontSize: '14px', color: '#ff0000' }}>
+                    Please select an option
+                  </p>
+                ) : null}
+
                 <Link to={`/workspace/${param.id}/details`}>
                   <div
                     style={{

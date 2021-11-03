@@ -14,6 +14,7 @@ class WorkspaceProvider extends Component {
     internships: [],
     taskManager: [[], [], [], []],
     documentShelf: [],
+    tutorial: true,
   }
 
   addNewWorkspace = (newItem) => {

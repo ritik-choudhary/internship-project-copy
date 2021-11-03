@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { AiOutlinePlus, AiOutlineDown, AiOutlineUp } from 'react-icons/ai'
+import { AiOutlinePlus, AiOutlineClose, AiOutlineUp } from 'react-icons/ai'
 import './Tiles.css'
 import todo from '../../assets/todo.jpg'
 import performance from '../../assets/performance.jpg'
@@ -27,7 +27,7 @@ export default function Tiles() {
           </div>
           <div>
             <div className='minimize-btn' onClick={() => setMaximize(false)}>
-              <AiOutlineUp />
+              <AiOutlineClose />
             </div>
             <div className='button-container'>
               <Link to='/workspace' className='workspace-link'>
@@ -41,7 +41,7 @@ export default function Tiles() {
       ) : (
         <div className='minimized-container'>
           <div className='maximize-btn' onClick={() => setMaximize(true)}>
-            <AiOutlineDown />
+            <AiOutlineUp />
           </div>
           <div className='button-container'>
             <Link to='/workspace' className='workspace-link'>
@@ -56,61 +56,23 @@ export default function Tiles() {
       <div className='bottom-tiles'>
         <div className='left-tile'>
           <div className='left-top'>
-            <div className='todo-list-tile tile-hover'>
+            <div className='recents-tile tile-hover'>
               <div className='background-image'>
                 <img src={todo} alt='' />
               </div>
 
               <div className='tile-content'>
-                <h2 className='title'>To-do List</h2>
+                <h2 className='title'>Recents</h2>
                 <div className='animation-tiles'>
                   <div className='animation-tile-1 tile-1'>
-                    <div className='single-option'>
-                      <input
-                        type='checkbox'
-                        name='complete-wireframing'
-                        id='complete-wireframing'
-                      />
-                      <label htmlFor='complete-wireframing'>
-                        Complete Wirefr...
-                      </label>
-                    </div>
-                    <div className='single-option'>
-                      <input
-                        type='checkbox'
-                        name='prototyping'
-                        id='prototyping'
-                      />
-                      <label htmlFor='prototyping'>Prototyping</label>
-                    </div>
-                    <div className='single-option'>
-                      <input type='checkbox' name='animation' id='animation' />
-                      <label htmlFor='animation'>Animation</label>
-                    </div>
+                    <p>College Clubs</p>
+                    <p>Moodboard</p>
+                    <p>Task Manager</p>
                   </div>
                   <div className='tile-2'>
-                    <div className='single-option'>
-                      <input
-                        type='checkbox'
-                        name='complete-wireframing'
-                        id='complete-wireframing'
-                      />
-                      <label htmlFor='complete-wireframing'>
-                        Complete Wirefr...
-                      </label>
-                    </div>
-                    <div className='single-option'>
-                      <input
-                        type='checkbox'
-                        name='prototyping'
-                        id='prototyping'
-                      />
-                      <label htmlFor='prototyping'>Prototyping</label>
-                    </div>
-                    <div className='single-option'>
-                      <input type='checkbox' name='animation' id='animation' />
-                      <label htmlFor='animation'>Animation</label>
-                    </div>
+                    <p>Docs</p>
+                    <p>Habit Tracker</p>
+                    <p>Library</p>
                   </div>
                 </div>
               </div>
@@ -124,16 +86,42 @@ export default function Tiles() {
                   <h2 className='title'>Performance</h2>
                   <div className='animation-tiles'>
                     <div className='animation-tile-1 tile-1'>
-                      <h4>95</h4>
-                      <p>Posts this month</p>
-                      <h4>780</h4>
-                      <p>Views this month</p>
+                      <div
+                        style={{
+                          display: 'grid',
+                          gridTemplateColumns: '1fr 7fr',
+                          gap: '15px',
+                        }}
+                      >
+                        <h4 style={{ fontSize: '25px' }}>17</h4>
+                        <p>Login Days</p>
+                      </div>
+                      <div
+                        style={{
+                          display: 'grid',
+                          gridTemplateColumns: '1fr 7fr',
+                          gap: '15px',
+                        }}
+                      >
+                        <h4 style={{ fontSize: '25px' }}>9</h4>
+                        <p>Activity Days</p>
+                      </div>
+                      <div
+                        style={{
+                          display: 'grid',
+                          gridTemplateColumns: '1fr 7fr',
+                          gap: '15px',
+                        }}
+                      >
+                        <h4 style={{ fontSize: '25px' }}>7</h4>
+                        <p>Post Days</p>
+                      </div>
                     </div>
                     <div className='tile-2'>
-                      <h4>100</h4>
-                      <p>New Recruitments</p>
-                      <h4>300</h4>
-                      <p>Reviews</p>
+                      <h4>49</h4>
+                      <p>Posts last month</p>
+                      <h4>980</h4>
+                      <p>Views last month</p>
                     </div>
                   </div>
                 </div>
@@ -313,7 +301,7 @@ export default function Tiles() {
             </Link>
           </div>
           <div className='right-bottom'>
-            <Link to='/taskmanager' className='taskmanager-link'>
+            <Link to='/taskmanager'>
               <div className='task-manager-tile tile-hover'>
                 <div className='background-image'>
                   <img src={taskManager} alt='Task Manager' />
@@ -378,16 +366,18 @@ export default function Tiles() {
                 </div>
               </div>
             </Link>
-            <div className='wallet-tile tile-hover'>
-              <div className='background-image'>
-                <img src={wallet} alt='Wallet' />
+            <Link to='/wallet'>
+              <div className='wallet-tile tile-hover'>
+                <div className='background-image'>
+                  <img src={wallet} alt='Wallet' />
+                </div>
+                <div className='tile-content'>
+                  <h3 className='title'>Wallet</h3>
+                  <p>Account Balance</p>
+                  <h1>RS 7500</h1>
+                </div>
               </div>
-              <div className='tile-content'>
-                <h3 className='title'>Wallet</h3>
-                <p>Account Balance</p>
-                <h1>RS 7500</h1>
-              </div>
-            </div>
+            </Link>
           </div>
         </div>
       </div>

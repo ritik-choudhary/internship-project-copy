@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Modal from 'react-modal'
 import { Link, useLocation } from 'react-router-dom'
 import { AiFillCloseCircle } from 'react-icons/ai'
+import { FaRegCopy } from 'react-icons/fa'
 
 export default function TemplateDocModal() {
   return <TemplateDocModalComponent />
@@ -13,17 +14,31 @@ const TemplateDocModalComponent = () => {
   const fileUrl = location.state.src
 
   const [text, setText] = useState()
+  const [copied, setCopied] = useState(false)
+
+  const [msg, setMsg] = useState('Copied')
 
   fetch(fileUrl)
     .then((r) => r.text())
     .then((t) => setText(t))
+
+  useEffect(() => {
+    if (copied) {
+      const timer = setTimeout(() => {
+        setMsg('')
+        setCopied(false)
+      }, 3000)
+      return () => clearTimeout(timer)
+    }
+    setMsg('Copied')
+  }, [copied])
 
   return (
     <Modal
       isOpen={true}
       style={{
         content: {
-          minHeight: '80vh',
+          minHeight: '90vh',
           width: '1132px',
           top: '50%',
           left: '50%',
@@ -55,15 +70,35 @@ const TemplateDocModalComponent = () => {
         <h2 style={{ fontSize: '20px', fontWeight: '600', color: '#468aef' }}>
           {location.state.name}
         </h2>
-        <Link to={`/coverlettertemplates`}>
-          <AiFillCloseCircle
+        {copied ? (
+          <p style={{ color: 'green', fontSize: '16px' }}>{msg}</p>
+        ) : null}
+
+        <div
+          className='right'
+          style={{ display: 'flex', gap: '10px', alignItems: 'center' }}
+        >
+          <FaRegCopy
             style={{
-              fontSize: '30px',
-              color: '#FFC8C8',
+              fontSize: '20px',
               cursor: 'pointer',
+              color: '#468aef',
+            }}
+            onClick={() => {
+              navigator.clipboard.writeText(text)
+              setCopied(true)
             }}
           />
-        </Link>
+          <Link to={`/coverlettertemplates`}>
+            <AiFillCloseCircle
+              style={{
+                fontSize: '30px',
+                color: '#FFC8C8',
+                cursor: 'pointer',
+              }}
+            />
+          </Link>
+        </div>
       </header>
       <div
         className='scroll-on-hover'
@@ -73,7 +108,7 @@ const TemplateDocModalComponent = () => {
           display: 'flex',
           flexDirection: 'column',
           height: '100%',
-          overflow: 'hidden',
+          overflow: 'auto',
           padding: '20px',
           textAlign: 'justify',
         }}

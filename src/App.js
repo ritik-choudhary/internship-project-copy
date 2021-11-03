@@ -23,6 +23,7 @@ import TaskManager from './Pages/TaskManager'
 import Insights from './Pages/Insights'
 import DocumentShelf from './Pages/DocumentShelf'
 import CoverLetterTemplates from './Pages/CoverLetterTemplates'
+import Wallet from './Pages/Wallet'
 
 Modal.setAppElement('#root')
 
@@ -89,6 +90,7 @@ function App() {
             path='/coverlettertemplates'
             component={CoverLetterTemplates}
           />
+          <Route path='/wallet' component={Wallet} />
           <Route exact path='/trash' component={Trash}></Route>
         </Switch>
       </Router>

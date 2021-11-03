@@ -188,7 +188,7 @@ function TaskManagerComponent(props) {
                 })}
               </div>
               <p className='drag-and-drop-msg'>
-                DRAG AND <br /> DROP HERE
+                Drag and <br /> drop here
               </p>
             </div>
             <div
@@ -252,7 +252,7 @@ function TaskManagerComponent(props) {
                 })}
               </div>
               <p className='drag-and-drop-msg'>
-                DRAG AND <br /> DROP HERE
+                Drag and <br /> drop here
               </p>
             </div>
             <div
@@ -318,7 +318,7 @@ function TaskManagerComponent(props) {
                 })}
               </div>
               <p className='drag-and-drop-msg'>
-                DRAG AND <br /> DROP HERE
+                Drag and <br /> drop here
               </p>
             </div>
             <div
@@ -384,7 +384,7 @@ function TaskManagerComponent(props) {
                 })}
               </div>
               <p className='drag-and-drop-msg'>
-                DRAG AND <br /> DROP HERE
+                Drag and <br /> drop here
               </p>
             </div>
           </div>
@@ -634,7 +634,7 @@ const TaskManagerWrapper = styled.section`
     opacity: 0.5;
   }
   .drag-and-drop-msg {
-    font-size: 25px;
+    font-size: 18px;
     color: #468aef;
     opacity: 0.3;
     text-align: center;
