@@ -241,9 +241,136 @@ function WalletComponent() {
               </div>
               <div className='monthly'>
                 <div className='heading'>Monthly Users</div>
+                <div className='users-list'>
+                  <div className='single-month'>
+                    <h3 className='month-name'>Jan</h3>
+                    <p className='user-name'>Ritik Choudhary</p>
+                    <p className='user-name'>Ritik Choudhary</p>
+                    <p className='user-name'>Ritik Choudhary</p>
+                    <p className='user-name'>Ritik Choudhary</p>
+                    <p className='user-name'>Ritik Choudhary</p>
+                    <p className='user-name'>Ritik Choudhary</p>
+                    <p className='user-name'>Ritik Choudhary</p>
+                    <p className='user-name'>Ritik Choudhary</p>
+                    <p className='user-name'>Ritik Choudhary</p>
+                  </div>
+                  <div className='single-month'>
+                    <h3 className='month-name'>Feb</h3>
+                    <p className='user-name'>Ritik Choudhary</p>
+                    <p className='user-name'>Ritik Choudhary</p>
+                    <p className='user-name'>Ritik Choudhary</p>
+                    <p className='user-name'>Ritik Choudhary</p>
+                    <p className='user-name'>Ritik Choudhary</p>
+                    <p className='user-name'>Ritik Choudhary</p>
+                    <p className='user-name'>Ritik Choudhary</p>
+                    <p className='user-name'>Ritik Choudhary</p>
+                    <p className='user-name'>Ritik Choudhary</p>
+                  </div>
+                  <div className='single-month'>
+                    <h3 className='month-name'>Mar</h3>
+                    <p className='user-name'>Ritik Choudhary</p>
+                    <p className='user-name'>Ritik Choudhary</p>
+                    <p className='user-name'>Ritik Choudhary</p>
+                    <p className='user-name'>Ritik Choudhary</p>
+                    <p className='user-name'>Ritik Choudhary</p>
+                    <p className='user-name'>Ritik Choudhary</p>
+                    <p className='user-name'>Ritik Choudhary</p>
+                    <p className='user-name'>Ritik Choudhary</p>
+                    <p className='user-name'>Ritik Choudhary</p>
+                  </div>
+                  <div className='single-month'>
+                    <h3 className='month-name'>Apr</h3>
+                    <p className='user-name'>Ritik Choudhary</p>
+                    <p className='user-name'>Ritik Choudhary</p>
+                    <p className='user-name'>Ritik Choudhary</p>
+                    <p className='user-name'>Ritik Choudhary</p>
+                    <p className='user-name'>Ritik Choudhary</p>
+                    <p className='user-name'>Ritik Choudhary</p>
+                    <p className='user-name'>Ritik Choudhary</p>
+                    <p className='user-name'>Ritik Choudhary</p>
+                    <p className='user-name'>Ritik Choudhary</p>
+                  </div>
+                  <div className='single-month'>
+                    <h3 className='month-name'>May</h3>
+                    <p className='user-name'>Ritik Choudhary</p>
+                    <p className='user-name'>Ritik Choudhary</p>
+                    <p className='user-name'>Ritik Choudhary</p>
+                    <p className='user-name'>Ritik Choudhary</p>
+                    <p className='user-name'>Ritik Choudhary</p>
+                    <p className='user-name'>Ritik Choudhary</p>
+                    <p className='user-name'>Ritik Choudhary</p>
+                    <p className='user-name'>Ritik Choudhary</p>
+                    <p className='user-name'>Ritik Choudhary</p>
+                  </div>
+                  <div className='single-month'>
+                    <h3 className='month-name'>Jan</h3>
+                    <p className='user-name'>Ritik Choudhary</p>
+                    <p className='user-name'>Ritik Choudhary</p>
+                    <p className='user-name'>Ritik Choudhary</p>
+                    <p className='user-name'>Ritik Choudhary</p>
+                    <p className='user-name'>Ritik Choudhary</p>
+                    <p className='user-name'>Ritik Choudhary</p>
+                    <p className='user-name'>Ritik Choudhary</p>
+                    <p className='user-name'>Ritik Choudhary</p>
+                    <p className='user-name'>Ritik Choudhary</p>
+                  </div>
+                </div>
               </div>
               <div className='total'>
                 <div className='heading'>Total Assesment</div>
+                <div className='users-count'>
+                  <p style={{ opacity: '0.7' }}>Total Number of Users : </p>
+                  <span>2568</span>
+                </div>
+                <p style={{ fontWeight: '600', opacity: '0.7' }}>
+                  Number of days on virtual desk
+                </p>
+                <div className='users-list'>
+                  <div className='single-user'>
+                    <p className='user-name'>Ritik Choudhary</p>
+                    <p className='days-spent'>34</p>
+                  </div>
+                  <div className='single-user'>
+                    <p className='user-name'>Nitin sharma</p>
+                    <p className='days-spent'>34</p>
+                  </div>
+                  <div className='single-user'>
+                    <p className='user-name'>Piyush Kanda</p>
+                    <p className='days-spent'>34</p>
+                  </div>
+                  <div className='single-user'>
+                    <p className='user-name'>Ritik</p>
+                    <p className='days-spent'>34</p>
+                  </div>
+                  <div className='single-user'>
+                    <p className='user-name'>Tom Cruise</p>
+                    <p className='days-spent'>34</p>
+                  </div>
+                  <div className='single-user'>
+                    <p className='user-name'>Jack Nicolson</p>
+                    <p className='days-spent'>34</p>
+                  </div>
+                  <div className='single-user'>
+                    <p className='user-name'>Anne Hathaway</p>
+                    <p className='days-spent'>34</p>
+                  </div>
+                  <div className='single-user'>
+                    <p className='user-name'>Jake Gylenhaal</p>
+                    <p className='days-spent'>34</p>
+                  </div>
+                  <div className='single-user'>
+                    <p className='user-name'>Brad Pitt</p>
+                    <p className='days-spent'>34</p>
+                  </div>
+                  <div className='single-user'>
+                    <p className='user-name'>Daniel Dey Lewis</p>
+                    <p className='days-spent'>34</p>
+                  </div>
+                  <div className='single-user'>
+                    <p className='user-name'>Ritik</p>
+                    <p className='days-spent'>34</p>
+                  </div>
+                </div>
               </div>
             </div>
             <div className='bottom-cards'>
@@ -387,17 +514,15 @@ const WalletWrapper = styled.section`
   .total {
     box-shadow: 2px 2px 5px rgb(0 0 0 / 10%);
     border-radius: 6px;
-    padding: 10px;
+    padding: 20px;
     height: 40vh;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
   }
   .premium {
-    background: linear-gradient(
-      to right bottom,
-      rgba(255, 202, 16, 1),
-      rgba(255, 202, 16, 0.7),
-      rgba(255, 202, 16, 0.3)
-    );
+    background: #fee4cb;
     position: relative;
     overflow: hidden;
   }
@@ -418,13 +543,8 @@ const WalletWrapper = styled.section`
     align-items: center;
     gap: 5px;
     justify-content: center;
+    font-weight: 600;
   }
-  // .crown-icon {
-  //   position: absolute;
-  //   top: 0;
-  //   left: 0;
-  //   font-size: 30px;
-  // }
   @keyframes shine {
     0% {
       transform: translateX(-100%);
@@ -442,40 +562,27 @@ const WalletWrapper = styled.section`
   }
 
   .referral {
-    background: linear-gradient(
-      to right bottom,
-      rgba(136, 186, 229, 1),
-      rgba(136, 186, 229, 0.7),
-      rgba(136, 186, 229, 0.3)
-    );
+    background: #e9e7fd;
   }
 
   .monthly {
-    background: linear-gradient(
-      to right bottom,
-      rgba(152, 251, 152, 1),
-      rgba(152, 251, 152, 0.7),
-      rgba(152, 251, 152, 0.3)
-    );
+    background: #dbf6fd;
   }
 
   .total {
-    background: linear-gradient(
-      to right bottom,
-      rgba(188, 153, 223, 1),
-      rgba(188, 153, 223, 0.7),
-      rgba(188, 153, 223, 0.1)
-    );
+    background: #ffd3e2;
   }
 
   .premium:hover,
   .monthly:hover,
   .total:hover {
-    overflow: auto;
+    overflow-y: auto;
   }
   .heading {
     font-size: 20px;
+    font-weight: 600;
     text-align: center;
+    opacity: 0.7;
   }
 
   .premium::-webkit-scrollbar,
@@ -509,7 +616,7 @@ const WalletWrapper = styled.section`
     gap: 20px;
     overflow: hidden;
     cursor: pointer;
-    border: 4px solid black;
+    box-shadow: 2px 2px 5px rgb(0 0 0 / 10%);
   }
   .balance-card:hover {
     transform: scale(1.05);
@@ -552,6 +659,7 @@ const WalletWrapper = styled.section`
     margin-bottom: -10px;
     margin-left: -10px;
     font-size: 16px;
+    border-right: 2px solid #67d7d6;
   }
   .withdraw {
     border-left: none;
@@ -564,16 +672,17 @@ const WalletWrapper = styled.section`
     margin-right: -10px;
     font-size: 16px;
   }
-  .transactions:hover,
-  .withdraw:hover {
-    color: black;
-  }
+  // .transactions:hover,
+  // .withdraw:hover {
+  //   color: #468aef;
+  // }
   .users-list {
     height: 230px;
     display: flex;
     flex-direction: column;
     gap: 3px;
     overflow: hidden;
+    opacity: 0.7;
   }
   .users-list:hover {
     overflow: auto;
@@ -583,6 +692,11 @@ const WalletWrapper = styled.section`
     display: flex;
     align-items: center;
     justify-content: space-between;
+  }
+  .single-month .month-name {
+    color: #468aef;
+    font-weight: 400;
+    font-size: 16px;
   }
   .joined-date {
     color: #468aef;
@@ -600,5 +714,16 @@ const WalletWrapper = styled.section`
   .users-list::-webkit-scrollbar-thumb {
     background-color: #c4c4c4;
     outline: 1px solid slategrey;
+  }
+  .users-count {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .users-count span {
+    background: white;
+    padding: 5px;
+    border-radius: 5px;
+    color: #468aef;
   }
 `

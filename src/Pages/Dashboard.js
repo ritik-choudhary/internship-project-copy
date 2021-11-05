@@ -50,7 +50,16 @@ function DashboardComponent() {
                   <TutorialWrapper>
                     <div
                       className='tut-overlay'
-                      style={{ background: `${count < 2 ? 'black' : ''}` }}
+                      style={{
+                        zIndex: `${count < 2 ? '3' : ''}`,
+                        background: `${
+                          count === 0
+                            ? 'linear-gradient(to right bottom, #470F10,#100A30)'
+                            : count === 1
+                            ? 'linear-gradient(to right bottom, #E86839,#171232)'
+                            : ''
+                        }`,
+                      }}
                     >
                       {count === 0 ? (
                         <h1
@@ -275,9 +284,7 @@ const TutorialWrapper = styled.section`
     transform: 'translate(0, -35%)';
   }
   .welcome-msg {
-    background: -webkit-linear-gradient(#c322b8, #b42dfd);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: white;
   }
 
   @keyframes slide-down {
