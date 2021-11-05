@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Modal from 'react-modal'
-import { Link, useLocation, useHistory } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { AiFillCloseCircle } from 'react-icons/ai'
 import { FaRegCopy } from 'react-icons/fa'
 
@@ -10,7 +10,6 @@ export default function TemplateDocModal() {
 
 const TemplateDocModalComponent = () => {
   const location = useLocation()
-  const history = useHistory()
 
   const fileUrl = location.state.src
 
