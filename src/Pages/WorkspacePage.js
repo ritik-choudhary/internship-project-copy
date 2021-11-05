@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Sidebar from '../Components/Sidebar'
 import styled from 'styled-components'
 import { BsFillGridFill } from 'react-icons/bs'
 import { FaList, FaBell } from 'react-icons/fa'
-import { AiOutlinePlus } from 'react-icons/ai'
+import { AiOutlinePlus, AiOutlineArrowRight } from 'react-icons/ai'
 import { WorkspaceConsumer } from '../Context'
 import { FiEdit } from 'react-icons/fi'
 import { RiDeleteBin6Line } from 'react-icons/ri'
@@ -37,6 +37,14 @@ export default function WorkspacePage() {
 function WorkspacePageComponent(props) {
   const { value } = props
   const [gridStyle, setGridStyle] = useState(false)
+  const [showTut, setShowTut] = useState(false)
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowTut(true)
+    }, 2000)
+    return () => clearTimeout(timer)
+  }, [])
 
   return (
     <>
@@ -85,8 +93,19 @@ function WorkspacePageComponent(props) {
             <div className='line'></div>
           </header>
           <div className='button-container'>
+            {showTut ? (
+              <div className='click-here-btn'>
+                <p>
+                  Click here to create <br /> a new workspace.
+                </p>
+                <AiOutlineArrowRight className='arrow' />
+              </div>
+            ) : null}
             <Link to='/workspace/create'>
-              <button className='add-workspace-btn'>
+              <button
+                className='add-workspace-btn'
+                onClick={() => setShowTut(false)}
+              >
                 <AiOutlinePlus /> <p>Add Workspace</p>
               </button>
             </Link>
@@ -289,6 +308,7 @@ const WorkspaceWrapper = styled.section`
     align-items: flex-start;
     padding: 0px 150px;
     margin-top: -15px;
+    gap: 20px;
   }
   .grid-workspace-container,
   .list-workspace-container {
@@ -421,5 +441,32 @@ const WorkspaceWrapper = styled.section`
     cursor: pointer;
     transform: scale(1.01);
     border: 1px solid #0063ff;
+  }
+  .click-here-btn {
+    text-align: center;
+    color: white;
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);
+    padding: 5px 10px;
+    border-radius: 6px;
+    background: black;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    animation: click-here 2s infinite;
+  }
+  .click-here-btn .arrow {
+    font-size: 18px;
+  }
+
+  @keyframes click-here {
+    0% {
+      transform: scale(0.8);
+    }
+    50% {
+      transform: scale(1.1);
+    }
+    100% {
+      transform: scale(0.8);
+    }
   }
 `

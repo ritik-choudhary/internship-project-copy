@@ -34,7 +34,10 @@ function DashboardComponent() {
             <>
               <div
                 className='dashboard'
-                style={{ overflow: `${value.tutorial ? 'hidden' : 'auto'}` }}
+                style={{
+                  height: '100vh',
+                  overflow: `${showTut ? 'hidden' : 'auto'}`,
+                }}
               >
                 <Sidebar />
                 <div className='dashboard-content'>
@@ -45,10 +48,13 @@ function DashboardComponent() {
               {value.tutorial ? (
                 showTut ? (
                   <TutorialWrapper>
-                    <div className='tut-overlay'>
+                    <div
+                      className='tut-overlay'
+                      style={{ background: `${count < 2 ? 'black' : ''}` }}
+                    >
                       {count === 0 ? (
                         <h1
-                          className='entry-animation'
+                          className='entry-animation welcome-msg'
                           style={{
                             color: 'white',
                             fontSize: '50px',
@@ -60,7 +66,7 @@ function DashboardComponent() {
                         </h1>
                       ) : count === 1 ? (
                         <p
-                          className='entry-animation'
+                          className='entry-animation welcome-msg'
                           style={{
                             color: 'white',
                             fontSize: '25px',
@@ -68,7 +74,7 @@ function DashboardComponent() {
                         >
                           We have made the best platform for your comfort.
                           <br /> Now manage your work without any hassel at one
-                          place
+                          place.
                         </p>
                       ) : count === 2 ? (
                         <p
@@ -81,7 +87,7 @@ function DashboardComponent() {
                             left: '92px',
                           }}
                         >
-                          Click here to add a workspace
+                          Click here to add a workspace.
                         </p>
                       ) : count === 3 ? (
                         <p
@@ -94,7 +100,7 @@ function DashboardComponent() {
                             left: '92px',
                           }}
                         >
-                          Click here to check your recents
+                          Click here to check your recents.
                         </p>
                       ) : count === 4 ? (
                         <p
@@ -107,7 +113,7 @@ function DashboardComponent() {
                             left: '92px',
                           }}
                         >
-                          Click here to make notes
+                          Click here to make notes.
                         </p>
                       ) : count === 5 ? (
                         <p
@@ -120,7 +126,7 @@ function DashboardComponent() {
                             left: '92px',
                           }}
                         >
-                          Jot down any thoughts or daily life in journal
+                          Jot down any thoughts or daily life in journal.
                         </p>
                       ) : count === 6 ? (
                         <p
@@ -133,9 +139,9 @@ function DashboardComponent() {
                             left: '92px',
                           }}
                         >
-                          The portal internships through portal will be coming
-                          soon. Meanwhile, you can add your other internships by
-                          clicking here
+                          The internships through portal will be coming soon.
+                          <br />
+                          Meanwhile, you can add your internships here.
                         </p>
                       ) : count === 7 ? (
                         <p
@@ -148,7 +154,7 @@ function DashboardComponent() {
                             left: '92px',
                           }}
                         >
-                          Check Insights of your activities here
+                          Check Insights of your activities here.
                         </p>
                       ) : count === 8 ? (
                         <p
@@ -161,7 +167,7 @@ function DashboardComponent() {
                             left: '92px',
                           }}
                         >
-                          Manage your task efficiently with our Task Manager
+                          Manage your task efficiently with our Task Manager.
                         </p>
                       ) : count === 9 ? (
                         <p
@@ -175,7 +181,7 @@ function DashboardComponent() {
                           }}
                         >
                           We provide more than 100 cover letters based on your
-                          needs
+                          needs.
                         </p>
                       ) : count === 10 ? (
                         <p
@@ -188,7 +194,7 @@ function DashboardComponent() {
                             left: '92px',
                           }}
                         >
-                          Keep all your important documents safe at one place
+                          Keep all your important documents safe at one place.
                         </p>
                       ) : count === 11 ? (
                         <p
@@ -204,26 +210,39 @@ function DashboardComponent() {
                           All your trash goes here.
                         </p>
                       ) : null}
-                      <button
-                        className='next-btn'
-                        style={{
-                          color: 'white',
-                          background: '#0063FF',
-                          border: 'none',
-                          outline: 'none',
-                          padding: '10px 20px',
-                          borderRadius: '4px',
-                          cursor: 'pointer',
-                        }}
-                        onClick={() => {
-                          if (count > 10) {
+                      <div className='tutorial-btn-container'>
+                        <button
+                          className='next-btn'
+                          onClick={() => {
+                            if (count > 10) {
+                              setShowTut(false)
+                            }
+                            setCount(count + 1)
+                          }}
+                        >
+                          Next
+                        </button>
+                        <button
+                          className='skip-tut-btn'
+                          style={{
+                            color: 'white',
+                            background: 'transparent',
+                            border: 'none',
+                            outline: 'none',
+                            padding: '10px 20px',
+                            borderRadius: '4px',
+                            cursor: 'pointer',
+                            fontSize: '16px',
+                            fontWeight: '400',
+                          }}
+                          onClick={() => {
+                            setCount(0)
                             setShowTut(false)
-                          }
-                          setCount(count + 1)
-                        }}
-                      >
-                        Next
-                      </button>
+                          }}
+                        >
+                          Skip
+                        </button>
+                      </div>
                     </div>
                   </TutorialWrapper>
                 ) : null
@@ -253,8 +272,12 @@ const TutorialWrapper = styled.section`
     position: absolute;
     text-align: center;
     top: 35%;
-    // left: 27%;
-    transform: 'translate(-27%, -35%)';
+    transform: 'translate(0, -35%)';
+  }
+  .welcome-msg {
+    background: -webkit-linear-gradient(#c322b8, #b42dfd);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
 
   @keyframes slide-down {
@@ -269,5 +292,24 @@ const TutorialWrapper = styled.section`
   }
   .workspace-click {
     position: absolute;
+  }
+  .skip-tut-btn:hover {
+    text-decoration: underline;
+  }
+  .next-btn {
+    color: white;
+    background: #0063ff;
+    border: 2px solid #0063ff;
+    outline: none;
+    padding: 10px 20px;
+    borderradius: 4px;
+    cursor: pointer;
+    border-radius: 8px;
+    font-weight: 600;
+  }
+  .next-btn:hover {
+    border: 2px solid #0063ff;
+    color: #0063ff;
+    background: transparent;
   }
 `
