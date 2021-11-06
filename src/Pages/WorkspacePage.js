@@ -131,12 +131,23 @@ function WorkspacePageComponent(props) {
                         <div className='thumbnail'>
                           <img src={item.image} alt='thumbnail' />
                         </div>
-                        <h2 className='workspace-title'>
-                          {item.title.length > 14
-                            ? `${item.title.slice(0, 13)}...`
-                            : item.title}
-                          {item.version > 1 ? `(${item.version})` : null}
-                        </h2>
+                        <div className='title-container'>
+                          <p
+                            className={`${
+                              item.title.length > 50
+                                ? 'animation-title workspace-title'
+                                : 'workspace-title'
+                            }`}
+                          >
+                            {item.title}{' '}
+                            {item.version > 1 ? `(${item.version})` : null}{' '}
+                            {item.title.length > 50
+                              ? `${item.title} ${
+                                  item.version > 1 ? `(${item.version})` : null
+                                }`
+                              : null}
+                          </p>
+                        </div>
                       </div>
 
                       <div className='workspace-options'>
@@ -362,18 +373,36 @@ const WorkspaceWrapper = styled.section`
     width: 100%;
     object-fit: cover;
   }
+  .title-container {
+    width: 150px;
+    overflow: hidden;
+  }
   .list-card .workspace-title {
     font-size: 20px;
     font-weight: 400;
     font-family: 'Open Sans', sans-serif;
     color: #8d8a8a;
+    white-space: nowrap;
+  }
+  .animation-title {
+    animation: text-left 10s infinite linear;
+  }
+  @keyframes text-left {
+    0% {
+      transform: translateX(0%);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
   }
   .grid-card .workspace-title {
     font-size: 14px;
     font-weight: 400;
     font-family: 'Open Sans', sans-serif;
     color: #8d8a8a;
+    white-space: nowrap;
   }
+
   .workspace-options {
     display: flex;
     flex-direction: column;

@@ -286,6 +286,7 @@ a {
   font-weight: 600;
   color: #0062fd;
   text-decoration: none;
+  /* width: 50%; */
 }
 
 /* career guidance tile */
@@ -300,6 +301,10 @@ a {
 }
 
 /* task manager tile */
+
+.right-bottom a {
+  width: 50%;
+}
 
 .task-manager-tile a {
   width: 50%;

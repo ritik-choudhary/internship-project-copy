@@ -5,6 +5,7 @@ import Sidebar from '../Components/Sidebar'
 import { Switch, Route } from 'react-router-dom'
 import styled from 'styled-components'
 import { WorkspaceConsumer } from '../Context'
+import bg1 from '../assets/bg1.jpg'
 
 export default function Dashboard() {
   return (
@@ -49,10 +50,12 @@ function DashboardComponent() {
                 showTut ? (
                   <TutorialWrapper>
                     <div
-                      className='tut-overlay'
+                      className={
+                        count < 2 ? 'image-overlay tut-overlay' : 'tut-overlay'
+                      }
                       style={{
                         zIndex: `${count < 2 ? '3' : ''}`,
-                        background: `${
+                        backgroundImage: `${
                           count === 0
                             ? 'linear-gradient(to right bottom, #470F10,#100A30)'
                             : count === 1
@@ -62,29 +65,39 @@ function DashboardComponent() {
                       }}
                     >
                       {count === 0 ? (
-                        <h1
-                          className='entry-animation welcome-msg'
-                          style={{
-                            color: 'white',
-                            fontSize: '50px',
-                            whiteSpace: 'nowrap',
-                            fontWeight: '400',
-                          }}
-                        >
-                          Welcome to your Virtual Desk!
-                        </h1>
+                        <>
+                          <div className='bg-image-container'>
+                            <img src={bg1} alt='' />
+                          </div>
+                          <h1
+                            className='entry-animation welcome-msg'
+                            style={{
+                              color: 'white',
+                              fontSize: '50px',
+                              whiteSpace: 'nowrap',
+                              fontWeight: '400',
+                            }}
+                          >
+                            Welcome to your Virtual Desk!
+                          </h1>
+                        </>
                       ) : count === 1 ? (
-                        <p
-                          className='entry-animation welcome-msg'
-                          style={{
-                            color: 'white',
-                            fontSize: '25px',
-                          }}
-                        >
-                          We have made the best platform for your comfort.
-                          <br /> Now manage your work without any hassel at one
-                          place.
-                        </p>
+                        <>
+                          <div className='bg-image-container'>
+                            <img src={bg1} alt='' />
+                          </div>
+                          <p
+                            className='entry-animation welcome-msg'
+                            style={{
+                              color: 'white',
+                              fontSize: '25px',
+                            }}
+                          >
+                            We have made the best platform for your comfort.
+                            <br /> Now manage your work without any hassel at
+                            one place.
+                          </p>
+                        </>
                       ) : count === 2 ? (
                         <p
                           classname='workspace-click'
@@ -275,6 +288,19 @@ const TutorialWrapper = styled.section`
     justify-content: center;
     background: rgba(0, 0, 0, 0.8);
   }
+  .bg-image-container {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    posiiton: relative;
+    opacity: 0.5;
+  }
+  .bg-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.5;
+  }
   .entry-animation {
     animation: slide-down 0.5s ease-out;
     width: 100%;
@@ -299,6 +325,10 @@ const TutorialWrapper = styled.section`
   }
   .workspace-click {
     position: absolute;
+  }
+  .tutorial-btn-container {
+    position: absolute;
+    top: 50%;
   }
   .skip-tut-btn:hover {
     text-decoration: underline;

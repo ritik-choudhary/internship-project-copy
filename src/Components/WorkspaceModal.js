@@ -166,6 +166,7 @@ export default function WorkspaceModal(props) {
                 <input
                   autoFocus
                   required
+                  maxLength='100'
                   type='text'
                   name='workspace'
                   id='name'
