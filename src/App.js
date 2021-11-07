@@ -24,6 +24,8 @@ import Insights from './Pages/Insights'
 import DocumentShelf from './Pages/DocumentShelf'
 import CoverLetterTemplates from './Pages/CoverLetterTemplates'
 import Wallet from './Pages/Wallet'
+import Recents from './Pages/Recents'
+import Confirmation from './Components/Tools/Confirmation'
 
 Modal.setAppElement('#root')
 
@@ -91,6 +93,11 @@ function App() {
             component={CoverLetterTemplates}
           />
           <Route path='/wallet' component={Wallet} />
+          <Route path='/recents' component={Recents} />
+          <Route
+            path='/trash/confirmation/:deleteID'
+            component={Confirmation}
+          />
           <Route exact path='/trash' component={Trash}></Route>
         </Switch>
       </Router>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import Header from '../Components/Dashboard/Header'
 import Tiles from '../Components/Dashboard/Tiles'
 import Sidebar from '../Components/Sidebar'
@@ -18,15 +18,9 @@ export default function Dashboard() {
 }
 
 function DashboardComponent() {
-  const [showTut, setShowTut] = useState(false)
+  const [showTut, setShowTut] = useState(true)
   const [count, setCount] = useState(0)
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowTut(true)
-    }, 3000)
-    return () => clearTimeout(timer)
-  }, [])
   return (
     <>
       <WorkspaceConsumer>

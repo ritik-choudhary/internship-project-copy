@@ -92,6 +92,13 @@ function TaskManagerComponent(props) {
                   Task Manager
                 </h3>
               </div>
+              <div className='selector'>
+                <select name='task-parent' id='task-parent'>
+                  <option value='Internships'>Internships</option>
+                  <option value='College Clubs'>College Clubs</option>
+                  <option value='Todo List'>Todo List</option>
+                </select>
+              </div>
             </div>
             <div className='line'></div>
           </header>
@@ -464,6 +471,16 @@ const TaskManagerWrapper = styled.section`
     width: 100%;
     font-size: 20px;
     font-weight: 400;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .selector select {
+    width: 150px;
+    height: 30px;
+    border: none;
+    border-bottom: 1px solid #c4c4c4;
+    outline: none;
   }
   .task-manager-title-container .title div {
     display: flex;

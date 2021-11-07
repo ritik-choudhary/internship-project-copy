@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import Sidebar from '../Components/Sidebar'
 import styled from 'styled-components'
 import { BsFillGridFill } from 'react-icons/bs'
@@ -37,14 +37,7 @@ export default function WorkspacePage() {
 function WorkspacePageComponent(props) {
   const { value } = props
   const [gridStyle, setGridStyle] = useState(false)
-  const [showTut, setShowTut] = useState(false)
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowTut(true)
-    }, 2000)
-    return () => clearTimeout(timer)
-  }, [])
+  const [showTut, setShowTut] = useState(true)
 
   return (
     <>
@@ -473,15 +466,16 @@ const WorkspaceWrapper = styled.section`
   }
   .click-here-btn {
     text-align: center;
+    font-size: 10px;
     color: white;
     box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);
-    padding: 5px 10px;
+    padding: 5px;
     border-radius: 6px;
     background: black;
     display: flex;
     align-items: center;
-    gap: 10px;
-    animation: click-here 2s infinite;
+    gap: 5px;
+    animation: click-here 1.5s infinite;
   }
   .click-here-btn .arrow {
     font-size: 18px;
@@ -492,7 +486,7 @@ const WorkspaceWrapper = styled.section`
       transform: scale(0.8);
     }
     50% {
-      transform: scale(1.1);
+      transform: scale(1.05);
     }
     100% {
       transform: scale(0.8);

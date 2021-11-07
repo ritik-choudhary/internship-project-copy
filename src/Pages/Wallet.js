@@ -142,6 +142,9 @@ function WalletComponent() {
                     <p className='joined-date'>june 21</p>
                   </div>
                 </div>
+                <div className='hover-text'>
+                  <p>Users who signed in using your referral.</p>
+                </div>
               </div>
               <div className='premium'>
                 <div className='heading'>
@@ -238,6 +241,12 @@ function WalletComponent() {
                     <p className='joined-date'>june 21</p>
                   </div>
                 </div>
+                <div className='hover-text'>
+                  <p>
+                    Users who are now under premium membership via your
+                    referral.
+                  </p>
+                </div>
               </div>
               <div className='monthly'>
                 <div className='heading'>Monthly Users</div>
@@ -315,6 +324,9 @@ function WalletComponent() {
                     <p className='user-name'>Ritik Choudhary</p>
                   </div>
                 </div>
+                <div className='hover-text'>
+                  <p>Monthly users who signed in using your referral.</p>
+                </div>
               </div>
               <div className='total'>
                 <div className='heading'>Total Assesment</div>
@@ -322,54 +334,15 @@ function WalletComponent() {
                   <p style={{ opacity: '0.7' }}>Total Number of Users : </p>
                   <span>2568</span>
                 </div>
-                <p style={{ fontWeight: '600', opacity: '0.7' }}>
-                  Number of days on virtual desk
-                </p>
-                <div className='users-list'>
-                  <div className='single-user'>
-                    <p className='user-name'>Ritik Choudhary</p>
-                    <p className='days-spent'>34</p>
-                  </div>
-                  <div className='single-user'>
-                    <p className='user-name'>Nitin sharma</p>
-                    <p className='days-spent'>34</p>
-                  </div>
-                  <div className='single-user'>
-                    <p className='user-name'>Piyush Kanda</p>
-                    <p className='days-spent'>34</p>
-                  </div>
-                  <div className='single-user'>
-                    <p className='user-name'>Ritik</p>
-                    <p className='days-spent'>34</p>
-                  </div>
-                  <div className='single-user'>
-                    <p className='user-name'>Tom Cruise</p>
-                    <p className='days-spent'>34</p>
-                  </div>
-                  <div className='single-user'>
-                    <p className='user-name'>Jack Nicolson</p>
-                    <p className='days-spent'>34</p>
-                  </div>
-                  <div className='single-user'>
-                    <p className='user-name'>Anne Hathaway</p>
-                    <p className='days-spent'>34</p>
-                  </div>
-                  <div className='single-user'>
-                    <p className='user-name'>Jake Gylenhaal</p>
-                    <p className='days-spent'>34</p>
-                  </div>
-                  <div className='single-user'>
-                    <p className='user-name'>Brad Pitt</p>
-                    <p className='days-spent'>34</p>
-                  </div>
-                  <div className='single-user'>
-                    <p className='user-name'>Daniel Dey Lewis</p>
-                    <p className='days-spent'>34</p>
-                  </div>
-                  <div className='single-user'>
-                    <p className='user-name'>Ritik</p>
-                    <p className='days-spent'>34</p>
-                  </div>
+                <div className='days-spent'>
+                  <p style={{ opacity: '0.7' }}>Days spent on virtual desk :</p>
+                  <span>56</span>
+                </div>
+                <div className='hover-text'>
+                  <p>
+                    Total assesment of your referrals and number of days spent
+                    by you here.
+                  </p>
                 </div>
               </div>
             </div>
@@ -520,6 +493,7 @@ const WalletWrapper = styled.section`
     display: flex;
     flex-direction: column;
     gap: 10px;
+    position: relative;
   }
   .premium {
     background: #fee4cb;
@@ -672,10 +646,6 @@ const WalletWrapper = styled.section`
     margin-right: -10px;
     font-size: 16px;
   }
-  // .transactions:hover,
-  // .withdraw:hover {
-  //   color: #468aef;
-  // }
   .users-list {
     height: 230px;
     display: flex;
@@ -717,13 +687,49 @@ const WalletWrapper = styled.section`
   }
   .users-count {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: space-between;
+    gap: 10px;
   }
   .users-count span {
     background: white;
-    padding: 5px;
+    font-size: 30px;
+    padding: 5px 10px;
     border-radius: 5px;
     color: #468aef;
+  }
+  .days-spent {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+  }
+  .days-spent p {
+    font-weight: 400;
+  }
+  .days-spent span {
+    background: white;
+    font-size: 30px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    color: #468aef;
+  }
+  .hover-text {
+    position: absolute;
+    top: 0px;
+    left: 10%;
+    right: 10%;
+    background: white;
+    font-size: 10px;
+    text-align: center;
+    opacity: 0;
+    padding: 3px;
+    border-radius: 6px;
+  }
+  .premium:hover .hover-text,
+  .referral:hover .hover-text,
+  .monthly:hover .hover-text,
+  .total:hover .hover-text {
+    opacity: 1;
   }
 `

@@ -45,12 +45,14 @@ export default function Sidebar() {
             isSidebarOpen={isSidebarOpen}
           />
         </Link>
-        <Option
-          Icon={BiTimeFive}
-          title={'Recents'}
-          setIsSidebarOpen={setIsSidebarOpen}
-          isSidebarOpen={isSidebarOpen}
-        />
+        <Link to='/recents' className='sidebar-icon-link'>
+          <Option
+            Icon={BiTimeFive}
+            title={'Recents'}
+            setIsSidebarOpen={setIsSidebarOpen}
+            isSidebarOpen={isSidebarOpen}
+          />
+        </Link>
         <Link to='/notes' className='sidebar-icon-link'>
           <Option
             Icon={FaBars}

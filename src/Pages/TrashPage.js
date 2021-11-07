@@ -151,12 +151,9 @@ function TrashPageComponent(props) {
                             className='restore-btn'
                             onClick={(e) => value.restoreWorkspace(item.id)}
                           />
-                          <RiDeleteBin6Line
-                            className='delete-btn'
-                            onClick={(e) => {
-                              value.deleteWorkspacePermanently(item.id)
-                            }}
-                          />
+                          <Link to={`/trash/confirmation/${item.id}`}>
+                            <RiDeleteBin6Line className='delete-btn' />
+                          </Link>
                         </div>
                         <div className='created-on'>
                           Created on: {item.createdOn}
@@ -176,13 +173,11 @@ function TrashPageComponent(props) {
                         <img src={item.source} alt='' />
                       </div>
                       <div className='card-options'>
-                        <div className='delete-btn'>
-                          <RiDeleteBin6Line
-                            onClick={() => {
-                              value.deleteBucketImagePermanently(item.previewId)
-                            }}
-                          />
-                        </div>
+                        <Link to={`/trash/confirmation/${item.id}`}>
+                          <div className='delete-btn'>
+                            <RiDeleteBin6Line />
+                          </div>
+                        </Link>
                         <div className='restore-btn'>
                           <VscDebugRestart
                             onClick={() =>
@@ -217,13 +212,11 @@ function TrashPageComponent(props) {
                               onClick={() => value.restoreFromTrash(item.id)}
                             />
                           </div>
-                          <div className='delete-btn'>
-                            <RiDeleteBin6Line
-                              onClick={() => {
-                                value.deleteDocsPermanently(item.id)
-                              }}
-                            />
-                          </div>
+                          <Link to={`/trash/confirmation/${item.id}`}>
+                            <div className='delete-btn'>
+                              <RiDeleteBin6Line />
+                            </div>
+                          </Link>
                         </div>
                       </div>
                     </div>
@@ -247,13 +240,11 @@ function TrashPageComponent(props) {
                               onClick={() => value.restoreFromTrash(item.id)}
                             />
                           </div>
-                          <div className='delete-btn'>
-                            <RiDeleteBin6Line
-                              onClick={() => {
-                                value.deleteNotesPermanently(item.id)
-                              }}
-                            />
-                          </div>
+                          <Link to={`/trash/confirmation/${item.id}`}>
+                            <div className='delete-btn'>
+                              <RiDeleteBin6Line />
+                            </div>
+                          </Link>
                         </div>
                       </div>
                     </div>
@@ -289,13 +280,11 @@ function TrashPageComponent(props) {
                             onClick={() => value.restoreFromTrash(item.id)}
                           />
                         </div>
-                        <div className='delete-btn'>
-                          <RiDeleteBin6Line
-                            onClick={() => {
-                              value.deleteRecentsPermanently(item.id)
-                            }}
-                          />
-                        </div>
+                        <Link to={`/trash/confirmation/${item.id}`}>
+                          <div className='delete-btn'>
+                            <RiDeleteBin6Line />
+                          </div>
+                        </Link>
                       </div>
                       {item.createdOn ? (
                         <p className='created-on'>
