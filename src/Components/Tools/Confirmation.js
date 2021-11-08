@@ -52,7 +52,8 @@ export default function Confirmation() {
             >
               <p>Are you sure you want to permanently delete this?</p>
               <p style={{ color: '#c4c4c4' }}>
-                You will not be able to restore again.
+                All the sub workspaces will be deleted permanently. You will not
+                be able to restore again.
               </p>
               <div
                 style={{
@@ -62,7 +63,7 @@ export default function Confirmation() {
                   justifyContent: 'flex-end',
                 }}
               >
-                <Link to='/recents'>
+                <Link to='/trash'>
                   <div
                     style={{
                       color: '#FF0000',

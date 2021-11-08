@@ -335,7 +335,7 @@ function WalletComponent() {
                   <span>2568</span>
                 </div>
                 <div className='days-spent'>
-                  <p style={{ opacity: '0.7' }}>Days spent on virtual desk :</p>
+                  <p style={{ opacity: '0.7' }}>Total number of days :</p>
                   <span>56</span>
                 </div>
                 <div className='hover-text'>
@@ -719,7 +719,6 @@ const WalletWrapper = styled.section`
     top: 0px;
     left: 10%;
     right: 10%;
-    background: white;
     font-size: 10px;
     text-align: center;
     opacity: 0;
@@ -731,5 +730,9 @@ const WalletWrapper = styled.section`
   .monthly:hover .hover-text,
   .total:hover .hover-text {
     opacity: 1;
+  }
+
+  .hover-text {
+    background: #ffffff75;
   }
 `

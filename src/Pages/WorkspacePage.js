@@ -134,11 +134,6 @@ function WorkspacePageComponent(props) {
                           >
                             {item.title}{' '}
                             {item.version > 1 ? `(${item.version})` : null}{' '}
-                            {item.title.length > 50
-                              ? `${item.title} ${
-                                  item.version > 1 ? `(${item.version})` : null
-                                }`
-                              : null}
                           </p>
                         </div>
                       </div>
@@ -369,6 +364,8 @@ const WorkspaceWrapper = styled.section`
   .title-container {
     width: 150px;
     overflow: hidden;
+    display: flex;
+    justify-content: center;
   }
   .list-card .workspace-title {
     font-size: 20px;
@@ -385,7 +382,7 @@ const WorkspaceWrapper = styled.section`
       transform: translateX(0%);
     }
     100% {
-      transform: translateX(-100%);
+      transform: translateX(-51%);
     }
   }
   .grid-card .workspace-title {
@@ -394,6 +391,7 @@ const WorkspaceWrapper = styled.section`
     font-family: 'Open Sans', sans-serif;
     color: #8d8a8a;
     white-space: nowrap;
+    text-align: center;
   }
 
   .workspace-options {

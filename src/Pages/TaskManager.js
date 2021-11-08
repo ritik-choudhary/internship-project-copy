@@ -94,9 +94,10 @@ function TaskManagerComponent(props) {
               </div>
               <div className='selector'>
                 <select name='task-parent' id='task-parent'>
-                  <option value='Internships'>Internships</option>
-                  <option value='College Clubs'>College Clubs</option>
-                  <option value='Todo List'>Todo List</option>
+                  <option value='Task Manager'>Task Manager</option>
+                  <option value='Internships'>Internships Tasks</option>
+                  <option value='College Clubs'>College Clubs Tasks</option>
+                  <option value='Todo List'>Todo List Tasks</option>
                 </select>
               </div>
             </div>

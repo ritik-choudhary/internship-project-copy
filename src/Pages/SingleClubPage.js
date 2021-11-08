@@ -189,8 +189,8 @@ function SingleClubPageComponent(props) {
                     type='text'
                     name='members'
                     id='members'
-                    style={{ width: '329px' }}
-                    placeholder="Use ',' or enter after every member"
+                    style={{ width: '318px', fontSize: '10px' }}
+                    placeholder='Use comma or press enter after every member'
                     value={memberToAdd}
                     onChange={(e) => setMemberToAdd(e.target.value)}
                     onKeyDown={(e) => {

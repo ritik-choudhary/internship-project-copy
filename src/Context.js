@@ -2129,7 +2129,7 @@ class WorkspaceProvider extends Component {
             }
           })
         } else {
-          alert('Cannot restore')
+          alert('Parent unavailable! Please restore Parent Workspace first.')
         }
         break
 
@@ -2170,10 +2170,10 @@ class WorkspaceProvider extends Component {
               }
             })
           } else {
-            alert('Cannot restore')
+            alert('Parent unavailable! Please restore Parent Workspace first.')
           }
         } else {
-          alert('Cannot restore')
+          alert('Parent unavailable! Please restore Parent Workspace first.')
         }
         break
 
@@ -2200,10 +2200,10 @@ class WorkspaceProvider extends Component {
               }
             })
           } else {
-            alert('Cannot restore')
+            alert('Parent unavailable! Please restore Parent Workspace first.')
           }
         } else {
-          alert('Cannot restore')
+          alert('Parent unavailable! Please restore Parent Workspace first.')
         }
         break
 
@@ -2248,16 +2248,16 @@ class WorkspaceProvider extends Component {
                   }
                 })
               } else {
-                alert('Cannot restore')
+                alert('Parent unavailable! Please restore Parent Workspace first.')
               }
             } else {
-              alert('Cannot restore')
+              alert('Parent unavailable! Please restore Parent Workspace first.')
             }
           } else {
-            alert('Cannot restore')
+            alert('Parent unavailable! Please restore Parent Workspace first.')
           }
         } else {
-          alert('Cannot restore')
+          alert('Parent unavailable! Please restore Parent Workspace first.')
         }
         break
 
@@ -2303,16 +2303,16 @@ class WorkspaceProvider extends Component {
                   }
                 })
               } else {
-                alert('Cannot restore')
+                alert('Parent unavailable! Please restore Parent Workspace first.')
               }
             } else {
-              alert('Cannot restore')
+              alert('Parent unavailable! Please restore Parent Workspace first.')
             }
           } else {
-            alert('Cannot restore')
+            alert('Parent unavailable! Please restore Parent Workspace first.')
           }
         } else {
-          alert('Cannot restore')
+          alert('Parent unavailable! Please restore Parent Workspace first.')
         }
         break
 
@@ -2358,16 +2358,16 @@ class WorkspaceProvider extends Component {
                   }
                 })
               } else {
-                alert('Cannot restore')
+                alert('Parent unavailable! Please restore Parent Workspace first.')
               }
             } else {
-              alert('Cannot restore')
+              alert('Parent unavailable! Please restore Parent Workspace first.')
             }
           } else {
-            alert('Cannot restore')
+            alert('Parent unavailable! Please restore Parent Workspace first.')
           }
         } else {
-          alert('Cannot restore')
+          alert('Parent unavailable! Please restore Parent Workspace first.')
         }
         break
 
@@ -2413,16 +2413,16 @@ class WorkspaceProvider extends Component {
                   }
                 })
               } else {
-                alert('Cannot restore')
+                alert('Parent unavailable! Please restore Parent Workspace first.')
               }
             } else {
-              alert('Cannot restore')
+              alert('Parent unavailable! Please restore Parent Workspace first.')
             }
           } else {
-            alert('Cannot restore')
+            alert('Parent unavailable! Please restore Parent Workspace first.')
           }
         } else {
-          alert('Cannot restore')
+          alert('Parent unavailable! Please restore Parent Workspace first.')
         }
         break
 
@@ -2452,10 +2452,10 @@ class WorkspaceProvider extends Component {
               }
             })
           } else {
-            alert('Cannot restore')
+            alert('Parent unavailable! Please restore Parent Workspace first.')
           }
         } else {
-          alert('Cannot restore')
+          alert('Parent unavailable! Please restore Parent Workspace first.')
         }
         break
 
@@ -2485,10 +2485,10 @@ class WorkspaceProvider extends Component {
               }
             })
           } else {
-            alert('Cannot restore')
+            alert('Parent unavailable! Please restore Parent Workspace first.')
           }
         } else {
-          alert('Cannot restore')
+          alert('Parent unavailable! Please restore Parent Workspace first.')
         }
         break
 
@@ -2515,10 +2515,10 @@ class WorkspaceProvider extends Component {
               }
             })
           } else {
-            alert('Cannot restore')
+            alert('Parent unavailable! Please restore Parent Workspace first.')
           }
         } else {
-          alert('Cannot restore')
+          alert('Parent unavailable! Please restore Parent Workspace first.')
         }
         break
 
@@ -2568,10 +2568,10 @@ class WorkspaceProvider extends Component {
               }
             })
           } else {
-            alert('Cannot restore')
+            alert('Parent unavailable! Please restore Parent Workspace first.')
           }
         } else {
-          alert('Cannot restore')
+          alert('Parent unavailable! Please restore Parent Workspace first.')
         }
         break
 
@@ -2601,10 +2601,10 @@ class WorkspaceProvider extends Component {
               }
             })
           } else {
-            alert('Cannot restore')
+            alert('Parent unavailable! Please restore Parent Workspace first.')
           }
         } else {
-          alert('Cannot restore')
+          alert('Parent unavailable! Please restore Parent Workspace first.')
         }
         break
 
@@ -2634,10 +2634,10 @@ class WorkspaceProvider extends Component {
               }
             })
           } else {
-            alert('Cannot restore')
+            alert('Parent unavailable! Please restore Parent Workspace first.')
           }
         } else {
-          alert('Cannot restore')
+          alert('Parent unavailable! Please restore Parent Workspace first.')
         }
         break
 
@@ -2662,13 +2662,13 @@ class WorkspaceProvider extends Component {
                 itemToRestore.previewId
               )
             } else {
-              alert('Cannot restore')
+              alert('Parent unavailable! Please restore Parent Workspace first.')
             }
           } else {
-            alert('Cannot restore')
+            alert('Parent unavailable! Please restore Parent Workspace first.')
           }
         } else {
-          alert('Cannot restore')
+          alert('Parent unavailable! Please restore Parent Workspace first.')
         }
         break
 
@@ -2695,10 +2695,10 @@ class WorkspaceProvider extends Component {
               }
             })
           } else {
-            alert('Cannot restore')
+            alert('Parent unavailable! Please restore Parent Workspace first.')
           }
         } else {
-          alert('Cannot restore')
+          alert('Parent unavailable! Please restore Parent Workspace first.')
         }
         break
 

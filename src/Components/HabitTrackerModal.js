@@ -426,6 +426,7 @@ function HabitTrackerModalComponent(props) {
                         (0x1000000 + Math.random() * 0xffffff)
                           .toString(16)
                           .substr(1, 6),
+                      time: null,
                     },
                   ])
                   setFieldToAdd('')
@@ -458,7 +459,14 @@ function HabitTrackerModalComponent(props) {
         >
           {fieldsList.map((item) => {
             return (
-              <div className='field-to-add'>
+              <div
+                className='field-to-add'
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                }}
+              >
                 <p
                   style={{
                     fontSize: '12px',
@@ -471,6 +479,14 @@ function HabitTrackerModalComponent(props) {
                 >
                   {item.field}
                 </p>
+                <div className='notify-time'>
+                  <input
+                    type='time'
+                    name={item.id}
+                    id={item.id}
+                    style={{ height: '15px', fontSize: '10px' }}
+                  />
+                </div>
               </div>
             )
           })}

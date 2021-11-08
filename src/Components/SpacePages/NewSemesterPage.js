@@ -306,4 +306,7 @@ const NewSemesterPageWrapper = styled.section`
     padding: 5px 0px;
     cursor: pointer;
   }
+  .see-more-option:hover {
+    text-decoration: underline;
+  }
 `
