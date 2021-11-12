@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { WorkspaceConsumer } from '../Context'
 import Sidebar from '../Components/Sidebar'
 import styled from 'styled-components'
@@ -63,6 +63,7 @@ function TaskManagerComponent(props) {
   }
 
   const currentDate = new Date()
+  const [taskFolder, setTaskFolder] = useState('Task Manager')
 
   return (
     <TaskManagerWrapper>
@@ -95,7 +96,12 @@ function TaskManagerComponent(props) {
                 </h3>
               </div>
               <div className='selector'>
-                <select name='task-parent' id='task-parent'>
+                <select
+                  name='task-parent'
+                  id='task-parent'
+                  value={taskFolder}
+                  onChange={(e) => setTaskFolder(e.target.value)}
+                >
                   <option value='Task Manager'>Task Manager</option>
                   <option value='Internships'>Internships Tasks</option>
                   <option value='College Clubs'>College Clubs Tasks</option>
@@ -106,13 +112,25 @@ function TaskManagerComponent(props) {
             <div className='line'></div>
           </header>
           <div className='manager-headers-container'>
-            <div className='manager-headers'>
-              <div className='new-tasks-header'>
-                <p className='header-text'>NEW TASKS</p>
-                <div className='number-container'>
-                  <p>{value.taskManager[0].length}</p>
+            <div
+              className='manager-headers'
+              style={{
+                gridTemplateColumns: `${
+                  taskFolder === 'Task Manager'
+                    ? 'repeat(4, 1fr)'
+                    : 'repeat(3,1fr)'
+                }`,
+              }}
+            >
+              {taskFolder === 'Task Manager' ? (
+                <div className='new-tasks-header'>
+                  <p className='header-text'>NEW TASKS</p>
+                  <div className='number-container'>
+                    <p>{value.taskManager[0].length}</p>
+                  </div>
                 </div>
-              </div>
+              ) : null}
+
               <div className='todo-header'>
                 <p className='header-text'>TO-DO</p>
                 <div className='number-container'>
@@ -134,85 +152,97 @@ function TaskManagerComponent(props) {
             </div>
             <div className='manager-headers-line'></div>
           </div>
-          <div className='storage'>
-            <div
-              className='new-tasks-storage-container'
-              onDrop={(e) => drop(e, 0)}
-              onDragOver={dragOverContainer}
-              id='new-tasks-storage'
-            >
-              <div className='new-tasks-storage'>
-                <Link to='/taskmanager/addnew'>
-                  <div className='create-task-btn'>
-                    <AiOutlinePlus />
-                    <p>Create task</p>
-                  </div>
-                </Link>
-                {value.taskManager[0].map((task) => {
-                  const date = new Date(task.dueDate)
-                  return (
-                    <Link to={`/taskmanager/info/${task.id}`}>
-                      <div
-                        className='task-card'
-                        draggable={true}
-                        onDragStart={dragStart}
-                        onDragOver={dragOver}
-                        id={task.id}
-                      >
-                        <div className='status-manipulation'>
-                          <input
-                            type='checkbox'
-                            name={task.id}
-                            id={task.id}
-                            checked={task.completed}
-                            onChange={() =>
-                              value.handleStatusTaskManager(task.id)
-                            }
-                            onClick={(e) => e.preventDefault()}
-                          />
-                          <div className='title'>{task.title}</div>
-                        </div>
-                        <div className='group'>
-                          <p className='label'>Created by</p>
-                          <h3 className='created-by'>{task.createdBy}</h3>
-                        </div>
-                        <div className='group'>
-                          <p className='label'>
-                            Due Date {date < currentDate ? '(late)' : null}
-                          </p>
-                          <div
-                            style={{
-                              display: 'flex',
-                              justifyContent: 'space-between',
-                              alignItems: 'center',
-                            }}
-                          >
-                            <h3
-                              className='due-date'
+          <div
+            className='storage'
+            style={{
+              gridTemplateColumns: `${
+                taskFolder === 'Task Manager'
+                  ? 'repeat(4, 1fr)'
+                  : 'repeat(3,1fr)'
+              }`,
+            }}
+          >
+            {taskFolder === 'Task Manager' ? (
+              <div
+                className='new-tasks-storage-container'
+                onDrop={(e) => drop(e, 0)}
+                onDragOver={dragOverContainer}
+                id='new-tasks-storage'
+              >
+                <div className='new-tasks-storage'>
+                  <Link to='/taskmanager/addnew'>
+                    <div className='create-task-btn'>
+                      <AiOutlinePlus />
+                      <p>Create task</p>
+                    </div>
+                  </Link>
+                  {value.taskManager[0].map((task) => {
+                    const date = new Date(task.dueDate)
+                    return (
+                      <Link to={`/taskmanager/info/${task.id}`}>
+                        <div
+                          className='task-card'
+                          draggable={true}
+                          onDragStart={dragStart}
+                          onDragOver={dragOver}
+                          id={task.id}
+                        >
+                          <div className='status-manipulation'>
+                            <input
+                              type='checkbox'
+                              name={task.id}
+                              id={task.id}
+                              checked={task.completed}
+                              onChange={() =>
+                                value.handleStatusTaskManager(task.id)
+                              }
+                              onClick={(e) => e.preventDefault()}
+                            />
+                            <div className='title'>{task.title}</div>
+                          </div>
+                          <div className='group'>
+                            <p className='label'>Created by</p>
+                            <h3 className='created-by'>{task.createdBy}</h3>
+                          </div>
+                          <div className='group'>
+                            <p className='label'>
+                              Due Date {date < currentDate ? '(late)' : null}
+                            </p>
+                            <div
                               style={{
-                                color: `${
-                                  date < currentDate ? '#ff0000' : '#76e51c'
-                                }`,
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                alignItems: 'center',
                               }}
                             >
-                              {task.dueDate}
-                            </h3>
-                            <Link to={`/taskmanager/edit/${task.id}`}>
-                              <div className='task-edit-btn'>
-                                <FiEdit />
-                              </div>
-                            </Link>
+                              <h3
+                                className='due-date'
+                                style={{
+                                  color: `${
+                                    date < currentDate ? '#ff0000' : '#76e51c'
+                                  }`,
+                                }}
+                              >
+                                {task.dueDate}
+                              </h3>
+                              <Link to={`/taskmanager/edit/${task.id}`}>
+                                <div className='task-edit-btn'>
+                                  <FiEdit />
+                                </div>
+                              </Link>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </Link>
-                  )
-                })}
+                      </Link>
+                    )
+                  })}
+                </div>
+                <p className='drag-and-drop-msg'>
+                  Drag and <br /> drop here
+                </p>
               </div>
-              <p className='drag-and-drop-msg'>
-                Drag and <br /> drop here
-              </p>
-            </div>
+            ) : null}
+
             <div
               className='todo-storage-container'
               onDrop={(e) => drop(e, 1)}
@@ -226,6 +256,31 @@ function TaskManagerComponent(props) {
               >
                 {value.taskManager[1].map((task) => {
                   const date = new Date(task.dueDate)
+                  if (
+                    taskFolder === 'Internships' &&
+                    task.parent !== 'Internships'
+                  ) {
+                    return <></>
+                  }
+                  if (
+                    taskFolder === 'College Clubs' &&
+                    task.parent !== 'College Clubs'
+                  ) {
+                    return <></>
+                  }
+                  if (
+                    taskFolder === 'Todo List' &&
+                    task.parent !== 'Todo List'
+                  ) {
+                    return <></>
+                  }
+                  if (
+                    taskFolder === 'Task Manager' &&
+                    task.parent !== 'Task Manager'
+                  ) {
+                    return <></>
+                  }
+
                   return (
                     <Link to={`/taskmanager/info/${task.id}`}>
                       <div
@@ -304,6 +359,30 @@ function TaskManagerComponent(props) {
               >
                 {value.taskManager[2].map((task) => {
                   const date = new Date(task.dueDate)
+                  if (
+                    taskFolder === 'Internships' &&
+                    task.parent !== 'Internships'
+                  ) {
+                    return <></>
+                  }
+                  if (
+                    taskFolder === 'College Clubs' &&
+                    task.parent !== 'College Clubs'
+                  ) {
+                    return <></>
+                  }
+                  if (
+                    taskFolder === 'Todo List' &&
+                    task.parent !== 'Todo List'
+                  ) {
+                    return <></>
+                  }
+                  if (
+                    taskFolder === 'Task Manager' &&
+                    task.parent !== 'Task Manager'
+                  ) {
+                    return <></>
+                  }
                   return (
                     <Link to={`/taskmanager/info/${task.id}`}>
                       <div
@@ -382,6 +461,31 @@ function TaskManagerComponent(props) {
               >
                 {value.taskManager[3].map((task) => {
                   const date = new Date(task.dueDate)
+
+                  if (
+                    taskFolder === 'Internships' &&
+                    task.parent !== 'Internships'
+                  ) {
+                    return <></>
+                  }
+                  if (
+                    taskFolder === 'College Clubs' &&
+                    task.parent !== 'College Clubs'
+                  ) {
+                    return <></>
+                  }
+                  if (
+                    taskFolder === 'Todo List' &&
+                    task.parent !== 'Todo List'
+                  ) {
+                    return <></>
+                  }
+                  if (
+                    taskFolder === 'Task Manager' &&
+                    task.parent !== 'Task Manager'
+                  ) {
+                    return <></>
+                  }
                   return (
                     <Link to={`/taskmanager/info/${task.id}`}>
                       <div
@@ -570,7 +674,6 @@ const TaskManagerWrapper = styled.section`
   }
   .manager-headers {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
   }
   .completed-header,
   .in-progress-header,

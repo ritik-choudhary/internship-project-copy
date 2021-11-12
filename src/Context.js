@@ -302,6 +302,7 @@ class WorkspaceProvider extends Component {
 
   addTask = (id, key, clubId, resourceId, task) => {
     const oldList = [...this.state.workspaceElements]
+    let oldTaskManager = [...this.state.taskManager]
     let element = oldList.find(
       (item) => item.id === key && item.workspaceID === id
     )
@@ -311,8 +312,18 @@ class WorkspaceProvider extends Component {
     )
     resourceElement.tasks = resourceElement.tasks || []
     resourceElement.tasks = [...resourceElement.tasks, task]
+    task.parent = 'College Clubs'
+    if (task.status === 'To-do') {
+      oldTaskManager[1] = [...oldTaskManager[1], task]
+    }
+    if (task.status === 'In-Progress') {
+      oldTaskManager[2] = [...oldTaskManager[2], task]
+    }
+    if (task.status === 'Completed') {
+      oldTaskManager[3] = [...oldTaskManager[3], task]
+    }
     this.setState(() => {
-      return { workspaceElements: oldList }
+      return { workspaceElements: oldList, taskManager: oldTaskManager }
     })
   }
 
@@ -327,6 +338,7 @@ class WorkspaceProvider extends Component {
     )
     let taskElement = resourceElement.tasks.find((item) => item.id === taskId)
     taskElement.completed = !taskElement.completed
+    taskElement.status = taskElement.completed ? 'Completed' : 'To-do'
     this.setState(() => {
       return { workspaceElements: oldList }
     })
@@ -403,6 +415,7 @@ class WorkspaceProvider extends Component {
     taskElement.links = task.links
     taskElement.pdfList = task.pdfList
     taskElement.description = task.description
+    taskElement.status = task.status
 
     this.setState(() => {
       return { workspaceElements: oldList }
@@ -1495,13 +1508,24 @@ class WorkspaceProvider extends Component {
 
   addTodo = (id, key, todo) => {
     const oldList = [...this.state.workspaceElements]
+    let oldTaskManager = [...this.state.taskManager]
     let element = oldList.find(
       (item) => item.id === key && item.workspaceID === id
     )
     element.todoList = element.todoList || []
     element.todoList = [...element.todoList, todo]
+    todo.parent = 'Todo List'
+    if (todo.status === 'To-do') {
+      oldTaskManager[1] = [...oldTaskManager[1], todo]
+    }
+    if (todo.status === 'In-Progress') {
+      oldTaskManager[2] = [...oldTaskManager[2], todo]
+    }
+    if (todo.status === 'Completed') {
+      oldTaskManager[3] = [...oldTaskManager[3], todo]
+    }
     this.setState(() => {
-      return { workspaceElements: oldList }
+      return { workspaceElements: oldList, taskManager: oldTaskManager }
     })
   }
 
@@ -1530,6 +1554,7 @@ class WorkspaceProvider extends Component {
     todoElement.links = todo.links
     todoElement.pdfList = todo.pdfList
     todoElement.description = todo.description
+    todoElement.status = todo.status
 
     this.setState(() => {
       return { workspaceElements: oldList }
@@ -1573,6 +1598,7 @@ class WorkspaceProvider extends Component {
     )
     let todoElement = element.todoList.find((item) => item.id === todoId)
     todoElement.completed = !todoElement.completed
+    todoElement.status = todoElement.completed ? 'Completed' : 'To-do'
     this.setState(() => {
       return { workspaceElements: oldList }
     })
@@ -1940,13 +1966,24 @@ class WorkspaceProvider extends Component {
 
   addNewInternshipTask = (internshipId, task) => {
     const oldInternships = [...this.state.internships]
+    let oldTaskManager = [...this.state.taskManager]
     let selectedInternship = oldInternships.find(
       (item) => item.id === internshipId
     )
     selectedInternship.tasks = selectedInternship.tasks || []
     selectedInternship.tasks = [...selectedInternship.tasks, task]
+    task.parent = 'Internships'
+    if (task.status === 'To-do') {
+      oldTaskManager[1] = [...oldTaskManager[1], task]
+    }
+    if (task.status === 'In-Progress') {
+      oldTaskManager[2] = [...oldTaskManager[2], task]
+    }
+    if (task.status === 'Completed') {
+      oldTaskManager[3] = [...oldTaskManager[3], task]
+    }
     this.setState(() => {
-      return { internships: oldInternships }
+      return { internships: oldInternships, taskManager: oldTaskManager }
     })
   }
 
@@ -1992,6 +2029,7 @@ class WorkspaceProvider extends Component {
   createTask = (task) => {
     const oldTaskManager = [...this.state.taskManager]
     let newTaskManager = [...oldTaskManager]
+    task.parent = 'Task Manager'
     newTaskManager[0] = [...newTaskManager[0], task]
     this.setState(() => {
       return { taskManager: newTaskManager }

@@ -38,6 +38,7 @@ function TaskModalComponent(props) {
   const [docsList, setDocsList] = useState([])
   const [docPreview, setDocPreview] = useState([])
   const [description, setDescription] = useState('')
+  const [status, setStatus] = useState()
 
   const disablePastDate = () => {
     const today = new Date()
@@ -81,6 +82,7 @@ function TaskModalComponent(props) {
         setLinks(selectedTask.links)
         setDocsList(selectedTask.docsList)
         setDescription(selectedTask.description)
+        setStatus(selectedTask.status)
       }
     } else {
       if (isEditing || isSharing) {
@@ -97,6 +99,7 @@ function TaskModalComponent(props) {
         setLinks(selectedTodo.links)
         setDocsList(selectedTodo.docsList)
         setDescription(selectedTodo.description)
+        setStatus(selectedTask.status)
       }
     }
   }, [
@@ -257,7 +260,8 @@ function TaskModalComponent(props) {
                   docsList: docsList,
                   docPreview: docPreview,
                   description: description,
-                  completed: false,
+                  completed: status === 'Completed' ? true : false,
+                  status: status,
                 }
               )
             } else {
@@ -270,7 +274,8 @@ function TaskModalComponent(props) {
                 docsList: docsList,
                 docPreview: docPreview,
                 description: description,
-                completed: false,
+                completed: status === 'Completed' ? true : false,
+                status: status,
               }
               value.addTask(
                 param.id,
@@ -294,7 +299,8 @@ function TaskModalComponent(props) {
                 docsList: docsList,
                 docPreview: docPreview,
                 description: description,
-                completed: false,
+                completed: status === 'Completed' ? true : false,
+                status: status,
               })
             } else {
               const taskToAdd = {
@@ -306,7 +312,8 @@ function TaskModalComponent(props) {
                 docsList: docsList,
                 docPreview: docPreview,
                 description: description,
-                completed: false,
+                completed: status === 'Completed' ? true : false,
+                status: status,
               }
               value.addTodo(param.id, param.spaceKey, taskToAdd)
             }
@@ -346,7 +353,7 @@ function TaskModalComponent(props) {
             }}
           />
         </div>
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
+        {/* <div style={{ display: 'flex', flexDirection: 'column' }}>
           <label
             htmlFor='created-on'
             style={{
@@ -358,7 +365,7 @@ function TaskModalComponent(props) {
             Created on
           </label>
           <p style={{ fontSize: '14px', color: '#468AEF' }}>{date}</p>
-        </div>
+        </div> */}
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           <label
             htmlFor='due-date'
@@ -389,6 +396,36 @@ function TaskModalComponent(props) {
               padding: '3px 8px',
             }}
           />
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+          <label
+            htmlFor='status'
+            style={{
+              color: '#959595',
+              fontSize: '12px',
+              marginBottom: '5px',
+            }}
+          >
+            Status
+          </label>
+          <select
+            name='status'
+            id='status'
+            style={{
+              borderRadius: '5px',
+              height: '32px',
+              outline: 'none',
+              border: '1px solid #C4C4C4',
+              fontSize: '16px',
+              padding: '3px 8px',
+            }}
+            onChange={(e) => setStatus(e.target.value)}
+          >
+            <option>Select Status</option>
+            <option value='To-do'>To-do</option>
+            <option value='In-Progress'>In-Progress</option>
+            <option value='Completed'>Completed</option>
+          </select>
         </div>
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           <label

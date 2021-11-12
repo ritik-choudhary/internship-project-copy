@@ -28,13 +28,14 @@ function InternshipTaskModalComponent(props) {
   const [title, setTitle] = useState()
   const [description, setDescription] = useState()
   const [dueDate, setDueDate] = useState(defaultDate)
+  const [status, setStatus] = useState()
 
   const disablePastDate = () => {
     const today = new Date()
     const dd = String(today.getDate() + 1).padStart(2, '0')
     const mm = String(today.getMonth() + 1).padStart(2, '0')
     const yyyy = today.getFullYear()
-    return yyyy + '-' + mm + '-' + dd
+    return dd + '-' + mm + '-' + yyyy
   }
 
   return (
@@ -108,7 +109,8 @@ function InternshipTaskModalComponent(props) {
             title: title,
             description: description,
             dueDate: dueDate,
-            completed: false,
+            completed: status === 'Completed' ? true : false,
+            status: status,
           })
           history.push('/internships')
         }}
@@ -171,6 +173,36 @@ function InternshipTaskModalComponent(props) {
             value={dueDate}
             onChange={(e) => setDueDate(e.target.value)}
           />
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+          <label
+            htmlFor='status'
+            style={{
+              color: '#959595',
+              fontSize: '12px',
+              marginBottom: '5px',
+            }}
+          >
+            Status
+          </label>
+          <select
+            name='status'
+            id='status'
+            style={{
+              borderRadius: '5px',
+              height: '32px',
+              outline: 'none',
+              border: '1px solid #C4C4C4',
+              fontSize: '16px',
+              padding: '3px 8px',
+            }}
+            onChange={(e) => setStatus(e.target.value)}
+          >
+            <option>Select Status</option>
+            <option value='To-do'>To-do</option>
+            <option value='In-Progress'>In-Progress</option>
+            <option value='Completed'>Completed</option>
+          </select>
         </div>
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           <label
