@@ -104,19 +104,52 @@ function DocumentShelfComponent(props) {
                         }}
                       >
                         <div className='document-card' key={item.id}>
-                          <div className='title'>{item.title}</div>
+                          <div className='animation-title-container'>
+                            <p
+                              className={`${
+                                item.title.length > 19
+                                  ? 'title animation-title'
+                                  : 'title'
+                              }`}
+                            >
+                              {item.title}{' '}
+                              {item.title.length > 19 ? item.title : null}
+                            </p>
+                          </div>
                           <div className='btn-container'>
                             <div
                               className='share-btn'
                               onClick={(e) => e.preventDefault()}
                             >
                               <FaShareSquare />
+                              <div className='hover-msg'>
+                                <p
+                                  style={{
+                                    color: 'black',
+                                    fontWeight: '400',
+                                    fontSize: '12px',
+                                  }}
+                                >
+                                  Share
+                                </p>
+                              </div>
                             </div>
                             <div
                               className='download-btn'
                               onClick={(e) => e.preventDefault()}
                             >
                               <FaDownload />
+                              <div className='hover-msg'>
+                                <p
+                                  style={{
+                                    color: 'black',
+                                    fontWeight: '400',
+                                    fontSize: '12px',
+                                  }}
+                                >
+                                  Download
+                                </p>
+                              </div>
                             </div>
                             <div
                               className='delete-btn'
@@ -126,6 +159,17 @@ function DocumentShelfComponent(props) {
                               }}
                             >
                               <RiDeleteBin6Line />
+                              <div className='hover-msg'>
+                                <p
+                                  style={{
+                                    color: 'black',
+                                    fontWeight: '400',
+                                    fontSize: '12px',
+                                  }}
+                                >
+                                  Delete
+                                </p>
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -162,19 +206,52 @@ function DocumentShelfComponent(props) {
                         }}
                       >
                         <div className='document-card' key={item.id}>
-                          <div className='title'>{item.title}</div>
+                          <div className='animation-title-container'>
+                            <p
+                              className={`${
+                                item.title.length > 19
+                                  ? 'title animation-title'
+                                  : 'title'
+                              }`}
+                            >
+                              {item.title}{' '}
+                              {item.title.length > 19 ? item.title : null}
+                            </p>
+                          </div>
                           <div className='btn-container'>
                             <div
                               className='share-btn'
                               onClick={(e) => e.preventDefault()}
                             >
                               <FaShareSquare />
+                              <div className='hover-msg'>
+                                <p
+                                  style={{
+                                    color: 'black',
+                                    fontWeight: '400',
+                                    fontSize: '12px',
+                                  }}
+                                >
+                                  Share
+                                </p>
+                              </div>
                             </div>
                             <div
                               className='download-btn'
                               onClick={(e) => e.preventDefault()}
                             >
                               <FaDownload />
+                              <div className='hover-msg'>
+                                <p
+                                  style={{
+                                    color: 'black',
+                                    fontWeight: '400',
+                                    fontSize: '12px',
+                                  }}
+                                >
+                                  Download
+                                </p>
+                              </div>
                             </div>
                             <div
                               className='delete-btn'
@@ -184,6 +261,17 @@ function DocumentShelfComponent(props) {
                               }}
                             >
                               <RiDeleteBin6Line />
+                              <div className='hover-msg'>
+                                <p
+                                  style={{
+                                    color: 'black',
+                                    fontWeight: '400',
+                                    fontSize: '12px',
+                                  }}
+                                >
+                                  Delete
+                                </p>
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -220,19 +308,52 @@ function DocumentShelfComponent(props) {
                         }}
                       >
                         <div className='document-card' key={item.id}>
-                          <div className='title'>{item.title}</div>
+                          <div className='animation-title-container'>
+                            <p
+                              className={`${
+                                item.title.length > 19
+                                  ? 'title animation-title'
+                                  : 'title'
+                              }`}
+                            >
+                              {item.title}{' '}
+                              {item.title.length > 19 ? item.title : null}
+                            </p>
+                          </div>
                           <div className='btn-container'>
                             <div
                               className='share-btn'
                               onClick={(e) => e.preventDefault()}
                             >
                               <FaShareSquare />
+                              <div className='hover-msg'>
+                                <p
+                                  style={{
+                                    color: 'black',
+                                    fontWeight: '400',
+                                    fontSize: '12px',
+                                  }}
+                                >
+                                  Share
+                                </p>
+                              </div>
                             </div>
                             <div
                               className='download-btn'
                               onClick={(e) => e.preventDefault()}
                             >
                               <FaDownload />
+                              <div className='hover-msg'>
+                                <p
+                                  style={{
+                                    color: 'black',
+                                    fontWeight: '400',
+                                    fontSize: '12px',
+                                  }}
+                                >
+                                  Download
+                                </p>
+                              </div>
                             </div>
                             <div
                               className='delete-btn'
@@ -242,6 +363,17 @@ function DocumentShelfComponent(props) {
                               }}
                             >
                               <RiDeleteBin6Line />
+                              <div className='hover-msg'>
+                                <p
+                                  style={{
+                                    color: 'black',
+                                    fontWeight: '400',
+                                    fontSize: '12px',
+                                  }}
+                                >
+                                  Delete
+                                </p>
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -278,19 +410,52 @@ function DocumentShelfComponent(props) {
                         }}
                       >
                         <div className='document-card' key={item.id}>
-                          <div className='title'>{item.title}</div>
+                          <div className='animation-title-container'>
+                            <p
+                              className={`${
+                                item.title.length > 12
+                                  ? 'title animation-title'
+                                  : 'title'
+                              }`}
+                            >
+                              {item.title}{' '}
+                              {item.title.length > 12 ? item.title : null}
+                            </p>
+                          </div>
                           <div className='btn-container'>
                             <div
                               className='share-btn'
                               onClick={(e) => e.preventDefault()}
                             >
                               <FaShareSquare />
+                              <div className='hover-msg'>
+                                <p
+                                  style={{
+                                    color: 'black',
+                                    fontWeight: '400',
+                                    fontSize: '12px',
+                                  }}
+                                >
+                                  Share
+                                </p>
+                              </div>
                             </div>
                             <div
                               className='download-btn'
                               onClick={(e) => e.preventDefault()}
                             >
                               <FaDownload />
+                              <div className='hover-msg'>
+                                <p
+                                  style={{
+                                    color: 'black',
+                                    fontWeight: '400',
+                                    fontSize: '12px',
+                                  }}
+                                >
+                                  Download
+                                </p>
+                              </div>
                             </div>
                             <div
                               className='delete-btn'
@@ -300,6 +465,17 @@ function DocumentShelfComponent(props) {
                               }}
                             >
                               <RiDeleteBin6Line />
+                              <div className='hover-msg'>
+                                <p
+                                  style={{
+                                    color: 'black',
+                                    fontWeight: '400',
+                                    fontSize: '12px',
+                                  }}
+                                >
+                                  Delete
+                                </p>
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -438,10 +614,6 @@ const DocumentShelfWrapper = styled.section`
   .other-documents .title {
     color: black;
     font-weight: 400;
-    width: 74px;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
     font-size: 14px;
   }
   .storage {
@@ -474,6 +646,26 @@ const DocumentShelfWrapper = styled.section`
     cursor: pointer;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
   }
+
+  .animation-title-container {
+    width: 90px;
+    display: flex;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  .animation-title-container .animation-title {
+    animation: text-float 10s linear infinite;
+  }
+
+  @keyframes text-float {
+    0% {
+      transform: translateX(0%);
+    }
+    100% {
+      transform: translateX(-51%);
+    }
+  }
+
   .btn-container {
     display: flex;
     align-items: center;
@@ -492,5 +684,24 @@ const DocumentShelfWrapper = styled.section`
   }
   .document-card .download-btn:hover {
     color: #3e77f1;
+  }
+
+  .delete-btn,
+  .download-btn,
+  .share-btn {
+    position: relative;
+  }
+
+  .delete-btn:hover .hover-msg,
+  .download-btn:hover .hover-msg,
+  .share-btn:hover .hover-msg {
+    opacity: 1;
+  }
+
+  .hover-msg {
+    position: absolute;
+    top: -16px;
+    left: -10px;
+    opacity: 0;
   }
 `

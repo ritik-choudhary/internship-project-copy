@@ -62,11 +62,20 @@ export default function Moodboards() {
 
                           <div className='card-footer'>
                             <div className='left'>
-                              <h4 className='moodboard-name'>
-                                {moodboard.title.length > 10
-                                  ? `${moodboard.title.slice(0, 10)}...`
-                                  : moodboard.title}
-                              </h4>
+                              <div className='animation-title-container'>
+                                <h4
+                                  className={`${
+                                    moodboard.title.length > 12
+                                      ? 'moodboard-name animation-title'
+                                      : 'moodboard-name'
+                                  }`}
+                                >
+                                  {moodboard.title}{' '}
+                                  {moodboard.title.length > 10
+                                    ? moodboard.title
+                                    : null}
+                                </h4>
+                              </div>
                               <p style={{ fontSize: '10px', color: '#468AEF' }}>
                                 {moodboard.createdOn}
                               </p>
@@ -77,6 +86,17 @@ export default function Moodboards() {
                               >
                                 <div className='edit-btn'>
                                   <FaEdit />
+                                  <div className='hover-msg'>
+                                    <p
+                                      style={{
+                                        color: 'black',
+                                        fontWeight: '400',
+                                        fontSize: '14px',
+                                      }}
+                                    >
+                                      Edit
+                                    </p>
+                                  </div>
                                 </div>
                               </Link>
                               <div className='delete-btn'>
@@ -90,6 +110,17 @@ export default function Moodboards() {
                                     )
                                   }}
                                 />
+                                <div className='hover-msg'>
+                                  <p
+                                    style={{
+                                      color: 'black',
+                                      fontWeight: '400',
+                                      fontSize: '14px',
+                                    }}
+                                  >
+                                    Delete
+                                  </p>
+                                </div>
                               </div>
                             </div>
                           </div>
@@ -142,11 +173,20 @@ export default function Moodboards() {
 
                           <div className='card-footer'>
                             <div className='left'>
-                              <h4 className='digitalBrainboard-name'>
-                                {digitalBrainboard.title.length > 10
-                                  ? `${digitalBrainboard.title.slice(0, 10)}...`
-                                  : digitalBrainboard.title}
-                              </h4>
+                              <div className='animation-title-container'>
+                                <h4
+                                  className={`${
+                                    digitalBrainboard.title.length > 12
+                                      ? 'digitalBrainboard-name animation-title'
+                                      : 'digitalBrainboard-name'
+                                  }`}
+                                >
+                                  {digitalBrainboard.title}{' '}
+                                  {digitalBrainboard.title.length > 10
+                                    ? digitalBrainboard.title
+                                    : null}
+                                </h4>
+                              </div>
                               <p style={{ fontSize: '10px', color: '#468AEF' }}>
                                 {digitalBrainboard.createdOn}
                               </p>
@@ -157,6 +197,17 @@ export default function Moodboards() {
                               >
                                 <div className='edit-btn'>
                                   <FaEdit />
+                                  <div className='hover-msg'>
+                                    <p
+                                      style={{
+                                        color: 'black',
+                                        fontWeight: '400',
+                                        fontSize: '14px',
+                                      }}
+                                    >
+                                      Edit
+                                    </p>
+                                  </div>
                                 </div>
                               </Link>
                               <div className='delete-btn'>
@@ -170,6 +221,17 @@ export default function Moodboards() {
                                     )
                                   }}
                                 />
+                                <div className='hover-msg'>
+                                  <p
+                                    style={{
+                                      color: 'black',
+                                      fontWeight: '400',
+                                      fontSize: '14px',
+                                    }}
+                                  >
+                                    Delete
+                                  </p>
+                                </div>
                               </div>
                             </div>
                           </div>
@@ -302,5 +364,47 @@ const MoodboardsWrapper = styled.section`
   }
   .card-footer .edit-btn:hover {
     color: #468aef;
+  }
+  .animation-title-container {
+    width: 85px;
+    display: flex;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  .animation-title-container .animation-title {
+    animation: text-float 10s linear infinite;
+  }
+
+  @keyframes text-float {
+    0% {
+      transform: translateX(0%);
+    }
+    100% {
+      transform: translateX(-51%);
+    }
+  }
+
+  .edit-btn,
+  .delete-btn {
+    position: relative;
+  }
+
+  .delete-btn:hover .hover-msg {
+    opacity: 1;
+  }
+
+  .edit-btn:hover .hover-msg {
+    opacity: 1;
+  }
+
+  .hover-msg {
+    position: absolute;
+    top: -16px;
+    left: -4px;
+    opacity: 0;
+  }
+
+  .delete-btn .hover-msg {
+    left: -10px;
   }
 `

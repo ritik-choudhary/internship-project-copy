@@ -140,16 +140,42 @@ function WorkspacePageComponent(props) {
 
                       <div className='workspace-options'>
                         <div className='options'>
-                          <Link to={`/workspace/${id}/edit`}>
-                            <FiEdit className='edit-btn' />
-                          </Link>
-                          <RiDeleteBin6Line
-                            className='delete-btn'
-                            onClick={(e) => {
-                              e.preventDefault()
-                              value.deleteWorkspace(id)
-                            }}
-                          />
+                          <div className='edit-btn-option'>
+                            <Link to={`/workspace/${id}/edit`}>
+                              <FiEdit className='edit-btn' />
+                              <div className='hover-msg'>
+                                <p
+                                  style={{
+                                    color: 'black',
+                                    fontWeight: '400',
+                                    fontSize: '14px',
+                                  }}
+                                >
+                                  Edit
+                                </p>
+                              </div>
+                            </Link>
+                          </div>
+                          <div className='delete-btn-option'>
+                            <RiDeleteBin6Line
+                              className='delete-btn'
+                              onClick={(e) => {
+                                e.preventDefault()
+                                value.deleteWorkspace(id)
+                              }}
+                            />
+                            <div className='hover-msg'>
+                              <p
+                                style={{
+                                  color: 'black',
+                                  fontWeight: '400',
+                                  fontSize: '14px',
+                                }}
+                              >
+                                Delete
+                              </p>
+                            </div>
+                          </div>
                         </div>
                         <div className='created-on'>
                           Created on: {item.createdOn}
@@ -375,7 +401,7 @@ const WorkspaceWrapper = styled.section`
     white-space: nowrap;
   }
   .animation-title {
-    animation: text-left 10s infinite linear;
+    animation: text-left 10s linear infinite;
   }
   @keyframes text-left {
     0% {
@@ -489,5 +515,25 @@ const WorkspaceWrapper = styled.section`
     100% {
       transform: scale(0.8);
     }
+  }
+
+  .edit-btn-option,
+  .delete-btn-option {
+    position: relative;
+  }
+
+  .delete-btn-option:hover .hover-msg {
+    opacity: 1;
+  }
+
+  .edit-btn-option:hover .hover-msg {
+    opacity: 1;
+  }
+
+  .hover-msg {
+    position: absolute;
+    top: -16px;
+    left: -4px;
+    opacity: 0;
   }
 `

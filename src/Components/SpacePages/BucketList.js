@@ -69,7 +69,9 @@ function BucketListComponent(props) {
                           )
                         }}
                       />
-                      <p className='bucket-type'>{item.type}</p>
+                      <p className='bucket-type'>
+                        {item.type !== 'Other' ? item.type : item.altType}
+                      </p>
                       <p className='created-on'>{item.createdOn}</p>
                     </div>
                   </div>

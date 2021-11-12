@@ -89,20 +89,28 @@ export default function LibraryPage() {
                                 />
                               </div>
                               <div className='book-card-btns'>
-                                <h4
-                                  style={{
-                                    color: 'white',
-                                    fontWeight: '400',
-                                  }}
-                                >
-                                  {singleBook.title
-                                    ? singleBook.title.length > 15
-                                      ? `${singleBook.title.slice(0, 15)}...`
-                                      : singleBook.title
-                                    : name.length > 15
-                                    ? `${name.slice(0, 15)}...`
-                                    : name}
-                                </h4>
+                                <div className='animation-title-container'>
+                                  <h4
+                                    className={`${
+                                      singleBook.title.length > 15
+                                        ? 'book-title animation-title'
+                                        : 'book-title'
+                                    }`}
+                                    style={{
+                                      color: 'white',
+                                      fontWeight: '400',
+                                    }}
+                                  >
+                                    {singleBook.title ? singleBook.title : name}
+                                    {singleBook.title.length > 15
+                                      ? ` ${
+                                          singleBook.title
+                                            ? singleBook.title
+                                            : name
+                                        }`
+                                      : null}
+                                  </h4>
+                                </div>
                                 <div
                                   style={{
                                     display: 'flex',
@@ -122,19 +130,33 @@ export default function LibraryPage() {
                                       )
                                     }}
                                   />
-                                  <RiDeleteBin6Line
-                                    className='book-delete-btn'
-                                    onClick={(e) => {
-                                      e.preventDefault()
-                                      const favourite = true
-                                      value.deleteBook(
-                                        favourite,
-                                        singleBook.id,
-                                        param.id,
-                                        param.spaceKey
-                                      )
-                                    }}
-                                  />
+
+                                  <div className='delete-option'>
+                                    <RiDeleteBin6Line
+                                      className='book-delete-btn'
+                                      onClick={(e) => {
+                                        e.preventDefault()
+                                        const favourite = true
+                                        value.deleteBook(
+                                          favourite,
+                                          singleBook.id,
+                                          param.id,
+                                          param.spaceKey
+                                        )
+                                      }}
+                                    />
+                                    <div className='hover-msg'>
+                                      <p
+                                        style={{
+                                          color: 'white',
+                                          fontWeight: '400',
+                                          fontSize: '12px',
+                                        }}
+                                      >
+                                        Delete
+                                      </p>
+                                    </div>
+                                  </div>
                                 </div>
                               </div>
                             </div>
@@ -155,17 +177,28 @@ export default function LibraryPage() {
                                 />
                               </div>
                               <div className='book-card-btns'>
-                                <h4
-                                  style={{ color: 'white', fontWeight: '400' }}
-                                >
-                                  {singleBook.title
-                                    ? singleBook.title.length > 15
-                                      ? `${singleBook.title.slice(0, 15)}...`
-                                      : singleBook.title
-                                    : singleBook.link.length > 15
-                                    ? `${singleBook.link.slice(8, 22)}...`
-                                    : singleBook.link}
-                                </h4>
+                                <div className='animation-title-container'>
+                                  <h4
+                                    className={`${
+                                      singleBook.title.length > 15
+                                        ? 'book-title animation-title'
+                                        : 'book-title'
+                                    }`}
+                                    style={{
+                                      color: 'white',
+                                      fontWeight: '400',
+                                    }}
+                                  >
+                                    {singleBook.title ? singleBook.title : name}
+                                    {singleBook.title.length > 15
+                                      ? ` ${
+                                          singleBook.title
+                                            ? singleBook.title
+                                            : singleBook.link
+                                        }`
+                                      : null}
+                                  </h4>
+                                </div>
                                 <div
                                   style={{
                                     display: 'flex',
@@ -185,19 +218,32 @@ export default function LibraryPage() {
                                       )
                                     }}
                                   />
-                                  <RiDeleteBin6Line
-                                    className='book-delete-btn'
-                                    onClick={(e) => {
-                                      e.preventDefault()
-                                      const favourite = true
-                                      value.deleteBook(
-                                        favourite,
-                                        singleBook.id,
-                                        param.id,
-                                        param.spaceKey
-                                      )
-                                    }}
-                                  />
+                                  <div className='delete-option'>
+                                    <RiDeleteBin6Line
+                                      className='book-delete-btn'
+                                      onClick={(e) => {
+                                        e.preventDefault()
+                                        const favourite = true
+                                        value.deleteBook(
+                                          favourite,
+                                          singleBook.id,
+                                          param.id,
+                                          param.spaceKey
+                                        )
+                                      }}
+                                    />
+                                    <div className='hover-msg'>
+                                      <p
+                                        style={{
+                                          color: 'white',
+                                          fontWeight: '400',
+                                          fontSize: '12px',
+                                        }}
+                                      >
+                                        Delete
+                                      </p>
+                                    </div>
+                                  </div>
                                 </div>
                               </div>
                             </div>
@@ -253,15 +299,28 @@ export default function LibraryPage() {
                               />
                             </div>
                             <div className='book-card-btns'>
-                              <h4 style={{ color: 'white', fontWeight: '400' }}>
-                                {singleBook.title
-                                  ? singleBook.title.length > 15
-                                    ? `${singleBook.title.slice(0, 15)}...`
-                                    : singleBook.title
-                                  : name.length > 15
-                                  ? `${name.slice(0, 15)}...`
-                                  : name}
-                              </h4>
+                              <div className='animation-title-container'>
+                                <h4
+                                  className={`${
+                                    singleBook.title.length > 15
+                                      ? 'book-title animation-title'
+                                      : 'book-title'
+                                  }`}
+                                  style={{
+                                    color: 'white',
+                                    fontWeight: '400',
+                                  }}
+                                >
+                                  {singleBook.title ? singleBook.title : name}
+                                  {singleBook.title.length > 15
+                                    ? ` ${
+                                        singleBook.title
+                                          ? singleBook.title
+                                          : name
+                                      }`
+                                    : null}
+                                </h4>
+                              </div>
                               <div
                                 style={{
                                   display: 'flex',
@@ -296,18 +355,31 @@ export default function LibraryPage() {
                                     }}
                                   />
                                 )}
-                                <RiDeleteBin6Line
-                                  className='book-delete-btn'
-                                  onClick={(e) => {
-                                    e.preventDefault()
-                                    value.deleteBook(
-                                      singleBook.favourite,
-                                      singleBook.id,
-                                      param.id,
-                                      param.spaceKey
-                                    )
-                                  }}
-                                />
+                                <div className='delete-option'>
+                                  <RiDeleteBin6Line
+                                    className='book-delete-btn'
+                                    onClick={(e) => {
+                                      e.preventDefault()
+                                      value.deleteBook(
+                                        singleBook.favourite,
+                                        singleBook.id,
+                                        param.id,
+                                        param.spaceKey
+                                      )
+                                    }}
+                                  />
+                                  <div className='hover-msg'>
+                                    <p
+                                      style={{
+                                        color: 'white',
+                                        fontWeight: '400',
+                                        fontSize: '12px',
+                                      }}
+                                    >
+                                      Delete
+                                    </p>
+                                  </div>
+                                </div>
                               </div>
                             </div>
                           </div>
@@ -328,15 +400,28 @@ export default function LibraryPage() {
                               />
                             </div>
                             <div className='book-card-btns'>
-                              <h4 style={{ color: 'white', fontWeight: '400' }}>
-                                {singleBook.title
-                                  ? singleBook.title.length > 15
-                                    ? `${singleBook.title.slice(0, 15)}...`
-                                    : singleBook.title
-                                  : singleBook.link.length > 15
-                                  ? `${singleBook.link.slice(8, 22)}...`
-                                  : singleBook.link}
-                              </h4>
+                              <div className='animation-title-container'>
+                                <h4
+                                  className={`${
+                                    singleBook.title.length > 15
+                                      ? 'book-title animation-title'
+                                      : 'book-title '
+                                  }`}
+                                  style={{
+                                    color: 'white',
+                                    fontWeight: '400',
+                                  }}
+                                >
+                                  {singleBook.title ? singleBook.title : name}
+                                  {singleBook.title.length > 15
+                                    ? ` ${
+                                        singleBook.title
+                                          ? singleBook.title
+                                          : singleBook.link
+                                      }`
+                                    : null}
+                                </h4>
+                              </div>
                               <div
                                 style={{
                                   display: 'flex',
@@ -371,18 +456,31 @@ export default function LibraryPage() {
                                     }}
                                   />
                                 )}
-                                <RiDeleteBin6Line
-                                  className='book-delete-btn'
-                                  onClick={(e) => {
-                                    e.preventDefault()
-                                    value.deleteBook(
-                                      singleBook.favourite,
-                                      singleBook.id,
-                                      param.id,
-                                      param.spaceKey
-                                    )
-                                  }}
-                                />
+                                <div className='delete-option'>
+                                  <RiDeleteBin6Line
+                                    className='book-delete-btn'
+                                    onClick={(e) => {
+                                      e.preventDefault()
+                                      value.deleteBook(
+                                        singleBook.favourite,
+                                        singleBook.id,
+                                        param.id,
+                                        param.spaceKey
+                                      )
+                                    }}
+                                  />
+                                  <div className='hover-msg'>
+                                    <p
+                                      style={{
+                                        color: 'white',
+                                        fontWeight: '400',
+                                        fontSize: '12px',
+                                      }}
+                                    >
+                                      Delete
+                                    </p>
+                                  </div>
+                                </div>
                               </div>
                             </div>
                           </div>
@@ -487,5 +585,38 @@ const LibraryPageWrapper = styled.section`
   }
   .book-delete-btn:hover {
     color: #f54848;
+  }
+  .animation-title-container {
+    width: 100px;
+    display: flex;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  .animation-title-container .animation-title {
+    animation: text-float 10s ease-out infinite;
+  }
+
+  @keyframes text-float {
+    0% {
+      transform: translateX(0%);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  .delete-option {
+    position: relative;
+  }
+
+  .delete-option:hover .hover-msg {
+    opacity: 1;
+  }
+
+  .hover-msg {
+    position: absolute;
+    top: -16px;
+    left: -10px;
+    opacity: 0;
   }
 `

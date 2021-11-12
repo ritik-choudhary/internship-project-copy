@@ -1600,6 +1600,7 @@ class WorkspaceProvider extends Component {
     bucketElement.title = bucket.title
     bucketElement.createdOn = bucket.createdOn
     bucketElement.type = bucket.type
+    bucketElement.altType = bucket.altType
     bucketElement.images = bucket.images
     bucketElement.previews = bucket.previews
 
@@ -1920,6 +1921,7 @@ class WorkspaceProvider extends Component {
     internshipToEdit.links = internship.links
     internshipToEdit.docsList = internship.docsList
     internshipToEdit.docPreview = internship.docPreview
+    internshipToEdit.completed = internship.completed
     this.setState(() => {
       return { internships: oldInternships }
     })
@@ -1971,6 +1973,17 @@ class WorkspaceProvider extends Component {
     if (status === 'ONGOING') {
       selectedInternship.startDate = new Date()
     }
+    this.setState(() => {
+      return { internships: oldInternships }
+    })
+  }
+
+  handleCompletionOfInternship = (internshipId) => {
+    const oldInternships = [...this.state.internships]
+    let selectedInternship = oldInternships.find(
+      (item) => item.id === internshipId
+    )
+    selectedInternship.completed = !selectedInternship.completed
     this.setState(() => {
       return { internships: oldInternships }
     })
@@ -2248,10 +2261,14 @@ class WorkspaceProvider extends Component {
                   }
                 })
               } else {
-                alert('Parent unavailable! Please restore Parent Workspace first.')
+                alert(
+                  'Parent unavailable! Please restore Parent Workspace first.'
+                )
               }
             } else {
-              alert('Parent unavailable! Please restore Parent Workspace first.')
+              alert(
+                'Parent unavailable! Please restore Parent Workspace first.'
+              )
             }
           } else {
             alert('Parent unavailable! Please restore Parent Workspace first.')
@@ -2303,10 +2320,14 @@ class WorkspaceProvider extends Component {
                   }
                 })
               } else {
-                alert('Parent unavailable! Please restore Parent Workspace first.')
+                alert(
+                  'Parent unavailable! Please restore Parent Workspace first.'
+                )
               }
             } else {
-              alert('Parent unavailable! Please restore Parent Workspace first.')
+              alert(
+                'Parent unavailable! Please restore Parent Workspace first.'
+              )
             }
           } else {
             alert('Parent unavailable! Please restore Parent Workspace first.')
@@ -2358,10 +2379,14 @@ class WorkspaceProvider extends Component {
                   }
                 })
               } else {
-                alert('Parent unavailable! Please restore Parent Workspace first.')
+                alert(
+                  'Parent unavailable! Please restore Parent Workspace first.'
+                )
               }
             } else {
-              alert('Parent unavailable! Please restore Parent Workspace first.')
+              alert(
+                'Parent unavailable! Please restore Parent Workspace first.'
+              )
             }
           } else {
             alert('Parent unavailable! Please restore Parent Workspace first.')
@@ -2413,10 +2438,14 @@ class WorkspaceProvider extends Component {
                   }
                 })
               } else {
-                alert('Parent unavailable! Please restore Parent Workspace first.')
+                alert(
+                  'Parent unavailable! Please restore Parent Workspace first.'
+                )
               }
             } else {
-              alert('Parent unavailable! Please restore Parent Workspace first.')
+              alert(
+                'Parent unavailable! Please restore Parent Workspace first.'
+              )
             }
           } else {
             alert('Parent unavailable! Please restore Parent Workspace first.')
@@ -2662,7 +2691,9 @@ class WorkspaceProvider extends Component {
                 itemToRestore.previewId
               )
             } else {
-              alert('Parent unavailable! Please restore Parent Workspace first.')
+              alert(
+                'Parent unavailable! Please restore Parent Workspace first.'
+              )
             }
           } else {
             alert('Parent unavailable! Please restore Parent Workspace first.')
@@ -2857,6 +2888,7 @@ class WorkspaceProvider extends Component {
           addNewInternshipTask: this.addNewInternshipTask,
           internshipTaskManipulation: this.internshipTaskManipulation,
           handleInternshipStatus: this.handleInternshipStatus,
+          handleCompletionOfInternship: this.handleCompletionOfInternship,
           createTask: this.createTask,
           editManagerTask: this.editManagerTask,
           handleStatusTaskManager: this.handleStatusTaskManager,

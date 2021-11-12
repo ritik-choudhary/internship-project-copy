@@ -51,6 +51,7 @@ function InternshipsComponent(props) {
   const [isOngoing, setIsOngoing] = useState(true)
   const [isApplied, setIsApplied] = useState(false)
   const [isStatusBarOpen, setIsStatusBarOpen] = useState(false)
+  const currentDate = new Date()
   return (
     <InternshipsWrapper>
       <div className='internships-page'>
@@ -153,16 +154,55 @@ function InternshipsComponent(props) {
                         <div className='first'>
                           <div className='top'>
                             <h1 className='title'>{item.title}</h1>
-                            <Link to={`/internships/edit/${item.id}`}>
-                              <div className='internship-edit-btn'>
-                                <FaEdit />
-                              </div>
-                            </Link>
+                            <div
+                              style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '10px',
+                              }}
+                            >
+                              <p
+                                className='complete-option'
+                                onClick={() =>
+                                  value.handleCompletionOfInternship(item.id)
+                                }
+                              >
+                                {item.completed
+                                  ? 'Completed'
+                                  : 'Mark as Complete'}
+                              </p>
+                              <Link to={`/internships/edit/${item.id}`}>
+                                <div className='internship-edit-btn'>
+                                  <FaEdit />
+                                  <div className='hover-msg'>
+                                    <p
+                                      style={{
+                                        fontWeight: '400',
+                                        color: 'black',
+                                      }}
+                                    >
+                                      Edit
+                                    </p>
+                                  </div>
+                                </div>
+                              </Link>
+                            </div>
                           </div>
                           <p className='company'>{item.company}</p>
                         </div>
                         <div className='second'>
-                          {item.startDate
+                          {item.completed
+                            ? item.startDate
+                              ? `${date.toLocaleString('default', {
+                                  month: 'short',
+                                })} ${date.getFullYear()} - ${currentDate.toLocaleString(
+                                  'default',
+                                  {
+                                    month: 'short',
+                                  }
+                                )} ${currentDate.getFullYear()}`
+                              : null
+                            : item.startDate
                             ? `${date.toLocaleString('default', {
                                 month: 'short',
                               })} ${date.getFullYear()} - Present`
@@ -444,10 +484,31 @@ const InternshipsWrapper = styled.section`
     align-items: center;
     justify-content: space-between;
   }
+  .complete-option {
+    cursor: pointer;
+    font-weight: 600;
+  }
+  .complete-option:hover {
+    text-decoration: underline;
+  }
   .internship-edit-btn {
     color: #c4c4c4;
     font-size: 20px;
     cursor: pointer;
+    position: relative;
+  }
+  .internship-edit-btn:hover .hover-msg {
+    opacity: 1;
+  }
+  .hover-msg {
+    position: absolute;
+    top: -16px;
+    left: -4px;
+    opacity: 0;
+  }
+  .hover-msg p {
+    font-size: 10px;
+    color: black;
   }
   .internship-edit-btn:hover {
     color: #3e77f1;

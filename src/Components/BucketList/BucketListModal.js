@@ -35,6 +35,7 @@ function BucketListModalComponent(props) {
   const [type, setType] = useState()
   const [images, setImages] = useState([])
   const [previews, setPreviews] = useState([])
+  const [altType, setAltType] = useState()
 
   useEffect(() => {
     if (isEditing) {
@@ -151,6 +152,7 @@ function BucketListModalComponent(props) {
               title: bucketTitle,
               createdOn: createdOn,
               type: type,
+              altType: altType,
               images: images,
               previews: previews,
             })
@@ -160,6 +162,7 @@ function BucketListModalComponent(props) {
               title: bucketTitle,
               createdOn: createdOn,
               type: type,
+              altType: altType,
               images: images,
               previews: previews,
             }
@@ -223,22 +226,61 @@ function BucketListModalComponent(props) {
           >
             Type
           </label>
-          <input
-            type='text'
-            name='type'
-            id='type'
-            maxLength='100'
+          <div
+            className='type-selector'
             style={{
-              borderRadius: '5px',
-              height: '32px',
-              outline: 'none',
-              border: '1px solid #C4C4C4',
-              fontSize: '16px',
-              padding: '3px 8px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '10px',
+              width: '100%',
             }}
-            value={type}
-            onChange={(e) => setType(e.target.value)}
-          />
+          >
+            <select
+              name='type'
+              id='type'
+              style={{
+                borderRadius: '5px',
+                height: '32px',
+                outline: 'none',
+                border: '1px solid #C4C4C4',
+                fontSize: '16px',
+                padding: '3px 8px',
+              }}
+              value={type}
+              onChange={(e) => setType(e.target.value)}
+            >
+              <option>Select Type</option>
+              <option value='Travel'>Travel</option>
+              <option value='Relationships'>Relationships</option>
+              <option value='Career'>Career</option>
+              <option value='Financial'>Financial</option>
+              <option value='Entertainment'>Entertainment</option>
+              <option value='Adventure'>Adventure</option>
+              <option value='Contribution'>Contribution</option>
+              <option value='Creativity'>Creativity</option>
+              <option value='Education'>Education</option>
+              <option value='Health'>Health</option>
+              <option value='Other'>Other</option>
+            </select>
+            <input
+              type='text'
+              name='type'
+              id='type'
+              maxLength='100'
+              style={{
+                borderRadius: '5px',
+                height: '32px',
+                outline: 'none',
+                border: '1px solid #C4C4C4',
+                fontSize: '16px',
+                padding: '3px 8px',
+                width: '100%',
+              }}
+              value={altType}
+              disabled={type !== 'Other' ? true : false}
+              onChange={(e) => setAltType(e.target.value)}
+            />
+          </div>
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>

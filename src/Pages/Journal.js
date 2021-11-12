@@ -78,7 +78,18 @@ function JournalComponent(props) {
                 <Link to={`/journal/edit/${item.id}`}>
                   <div className='journal-card'>
                     <div className='top'>
-                      <p className='title'>{item.title}</p>
+                      <div className='animation-title-container'>
+                        <p
+                          className={`${
+                            item.title.length > 19
+                              ? 'title animation-title'
+                              : 'title'
+                          }`}
+                        >
+                          {item.title}{' '}
+                          {item.title.length > 19 ? item.title : null}
+                        </p>
+                      </div>
                     </div>
                     <div className='bottom'>
                       <p className='created-on'>{item.createdOn}</p>
@@ -89,6 +100,17 @@ function JournalComponent(props) {
                             value.deleteJournal(item.id)
                           }}
                         />
+                        <div className='hover-msg'>
+                          <p
+                            style={{
+                              color: 'black',
+                              fontWeight: '400',
+                              fontSize: '12px',
+                            }}
+                          >
+                            Delete
+                          </p>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -240,6 +262,26 @@ const JournalWrapper = styled.section`
     color: black;
     font-weight: 400;
   }
+
+  .animation-title-container {
+    width: 150px;
+    display: flex;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  .animation-title-container .animation-title {
+    animation: text-float 10s linear infinite;
+  }
+
+  @keyframes text-float {
+    0% {
+      transform: translateX(0%);
+    }
+    100% {
+      transform: translateX(-51%);
+    }
+  }
+
   .journal-card .bottom {
     display: flex;
     justify-content: space-between;
@@ -255,5 +297,19 @@ const JournalWrapper = styled.section`
   .journal-card .bottom .delete-btn:hover {
     color: #f54848;
     cursor: pointer;
+  }
+  .delete-btn {
+    position: relative;
+  }
+
+  .delete-btn:hover .hover-msg {
+    opacity: 1;
+  }
+
+  .hover-msg {
+    position: absolute;
+    top: -16px;
+    left: -10px;
+    opacity: 0;
   }
 `

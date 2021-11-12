@@ -50,7 +50,18 @@ export default function CollegeClubs() {
 
                           <div className='card-footer'>
                             <div className='left'>
-                              <h4 className='club-name'>{club.title}</h4>
+                              <div className='animation-title-container'>
+                                <h4
+                                  className={`${
+                                    club.title.length > 12
+                                      ? 'club-name animation-title'
+                                      : 'club-name'
+                                  }`}
+                                >
+                                  {club.title}{' '}
+                                  {club.title.length > 12 ? club.title : null}
+                                </h4>
+                              </div>
 
                               <p style={{ fontSize: '10px', color: '#468AEF' }}>
                                 {club.createdOn}
@@ -62,6 +73,17 @@ export default function CollegeClubs() {
                               >
                                 <div className='edit-btn'>
                                   <FaEdit />
+                                  <div className='hover-msg'>
+                                    <p
+                                      style={{
+                                        color: 'black',
+                                        fontWeight: '400',
+                                        fontSize: '14px',
+                                      }}
+                                    >
+                                      Edit
+                                    </p>
+                                  </div>
                                 </div>
                               </Link>
                               <div className='delete-btn'>
@@ -75,6 +97,17 @@ export default function CollegeClubs() {
                                     )
                                   }}
                                 />
+                                <div className='hover-msg'>
+                                  <p
+                                    style={{
+                                      color: 'black',
+                                      fontWeight: '400',
+                                      fontSize: '14px',
+                                    }}
+                                  >
+                                    Delete
+                                  </p>
+                                </div>
                               </div>
                             </div>
                           </div>
@@ -177,10 +210,6 @@ const CollegeClubsWrapper = styled.section`
     font-weight: 400;
     color: #8d8a8a;
     text-transform: capitalize;
-    width: 95px;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
   }
   .card-footer p {
     font-size: 14px;
@@ -198,5 +227,47 @@ const CollegeClubsWrapper = styled.section`
   }
   .card-footer .edit-btn:hover {
     color: #468aef;
+  }
+  .animation-title-container {
+    width: 90px;
+    display: flex;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  .animation-title-container .animation-title {
+    animation: text-float 10s linear infinite;
+  }
+
+  @keyframes text-float {
+    0% {
+      transform: translateX(0%);
+    }
+    100% {
+      transform: translateX(-51%);
+    }
+  }
+
+  .edit-btn,
+  .delete-btn {
+    position: relative;
+  }
+
+  .delete-btn:hover .hover-msg {
+    opacity: 1;
+  }
+
+  .edit-btn:hover .hover-msg {
+    opacity: 1;
+  }
+
+  .hover-msg {
+    position: absolute;
+    top: -16px;
+    left: -4px;
+    opacity: 0;
+  }
+
+  .delete-btn .hover-msg {
+    left: -10px;
   }
 `

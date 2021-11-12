@@ -176,14 +176,31 @@ const DetailPageComponent = () => {
                             <img src={item.image || defaultImage} alt='' />
                           </div>
                           <div className='card-details'>
-                            <p className='space-title'>
-                              {item.title}{' '}
-                              {isAlt
-                                ? `(${item.altName})`
-                                : num > 1
-                                ? `(${num})`
-                                : null}
-                            </p>
+                            <div className='animation-title-container'>
+                              <p
+                                className={`${
+                                  item.title.length > 8
+                                    ? 'space-title animation-title'
+                                    : 'space-title'
+                                }`}
+                              >
+                                {item.title}{' '}
+                                {isAlt
+                                  ? `(${item.altName})`
+                                  : num > 1
+                                  ? `(${num})`
+                                  : null}
+                                {item.title.length > 8
+                                  ? ` ${item.title} ${
+                                      isAlt
+                                        ? `(${item.altName})`
+                                        : num > 1
+                                        ? `(${num})`
+                                        : ''
+                                    }`
+                                  : null}
+                              </p>
+                            </div>
                             <div className='btn-container'>
                               <div className='space-delete-btn'>
                                 <RiDeleteBin6Line
@@ -192,12 +209,34 @@ const DetailPageComponent = () => {
                                     value.deleteSpace(item.id)
                                   }}
                                 />
+                                <div className='hover-msg'>
+                                  <p
+                                    style={{
+                                      color: 'white',
+                                      fontWeight: '400',
+                                      fontSize: '12px',
+                                    }}
+                                  >
+                                    Delete
+                                  </p>
+                                </div>
                               </div>
                               <Link
                                 to={`/workspace/${param.id}/details/editspace/${item.id}`}
                               >
                                 <div className='space-edit-btn'>
                                   <FaEdit />
+                                  <div className='hover-msg'>
+                                    <p
+                                      style={{
+                                        color: 'white',
+                                        fontWeight: '400',
+                                        fontSize: '12px',
+                                      }}
+                                    >
+                                      Edit
+                                    </p>
+                                  </div>
                                 </div>
                               </Link>
                             </div>
@@ -249,15 +288,31 @@ const DetailPageComponent = () => {
                             <div className='card-image-container'>
                               <img src={item.image || defaultImage} alt='' />
                             </div>
-
-                            <p className='space-title'>
-                              {item.title}{' '}
-                              {isAlt
-                                ? `(${item.altName})`
-                                : num > 1
-                                ? `(${num})`
-                                : null}
-                            </p>
+                            <div className='animation-title-container'>
+                              <p
+                                className={`${
+                                  item.title.length > 8
+                                    ? 'space-title animation-title'
+                                    : 'space-title'
+                                }`}
+                              >
+                                {item.title}{' '}
+                                {isAlt
+                                  ? `(${item.altName})`
+                                  : num > 1
+                                  ? `(${num})`
+                                  : null}
+                                {item.title.length > 8
+                                  ? ` ${item.title} ${
+                                      isAlt
+                                        ? `(${item.altName})`
+                                        : num > 1
+                                        ? `(${num})`
+                                        : null
+                                    }`
+                                  : null}
+                              </p>
+                            </div>
                           </div>
                           <div className='card-details'>
                             <div className='btn-container'>
@@ -490,20 +545,38 @@ const WorkspaceContentWrapper = styled.section`
     bottom: 20px;
   }
 
+  .animation-title-container {
+    width: 100px;
+    display: flex;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  .animation-title-container .animation-title {
+    animation: text-float 10s linear infinite;
+  }
+
+  @keyframes text-float {
+    0% {
+      transform: translateX(0%);
+    }
+    30% {
+      transform: translateX(0%);
+    }
+    100% {
+      transform: translateX(-51%);
+    }
+  }
+
   .list-card .space-title {
     color: black;
     font-weight: 400;
   }
 
   .grid-card .space-title {
-    width: 100px;
     font-size: 14px;
     font-weight: 400;
     color: white;
     padding-right: 10px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
   }
   .list-card .btn-container {
     gap: 20px;
@@ -562,5 +635,28 @@ const WorkspaceContentWrapper = styled.section`
       transform: translateY(0%);
       opacity: 1;
     }
+  }
+
+  .space-edit-btn,
+  .space-delete-btn {
+    position: relative;
+  }
+
+  .space-delete-btn:hover .hover-msg {
+    opacity: 1;
+  }
+
+  .space-edit-btn:hover .hover-msg {
+    opacity: 1;
+  }
+
+  .hover-msg {
+    position: absolute;
+    top: -16px;
+    left: -4px;
+    opacity: 0;
+  }
+  .space-delete-btn .hover-msg {
+    left: -10px;
   }
 `

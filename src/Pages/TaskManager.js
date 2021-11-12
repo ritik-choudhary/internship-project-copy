@@ -62,6 +62,8 @@ function TaskManagerComponent(props) {
     e.preventDefault()
   }
 
+  const currentDate = new Date()
+
   return (
     <TaskManagerWrapper>
       <div className='task-manager-page'>
@@ -147,6 +149,7 @@ function TaskManagerComponent(props) {
                   </div>
                 </Link>
                 {value.taskManager[0].map((task) => {
+                  const date = new Date(task.dueDate)
                   return (
                     <Link to={`/taskmanager/info/${task.id}`}>
                       <div
@@ -182,7 +185,16 @@ function TaskManagerComponent(props) {
                               alignItems: 'center',
                             }}
                           >
-                            <h3 className='due-date'>{task.dueDate}</h3>
+                            <h3
+                              className='due-date'
+                              style={{
+                                color: `${
+                                  date < currentDate ? '#ff0000' : '#76e51c'
+                                }`,
+                              }}
+                            >
+                              {task.dueDate}
+                            </h3>
                             <Link to={`/taskmanager/edit/${task.id}`}>
                               <div className='task-edit-btn'>
                                 <FiEdit />
@@ -211,6 +223,7 @@ function TaskManagerComponent(props) {
                 }`}
               >
                 {value.taskManager[1].map((task) => {
+                  const date = new Date(task.dueDate)
                   return (
                     <Link to={`/taskmanager/info/${task.id}`}>
                       <div
@@ -246,7 +259,16 @@ function TaskManagerComponent(props) {
                               alignItems: 'center',
                             }}
                           >
-                            <h3 className='due-date'>{task.dueDate}</h3>
+                            <h3
+                              className='due-date'
+                              style={{
+                                color: `${
+                                  date < currentDate ? '#ff0000' : '#76e51c'
+                                }`,
+                              }}
+                            >
+                              {task.dueDate}
+                            </h3>
                             <Link to={`/taskmanager/edit/${task.id}`}>
                               <div className='task-edit-btn'>
                                 <FiEdit />
@@ -277,6 +299,7 @@ function TaskManagerComponent(props) {
                 }`}
               >
                 {value.taskManager[2].map((task) => {
+                  const date = new Date(task.dueDate)
                   return (
                     <Link to={`/taskmanager/info/${task.id}`}>
                       <div
@@ -312,7 +335,16 @@ function TaskManagerComponent(props) {
                               alignItems: 'center',
                             }}
                           >
-                            <h3 className='due-date'>{task.dueDate}</h3>
+                            <h3
+                              className='due-date'
+                              style={{
+                                color: `${
+                                  date < currentDate ? '#ff0000' : '#76e51c'
+                                }`,
+                              }}
+                            >
+                              {task.dueDate}
+                            </h3>
                             <Link to={`/taskmanager/edit/${task.id}`}>
                               <div className='task-edit-btn'>
                                 <FiEdit />
@@ -343,6 +375,7 @@ function TaskManagerComponent(props) {
                 }`}
               >
                 {value.taskManager[3].map((task) => {
+                  const date = new Date(task.dueDate)
                   return (
                     <Link to={`/taskmanager/info/${task.id}`}>
                       <div
@@ -378,7 +411,16 @@ function TaskManagerComponent(props) {
                               alignItems: 'center',
                             }}
                           >
-                            <h3 className='due-date'>{task.dueDate}</h3>
+                            <h3
+                              className='due-date'
+                              style={{
+                                color: `${
+                                  date < currentDate ? '#ff0000' : '#76e51c'
+                                }`,
+                              }}
+                            >
+                              {task.dueDate}
+                            </h3>
                             <Link to={`/taskmanager/edit/${task.id}`}>
                               <div className='task-edit-btn'>
                                 <FiEdit />
@@ -646,7 +688,7 @@ const TaskManagerWrapper = styled.section`
     color: black;
   }
   .due-date {
-    color: #ff5c00;
+    color: #ff0000;
   }
   .completed {
     opacity: 0.5;

@@ -143,7 +143,20 @@ function SingleClubPageComponent(props) {
               <Link
                 to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/share`}
               >
-                <FaShareSquare />
+                <div className='share-btn'>
+                  <FaShareSquare />
+                  <div className='hover-msg'>
+                    <p
+                      style={{
+                        color: 'black',
+                        fontWeight: '400',
+                        fontSize: '12px',
+                      }}
+                    >
+                      Share
+                    </p>
+                  </div>
+                </div>
               </Link>
             </div>
             <div className='basic-info'>
@@ -525,5 +538,20 @@ const SingleClubPageWrapper = styled.section`
       transform: translateY(0%);
       opacity: 1;
     }
+  }
+
+  .share-btn {
+    position: relative;
+  }
+
+  .share-btn:hover .hover-msg {
+    opacity: 1;
+  }
+
+  .hover-msg {
+    position: absolute;
+    top: -16px;
+    left: -10px;
+    opacity: 0;
   }
 `

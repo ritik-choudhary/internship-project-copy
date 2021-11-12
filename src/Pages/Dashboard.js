@@ -88,7 +88,7 @@ function DashboardComponent() {
                             }}
                           >
                             We have made the best platform for your comfort.
-                            <br /> Now manage your work without any hassel at
+                            <br /> Now manage your work without any hassle in
                             one place.
                           </p>
                         </>
@@ -142,7 +142,7 @@ function DashboardComponent() {
                             left: '92px',
                           }}
                         >
-                          Jot down any thoughts or daily life in journal.
+                          Jot down any thoughts or daily life in a journal.
                         </p>
                       ) : count === 6 ? (
                         <p
@@ -155,7 +155,8 @@ function DashboardComponent() {
                             left: '92px',
                           }}
                         >
-                          The internships through portal will be coming soon.
+                          The internships through the portal will be coming
+                          soon.
                           <br />
                           Meanwhile, you can add your internships here.
                         </p>
@@ -183,7 +184,7 @@ function DashboardComponent() {
                             left: '92px',
                           }}
                         >
-                          Manage your task efficiently with our Task Manager.
+                          Manage your tasks efficiently with our Task Manager.
                         </p>
                       ) : count === 9 ? (
                         <p
@@ -210,7 +211,7 @@ function DashboardComponent() {
                             left: '92px',
                           }}
                         >
-                          Keep all your important documents safe at one place.
+                          Keep all your important documents safe in one place.
                         </p>
                       ) : count === 11 ? (
                         <p

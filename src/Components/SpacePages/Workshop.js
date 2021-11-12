@@ -61,11 +61,18 @@ function WorkshopComponent(props) {
 
                 <div className='card-footer'>
                   <div className='left'>
-                    <h4 className='workshop-name'>
-                      {workshop.title.length > 10
-                        ? `${workshop.title.slice(0, 10)}...`
-                        : workshop.title}
-                    </h4>
+                    <div className='animation-title-container'>
+                      <h4
+                        className={`${
+                          workshop.title.length > 12
+                            ? 'workshop-name animation-title'
+                            : 'workshop-name'
+                        }`}
+                      >
+                        {workshop.title}{' '}
+                        {workshop.title.length > 10 ? workshop.title : null}
+                      </h4>
+                    </div>
 
                     <p style={{ fontSize: '10px', color: '#468AEF' }}>
                       {workshop.createdOn}
@@ -77,6 +84,17 @@ function WorkshopComponent(props) {
                     >
                       <div className='edit-btn'>
                         <FaEdit />
+                        <div className='hover-msg'>
+                          <p
+                            style={{
+                              color: 'black',
+                              fontWeight: '400',
+                              fontSize: '14px',
+                            }}
+                          >
+                            Edit
+                          </p>
+                        </div>
                       </div>
                     </Link>
                     <div className='delete-btn'>
@@ -90,6 +108,17 @@ function WorkshopComponent(props) {
                           )
                         }}
                       />
+                      <div className='hover-msg'>
+                        <p
+                          style={{
+                            color: 'black',
+                            fontWeight: '400',
+                            fontSize: '14px',
+                          }}
+                        >
+                          Delete
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -206,5 +235,47 @@ const WorkshopWrapper = styled.section`
   }
   .card-footer .edit-btn:hover {
     color: #468aef;
+  }
+  .animation-title-container {
+    width: 90px;
+    display: flex;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  .animation-title-container .animation-title {
+    animation: text-float 10s linear infinite;
+  }
+
+  @keyframes text-float {
+    0% {
+      transform: translateX(0%);
+    }
+    100% {
+      transform: translateX(-51%);
+    }
+  }
+
+  .edit-btn,
+  .delete-btn {
+    position: relative;
+  }
+
+  .delete-btn:hover .hover-msg {
+    opacity: 1;
+  }
+
+  .edit-btn:hover .hover-msg {
+    opacity: 1;
+  }
+
+  .hover-msg {
+    position: absolute;
+    top: -16px;
+    left: -4px;
+    opacity: 0;
+  }
+
+  .delete-btn .hover-msg {
+    left: -10px;
   }
 `

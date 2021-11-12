@@ -75,7 +75,18 @@ function MeetingNotesComponent(props) {
               >
                 <div className='meeting-notes-card'>
                   <div className='top'>
-                    <p className='title'>{item.title}</p>
+                    <div className='animation-title-container'>
+                      <p
+                        className={`${
+                          item.title.length > 19
+                            ? 'title animation-title'
+                            : 'title'
+                        }`}
+                      >
+                        {item.title}{' '}
+                        {item.title.length > 19 ? item.title : null}
+                      </p>
+                    </div>
                   </div>
                   <div className='bottom'>
                     <p className='created-on'>{item.createdOn}</p>
@@ -90,6 +101,17 @@ function MeetingNotesComponent(props) {
                           )
                         }}
                       />
+                      <div className='hover-msg'>
+                        <p
+                          style={{
+                            color: 'black',
+                            fontWeight: '400',
+                            fontSize: '12px',
+                          }}
+                        >
+                          Delete
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -183,5 +205,38 @@ const MeetingNotesWrapper = styled.section`
   .meeting-notes-card .bottom .delete-btn:hover {
     color: #f54848;
     cursor: pointer;
+  }
+  .animation-title-container {
+    width: 150px;
+    display: flex;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  .animation-title-container .animation-title {
+    animation: text-float 10s linear infinite;
+  }
+
+  @keyframes text-float {
+    0% {
+      transform: translateX(0%);
+    }
+    100% {
+      transform: translateX(-51%);
+    }
+  }
+
+  .delete-btn {
+    position: relative;
+  }
+
+  .delete-btn:hover .hover-msg {
+    opacity: 1;
+  }
+
+  .hover-msg {
+    position: absolute;
+    top: -16px;
+    left: -10px;
+    opacity: 0;
   }
 `

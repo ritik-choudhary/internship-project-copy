@@ -36,6 +36,7 @@ function OngoingModalComponent(props) {
   const [links, setLinks] = useState([])
   const [docsList, setDocsList] = useState([])
   const [docPreview, setDocPreview] = useState([])
+  const [completed, setCompleted] = useState(false)
 
   function isValidHttpUrl(string) {
     let url
@@ -60,6 +61,7 @@ function OngoingModalComponent(props) {
       setDescription(selectedInternship?.description)
       setLinks(selectedInternship?.links || [])
       setDocsList(selectedInternship?.docsList || [])
+      setCompleted(selectedInternship?.completed)
     }
   }, [isEditing, param.internshipID, value.internships])
 
@@ -157,6 +159,7 @@ function OngoingModalComponent(props) {
               links: links,
               docPreview: docPreview,
               docsList: docsList,
+              completed: completed,
             })
           } else {
             const selectedInternship = value.internships.find(
@@ -171,6 +174,7 @@ function OngoingModalComponent(props) {
               links: links,
               docPreview: docPreview,
               docsList: docsList,
+              completed: completed,
             })
           }
           history.push('/internships')

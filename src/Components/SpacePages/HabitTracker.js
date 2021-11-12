@@ -57,11 +57,18 @@ function HabitTrackerComponent(props) {
 
                 <div className='card-footer'>
                   <div className='left'>
-                    <h4 className='habit-name'>
-                      {habit.title.length > 10
-                        ? `${habit.title.slice(0, 10)}...`
-                        : habit.title}
-                    </h4>
+                    <div className='animation-title-container'>
+                      <h4
+                        className={`${
+                          habit.title.length > 12
+                            ? 'habit-name animation-title'
+                            : 'habit-name'
+                        }`}
+                      >
+                        {habit.title}{' '}
+                        {habit.title.length > 10 ? habit.title : null}
+                      </h4>
+                    </div>
 
                     <p style={{ fontSize: '10px', color: '#468AEF' }}>
                       {habit.createdOn}
@@ -75,6 +82,17 @@ function HabitTrackerComponent(props) {
                           value.deleteHabit(param.id, param.spaceKey, habit.id)
                         }}
                       />
+                      <div className='hover-msg'>
+                        <p
+                          style={{
+                            color: 'black',
+                            fontWeight: '400',
+                            fontSize: '12px',
+                          }}
+                        >
+                          Delete
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -182,5 +200,38 @@ const HabitTrackerWrapper = styled.section`
   }
   .card-footer .delete-btn:hover {
     color: #f54848;
+  }
+  .animation-title-container {
+    width: 90px;
+    display: flex;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  .animation-title-container .animation-title {
+    animation: text-float 10s linear infinite;
+  }
+
+  @keyframes text-float {
+    0% {
+      transform: translateX(0%);
+    }
+    100% {
+      transform: translateX(-51%);
+    }
+  }
+
+  .delete-btn {
+    position: relative;
+  }
+
+  .delete-btn:hover .hover-msg {
+    opacity: 1;
+  }
+
+  .hover-msg {
+    position: absolute;
+    top: -16px;
+    left: -10px;
+    opacity: 0;
   }
 `
