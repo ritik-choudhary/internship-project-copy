@@ -177,7 +177,9 @@ function TaskManagerComponent(props) {
                           <h3 className='created-by'>{task.createdBy}</h3>
                         </div>
                         <div className='group'>
-                          <p className='label'>Due Date</p>
+                          <p className='label'>
+                            Due Date {date < currentDate ? '(late)' : null}
+                          </p>
                           <div
                             style={{
                               display: 'flex',
@@ -251,7 +253,9 @@ function TaskManagerComponent(props) {
                           <h3 className='created-by'>{task.createdBy}</h3>
                         </div>
                         <div className='group'>
-                          <p className='label'>Due Date</p>
+                          <p className='label'>
+                            Due Date {date < currentDate ? '(late)' : null}
+                          </p>
                           <div
                             style={{
                               display: 'flex',
@@ -327,7 +331,9 @@ function TaskManagerComponent(props) {
                           <h3 className='created-by'>{task.createdBy}</h3>
                         </div>
                         <div className='group'>
-                          <p className='label'>Due Date</p>
+                          <p className='label'>
+                            Due Date {date < currentDate ? '(late)' : null}
+                          </p>
                           <div
                             style={{
                               display: 'flex',
@@ -403,7 +409,9 @@ function TaskManagerComponent(props) {
                           <h3 className='created-by'>{task.createdBy}</h3>
                         </div>
                         <div className='group'>
-                          <p className='label'>Due Date</p>
+                          <p className='label'>
+                            Due Date {date < currentDate ? '(late)' : null}
+                          </p>
                           <div
                             style={{
                               display: 'flex',

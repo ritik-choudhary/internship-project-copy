@@ -479,7 +479,23 @@ function HabitTrackerModalComponent(props) {
                 >
                   {item.field}
                 </p>
-                <div className='notify-time'>
+                <div
+                  className='notify-time'
+                  style={{ display: 'flex', alignItems: 'center', gap: '5px' }}
+                >
+                  <label
+                    htmlFor={item.id}
+                    style={{
+                      color: '#959595',
+                      fontSize: '10px',
+                      fontWeight: '400',
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      whiteSpace: 'nowrap',
+                    }}
+                  >
+                    Set a time
+                  </label>
                   <input
                     type='time'
                     name={item.id}
