@@ -99,7 +99,7 @@ function TaskModalComponent(props) {
         setLinks(selectedTodo.links)
         setDocsList(selectedTodo.docsList)
         setDescription(selectedTodo.description)
-        setStatus(selectedTask.status)
+        setStatus(selectedTodo.status)
       }
     }
   }, [

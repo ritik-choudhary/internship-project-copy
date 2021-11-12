@@ -65,6 +65,34 @@ function TaskManagerComponent(props) {
   const currentDate = new Date()
   const [taskFolder, setTaskFolder] = useState('Task Manager')
 
+  // const [taskManagerTodoCount, setTaskManageTodorCount] = useState(0)
+  // const [collegeClubsCount, setCollegeClubsCount] = useState(0)
+  // const [todoListCount, setTodoListCount] = useState(0)
+  // const [internshipsCount, setInternshipsCount] = useState(0)
+
+  // useEffect(() => {
+  //   const tempTaskManager = [
+  //     ...value.taskManager[0],
+  //     ...value.taskManager[1],
+  //     ...value.taskManager[2],
+  //     ...value.taskManager[3],
+  //   ]
+  //   tempTaskManager.map((item) => {
+  //     if (item.parent === 'Task Manager') {
+  //       setTaskManagerCount(taskManagerCount + 1)
+  //     }
+  //     if (item.parent === 'College Clubs') {
+  //       setCollegeClubsCount(collegeClubsCount + 1)
+  //     }
+  //     if (item.parent === 'Internships') {
+  //       setInternshipsCount(internshipsCount + 1)
+  //     }
+  //     if (item.parent === 'Todo List') {
+  //       setTodoListCount(todoListCount + 1)
+  //     }
+  //   })
+  // }, [taskFolder])
+
   return (
     <TaskManagerWrapper>
       <div className='task-manager-page'>
