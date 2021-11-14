@@ -28,7 +28,7 @@ function InternshipTaskModalComponent(props) {
   const [title, setTitle] = useState()
   const [description, setDescription] = useState()
   const [dueDate, setDueDate] = useState(defaultDate)
-  const [status, setStatus] = useState()
+  const [status, setStatus] = useState('To-do')
 
   const disablePastDate = () => {
     const today = new Date()
@@ -198,7 +198,6 @@ function InternshipTaskModalComponent(props) {
             }}
             onChange={(e) => setStatus(e.target.value)}
           >
-            <option>Select Status</option>
             <option value='To-do'>To-do</option>
             <option value='In-Progress'>In-Progress</option>
             <option value='Completed'>Completed</option>

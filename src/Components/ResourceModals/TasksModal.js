@@ -38,14 +38,14 @@ function TaskModalComponent(props) {
   const [docsList, setDocsList] = useState([])
   const [docPreview, setDocPreview] = useState([])
   const [description, setDescription] = useState('')
-  const [status, setStatus] = useState()
+  const [status, setStatus] = useState('To-do')
 
   const disablePastDate = () => {
     const today = new Date()
     const dd = String(today.getDate()).padStart(2, '0')
     const mm = String(today.getMonth() + 1).padStart(2, '0')
     const yyyy = today.getFullYear()
-    return yyyy + '-' + mm + '-' + dd
+    return dd + '-' + mm + '-' + yyyy
   }
 
   function isValidHttpUrl(string) {
@@ -264,6 +264,7 @@ function TaskModalComponent(props) {
                   status: status,
                 }
               )
+              console.log(status)
             } else {
               const taskToAdd = {
                 id: new Date().getTime().toString(),
@@ -277,6 +278,7 @@ function TaskModalComponent(props) {
                 completed: status === 'Completed' ? true : false,
                 status: status,
               }
+              console.log(status)
               value.addTask(
                 param.id,
                 param.spaceKey,
@@ -353,19 +355,6 @@ function TaskModalComponent(props) {
             }}
           />
         </div>
-        {/* <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <label
-            htmlFor='created-on'
-            style={{
-              color: '#959595',
-              fontSize: '12px',
-              marginBottom: '5px',
-            }}
-          >
-            Created on
-          </label>
-          <p style={{ fontSize: '14px', color: '#468AEF' }}>{date}</p>
-        </div> */}
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           <label
             htmlFor='due-date'
@@ -382,7 +371,7 @@ function TaskModalComponent(props) {
             name='due-date'
             id='due-date'
             min={disablePastDate()}
-            format='dd-MM-yyyy'
+            format='dd-mm-yyyy'
             value={duedate}
             onChange={(e) => {
               if (!isSharing) setDuedate(e.target.value)
@@ -411,6 +400,7 @@ function TaskModalComponent(props) {
           <select
             name='status'
             id='status'
+            disabled={isSharing}
             style={{
               borderRadius: '5px',
               height: '32px',
@@ -419,9 +409,11 @@ function TaskModalComponent(props) {
               fontSize: '16px',
               padding: '3px 8px',
             }}
-            onChange={(e) => setStatus(e.target.value)}
+            value={status}
+            onChange={(e) => {
+              setStatus(e.target.value)
+            }}
           >
-            <option>Select Status</option>
             <option value='To-do'>To-do</option>
             <option value='In-Progress'>In-Progress</option>
             <option value='Completed'>Completed</option>

@@ -407,7 +407,11 @@ class WorkspaceProvider extends Component {
     let resourceElement = clubElement.resources.find(
       (item) => item.id === resourceId
     )
-    let taskElement = resourceElement.tasks.find((item) => item.id === taskId)
+    let taskElementIndex = resourceElement.tasks.findIndex(
+      (item) => item.id === taskId
+    )
+
+    let taskElement = { ...resourceElement[taskElementIndex] }
 
     taskElement.title = task.title
     taskElement.createdOn = task.createdOn
@@ -416,6 +420,8 @@ class WorkspaceProvider extends Component {
     taskElement.pdfList = task.pdfList
     taskElement.description = task.description
     taskElement.status = task.status
+
+    resourceElement[taskElementIndex] = taskElement
 
     this.setState(() => {
       return { workspaceElements: oldList }
@@ -1989,15 +1995,39 @@ class WorkspaceProvider extends Component {
 
   internshipTaskManipulation = (internshipId, taskId) => {
     const oldInternships = [...this.state.internships]
+    let oldTaskManager = [...this.state.taskManager]
     const selectedInternship = oldInternships.find(
       (item) => item.id === internshipId
     )
     let selectedTask = selectedInternship.tasks.find(
       (item) => item.id === taskId
     )
+    if (selectedTask.status === 'In-Progress') {
+      const newInProgressList = oldTaskManager[2].filter(
+        (item) => item.id !== taskId
+      )
+      oldTaskManager[2] = newInProgressList
+    }
+    if (selectedTask.status === 'To-do') {
+      const newTodoList = oldTaskManager[1].filter((item) => item.id !== taskId)
+      oldTaskManager[1] = newTodoList
+    }
+    if (selectedTask.status === 'Completed') {
+      const newCompletedList = oldTaskManager[3].filter(
+        (item) => item.id !== taskId
+      )
+      oldTaskManager[3] = newCompletedList
+    }
     selectedTask.completed = !selectedTask.completed
+    selectedTask.status = selectedTask.completed ? 'Completed' : 'To-do'
+    if (selectedTask.status === 'Completed') {
+      oldTaskManager[3] = [...oldTaskManager[3], selectedTask]
+    }
+    if (selectedTask.status === 'To-do') {
+      oldTaskManager[1] = [...oldTaskManager[1], selectedTask]
+    }
     this.setState(() => {
-      return { internships: oldInternships }
+      return { internships: oldInternships, taskManager: oldTaskManager }
     })
   }
 
