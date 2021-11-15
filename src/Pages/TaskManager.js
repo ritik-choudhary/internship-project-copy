@@ -279,7 +279,11 @@ function TaskManagerComponent(props) {
             >
               <div
                 className={` ${
-                  value.taskManager[1].length > 0 ? 'todo-storage' : 'empty-div'
+                  value.taskManager[1].filter(
+                    (item) => item.parent === taskFolder
+                  ).length > 0
+                    ? 'todo-storage'
+                    : 'empty-div'
                 }`}
               >
                 {value.taskManager[1].map((task) => {
@@ -380,7 +384,9 @@ function TaskManagerComponent(props) {
             >
               <div
                 className={` ${
-                  value.taskManager[2].length > 0
+                  value.taskManager[2].filter(
+                    (item) => item.parent === taskFolder
+                  ).length > 0
                     ? 'in-progress-storage'
                     : 'empty-div'
                 }`}
@@ -482,7 +488,9 @@ function TaskManagerComponent(props) {
             >
               <div
                 className={` ${
-                  value.taskManager[3].length > 0
+                  value.taskManager[3].filter(
+                    (item) => item.parent === taskFolder
+                  ).length > 0
                     ? 'completed-storage'
                     : 'empty-div'
                 }`}
