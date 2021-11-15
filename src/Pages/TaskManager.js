@@ -162,19 +162,37 @@ function TaskManagerComponent(props) {
               <div className='todo-header'>
                 <p className='header-text'>TO-DO</p>
                 <div className='number-container'>
-                  <p>{value.taskManager[1].length}</p>
+                  <p>
+                    {
+                      value.taskManager[1].filter(
+                        (item) => item.parent === taskFolder
+                      ).length
+                    }
+                  </p>
                 </div>
               </div>
               <div className='in-progress-header'>
                 <p className='header-text'>IN PROGRESS</p>
                 <div className='number-container'>
-                  <p>{value.taskManager[2].length}</p>
+                  <p>
+                    {
+                      value.taskManager[2].filter(
+                        (item) => item.parent === taskFolder
+                      ).length
+                    }
+                  </p>
                 </div>
               </div>
               <div className='completed-header'>
                 <p className='header-text'>COMPLETED</p>
                 <div className='number-container'>
-                  <p>{value.taskManager[3].length}</p>
+                  <p>
+                    {
+                      value.taskManager[3].filter(
+                        (item) => item.parent === taskFolder
+                      ).length
+                    }
+                  </p>
                 </div>
               </div>
             </div>
