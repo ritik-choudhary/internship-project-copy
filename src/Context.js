@@ -1,4 +1,4 @@
-import React, { Component, useEffect } from 'react'
+import React, { Component } from 'react'
 
 const WorkspaceContext = React.createContext()
 
@@ -411,7 +411,6 @@ class WorkspaceProvider extends Component {
   }
 
   editTask = (id, key, clubId, resourceId, taskId, task) => {
-    console.log('editing')
     const oldList = [...this.state.workspaceElements]
 
     let elementIndex = oldList.findIndex(
@@ -436,7 +435,6 @@ class WorkspaceProvider extends Component {
     )
 
     let taskElement = { ...resourceElement[taskElementIndex] }
-    console.log('task element ', taskElement)
 
     taskElement.title = task.title
     taskElement.createdOn = task.createdOn
@@ -453,8 +451,6 @@ class WorkspaceProvider extends Component {
     clubs[clubElementIndex] = clubElement
     element.clubs = clubs
     oldList[elementIndex] = element
-
-    console.log('final2', oldList, resourceElement, taskElement)
 
     this.setState(() => {
       return { workspaceElements: oldList }
