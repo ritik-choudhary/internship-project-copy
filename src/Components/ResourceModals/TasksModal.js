@@ -45,7 +45,7 @@ function TaskModalComponent(props) {
     const dd = String(today.getDate()).padStart(2, '0')
     const mm = String(today.getMonth() + 1).padStart(2, '0')
     const yyyy = today.getFullYear()
-    return dd + '-' + mm + '-' + yyyy
+    return yyyy + '-' + mm + '-' + dd
   }
 
   function isValidHttpUrl(string) {
@@ -278,7 +278,6 @@ function TaskModalComponent(props) {
                 completed: status === 'Completed' ? true : false,
                 status: status,
               }
-              console.log(status)
               value.addTask(
                 param.id,
                 param.spaceKey,

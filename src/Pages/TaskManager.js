@@ -10,6 +10,7 @@ import TaskModal from '../Components/TaskManagerComponents/TaskModal'
 import SingleTaskInfoModal from '../Components/TaskManagerComponents/SingleTaskInfoModal'
 import { FiEdit } from 'react-icons/fi'
 import companylogo from '../assets/companylogo.png'
+import { format } from 'date-fns'
 
 export default function TaskManager() {
   return (
@@ -376,7 +377,7 @@ function TaskManagerComponent(props) {
                                 }`,
                               }}
                             >
-                              {task.dueDate}
+                              {format(date, 'dd-MM-yyyy')}
                             </h3>
                             <Link to={`/taskmanager/edit/${task.id}`}>
                               <div className='task-edit-btn'>

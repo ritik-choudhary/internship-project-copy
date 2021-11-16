@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, useEffect } from 'react'
 
 const WorkspaceContext = React.createContext()
 
@@ -15,6 +15,18 @@ class WorkspaceProvider extends Component {
     taskManager: [[], [], [], []],
     documentShelf: [],
     tutorial: true,
+  }
+
+  constructor(props) {
+    super(props)
+    let stateStr = localStorage.getItem('state')
+    if (stateStr) {
+      let state = JSON.parse(stateStr)
+      this.state = state
+    }
+  }
+  componentDidUpdate() {
+    localStorage.setItem('state', JSON.stringify(this.state))
   }
 
   addNewWorkspace = (newItem) => {
@@ -399,19 +411,32 @@ class WorkspaceProvider extends Component {
   }
 
   editTask = (id, key, clubId, resourceId, taskId, task) => {
+    console.log('editing')
     const oldList = [...this.state.workspaceElements]
-    let element = oldList.find(
+
+    let elementIndex = oldList.findIndex(
       (item) => item.id === key && item.workspaceID === id
     )
-    let clubElement = element.clubs.find((item) => item.id === clubId)
-    let resourceElement = clubElement.resources.find(
+    let element = { ...oldList[elementIndex] }
+    let clubs = [...element.clubs]
+
+    console.log(oldList, element)
+
+    let clubElementIndex = element.clubs.findIndex((item) => item.id === clubId)
+    let clubElement = { ...element.clubs[clubElementIndex] }
+    let resourceElementIndex = clubElement.resources.findIndex(
       (item) => item.id === resourceId
     )
+
+    let resources = [...clubElement.resources]
+    let resourceElement = { ...clubElement.resources[resourceElementIndex] }
+    let tasks = [...resourceElement.tasks]
     let taskElementIndex = resourceElement.tasks.findIndex(
       (item) => item.id === taskId
     )
 
     let taskElement = { ...resourceElement[taskElementIndex] }
+    console.log('task element ', taskElement)
 
     taskElement.title = task.title
     taskElement.createdOn = task.createdOn
@@ -421,7 +446,15 @@ class WorkspaceProvider extends Component {
     taskElement.description = task.description
     taskElement.status = task.status
 
-    resourceElement[taskElementIndex] = taskElement
+    tasks[taskElementIndex] = taskElement
+    resourceElement.tasks = tasks
+    resources[resourceElementIndex] = resourceElement
+    clubElement.resources = resources
+    clubs[clubElementIndex] = clubElement
+    element.clubs = clubs
+    oldList[elementIndex] = element
+
+    console.log('final2', oldList, resourceElement, taskElement)
 
     this.setState(() => {
       return { workspaceElements: oldList }

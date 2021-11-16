@@ -80,9 +80,7 @@ function TasksComponent(props) {
                           htmlFor={item.id}
                           className={item.completed ? 'task-completed' : ''}
                         >
-                          {item.title > 15
-                            ? `${item.title.slice(0, 12)}...`
-                            : item.title}
+                          {item.title}
                         </label>
                       </div>
                     </div>
@@ -125,7 +123,7 @@ function TasksComponent(props) {
                         })}
                       </div>
                       <div className='doc-container'>
-                        {item.docsList.map((doc) => {
+                        {item?.docsList?.map((doc) => {
                           docCount++
                           if (docCount > 3) {
                             return <></>
@@ -209,9 +207,7 @@ function TasksComponent(props) {
                           htmlFor={item.id}
                           className={item.completed ? 'task-completed' : ''}
                         >
-                          {item.title > 15
-                            ? `${item.title.slice(0, 12)}...`
-                            : item.title}
+                          {item.title}
                         </label>
                       </div>
                       <div className='right'>
@@ -307,7 +303,7 @@ function TasksComponent(props) {
                         ) : null}
                       </div>
                       <div className='doc-container'>
-                        {item.docsList.map((doc) => {
+                        {item?.docsList?.map((doc) => {
                           docCount++
                           if (docCount > 3) {
                             return <></>
@@ -353,7 +349,7 @@ function TasksComponent(props) {
                             </Link>
                           )
                         })}
-                        {item.docsList.length > 3 ? (
+                        {item?.docsList?.length > 3 ? (
                           <div className='see-more-btn'>
                             <Link
                               to={`/workspace/${param.id}/details/${param.spaceKey}/insideclub/${param.clubID}/resourcedata/${param.resourceID}/edittask/${item.id}`}
